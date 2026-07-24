@@ -15,14 +15,112 @@ namespace Week14.Story
         private sealed class SpeakerProfile
         {
             [SerializeField] private string speaker;
+            [SerializeField] private string expressionId;
             [SerializeField] private Sprite profileSprite;
 
             public Sprite ProfileSprite => profileSprite;
+            public bool IsDefaultExpression => string.IsNullOrWhiteSpace(expressionId);
 
             public bool Matches(string value)
             {
+                return MatchesSpeaker(value) && IsDefaultExpression;
+            }
+
+            public bool MatchesSpeaker(string value)
+            {
                 return !string.IsNullOrWhiteSpace(speaker)
                     && string.Equals(speaker, value, StringComparison.OrdinalIgnoreCase);
+            }
+
+            public bool MatchesExpression(string value)
+            {
+                if (IsDefaultExpression && string.IsNullOrWhiteSpace(value))
+                {
+                    return true;
+                }
+
+                return !string.IsNullOrWhiteSpace(expressionId)
+                    && !string.IsNullOrWhiteSpace(value)
+                    && string.Equals(expressionId, value, StringComparison.OrdinalIgnoreCase);
+            }
+        }
+
+        private readonly struct PortraitVisualState
+        {
+            public readonly Vector2 Offset;
+            public readonly float Scale;
+            public readonly float Alpha;
+            public readonly float Brightness;
+
+            public PortraitVisualState(Vector2 offset, float scale, float alpha, float brightness)
+            {
+                Offset = offset;
+                Scale = scale;
+                Alpha = alpha;
+                Brightness = brightness;
+            }
+
+            public static PortraitVisualState Lerp(PortraitVisualState from, PortraitVisualState to, float t)
+            {
+                return new PortraitVisualState(
+                    Vector2.LerpUnclamped(from.Offset, to.Offset, t),
+                    Mathf.LerpUnclamped(from.Scale, to.Scale, t),
+                    Mathf.LerpUnclamped(from.Alpha, to.Alpha, t),
+                    Mathf.LerpUnclamped(from.Brightness, to.Brightness, t));
+            }
+        }
+
+        [Serializable]
+        private sealed class PortraitSlot
+        {
+            [SerializeField] private Image image;
+            [SerializeField] private RectTransform rectTransform;
+
+            [NonSerialized] public string Speaker;
+            [NonSerialized] public string ExpressionId;
+            [NonSerialized] public Coroutine TransitionRoutine;
+            [NonSerialized] public Vector2 BaseAnchoredPosition;
+            [NonSerialized] public Vector3 BaseLocalScale = Vector3.one;
+            [NonSerialized] public Color BaseColor = Color.white;
+            [NonSerialized] public PortraitVisualState CurrentState = new(Vector2.zero, 1f, 0f, 1f);
+            [NonSerialized] public bool HasCachedBase;
+            [NonSerialized] public bool ClearSpriteWhenHidden;
+
+            public Image Image => image;
+            public RectTransform RectTransform => rectTransform;
+            public bool HasImage => image != null;
+            public bool HasCharacter => HasImage
+                && image.sprite != null
+                && !string.IsNullOrWhiteSpace(Speaker);
+
+            public void Cache()
+            {
+                if (image == null)
+                {
+                    return;
+                }
+
+                rectTransform ??= image.rectTransform;
+                if (HasCachedBase)
+                {
+                    return;
+                }
+
+                BaseAnchoredPosition = rectTransform != null ? rectTransform.anchoredPosition : Vector2.zero;
+                BaseLocalScale = rectTransform != null ? rectTransform.localScale : Vector3.one;
+                BaseColor = image.color;
+                if (BaseColor.a <= 0.001f)
+                {
+                    BaseColor.a = 1f;
+                }
+
+                HasCachedBase = true;
+            }
+
+            public void ClearIdentity()
+            {
+                Speaker = null;
+                ExpressionId = null;
             }
         }
 
@@ -51,6 +149,21 @@ namespace Week14.Story
         [SerializeField] private Sprite fallbackProfileSprite;
         [SerializeField] private List<SpeakerProfile> speakerProfiles = new();
 
+        [Header("Visual Novel Portraits")]
+        [SerializeField] private bool useVisualNovelPortraits = true;
+        [SerializeField] private PortraitSlot leftPortrait = new();
+        [SerializeField] private PortraitSlot rightPortrait = new();
+        [SerializeField, Min(0f)] private float portraitTransitionSeconds = 0.2f;
+        [SerializeField] private AnimationCurve portraitTransitionCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+        [SerializeField] private Vector2 activePortraitOffset = Vector2.zero;
+        [SerializeField] private Vector2 inactivePortraitOffset = new(0f, -35f);
+        [SerializeField] private Vector2 hiddenPortraitOffset = new(0f, -80f);
+        [SerializeField] private Vector2 leftHiddenPortraitSlideOffset = new(-120f, 0f);
+        [SerializeField] private Vector2 rightHiddenPortraitSlideOffset = new(120f, 0f);
+        [SerializeField, Min(0f)] private float activePortraitScale = 1f;
+        [SerializeField, Min(0f)] private float inactivePortraitScale = 0.92f;
+        [SerializeField, Range(0f, 1f)] private float inactivePortraitBrightness = 0.45f;
+
         [Header("Skip")]
         [SerializeField] private GameObject skipRoot;
         [SerializeField] private Image skipFillImage;
@@ -65,20 +178,28 @@ namespace Week14.Story
         private bool hasShownAnchoredPosition;
         private bool hasAdvancePromptBaseColor;
         private bool isVisible;
+        private PortraitSlot activePortraitSlot;
 
         private void Awake()
         {
             CacheShownPosition();
             CacheAdvancePromptImage();
+            CachePortraitSlots();
             Hide();
             SetSkipProgress(false, 0f);
         }
 
-        public void ShowLine(string speaker, string text, string profileSpeaker = null)
+        public void ShowLine(
+            string speaker,
+            string text,
+            string profileSpeaker = null,
+            string expressionId = null,
+            InGameDialoguePortraitSlot portraitSlot = InGameDialoguePortraitSlot.Auto,
+            bool clearPortraitsBeforeLine = false)
         {
             ShowPanel();
             SetAdvancePromptBlinking(false);
-            SetSpeaker(speaker, profileSpeaker);
+            SetSpeaker(speaker, profileSpeaker, expressionId, portraitSlot, clearPortraitsBeforeLine);
             SetText(dialogueText, text);
 
             if (dialogueText != null)
@@ -152,6 +273,7 @@ namespace Week14.Story
             SetAdvancePromptBlinking(false);
             SetRootVisible(false);
             SetSpeaker(null);
+            ClearPortraitSlots(true);
             SetText(dialogueText, string.Empty);
 
             if (dialogueText != null)
@@ -181,19 +303,31 @@ namespace Week14.Story
             }
 
             CacheShownPosition();
-            if (showSeconds <= 0f || slideRoot == null)
+            bool animatePortraits = HasVisiblePortraits();
+            if (animatePortraits)
+            {
+                ClearPortraitSlots(false);
+            }
+
+            float slideSeconds = showSeconds > 0f && slideRoot != null ? showSeconds : 0f;
+            float exitSeconds = Mathf.Max(slideSeconds, animatePortraits ? portraitTransitionSeconds : 0f);
+            if (exitSeconds <= 0f)
             {
                 Hide();
                 yield break;
             }
 
-            Vector2 from = slideRoot.anchoredPosition;
-            Vector2 to = shownAnchoredPosition + hiddenOffset;
-            for (float elapsed = 0f; elapsed < showSeconds; elapsed += Time.unscaledDeltaTime)
+            Vector2 from = slideRoot != null ? slideRoot.anchoredPosition : Vector2.zero;
+            Vector2 to = slideRoot != null ? shownAnchoredPosition + hiddenOffset : Vector2.zero;
+            for (float elapsed = 0f; elapsed < exitSeconds; elapsed += Time.unscaledDeltaTime)
             {
-                float t = Mathf.Clamp01(elapsed / showSeconds);
-                float eased = showCurve != null ? showCurve.Evaluate(t) : t;
-                slideRoot.anchoredPosition = Vector2.LerpUnclamped(from, to, eased);
+                if (slideSeconds > 0f)
+                {
+                    float t = Mathf.Clamp01(elapsed / slideSeconds);
+                    float eased = showCurve != null ? showCurve.Evaluate(t) : t;
+                    slideRoot.anchoredPosition = Vector2.LerpUnclamped(from, to, eased);
+                }
+
                 yield return null;
             }
 
@@ -294,7 +428,12 @@ namespace Week14.Story
             advancePromptImage.color = color;
         }
 
-        private void SetSpeaker(string speaker, string profileSpeaker = null)
+        private void SetSpeaker(
+            string speaker,
+            string profileSpeaker = null,
+            string expressionId = null,
+            InGameDialoguePortraitSlot portraitSlot = InGameDialoguePortraitSlot.Auto,
+            bool clearPortraitsBeforeLine = false)
         {
             bool hasSpeaker = !string.IsNullOrWhiteSpace(speaker);
             if (speakerRoot != null)
@@ -305,26 +444,414 @@ namespace Week14.Story
             SetText(speakerText, hasSpeaker ? speaker : string.Empty);
 
             string profileKey = !string.IsNullOrWhiteSpace(profileSpeaker) ? profileSpeaker : speaker;
-            Sprite profileSprite = hasSpeaker ? ResolveProfileSprite(profileKey) : null;
+            Sprite profileSprite = hasSpeaker ? ResolveProfileSprite(profileKey, expressionId) : null;
+            bool usingVisualNovelPortraits = CanUseVisualNovelPortraits();
             if (profileImage != null)
             {
                 profileImage.sprite = profileSprite;
-                profileImage.enabled = profileSprite != null;
+                profileImage.enabled = profileSprite != null && !usingVisualNovelPortraits;
+            }
+
+            if (usingVisualNovelPortraits)
+            {
+                UpdatePortraitStage(
+                    hasSpeaker ? profileKey : null,
+                    expressionId,
+                    portraitSlot,
+                    clearPortraitsBeforeLine);
             }
         }
 
         private Sprite ResolveProfileSprite(string speaker)
         {
+            return ResolveProfileSprite(speaker, null);
+        }
+
+        private Sprite ResolveProfileSprite(string speaker, string expressionId)
+        {
+            Sprite defaultSprite = null;
+            Sprite firstSpeakerSprite = null;
+            bool hasExpression = !string.IsNullOrWhiteSpace(expressionId);
+
             for (int i = 0; i < speakerProfiles.Count; i++)
             {
                 SpeakerProfile profile = speakerProfiles[i];
-                if (profile != null && profile.Matches(speaker))
+                if (profile == null || !profile.MatchesSpeaker(speaker))
+                {
+                    continue;
+                }
+
+                if (firstSpeakerSprite == null)
+                {
+                    firstSpeakerSprite = profile.ProfileSprite;
+                }
+
+                if (hasExpression && profile.MatchesExpression(expressionId) && profile.ProfileSprite != null)
                 {
                     return profile.ProfileSprite;
                 }
+
+                if (profile.IsDefaultExpression && defaultSprite == null)
+                {
+                    defaultSprite = profile.ProfileSprite;
+                }
             }
 
-            return fallbackProfileSprite;
+            return defaultSprite != null
+                ? defaultSprite
+                : firstSpeakerSprite != null ? firstSpeakerSprite : fallbackProfileSprite;
+        }
+
+        private void CachePortraitSlots()
+        {
+            leftPortrait?.Cache();
+            rightPortrait?.Cache();
+        }
+
+        private bool CanUseVisualNovelPortraits()
+        {
+            CachePortraitSlots();
+            return useVisualNovelPortraits
+                && (IsPortraitSlotConfigured(leftPortrait) || IsPortraitSlotConfigured(rightPortrait));
+        }
+
+        private bool HasVisiblePortraits()
+        {
+            return CanUseVisualNovelPortraits()
+                && ((leftPortrait != null && leftPortrait.HasCharacter)
+                    || (rightPortrait != null && rightPortrait.HasCharacter));
+        }
+
+        private void UpdatePortraitStage(
+            string speaker,
+            string expressionId,
+            InGameDialoguePortraitSlot portraitSlot,
+            bool clearPortraitsBeforeLine)
+        {
+            if (clearPortraitsBeforeLine)
+            {
+                ClearPortraitSlots(false);
+            }
+
+            if (string.IsNullOrWhiteSpace(speaker))
+            {
+                SetPortraitFocus(null, false);
+                return;
+            }
+
+            if (portraitSlot == InGameDialoguePortraitSlot.Hidden)
+            {
+                ClearSpeakerPortrait(speaker, false);
+                SetPortraitFocus(null, false);
+                return;
+            }
+
+            Sprite portraitSprite = ResolveProfileSprite(speaker, expressionId);
+            PortraitSlot targetSlot = ResolvePortraitSlot(speaker, portraitSlot);
+            if (targetSlot == null || portraitSprite == null)
+            {
+                SetPortraitFocus(null, false);
+                return;
+            }
+
+            ClearSpeakerFromOtherSlots(speaker, targetSlot);
+            SetPortraitSprite(targetSlot, speaker, expressionId, portraitSprite);
+            SetPortraitFocus(targetSlot, false);
+        }
+
+        private PortraitSlot ResolvePortraitSlot(string speaker, InGameDialoguePortraitSlot requestedSlot)
+        {
+            PortraitSlot requestedPortraitSlot = GetPortraitSlot(requestedSlot);
+            if (IsPortraitSlotConfigured(requestedPortraitSlot))
+            {
+                return requestedPortraitSlot;
+            }
+
+            PortraitSlot existingSlot = FindPortraitSlotBySpeaker(speaker);
+            if (existingSlot != null)
+            {
+                return existingSlot;
+            }
+
+            if (IsPortraitSlotEmpty(leftPortrait))
+            {
+                return leftPortrait;
+            }
+
+            if (IsPortraitSlotEmpty(rightPortrait))
+            {
+                return rightPortrait;
+            }
+
+            if (activePortraitSlot == leftPortrait && IsPortraitSlotConfigured(rightPortrait))
+            {
+                return rightPortrait;
+            }
+
+            if (activePortraitSlot == rightPortrait && IsPortraitSlotConfigured(leftPortrait))
+            {
+                return leftPortrait;
+            }
+
+            return IsPortraitSlotConfigured(leftPortrait)
+                ? leftPortrait
+                : IsPortraitSlotConfigured(rightPortrait) ? rightPortrait : null;
+        }
+
+        private PortraitSlot GetPortraitSlot(InGameDialoguePortraitSlot requestedSlot)
+        {
+            return requestedSlot switch
+            {
+                InGameDialoguePortraitSlot.Left => leftPortrait,
+                InGameDialoguePortraitSlot.Right => rightPortrait,
+                _ => null
+            };
+        }
+
+        private PortraitSlot FindPortraitSlotBySpeaker(string speaker)
+        {
+            if (PortraitSlotMatchesSpeaker(leftPortrait, speaker))
+            {
+                return leftPortrait;
+            }
+
+            return PortraitSlotMatchesSpeaker(rightPortrait, speaker) ? rightPortrait : null;
+        }
+
+        private void SetPortraitSprite(PortraitSlot slot, string speaker, string expressionId, Sprite sprite)
+        {
+            if (!IsPortraitSlotConfigured(slot) || sprite == null)
+            {
+                return;
+            }
+
+            slot.Cache();
+            bool hadCharacter = slot.HasCharacter;
+            bool speakerChanged = !string.Equals(slot.Speaker, speaker, StringComparison.OrdinalIgnoreCase);
+
+            if (!hadCharacter || speakerChanged)
+            {
+                ApplyPortraitState(slot, GetHiddenPortraitState(slot));
+            }
+
+            slot.Speaker = speaker;
+            slot.ExpressionId = expressionId;
+            slot.ClearSpriteWhenHidden = false;
+            slot.Image.sprite = sprite;
+            slot.Image.preserveAspect = true;
+            slot.Image.enabled = true;
+        }
+
+        private void SetPortraitFocus(PortraitSlot focusedSlot, bool immediate)
+        {
+            activePortraitSlot = focusedSlot != null && focusedSlot.HasCharacter ? focusedSlot : null;
+            RefreshPortraitState(leftPortrait, immediate);
+            RefreshPortraitState(rightPortrait, immediate);
+        }
+
+        private void RefreshPortraitState(PortraitSlot slot, bool immediate)
+        {
+            if (!IsPortraitSlotConfigured(slot))
+            {
+                return;
+            }
+
+            bool visible = slot.HasCharacter;
+            bool active = visible && slot == activePortraitSlot;
+            TransitionPortrait(slot, GetPortraitState(slot, visible, active), immediate);
+        }
+
+        private PortraitVisualState GetPortraitState(PortraitSlot slot, bool visible, bool active)
+        {
+            if (!visible)
+            {
+                return GetHiddenPortraitState(slot);
+            }
+
+            return active
+                ? new PortraitVisualState(activePortraitOffset, activePortraitScale, 1f, 1f)
+                : new PortraitVisualState(
+                    inactivePortraitOffset,
+                    inactivePortraitScale,
+                    1f,
+                    inactivePortraitBrightness);
+        }
+
+        private PortraitVisualState GetHiddenPortraitState(PortraitSlot slot)
+        {
+            Vector2 slideOffset = Vector2.zero;
+            if (slot == leftPortrait)
+            {
+                slideOffset = leftHiddenPortraitSlideOffset;
+            }
+            else if (slot == rightPortrait)
+            {
+                slideOffset = rightHiddenPortraitSlideOffset;
+            }
+
+            return new PortraitVisualState(
+                hiddenPortraitOffset + slideOffset,
+                inactivePortraitScale,
+                0f,
+                inactivePortraitBrightness);
+        }
+
+        private void TransitionPortrait(PortraitSlot slot, PortraitVisualState targetState, bool immediate)
+        {
+            if (!IsPortraitSlotConfigured(slot))
+            {
+                return;
+            }
+
+            StopPortraitTransition(slot);
+            slot.Cache();
+            if (immediate || portraitTransitionSeconds <= 0f || !isActiveAndEnabled)
+            {
+                ApplyPortraitState(slot, targetState);
+                CompletePortraitTransition(slot, targetState);
+                return;
+            }
+
+            slot.TransitionRoutine = StartCoroutine(PortraitTransitionRoutine(slot, slot.CurrentState, targetState));
+        }
+
+        private IEnumerator PortraitTransitionRoutine(PortraitSlot slot, PortraitVisualState from, PortraitVisualState to)
+        {
+            float duration = Mathf.Max(0.001f, portraitTransitionSeconds);
+            for (float elapsed = 0f; elapsed < duration; elapsed += Time.unscaledDeltaTime)
+            {
+                float t = Mathf.Clamp01(elapsed / duration);
+                float eased = portraitTransitionCurve != null ? portraitTransitionCurve.Evaluate(t) : t;
+                ApplyPortraitState(slot, PortraitVisualState.Lerp(from, to, eased));
+                yield return null;
+            }
+
+            ApplyPortraitState(slot, to);
+            CompletePortraitTransition(slot, to);
+            slot.TransitionRoutine = null;
+        }
+
+        private void CompletePortraitTransition(PortraitSlot slot, PortraitVisualState state)
+        {
+            if (!IsPortraitSlotConfigured(slot)
+                || state.Alpha > 0.001f
+                || !slot.ClearSpriteWhenHidden)
+            {
+                return;
+            }
+
+            slot.Image.sprite = null;
+            slot.Image.enabled = false;
+            slot.ClearSpriteWhenHidden = false;
+        }
+
+        private void ApplyPortraitState(PortraitSlot slot, PortraitVisualState state)
+        {
+            if (!IsPortraitSlotConfigured(slot))
+            {
+                return;
+            }
+
+            slot.Cache();
+            slot.CurrentState = state;
+            if (slot.RectTransform != null)
+            {
+                slot.RectTransform.anchoredPosition = slot.BaseAnchoredPosition + state.Offset;
+                slot.RectTransform.localScale = slot.BaseLocalScale * Mathf.Max(0f, state.Scale);
+            }
+
+            Image image = slot.Image;
+            Color color = slot.BaseColor;
+            float brightness = Mathf.Max(0f, state.Brightness);
+            color.r *= brightness;
+            color.g *= brightness;
+            color.b *= brightness;
+            color.a *= Mathf.Clamp01(state.Alpha);
+            image.color = color;
+            image.enabled = image.sprite != null && state.Alpha > 0.001f;
+        }
+
+        private void ClearPortraitSlots(bool immediate)
+        {
+            ClearPortraitSlot(leftPortrait, immediate);
+            ClearPortraitSlot(rightPortrait, immediate);
+            activePortraitSlot = null;
+        }
+
+        private void ClearPortraitSlot(PortraitSlot slot, bool immediate)
+        {
+            if (!IsPortraitSlotConfigured(slot))
+            {
+                return;
+            }
+
+            StopPortraitTransition(slot);
+            slot.ClearIdentity();
+            if (immediate)
+            {
+                slot.Image.sprite = null;
+                slot.ClearSpriteWhenHidden = false;
+            }
+            else
+            {
+                slot.ClearSpriteWhenHidden = slot.Image.sprite != null;
+            }
+
+            TransitionPortrait(slot, GetHiddenPortraitState(slot), immediate);
+        }
+
+        private void ClearSpeakerPortrait(string speaker, bool immediate)
+        {
+            if (PortraitSlotMatchesSpeaker(leftPortrait, speaker))
+            {
+                ClearPortraitSlot(leftPortrait, immediate);
+            }
+
+            if (PortraitSlotMatchesSpeaker(rightPortrait, speaker))
+            {
+                ClearPortraitSlot(rightPortrait, immediate);
+            }
+        }
+
+        private void ClearSpeakerFromOtherSlots(string speaker, PortraitSlot targetSlot)
+        {
+            if (targetSlot != leftPortrait && PortraitSlotMatchesSpeaker(leftPortrait, speaker))
+            {
+                ClearPortraitSlot(leftPortrait, true);
+            }
+
+            if (targetSlot != rightPortrait && PortraitSlotMatchesSpeaker(rightPortrait, speaker))
+            {
+                ClearPortraitSlot(rightPortrait, true);
+            }
+        }
+
+        private void StopPortraitTransition(PortraitSlot slot)
+        {
+            if (slot?.TransitionRoutine == null)
+            {
+                return;
+            }
+
+            StopCoroutine(slot.TransitionRoutine);
+            slot.TransitionRoutine = null;
+        }
+
+        private static bool IsPortraitSlotConfigured(PortraitSlot slot)
+        {
+            return slot != null && slot.HasImage;
+        }
+
+        private static bool IsPortraitSlotEmpty(PortraitSlot slot)
+        {
+            return IsPortraitSlotConfigured(slot) && !slot.HasCharacter;
+        }
+
+        private static bool PortraitSlotMatchesSpeaker(PortraitSlot slot, string speaker)
+        {
+            return IsPortraitSlotConfigured(slot)
+                && !string.IsNullOrWhiteSpace(slot.Speaker)
+                && string.Equals(slot.Speaker, speaker, StringComparison.OrdinalIgnoreCase);
         }
 
         private void ShowPanel()

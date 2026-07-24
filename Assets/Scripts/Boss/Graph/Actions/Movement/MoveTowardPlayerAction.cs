@@ -629,8 +629,7 @@ namespace Week14.Enemy
 
             if (snapToStart)
             {
-                context.Boss.Body.position = startPosition;
-                context.Boss.transform.position = new Vector3(startPosition.x, startPosition.y, context.Boss.transform.position.z);
+                context.Boss.SnapBodyPosition(startPosition);
             }
             else if (moveToStartFirst)
             {

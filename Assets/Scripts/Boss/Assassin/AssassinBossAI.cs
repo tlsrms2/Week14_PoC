@@ -365,12 +365,7 @@ namespace Week14.Enemy
 
         internal void TeleportImmediate(Vector3 destination)
         {
-            if (Body != null)
-            {
-                Body.position = destination;
-            }
-
-            transform.position = new Vector3(destination.x, destination.y, transform.position.z);
+            SnapBodyPosition(destination);
         }
 
         internal IEnumerator ReappearAfterTeleport()

@@ -16,24 +16,39 @@ namespace Week14.Story
         LobbyTutorialSkill = 6
     }
 
+    public enum InGameDialoguePortraitSlot
+    {
+        Auto = 0,
+        Left = 1,
+        Right = 2,
+        Hidden = 3
+    }
+
     [Serializable]
     public sealed class InGameDialogueLine
     {
         [SerializeField] private string speaker;
         [SerializeField, TextArea(4, 14)] private string text;
         [SerializeField] private string sfxId;
+        [SerializeField] private string expressionId;
+        [SerializeField] private InGameDialoguePortraitSlot portraitSlot = InGameDialoguePortraitSlot.Auto;
+        [SerializeField] private bool clearPortraitsBeforeLine;
         [SerializeField] private LocalizedString localizedSpeaker;
         [SerializeField] private LocalizedString localizedText;
 
-        public InGameDialogueLine(string speaker, string text)
+        public InGameDialogueLine(string speaker, string text, string expressionId = null)
         {
             this.speaker = speaker;
             this.text = text;
+            this.expressionId = expressionId;
         }
 
         public string Speaker => speaker;
         public string Text => text;
         public string SfxId => sfxId;
+        public string ExpressionId => expressionId;
+        public InGameDialoguePortraitSlot PortraitSlot => portraitSlot;
+        public bool ClearPortraitsBeforeLine => clearPortraitsBeforeLine;
         public LocalizedString LocalizedSpeaker => localizedSpeaker;
         public LocalizedString LocalizedText => localizedText;
         public bool HasLocalizedSpeaker => HasLocalizedString(localizedSpeaker);

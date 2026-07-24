@@ -97,7 +97,10 @@ MonoBehaviour:
     previewRangeColor: {r: 1, g: 0.75, b: 0.2, a: 0}
     displayOffsetDistance: 0.8
     displayWindUpDegrees: -100
+    windUpSnapRatio: 0.7
     windUpSnapSeconds: 0.08
+    swingHoldSeconds: 0.1
+    swingReturnSeconds: 0.25
     displaySpriteRotationOffsetDegrees: -137
     displayScale: {x: 4, y: 4, z: 4}
     maxChargeScale: {x: 6, y: 6, z: 6}

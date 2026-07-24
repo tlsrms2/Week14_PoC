@@ -43,10 +43,20 @@ namespace Week14.Weapons
         [Tooltip("차징하지 않을 때 배트 표시 스프라이트가 플레이어(앵커)로부터 떨어져 있을 거리입니다.")]
         [SerializeField, Min(0f)] private float displayOffsetDistance = 0.8f;
         [Tooltip("차징 시 조준 방향 기준으로 와인드업(Z축 반대 방향) 회전할 각도(도)입니다. " +
-            "차징을 시작하면 Wind Up Snap Seconds 동안 빠르게 이 각도까지 회전한 뒤 유지되고, 공격 시엔 반대 부호(+)까지 스윙합니다.")]
+            "차징을 시작하면 Wind Up Snap Ratio만큼(전체 각도 대비 비율)을 Wind Up Snap Seconds 동안 빠르게 회전하고, " +
+            "그 뒤 남은 각도는 차징 진행도(0~1)에 비례해서 마저 회전해 차징이 끝나면 정확히 -N도가 됩니다. " +
+            "공격 시엔 반대 부호(+N)까지 스윙합니다.")]
         [SerializeField] private float displayWindUpDegrees = 30f;
-        [Tooltip("차징 시작 시 -N 각도까지 빠르게 회전하는 데 걸리는 시간(초)입니다. 작을수록 더 빠르게(스냅) 회전합니다.")]
+        [Tooltip("차징 시작 시 빠르게 회전할 목표 각도의 비율(0~1)입니다. Display Wind Up Degrees 대비 비율로, " +
+            "예를 들어 0.5면 전체 각도의 절반까지 Wind Up Snap Seconds 동안 빠르게 회전한 뒤, " +
+            "남은 절반은 차징 진행도에 비례해서 마저 회전합니다.")]
+        [SerializeField, Range(0f, 1f)] private float windUpSnapRatio = 0.5f;
+        [Tooltip("차징 시작 시 Wind Up Snap Ratio만큼 빠르게 회전하는 데 걸리는 시간(초)입니다. 작을수록 더 빠르게(스냅) 회전합니다.")]
         [SerializeField, Min(0.01f)] private float windUpSnapSeconds = 0.08f;
+        [Tooltip("공격 스윙 회전이 끝난 뒤(+N도 상태) 원래 각도로 돌아가기 전 그대로 대기하는 시간(초)입니다.")]
+        [SerializeField, Min(0f)] private float swingHoldSeconds = 0.1f;
+        [Tooltip("대기 시간이 끝난 뒤 원래 각도(0도)로 서서히 돌아가는 데 걸리는 시간(초)입니다.")]
+        [SerializeField, Min(0.01f)] private float swingReturnSeconds = 0.25f;
         [Tooltip("배트 표시 스프라이트의 아트 방향과 실제 조준 방향을 맞추기 위한 회전 보정값(도)입니다.")]
         [SerializeField] private float displaySpriteRotationOffsetDegrees;
         [Tooltip("배트 표시 스프라이트의 기본 Local Scale입니다. 스프라이트 원본 크기가 게임 월드 크기와 안 맞을 때 조정하세요.")]
@@ -65,7 +75,10 @@ namespace Week14.Weapons
 
         public float DisplayOffsetDistance => displayOffsetDistance;
         public float DisplayWindUpDegrees => displayWindUpDegrees;
+        public float WindUpSnapRatio => windUpSnapRatio;
         public float WindUpSnapSeconds => windUpSnapSeconds;
+        public float SwingHoldSeconds => swingHoldSeconds;
+        public float SwingReturnSeconds => swingReturnSeconds;
         public float DisplaySpriteRotationOffsetDegrees => displaySpriteRotationOffsetDegrees;
         public Vector3 DisplayScale => displayScale;
         public Vector3 MaxChargeScale => maxChargeScale;
@@ -141,7 +154,10 @@ namespace Week14.Weapons
             attackActiveSeconds = Mathf.Max(0.01f, attackActiveSeconds);
             rangeIndicatorSeconds = Mathf.Max(0.01f, rangeIndicatorSeconds);
             displayOffsetDistance = Mathf.Max(0f, displayOffsetDistance);
+            windUpSnapRatio = Mathf.Clamp01(windUpSnapRatio);
             windUpSnapSeconds = Mathf.Max(0.01f, windUpSnapSeconds);
+            swingHoldSeconds = Mathf.Max(0f, swingHoldSeconds);
+            swingReturnSeconds = Mathf.Max(0.01f, swingReturnSeconds);
         }
     }
 

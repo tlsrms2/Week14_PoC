@@ -23,11 +23,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 502600000000
-    m_Localized: Enter Second Phase 3 times.
+    m_Localized: '[Cumulative] Enter Second Phase 3 times.'
     m_Metadata:
       m_Items: []
   - m_Id: 505200000000
-    m_Localized: Enter Second Phase 6 times.
+    m_Localized: '[Cumulative] Enter Second Phase 6 times.'
     m_Metadata:
       m_Items: []
   - m_Id: 507800000000
@@ -39,7 +39,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3443865412796416
-    m_Localized: Intercept {0} projectiles.
+    m_Localized: '[Cumulative] Intercept {0} projectiles.'
     m_Metadata:
       m_Items: []
   - m_Id: 3448495471427584
@@ -47,23 +47,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3451950613233664
-    m_Localized: Successfully perform Counter {0} times.
+    m_Localized: '[Cumulative] Successfully perform Counter {0} times.'
     m_Metadata:
       m_Items: []
   - m_Id: 3519743778283520
-    m_Localized: Intercept {0} Homing Projectiles.
+    m_Localized: '[Cumulative] Intercept {0} Homing Projectiles.'
     m_Metadata:
       m_Items: []
   - m_Id: 3521113910599680
-    m_Localized: Intercept {0} Note Projectiles.
+    m_Localized: '[Cumulative] Intercept {0} Note Projectiles.'
     m_Metadata:
       m_Items: []
   - m_Id: 3521787301912576
-    m_Localized: Intercept {0} Explosive Projectiles.
+    m_Localized: '[Cumulative] Intercept {0} Explosive Projectiles.'
     m_Metadata:
       m_Items: []
   - m_Id: 3522615781810176
-    m_Localized: Intercept {0} Wire Projectiles.
+    m_Localized: '[Cumulative] Intercept {0} Wire Projectiles.'
     m_Metadata:
       m_Items: []
   - m_Id: 3524778109100032
@@ -75,11 +75,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3527906837585920
-    m_Localized: Enter Third Phase 3 times.
+    m_Localized: '[Cumulative] Enter Third Phase 3 times.'
     m_Metadata:
       m_Items: []
   - m_Id: 3530476930564096
-    m_Localized: Destroy 8 Flat Turrets.
+    m_Localized: '[Cumulative] Destroy 8 Flat Turrets.'
     m_Metadata:
       m_Items: []
   - m_Id: 3533872441950208

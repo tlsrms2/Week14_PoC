@@ -214,8 +214,8 @@ namespace Week14.Combat
                 enemyBodyContactStaggerEndsAt,
                 Time.time + resolvedStaggerSeconds);
             Vector2 velocity = direction.normalized * Mathf.Max(0f, speed);
-            velocity = GroundMovementConstraint.ClampVelocity(body, velocity);
-            body.linearVelocity = GroundMovementConstraint.ClampVelocityAgainstPlayerOnlyBarriers(body, velocity);
+            velocity = GroundMovementConstraint.ClampVelocity(body, velocity, Time.fixedDeltaTime);
+            body.linearVelocity = GroundMovementConstraint.ClampVelocityAgainstPlayerOnlyBarriers(body, velocity, Time.fixedDeltaTime);
         }
 
         private bool TryGetEnemyBodyContactDamage(Collider2D other, PlayerCombatConfig config, out int bulletDamage)

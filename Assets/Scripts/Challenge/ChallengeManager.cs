@@ -88,7 +88,7 @@ namespace Week14.Challenge
         {
             if (combatActive)
             {
-                EvaluateAndSave(victory: false, combatResult: "quit");
+                LogQuitWithoutSaving("quit");
             }
 
             UnsubscribeBoss();
@@ -263,6 +263,40 @@ namespace Week14.Challenge
         private void HandleDefeat(Health _)
         {
             EvaluateAndSave(victory: false, combatResult: "death");
+        }
+
+        // 전투 중 로비 복귀/재시작 등으로 씬이 바뀌어 중단된 경우입니다. 보스 처치·플레이어 사망이
+        // 아니므로 진행도를 세이브(GameSaveManager)에 반영하지 않고, 분석 로그만 남깁니다.
+        private void LogQuitWithoutSaving(string combatResult)
+        {
+            for (int i = 0; i < activeRuns.Count; i++)
+            {
+                ChallengeDefinitionSO definition = activeRuns[i].Definition;
+                AnalyticsManager.RecordBossChallengeResult(
+                    currentBossId,
+                    definition.ChallengeId,
+                    ToAnalyticsChallengeType(definition.Kind),
+                    false,
+                    false,
+                    combatResult);
+            }
+
+            foreach (ChallengeDefinitionSO definition in database.ForBoss(currentBossId))
+            {
+                string saveKey = GameSaveManager.BuildChallengeSaveKey(currentBossId, definition.ChallengeId);
+                if (!alreadyCompletedBeforeRun.Contains(saveKey))
+                {
+                    continue;
+                }
+
+                AnalyticsManager.RecordBossChallengeResult(
+                    currentBossId,
+                    definition.ChallengeId,
+                    ToAnalyticsChallengeType(definition.Kind),
+                    false,
+                    true,
+                    combatResult);
+            }
         }
 
         private void EvaluateAndSave(bool victory, string combatResult)

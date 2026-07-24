@@ -844,13 +844,7 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                Body.position = previousPlayerBlockingPosition;
-                Body.linearVelocity = Vector2.zero;
-                transform.position = new Vector3(
-                    previousPlayerBlockingPosition.x,
-                    previousPlayerBlockingPosition.y,
-                    transform.position.z);
-                Physics2D.SyncTransforms();
+                SnapBodyPosition(previousPlayerBlockingPosition);
                 current = previousPlayerBlockingPosition;
                 break;
             }

@@ -122,7 +122,10 @@ public sealed class BaseballBatWeaponSOEditor : Editor
         EditorGUILayout.LabelField("배트 표시 스프라이트(대기/차징/스윙)", EditorStyles.boldLabel);
         DrawRelative(settings, "displayOffsetDistance");
         DrawRelative(settings, "displayWindUpDegrees");
+        DrawRelative(settings, "windUpSnapRatio");
         DrawRelative(settings, "windUpSnapSeconds");
+        DrawRelative(settings, "swingHoldSeconds");
+        DrawRelative(settings, "swingReturnSeconds");
         DrawRelative(settings, "displaySpriteRotationOffsetDegrees");
         DrawRelative(settings, "displayScale");
         DrawRelative(settings, "maxChargeScale");

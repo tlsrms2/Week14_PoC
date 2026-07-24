@@ -429,7 +429,7 @@ namespace Week14.Tutorial
 
             if (mode == TutorialTrainingEnemyMode.ForcedHitPractice)
             {
-                FireRadialVolley(settings, true);
+                FireRadialVolley(settings, false);
                 nextFireAt = Time.time + Mathf.Max(0.1f, GetFireIntervalSeconds());
                 return;
             }
@@ -794,7 +794,7 @@ namespace Week14.Tutorial
 
         private BossProjectileSettings ResolveProjectileSettings()
         {
-            if (mode == TutorialTrainingEnemyMode.DodgePractice
+            if ((mode == TutorialTrainingEnemyMode.DodgePractice || mode == TutorialTrainingEnemyMode.ForcedHitPractice)
                 && dodgeProjectile != null
                 && dodgeProjectile.Prefab != null)
             {
