@@ -1051,6 +1051,10 @@ PrefabInstance:
       propertyPath: bossCombatUiRect
       value: 
       objectReference: {fileID: 1023516956}
+    - target: {fileID: 3375592416611051039, guid: 87b6686f424f85e419dfcf9ae5fdfc13, type: 3}
+      propertyPath: bossViewportFillRatio
+      value: 0.98
+      objectReference: {fileID: 0}
     - target: {fileID: 4005723614143604908, guid: 87b6686f424f85e419dfcf9ae5fdfc13, type: 3}
       propertyPath: m_IsActive
       value: 1
