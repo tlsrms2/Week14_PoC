@@ -56,6 +56,18 @@ namespace Week14.UI
             SetPaused(!isPaused);
         }
 
+        // 창 포커스를 잃었을 때 호출용. TogglePause()와 달리 이미 열려 있으면 닫지 않고,
+        // 컷신 등 다른 모달이 떠 있는 중에는(GameModalState.BlocksGameplayInput) 끼어들지 않는다.
+        public void PauseForFocusLoss()
+        {
+            if (isPaused || isClosing || GameModalState.BlocksGameplayInput)
+            {
+                return;
+            }
+
+            SetPaused(true);
+        }
+
         public void Resume()
         {
             SetPaused(false);
