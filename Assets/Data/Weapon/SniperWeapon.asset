@@ -39,10 +39,10 @@ MonoBehaviour:
   price: 2
   inGameSprite: {fileID: 0}
   projectilePrefab: {fileID: 0}
-  leftArmController: {fileID: 9100000, guid: 1d997e41831007f458700092b95af506, type: 2}
+  leftArmController: {fileID: 9100000, guid: 119a174933c706e439ae86bc8267b5fc, type: 2}
   maxAmmo: 3
   parryingRange: 1
-  damagePerAmmoStep: 040000000300000002000000
+  damagePerAmmoStep: 050000000300000002000000
   maxAmmoTooltipTextFormat: 
   localizedMaxAmmoTooltipText:
     m_TableReference:
@@ -74,7 +74,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   chargeThresholdSeconds: 0.7
-  chargeDamageMultiplier: 2
+  chargeDamageMultiplier: 3
   chargeStartSfxId: SniperCharge
   laserFirstAppearDelaySeconds: 0.15
   laserLength: 15
