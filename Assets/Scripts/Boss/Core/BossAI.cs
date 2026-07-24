@@ -74,6 +74,8 @@ namespace Week14.Enemy
         [Header("Movement")]
         [Tooltip("보스의 기본 이동 속도입니다.")]
         [SerializeField, Min(0f)] private float moveSpeed = 3.5f;
+        [Tooltip("프레임 스파이크 중 직접 위치 이동을 여러 번 쪼갤 때 한 번에 처리할 최대 시간입니다.")]
+        [SerializeField, Min(0.001f)] private float maxDirectMoveStepSeconds = 0.02f;
 
         [Header("Scene References")]
         [SerializeField] private Transform bodyRoot;
@@ -108,6 +110,9 @@ namespace Week14.Enemy
         private SpriteRenderer[] renderers;
         private Collider2D[] groundProbeColliders;
         private Collider2D[] physicsColliders;
+        private Vector2 requestedMovementVelocity;
+        private Vector2 lastAppliedMovementVelocity;
+        private bool hasRequestedMovementVelocity;
         private Collider2D[] playerPhysicsColliders;
         private bool isIgnoringPlayerCollision;
         private bool isAutomaticDashContactDamageSuppressed;
@@ -306,6 +311,11 @@ namespace Week14.Enemy
             RefreshElapsedTimeText();
         }
 
+        protected virtual void FixedUpdate()
+        {
+            ApplyRequestedMovement();
+        }
+
         // CombatElapsedSeconds는 Time.time - combatStartedAt으로 계산되는 절대 시각 기반 타이머라
         // EnemyTimeScale의 영향을 받지 않는다. 슬로우 배율만큼 못 흐른 시간을 시작 시각에 계속
         // 더해 밀어내면(DeltaTimeDebt), 경과시간 자체가 슬로우 배율에 맞춰 천천히 늘어난다.
@@ -476,10 +486,12 @@ namespace Week14.Enemy
                 return;
             }
 
-            Vector2 scaledVelocity = velocity * EnemyTimeScale.Current;
-            body.linearVelocity = BossCanFlyOverGround
-                ? scaledVelocity
-                : GroundMovementConstraint.ClampVelocity(body, scaledVelocity, groundProbeColliders);
+            requestedMovementVelocity = velocity;
+            hasRequestedMovementVelocity = velocity.sqrMagnitude > 0.000001f;
+            if (!hasRequestedMovementVelocity)
+            {
+                Stop();
+            }
         }
 
         internal bool TryMovePatternTowards(Vector2 target, float speed)
@@ -489,29 +501,47 @@ namespace Week14.Enemy
                 return false;
             }
 
+            float safeSpeed = Mathf.Max(0f, speed);
+            float remainingDistance = safeSpeed * EnemyTimeScale.DeltaTime;
+            if (remainingDistance <= 0f)
+            {
+                Stop();
+                return false;
+            }
+
             Vector2 current = body.position;
-            float stepDistance = Mathf.Max(0f, speed) * EnemyTimeScale.DeltaTime;
-            if (stepDistance <= 0f)
+            Vector2 totalDisplacement = Vector2.zero;
+            float maxStepDistance = safeSpeed * GetMaxDirectMoveStepSeconds();
+            while (remainingDistance > 0f)
+            {
+                float stepDistance = maxStepDistance > 0f
+                    ? Mathf.Min(remainingDistance, maxStepDistance)
+                    : remainingDistance;
+                Vector2 desired = Vector2.MoveTowards(current, target, stepDistance);
+                Vector2 next = ResolveConstrainedBossPosition(current, desired);
+                Vector2 displacement = next - current;
+                if (displacement.sqrMagnitude <= 0.000001f)
+                {
+                    break;
+                }
+
+                totalDisplacement += displacement;
+                current = next;
+                remainingDistance -= stepDistance;
+
+                if ((target - current).sqrMagnitude <= 0.000001f)
+                {
+                    break;
+                }
+            }
+
+            if (totalDisplacement.sqrMagnitude <= 0.000001f)
             {
                 Stop();
                 return false;
             }
 
-            Vector2 desired = Vector2.MoveTowards(current, target, stepDistance);
-            Vector2 next = BossCanFlyOverGround
-                ? desired
-                : GroundMovementConstraint.ClampStep(current, desired, groundProbeColliders);
-            Vector2 displacement = next - current;
-            if (displacement.sqrMagnitude <= 0.000001f)
-            {
-                Stop();
-                return false;
-            }
-
-            body.linearVelocity = Vector2.zero;
-            body.angularVelocity = 0f;
-            body.position = next;
-            transform.position = new Vector3(next.x, next.y, transform.position.z);
+            ApplyImmediateBodyPosition(current, totalDisplacement / Mathf.Max(Time.deltaTime, 0.0001f));
             return true;
         }
 
@@ -522,8 +552,85 @@ namespace Week14.Enemy
                 return;
             }
 
+            hasRequestedMovementVelocity = false;
+            requestedMovementVelocity = Vector2.zero;
+            lastAppliedMovementVelocity = Vector2.zero;
             body.linearVelocity = Vector2.zero;
             body.angularVelocity = 0f;
+        }
+
+        internal void SnapBodyPosition(Vector2 position)
+        {
+            if (body == null)
+            {
+                transform.position = new Vector3(position.x, position.y, transform.position.z);
+                return;
+            }
+
+            ApplyImmediateBodyPosition(position, Vector2.zero);
+        }
+
+        private void ApplyRequestedMovement()
+        {
+            if (body == null)
+            {
+                return;
+            }
+
+            if (!hasRequestedMovementVelocity)
+            {
+                lastAppliedMovementVelocity = Vector2.zero;
+                body.linearVelocity = Vector2.zero;
+                body.angularVelocity = 0f;
+                return;
+            }
+
+            float deltaTime = EnemyTimeScale.FixedDeltaTime;
+            if (deltaTime <= 0f)
+            {
+                lastAppliedMovementVelocity = Vector2.zero;
+                body.linearVelocity = Vector2.zero;
+                return;
+            }
+
+            Vector2 current = body.position;
+            Vector2 desired = current + requestedMovementVelocity * deltaTime;
+            Vector2 next = ResolveConstrainedBossPosition(current, desired);
+            Vector2 displacement = next - current;
+            lastAppliedMovementVelocity = displacement / Time.fixedDeltaTime;
+            body.linearVelocity = lastAppliedMovementVelocity;
+            body.angularVelocity = 0f;
+
+            if (displacement.sqrMagnitude <= 0.000001f)
+            {
+                return;
+            }
+
+            body.MovePosition(next);
+        }
+
+        private Vector2 ResolveConstrainedBossPosition(Vector2 current, Vector2 desired)
+        {
+            return BossCanFlyOverGround
+                ? desired
+                : GroundMovementConstraint.ClampPointMovement(current, desired, groundProbeColliders);
+        }
+
+        private void ApplyImmediateBodyPosition(Vector2 position, Vector2 velocity)
+        {
+            hasRequestedMovementVelocity = false;
+            requestedMovementVelocity = Vector2.zero;
+            lastAppliedMovementVelocity = velocity;
+            body.linearVelocity = velocity;
+            body.angularVelocity = 0f;
+            body.position = position;
+            transform.position = new Vector3(position.x, position.y, transform.position.z);
+            Physics2D.SyncTransforms();
+        }
+
+        private float GetMaxDirectMoveStepSeconds()
+        {
+            return Mathf.Max(0.001f, maxDirectMoveStepSeconds, Time.fixedDeltaTime);
         }
 
         // 대쉬 중에는 벽 충돌은 유지한 채 일반 보스와 플레이어의 물리 충돌만 끈다.

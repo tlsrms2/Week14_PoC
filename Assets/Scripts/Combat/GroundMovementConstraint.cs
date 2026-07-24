@@ -77,6 +77,19 @@ namespace Week14.Combat
                 null);
         }
 
+        public static Vector2 ClampPointMovement(
+            Vector2 current,
+            Vector2 target,
+            Collider2D[] probeColliders)
+        {
+            return ClampPointMovement(
+                current,
+                target,
+                DefaultProbeRadius,
+                0,
+                probeColliders);
+        }
+
         internal static bool IsColliderFootprintGrounded(
             Vector2 current,
             Vector2 target,
