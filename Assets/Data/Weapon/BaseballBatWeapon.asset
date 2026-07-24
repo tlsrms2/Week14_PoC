@@ -96,7 +96,7 @@ MonoBehaviour:
     rangeIndicatorColor: {r: 1, g: 0.55, b: 0.1, a: 0}
     previewRangeColor: {r: 1, g: 0.75, b: 0.2, a: 0}
     displayOffsetDistance: 0.8
-    displayWindUpDegrees: -100
+    displayWindUpDegrees: -120
     windUpSnapRatio: 0.7
     windUpSnapSeconds: 0.08
     swingHoldSeconds: 0.1
