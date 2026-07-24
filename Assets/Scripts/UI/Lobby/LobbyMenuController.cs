@@ -26,6 +26,13 @@ namespace Week14.UI
         [Tooltip("loadoutHoverHighlight와 함께 켜지고 꺼지는 추가 오브젝트들입니다.")]
         [SerializeField] private GameObject[] loadoutHoverExtraObjects;
 
+        private bool backCloseBlocked;
+
+        public void SetBackCloseBlocked(bool blocked)
+        {
+            backCloseBlocked = blocked;
+        }
+
         public void OnBossRootPointerEnter()
         {
             if (GameModalState.BlocksGameplayInput)
@@ -90,6 +97,13 @@ namespace Week14.UI
         // 일시정지 패널(PauseMenuView)이 대신 열리지 않도록 UIBackStack에 등록해둔다.
         public bool CloseByBack()
         {
+            if (backCloseBlocked
+                && ((loadoutPanelContent != null && loadoutPanelContent.gameObject.activeSelf)
+                    || (bossPanelContent != null && bossPanelContent.gameObject.activeSelf)))
+            {
+                return true;
+            }
+
             if (loadoutPanelContent != null && loadoutPanelContent.gameObject.activeSelf)
             {
                 CloseLoadoutPanel();

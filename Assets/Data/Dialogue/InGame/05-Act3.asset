@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 05-Act3
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Story.InGameStorySequenceSO
   episodeId: 2
-  skippable: 1
+  skippable: 0
   dialogues:
   - speaker: ERIS
     text: " \uC2E0\uC6D0 \uD655\uC778 \uC911. \uCF54\uB4DC\uBA85 \uC774\uC628. \uBCF5\uADC0\uB97C

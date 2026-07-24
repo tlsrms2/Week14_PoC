@@ -459,8 +459,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1143,12 +1143,12 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   activePortraitOffset: {x: 0, y: 0}
-  inactivePortraitOffset: {x: 0, y: -35}
-  hiddenPortraitOffset: {x: 0, y: -35}
-  leftHiddenPortraitSlideOffset: {x: -60, y: 0}
-  rightHiddenPortraitSlideOffset: {x: 60, y: 0}
+  inactivePortraitOffset: {x: 0, y: -15}
+  hiddenPortraitOffset: {x: 0, y: -15}
+  leftHiddenPortraitSlideOffset: {x: -30, y: 0}
+  rightHiddenPortraitSlideOffset: {x: 30, y: 0}
   activePortraitScale: 1
   inactivePortraitScale: 0.95
-  inactivePortraitBrightness: 0.45
+  inactivePortraitBrightness: 0.35
   skipRoot: {fileID: 6420397259450978100}
   skipFillImage: {fileID: 8728629661888210097}
