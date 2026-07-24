@@ -221,6 +221,11 @@ namespace Week14.Combat
             else
             {
                 baseballBatCurrentRotationDegrees = Mathf.Lerp(snapTargetDegrees, fullTargetDegrees, clampedCharge01);
+                if (clampedCharge01 >= 1f && vfxSettings.FullChargeShakeDegrees > 0f)
+                {
+                    float noise = Mathf.PerlinNoise(Time.time * vfxSettings.FullChargeShakeSpeed, 0.37f) - 0.5f;
+                    baseballBatCurrentRotationDegrees += noise * 2f * vfxSettings.FullChargeShakeDegrees;
+                }
             }
 
             Vector3 scale = Vector3.Lerp(vfxSettings.DisplayScale, vfxSettings.MaxChargeScale, clampedCharge01);
