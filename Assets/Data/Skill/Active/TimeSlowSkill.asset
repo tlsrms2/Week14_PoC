@@ -39,7 +39,7 @@ MonoBehaviour:
   price: 2
   slowMultiplier: 0.1
   durationSeconds: 3
-  sfxId: 
+  sfxId: TimeSlowSkill
   afterimageInterval: 0.08
   afterimageDuration: 5
   rainbowCycleSeconds: 5

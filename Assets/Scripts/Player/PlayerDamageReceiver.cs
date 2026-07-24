@@ -96,6 +96,8 @@ namespace Week14.Combat
             {
                 if (!context.Owner.TryConsumeDeathPrevention(context.PlayerTransform.position))
                 {
+                    // Died 이벤트가 사망 연출음을 즉시 시작하므로 판정음을 먼저 재생해 두 SFX를 겹친다.
+                    PlaySfx(config.DeathDetectedSfxId);
                     health.Kill();
                 }
             }
@@ -117,6 +119,14 @@ namespace Week14.Combat
             context.Owner.NotifyAttackReceived();
             PlayerHitByEnemy?.Invoke(bulletDamage);
             return true;
+        }
+
+        private static void PlaySfx(string sfxId)
+        {
+            if (!string.IsNullOrWhiteSpace(sfxId))
+            {
+                SoundManager.PlaySfx(sfxId);
+            }
         }
 
         internal void UpdateBodyColor(bool force = false)

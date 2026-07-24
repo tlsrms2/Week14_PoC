@@ -835,6 +835,7 @@ MonoBehaviour:
   playerWalkSpeed: 3.5
   playerWalkSfxId: Walk
   mugShotBackgroundSfxId: Whip
+  mugShotToBossBgmDelaySeconds: 3
   restartSequenceSeconds: 2.5
   restartCombatUiRevealSeconds: 0.35
   bossFocusWeight: 1
@@ -3422,7 +3423,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Tutorial.TutorialSceneController
   dialogueSet: {fileID: 11400000, guid: 8fa6fd107d83b7746847394157429f37, type: 2}
-  tutorialBgmId: TutorialBGM
   textDialoguePanel: {fileID: 8100199575286773222}
   objectiveDialoguePanel: {fileID: 0}
   explanationPanelRoot: {fileID: 910100000}
@@ -3473,6 +3473,10 @@ MonoBehaviour:
   moveDestinationMaxAlpha: 1
   moveDestinationFallbackRadius: 0.5
   firstRoomRespawnPoint: {fileID: 950507608}
+  tutorialBgmId: TutorialBGM
+  tutorialBgmFadeSeconds: 0.5
+  objectiveCompleteSfxId: goal complete
+  trainingEnemyRaiseSfxId: robot rising
   attackHitGoal: 3
   hitGoal: 1
   parryGoal: 3
@@ -5467,6 +5471,8 @@ MonoBehaviour:
   duelOpeningBurstShotCount: 3
   duelMainBurstShotCount: 4
   duelSingleShotSpeedMultiplier: 1.5
+  normalAttackSfxId: BossNormalShot
+  radialAttackSfxId: Smash
   projectile:
     prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
     bulletDamage: 1
@@ -6090,6 +6096,14 @@ PrefabInstance:
     - target: {fileID: 4502639645030516895, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_AnchorMin.x
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801602864313990611, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: openSfxId
+      value: PausePanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801602864313990611, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: closeSfxId
+      value: PausePanel
       objectReference: {fileID: 0}
     - target: {fileID: 5364321327869350505, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_text

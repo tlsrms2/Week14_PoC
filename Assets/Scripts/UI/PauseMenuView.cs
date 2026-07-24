@@ -1,4 +1,6 @@
 using UnityEngine;
+using Week14.Audio;
+using Week14.Enemy;
 using Week14.GameFlow;
 
 namespace Week14.UI
@@ -10,6 +12,12 @@ namespace Week14.UI
         [SerializeField] private PixelBlockRevealView panelRevealView;
         [SerializeField] private string titleSceneName = "TitleScene";
         [SerializeField] private string lobbySceneName = "LobbyScene";
+
+        [Header("Audio")]
+        [Tooltip("일시정지 패널을 열 때 재생할 SFX입니다.")]
+        [SerializeField, BossGraphSfxId] private string openSfxId;
+        [Tooltip("일시정지 패널을 닫기 시작할 때 재생할 SFX입니다.")]
+        [SerializeField, BossGraphSfxId] private string closeSfxId;
 
         private float previousTimeScale = 1f;
         private bool isPaused;
@@ -143,6 +151,7 @@ namespace Week14.UI
         {
             isPaused = true;
             isClosing = false;
+            PlaySfx(openSfxId);
 
             if (panelRoot != null && !panelRoot.activeSelf)
             {
@@ -170,6 +179,8 @@ namespace Week14.UI
             {
                 return;
             }
+
+            PlaySfx(closeSfxId);
 
             if (optionsPanelRoot != null)
             {
@@ -267,5 +278,12 @@ namespace Week14.UI
             Time.timeScale = previousTimeScale <= 0f ? 1f : previousTimeScale;
         }
 
+        private static void PlaySfx(string sfxId)
+        {
+            if (!string.IsNullOrWhiteSpace(sfxId))
+            {
+                SoundManager.PlaySfx(sfxId);
+            }
+        }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Week14.Audio;
 using Week14.Combat;
 using Week14.Enemy;
 
@@ -51,6 +52,12 @@ namespace Week14.Tutorial
         [SerializeField, Min(1)] private int duelOpeningBurstShotCount = 3;
         [SerializeField, Min(1)] private int duelMainBurstShotCount = 4;
         [SerializeField, Min(0.01f)] private float duelSingleShotSpeedMultiplier = 1.5f;
+
+        [Header("Audio")]
+        [Tooltip("플레이어 방향으로 일반 공격을 발사할 때 재생할 SFX입니다.")]
+        [SerializeField, BossGraphSfxId] private string normalAttackSfxId;
+        [Tooltip("전방위 방사형 공격을 발사할 때 재생할 SFX입니다.")]
+        [SerializeField, BossGraphSfxId] private string radialAttackSfxId;
 
         [Header("Projectile Settings")]
         [SerializeField] private BossProjectileSettings projectile = new();
@@ -532,7 +539,10 @@ namespace Week14.Tutorial
                 direction = Vector2.left;
             }
 
-            SpawnProjectile(settings, origin, direction.normalized, true);
+            if (SpawnProjectile(settings, origin, direction.normalized, true) != null)
+            {
+                PlaySfx(normalAttackSfxId);
+            }
         }
 
         private void StartSuppressionRoutine()
@@ -709,12 +719,26 @@ namespace Week14.Tutorial
             Vector3 origin = projectileOrigin != null ? projectileOrigin.position : transform.position;
             float step = 360f / count;
             float startAngle = GetAngleToTarget(origin);
+            bool firedAny = false;
 
             for (int i = 0; i < count; i++)
             {
                 float angle = startAngle + step * i;
                 Vector2 direction = Quaternion.Euler(0f, 0f, angle) * Vector2.right;
-                SpawnProjectile(settings, origin, direction, interceptable);
+                firedAny |= SpawnProjectile(settings, origin, direction, interceptable) != null;
+            }
+
+            if (firedAny)
+            {
+                PlaySfx(radialAttackSfxId);
+            }
+        }
+
+        private static void PlaySfx(string sfxId)
+        {
+            if (!string.IsNullOrWhiteSpace(sfxId))
+            {
+                SoundManager.PlaySfx(sfxId);
             }
         }
 

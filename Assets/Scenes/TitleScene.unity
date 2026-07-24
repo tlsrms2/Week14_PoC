@@ -23321,8 +23321,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4801602864313990611, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: openSfxId
+      value: PausePanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801602864313990611, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: panelRoot
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801602864313990611, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: closeSfxId
+      value: PausePanel
       objectReference: {fileID: 0}
     - target: {fileID: 5364321327869350505, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_text

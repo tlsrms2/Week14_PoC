@@ -1,5 +1,4 @@
 using UnityEngine;
-using Week14.Audio;
 using Week14.Combat;
 using Week14.Enemy;
 
@@ -31,10 +30,7 @@ namespace Week14.Weapons
                 return;
             }
 
-            if (!string.IsNullOrEmpty(chargeStartSfxId))
-            {
-                SoundManager.PlaySfx(chargeStartSfxId);
-            }
+            shooter.PlaySniperChargeSfx(chargeStartSfxId);
         }
 
         public override void HoldAttack(PlayerShooter shooter, float chargeTime)

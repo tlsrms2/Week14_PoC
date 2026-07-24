@@ -106,8 +106,11 @@ MonoBehaviour:
     displayColorHalfCharge: {r: 1, g: 0.6327303, b: 0, a: 1}
     displayColorFullCharge: {r: 1, g: 0, b: 0, a: 1}
   chargingSfxId: BaseballBatCharging
-  chargingSfxStartSeconds: 0.5
+  chargingSfxStartSeconds: 0
   reflectionSuccessSfxId: BaseballBatSwing
+  reflectionSfxBasePitch: 1
+  reflectionSfxPitchStep: 0.08
+  reflectionSfxMaxPitch: 1.5
   moveSpeedMultiplier: 1.5
   references:
     version: 2

@@ -115,7 +115,7 @@ MonoBehaviour:
     action:
       rid: 6489939136707035233
     sequences: []
-    editorPosition: {x: 217, y: 50}
+    editorPosition: {x: 218, y: 50}
   - nodeId: Melee Attack8
     nodeGuid: f8be7f34a85147f09e02274aabc26188
     nodeKind: 0
@@ -4087,6 +4087,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939136707035211
@@ -4195,6 +4199,9 @@ MonoBehaviour:
           scale: 1
           followMode: 1
           followRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        attackSfxId: BigSlash
+        missSfxId: MissSlash
     - rid: 6489939136707035214
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4283,6 +4290,7 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashSfxId: Dash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -4331,6 +4339,7 @@ MonoBehaviour:
         randomizeStartAngle: 1
         minAngleDistanceDegrees: 25
         fireInterval: 0.08
+        fireSfxId: BossNormalShot
         recoverySeconds: 0.25
         flyingSprite: {fileID: -7263751535809043743, guid: 20152adbaac57f440a99906ebede87d0, type: 3}
         attachedSprite: {fileID: 299151475, guid: 5c417a1355187d84cbad5851c5137f02, type: 3}
@@ -4459,6 +4468,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939136707035228
@@ -4577,6 +4590,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939136707035230
@@ -4695,6 +4712,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939136707035231
@@ -4822,6 +4843,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939136707035232
@@ -4940,6 +4965,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939136707035233
@@ -5067,6 +5096,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939136707035236
@@ -5194,6 +5227,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939136707035237
@@ -5276,6 +5313,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1.5
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.75
         chargeEndRadius: 0.08
         chargeLineWidth: 0.065
@@ -5420,6 +5458,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.7
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
@@ -5521,6 +5560,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1.3
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.7
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
@@ -5622,6 +5662,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1.6
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.7
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
@@ -5712,6 +5753,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        chargeDashSfxId: ChargeDash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -5799,6 +5841,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        chargeDashSfxId: ChargeDash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -5897,6 +5940,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.7
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
@@ -5987,6 +6031,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        chargeDashSfxId: ChargeDash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -6085,6 +6130,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.7
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
@@ -6186,6 +6232,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1.5
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.75
         chargeEndRadius: 0.08
         chargeLineWidth: 0.075
@@ -6295,6 +6342,7 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashSfxId: Dash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -6435,6 +6483,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939186800656587
@@ -6543,6 +6595,9 @@ MonoBehaviour:
           scale: 1
           followMode: 1
           followRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        attackSfxId: BigSlash
+        missSfxId: MissSlash
         projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
@@ -6705,6 +6760,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939186800656589
@@ -6885,6 +6944,7 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashSfxId: Dash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -7025,6 +7085,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939186800656616
@@ -7107,6 +7171,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1.5
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.75
         chargeEndRadius: 0.08
         chargeLineWidth: 0.075
@@ -7291,6 +7356,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939186800656620
@@ -7418,6 +7487,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939186800656621
@@ -7536,6 +7609,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939186800656622
@@ -7663,6 +7740,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939186800656623
@@ -7790,6 +7871,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939186800656624
@@ -8013,6 +8098,7 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashSfxId: Dash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -8153,6 +8239,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939186800656651
@@ -8347,6 +8437,9 @@ MonoBehaviour:
           scale: 1
           followMode: 1
           followRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        attackSfxId: BigSlash
+        missSfxId: MissSlash
         projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
@@ -8511,6 +8604,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.7
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
@@ -8612,6 +8706,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1.3
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.7
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
@@ -8713,6 +8808,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1.6
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.7
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
@@ -8822,6 +8918,7 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashSfxId: Dash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -8919,6 +9016,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        chargeDashSfxId: ChargeDash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -9006,6 +9104,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        chargeDashSfxId: ChargeDash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -9060,6 +9159,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        landingSfxId: PutTurret
         flyingSprite: {fileID: 0}
         groundedSprite: {fileID: 0}
     - rid: 6489939186800656664
@@ -9131,6 +9231,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        chargeDashSfxId: ChargeDash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -9218,6 +9319,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        chargeDashSfxId: ChargeDash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -9316,6 +9418,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.7
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
@@ -9406,6 +9509,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        chargeDashSfxId: ChargeDash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -9504,6 +9608,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.7
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
@@ -9605,6 +9710,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1.5
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.75
         chargeEndRadius: 0.08
         chargeLineWidth: 0.075
@@ -9642,6 +9748,7 @@ MonoBehaviour:
         recoverySeconds: 0
         weaponPositioningSeconds: 0.5
         orbitSeconds: 0.5
+        orbitSfxId: OrbitSweep
         orbitRadius: 9
         weaponPositioningSpeedCurve:
           serializedVersion: 2
@@ -9732,6 +9839,7 @@ MonoBehaviour:
           followRotation: 1
         recallSeconds: 0.55
         recallRotationDegrees: 0
+        wireSfxId: Wire
     - rid: 6489939186800656671
       type: {class: HackerMeleeAttackAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -9857,6 +9965,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939186800656672
@@ -10162,6 +10274,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.7
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
@@ -10263,6 +10376,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1.5
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.75
         chargeEndRadius: 0.08
         chargeLineWidth: 0.075
@@ -10421,6 +10535,7 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashSfxId: Dash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -10525,6 +10640,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 3.35
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.75
         chargeEndRadius: 0.08
         chargeLineWidth: 0.075
@@ -10683,6 +10799,7 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 1.15
+        dashSfxId: Dash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -10787,6 +10904,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.7
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
@@ -10877,6 +10995,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        chargeDashSfxId: ChargeDash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -10975,6 +11094,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.7
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
@@ -11096,6 +11216,7 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashSfxId: Dash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -11133,6 +11254,9 @@ MonoBehaviour:
         fireCount: 3
         repeatIntervalSeconds: 0.05
         recoverySeconds: 0.2
+        fireSfxId: FireWire
+        flightSfxId: WireFlight
+        grabSfxId: Wire
         fireEffectPrefab: {fileID: 4710565922538407439, guid: 27f4d1db81e919f46b4f491dab3e4002, type: 3}
         fireEffectSpawnPointPath: EffectPrefabPoint/FireWire
         fireEffectRotationOffsetDegrees: 0
@@ -11191,6 +11315,7 @@ MonoBehaviour:
           positionOffset: {x: 0, y: 0.15}
           scale: 5
         sweepTriggerName: DashSweep
+        sweepSfxId: OrbitSweep
         dashSeconds: 0.35
         dashSpeed: 20
         dashSpeedCurve:
@@ -11365,6 +11490,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939193110200405
@@ -11522,6 +11651,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651558992
@@ -11630,6 +11763,9 @@ MonoBehaviour:
           scale: 1
           followMode: 1
           followRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        attackSfxId: BigSlash
+        missSfxId: MissSlash
         projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
@@ -11792,6 +11928,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651558994
@@ -11968,6 +12108,7 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashSfxId: Dash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -12108,6 +12249,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651559003
@@ -12190,6 +12335,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1.5
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.75
         chargeEndRadius: 0.08
         chargeLineWidth: 0.075
@@ -12370,6 +12516,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651559006
@@ -12497,6 +12647,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651559007
@@ -12615,6 +12769,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651559008
@@ -12742,6 +12900,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651559009
@@ -12869,6 +13031,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651559010
@@ -13088,6 +13254,7 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashSfxId: Dash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -13228,6 +13395,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651559016
@@ -13422,6 +13593,9 @@ MonoBehaviour:
           scale: 1
           followMode: 1
           followRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        attackSfxId: BigSlash
+        missSfxId: MissSlash
         projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
@@ -13528,6 +13702,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        chargeDashSfxId: ChargeDash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -13615,6 +13790,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        chargeDashSfxId: ChargeDash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -13669,6 +13845,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        landingSfxId: PutTurret
         flyingSprite: {fileID: 0}
         groundedSprite: {fileID: 0}
     - rid: 6489939200651559022
@@ -13687,6 +13864,7 @@ MonoBehaviour:
         recoverySeconds: 0
         weaponPositioningSeconds: 0.5
         orbitSeconds: 0.5
+        orbitSfxId: OrbitSweep
         orbitRadius: 9
         weaponPositioningSpeedCurve:
           serializedVersion: 2
@@ -13777,6 +13955,7 @@ MonoBehaviour:
           followRotation: 1
         recallSeconds: 0.55
         recallRotationDegrees: 0
+        wireSfxId: Wire
     - rid: 6489939200651559023
       type: {class: HackerMeleeAttackAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -13902,6 +14081,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651559024
@@ -14090,6 +14273,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        chargeDashSfxId: ChargeDash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -14177,6 +14361,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        chargeDashSfxId: ChargeDash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -14275,6 +14460,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.7
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
@@ -14365,6 +14551,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        chargeDashSfxId: ChargeDash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -14463,6 +14650,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.7
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
@@ -14564,6 +14752,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1.5
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.75
         chargeEndRadius: 0.08
         chargeLineWidth: 0.075
@@ -14726,6 +14915,7 @@ MonoBehaviour:
           positionOffset: {x: 0, y: 0.15}
           scale: 5
         sweepTriggerName: DashSweep
+        sweepSfxId: OrbitSweep
         dashSeconds: 0.35
         dashSpeed: 20
         dashSpeedCurve:
@@ -14785,6 +14975,9 @@ MonoBehaviour:
         fireCount: 1
         repeatIntervalSeconds: 0.15
         recoverySeconds: 0.2
+        fireSfxId: FireWire
+        flightSfxId: WireFlight
+        grabSfxId: Wire
         fireEffectPrefab: {fileID: 4710565922538407439, guid: 27f4d1db81e919f46b4f491dab3e4002, type: 3}
         fireEffectSpawnPointPath: EffectPrefabPoint/FireWire
         fireEffectRotationOffsetDegrees: 0
@@ -14942,6 +15135,9 @@ MonoBehaviour:
         fireCount: 3
         repeatIntervalSeconds: 0.05
         recoverySeconds: 0.2
+        fireSfxId: FireWire
+        flightSfxId: WireFlight
+        grabSfxId: Wire
         fireEffectPrefab: {fileID: 4710565922538407439, guid: 27f4d1db81e919f46b4f491dab3e4002, type: 3}
         fireEffectSpawnPointPath: EffectPrefabPoint/FireWire
         fireEffectRotationOffsetDegrees: 0
@@ -15000,6 +15196,7 @@ MonoBehaviour:
           positionOffset: {x: 0, y: 0.15}
           scale: 5
         sweepTriggerName: DashSweep
+        sweepSfxId: OrbitSweep
         dashSeconds: 0.35
         dashSpeed: 20
         dashSpeedCurve:
@@ -15174,6 +15371,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651559079
@@ -15264,6 +15465,7 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashSfxId: Dash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -15404,6 +15606,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651559081
@@ -15555,6 +15761,9 @@ MonoBehaviour:
           scale: 1
           followMode: 1
           followRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        attackSfxId: BigSlash
+        missSfxId: MissSlash
     - rid: 6489939200651559084
       type: {class: HackerChargeDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -15624,6 +15833,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        chargeDashSfxId: ChargeDash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -15711,6 +15921,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        chargeDashSfxId: ChargeDash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -15765,6 +15976,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        landingSfxId: PutTurret
         flyingSprite: {fileID: 0}
         groundedSprite: {fileID: 0}
     - rid: 6489939200651559087
@@ -15783,6 +15995,7 @@ MonoBehaviour:
         recoverySeconds: 0
         weaponPositioningSeconds: 0.5
         orbitSeconds: 0.5
+        orbitSfxId: OrbitSweep
         orbitRadius: 9
         weaponPositioningSpeedCurve:
           serializedVersion: 2
@@ -15873,6 +16086,7 @@ MonoBehaviour:
           followRotation: 1
         recallSeconds: 0.55
         recallRotationDegrees: 0
+        wireSfxId: Wire
     - rid: 6489939200651559088
       type: {class: HackerMeleeAttackAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -15998,6 +16212,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939200651559089
@@ -16111,6 +16329,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.7
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
@@ -16212,6 +16431,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1.5
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.75
         chargeEndRadius: 0.08
         chargeLineWidth: 0.075
@@ -16321,6 +16541,7 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashSfxId: Dash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -16357,6 +16578,7 @@ MonoBehaviour:
           positionOffset: {x: 0, y: 0.15}
           scale: 5
         sweepTriggerName: DashSweep
+        sweepSfxId: OrbitSweep
         dashSeconds: 0.35
         dashSpeed: 20
         dashSpeedCurve:
@@ -16416,6 +16638,9 @@ MonoBehaviour:
         fireCount: 1
         repeatIntervalSeconds: 0.15
         recoverySeconds: 0.2
+        fireSfxId: FireWire
+        flightSfxId: WireFlight
+        grabSfxId: Wire
         fireEffectPrefab: {fileID: 4710565922538407439, guid: 27f4d1db81e919f46b4f491dab3e4002, type: 3}
         fireEffectSpawnPointPath: EffectPrefabPoint/FireWire
         fireEffectRotationOffsetDegrees: 0
@@ -16697,6 +16922,7 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 0.15
+        dashSfxId: Dash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -16801,6 +17027,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 3.35
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.75
         chargeEndRadius: 0.08
         chargeLineWidth: 0.075
@@ -16959,6 +17186,7 @@ MonoBehaviour:
           m_RotationOrder: 4
         playerDiagonalAngleDegrees: 45
         diagonalIntervalSeconds: 1.15
+        dashSfxId: Dash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -17063,6 +17291,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.7
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
@@ -17153,6 +17382,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        chargeDashSfxId: ChargeDash
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -17251,6 +17481,7 @@ MonoBehaviour:
         preChargeFacingSeconds: 0.1
         postFireFacingSeconds: 0.3
         windupSeconds: 1
+        chargeSfxId: GunCharge
         chargeStartRadius: 0.7
         chargeEndRadius: 0.08
         chargeLineWidth: 0.05
@@ -17285,6 +17516,9 @@ MonoBehaviour:
         fireCount: 3
         repeatIntervalSeconds: 0.05
         recoverySeconds: 0.2
+        fireSfxId: FireWire
+        flightSfxId: WireFlight
+        grabSfxId: Wire
         fireEffectPrefab: {fileID: 4710565922538407439, guid: 27f4d1db81e919f46b4f491dab3e4002, type: 3}
         fireEffectSpawnPointPath: EffectPrefabPoint/FireWire
         fireEffectRotationOffsetDegrees: 0
@@ -17343,6 +17577,7 @@ MonoBehaviour:
           positionOffset: {x: 0, y: 0.15}
           scale: 5
         sweepTriggerName: DashSweep
+        sweepSfxId: OrbitSweep
         dashSeconds: 0.35
         dashSpeed: 20
         dashSpeedCurve:
@@ -17517,6 +17752,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939224946016331
@@ -17924,6 +18163,7 @@ MonoBehaviour:
         maxFlightSeconds: 3
         wallAttachedSeconds: 4.7
         recoverySeconds: 0.2
+        fireSfxId: FireWire
         fireEffectPrefab: {fileID: 4710565922538407439, guid: 27f4d1db81e919f46b4f491dab3e4002, type: 3}
         fireEffectRotationOffsetDegrees: 0
         fireEffectScale: 1
@@ -17991,6 +18231,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        landingSfxId: PutTurret
         flyingSprite: {fileID: -7263751535809043743, guid: 20152adbaac57f440a99906ebede87d0, type: 3}
         groundedSprite: {fileID: 299151475, guid: 5c417a1355187d84cbad5851c5137f02, type: 3}
     - rid: 6489939249705517355
@@ -18009,6 +18250,7 @@ MonoBehaviour:
         recoverySeconds: 0
         weaponPositioningSeconds: 0.5
         orbitSeconds: 0.5
+        orbitSfxId: OrbitSweep
         orbitRadius: 9
         weaponPositioningSpeedCurve:
           serializedVersion: 2
@@ -18099,6 +18341,7 @@ MonoBehaviour:
           followRotation: 1
         recallSeconds: 0.55
         recallRotationDegrees: 0
+        wireSfxId: Wire
     - rid: 6489939249705517356
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -18289,6 +18532,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939269342724369
@@ -18301,6 +18548,7 @@ MonoBehaviour:
         maxFlightSeconds: 3
         wallAttachedSeconds: 4.7
         recoverySeconds: 0.2
+        fireSfxId: FireWire
         fireEffectPrefab: {fileID: 4710565922538407439, guid: 27f4d1db81e919f46b4f491dab3e4002, type: 3}
         fireEffectRotationOffsetDegrees: 0
         fireEffectScale: 1
@@ -18368,6 +18616,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        landingSfxId: PutTurret
         flyingSprite: {fileID: -7263751535809043743, guid: 20152adbaac57f440a99906ebede87d0, type: 3}
         groundedSprite: {fileID: 299151475, guid: 5c417a1355187d84cbad5851c5137f02, type: 3}
     - rid: 6489939269342724372
@@ -18386,6 +18635,7 @@ MonoBehaviour:
         recoverySeconds: 0
         weaponPositioningSeconds: 0.5
         orbitSeconds: 0.5
+        orbitSfxId: OrbitSweep
         orbitRadius: 9
         weaponPositioningSpeedCurve:
           serializedVersion: 2
@@ -18476,6 +18726,7 @@ MonoBehaviour:
           followRotation: 1
         recallSeconds: 0.55
         recallRotationDegrees: 0
+        wireSfxId: Wire
     - rid: 6489939269342724373
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -18666,6 +18917,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939269342724378
@@ -18721,6 +18976,7 @@ MonoBehaviour:
         maxFlightSeconds: 3
         wallAttachedSeconds: 4.7
         recoverySeconds: 0.2
+        fireSfxId: FireWire
         fireEffectPrefab: {fileID: 4710565922538407439, guid: 27f4d1db81e919f46b4f491dab3e4002, type: 3}
         fireEffectRotationOffsetDegrees: 0
         fireEffectScale: 1
@@ -18788,6 +19044,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        landingSfxId: PutTurret
         flyingSprite: {fileID: -7263751535809043743, guid: 20152adbaac57f440a99906ebede87d0, type: 3}
         groundedSprite: {fileID: 299151475, guid: 5c417a1355187d84cbad5851c5137f02, type: 3}
     - rid: 6489939269342724383
@@ -18806,6 +19063,7 @@ MonoBehaviour:
         recoverySeconds: 0
         weaponPositioningSeconds: 0.5
         orbitSeconds: 0.5
+        orbitSfxId: OrbitSweep
         orbitRadius: 9
         weaponPositioningSpeedCurve:
           serializedVersion: 2
@@ -18896,6 +19154,7 @@ MonoBehaviour:
           followRotation: 1
         recallSeconds: 0.55
         recallRotationDegrees: 0
+        wireSfxId: Wire
     - rid: 6489939269342724384
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -19086,6 +19345,10 @@ MonoBehaviour:
         parriedEffectScale: 1
         parriedEffectFollowMode: 1
         parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
         slamChainSeconds: 2
         consecutiveSlamDustPrefab: {fileID: 0}
     - rid: 6489939269342724387

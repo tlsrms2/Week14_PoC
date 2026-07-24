@@ -88,7 +88,8 @@ MonoBehaviour:
     rotationOffsetDegrees: 0
     playbackSpeed: 1
     sortingOrder: 73
-  fireSfxId: 
+  oneToFourAmmoFireSfxId: railgun1~4
+  fiveAmmoFireSfxId: railgun5
   references:
     version: 2
     RefIds: []

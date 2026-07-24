@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using Week14.Combat;
 using Week14.Enemy;
 
@@ -167,9 +168,16 @@ namespace Week14.Weapons
         [SerializeField] private string chargingSfxId = "BaseballBatCharging";
         [Tooltip("차징 SFX를 한 번 재생하기까지 필요한 홀드 시간(초)입니다.")]
         [SerializeField, Min(0f)] private float chargingSfxStartSeconds = 0.5f;
-        [Tooltip("야구 배트로 투사체 반사에 성공했을 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
+        [Tooltip("야구 배트로 투사체를 반사할 때 투사체마다 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
         [BossGraphSfxId]
+        [FormerlySerializedAs("swingSfxId")]
         [SerializeField] private string reflectionSuccessSfxId = "BaseballBatSwing";
+        [Tooltip("첫 번째 투사체를 반사할 때 사용할 피치입니다.")]
+        [SerializeField, Range(0.1f, 3f)] private float reflectionSfxBasePitch = 1f;
+        [Tooltip("추가 투사체를 반사할 때마다 높일 피치입니다.")]
+        [SerializeField, Min(0f)] private float reflectionSfxPitchStep = 0.08f;
+        [Tooltip("반사 효과음 피치의 최댓값입니다.")]
+        [SerializeField, Range(0.1f, 3f)] private float reflectionSfxMaxPitch = 1.5f;
 
         [Tooltip("야구 배트를 장착했을 때 적용할 이동 속도 배율입니다. 1.5 = 50% 증가.")]
         [SerializeField, Min(0f)] private float moveSpeedMultiplier = 1.5f;
@@ -224,7 +232,10 @@ namespace Week14.Weapons
                     reflectedProjectileSpeed,
                     VfxSettings,
                     charge01,
-                    reflectionSuccessSfxId);
+                    reflectionSuccessSfxId,
+                    reflectionSfxBasePitch,
+                    reflectionSfxPitchStep,
+                    reflectionSfxMaxPitch);
                 shooter.StartBaseballBatSwingThrough(
                     VfxSettings,
                     VfxSettings.AttackHitDelaySeconds + VfxSettings.AttackActiveSeconds);
@@ -264,6 +275,9 @@ namespace Week14.Weapons
             maxAttackRange = Mathf.Max(minAttackRange, maxAttackRange);
             maxChargeSeconds = Mathf.Max(0.01f, maxChargeSeconds);
             chargingSfxStartSeconds = Mathf.Max(0f, chargingSfxStartSeconds);
+            reflectionSfxBasePitch = Mathf.Clamp(reflectionSfxBasePitch, 0.1f, 3f);
+            reflectionSfxPitchStep = Mathf.Max(0f, reflectionSfxPitchStep);
+            reflectionSfxMaxPitch = Mathf.Clamp(reflectionSfxMaxPitch, reflectionSfxBasePitch, 3f);
             moveSpeedMultiplier = Mathf.Max(0f, moveSpeedMultiplier);
             vfxSettings ??= new BaseballBatVfxSettings();
             vfxSettings.Validate();

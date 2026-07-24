@@ -7,15 +7,19 @@ namespace Week14.Audio
     [CreateAssetMenu(menuName = "Week14/Audio/Sound Library", fileName = "SoundLibrary")]
     public sealed class SoundLibrary : ScriptableObject
     {
+        public const string UncategorizedSfxCategory = "미분류";
+
         [Serializable]
         public sealed class SoundEntry
         {
+            [SerializeField, HideInInspector] private string category;
             [Tooltip("SoundManager.PlaySfx/PlayBgm 호출 시 사용하는 식별자입니다.")]
             [SerializeField] private string id;
             [SerializeField] private AudioClip clip;
             [SerializeField, Range(0f, 2f)] private float volume = 1f;
             [SerializeField, Range(0.5f, 2f)] private float pitch = 1f;
 
+            public string Category => NormalizeSfxCategory(category);
             public string Id => id;
             public AudioClip Clip => clip;
             public float Volume => volume;
@@ -33,6 +37,14 @@ namespace Week14.Audio
 
         public IReadOnlyList<string> BgmIds => GetIds(bgmEntries);
         public IReadOnlyList<string> SfxIds => GetIds(sfxEntries);
+        public IReadOnlyList<SoundEntry> SfxEntries => sfxEntries;
+
+        public static string NormalizeSfxCategory(string category)
+        {
+            return string.IsNullOrWhiteSpace(category)
+                ? UncategorizedSfxCategory
+                : category.Trim();
+        }
 
         public SoundEntry FindBgm(string id)
         {
@@ -44,6 +56,22 @@ namespace Week14.Audio
         {
             sfxById ??= BuildLookup(sfxEntries);
             return Find(sfxById, id);
+        }
+
+        private void OnEnable()
+        {
+            InvalidateLookups();
+        }
+
+        private void OnValidate()
+        {
+            InvalidateLookups();
+        }
+
+        private void InvalidateLookups()
+        {
+            bgmById = null;
+            sfxById = null;
         }
 
         private static SoundEntry Find(Dictionary<string, SoundEntry> lookup, string id)
