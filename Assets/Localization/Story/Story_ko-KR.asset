@@ -748,7 +748,7 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5333532901379
     m_Localized: "<sprite name=\"icon_w\"><sprite name=\"icon_a\"><sprite name=\"icon_s\"><sprite
-      name=\"icon_d\"> \uD0A4\uB97C \uB20C\uB7EC <<color=#73f3ff>>\uC774\uB3D9</color>\uD560
+      name=\"icon_d\"> \uD0A4\uB97C \uB20C\uB7EC <color=#73f3ff>\uC774\uB3D9</color>\uD560
       \uC218 \uC788\uC2B5\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
@@ -851,7 +851,7 @@ MonoBehaviour:
   - m_Id: 5333532901397
     m_Localized: "\uB2E4\uC74C\uC740 <color=#73f3ff>ARGUS \uC804\uC220 \uC758\uC548\uACFC
       \uC758\uC218 \uC6B4\uB3D9 \uC81C\uC5B4\uACC4\uB97C \uD65C\uC6A9\uD55C \uD6C8\uB828</color>\uC785\uB2C8\uB2E4.
-      \uB354\uBBF8\uAC00 \uC3D8\uB294 \uD0C4\uD658\uC744 \uC694\uACA9\uD574\uBCF4\uC138\uC694."
+      \uB354\uBBF8\uAC00 \uC3D8\uB294 <color=#73f3ff>\uD0C4\uD658\uC744 \uC694\uACA9</color>\uD574\uBCF4\uC138\uC694."
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901398
@@ -922,7 +922,7 @@ MonoBehaviour:
       \uC2A4\uD0AC\uC744 \uC0AC\uC6A9</color>\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.\n\n\uC561\uD2F0\uBE0C
       \uC2A4\uD0AC\uC5D0\uB294 <color=#73f3ff>\uCFE8\uD0C0\uC784</color>\uC774 \uC788\uC73C\uBA70
       \uC77C\uC815 \uC2DC\uAC04\uC774 \uC9C0\uB098\uBA74 \uB2E4\uC2DC \uC2A4\uD0AC\uC744
-      \uC0AC\uC6A9\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.\n\n<<color=#73f3ff>>\uD0C4\uCC3D
+      \uC0AC\uC6A9\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.\n\n<color=#73f3ff>\uD0C4\uCC3D
       \uD14C\uB450\uB9AC\uC758 \uC2A4\uD0AC \uAC8C\uC774\uC9C0</color>\uB97C \uD1B5\uD574
       \uC2A4\uD0AC \uC0AC\uC6A9 \uAC00\uB2A5 \uC5EC\uBD80\uB97C \uD655\uC778\uD560
       \uC218 \uC788\uC2B5\uB2C8\uB2E4."
