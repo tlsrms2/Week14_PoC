@@ -347,7 +347,7 @@ MonoBehaviour:
   - category: player
     id: TimeSlowSkill
     clip: {fileID: 8300000, guid: 301a8bc14d08d7c4bbda26b073e3f291, type: 3}
-    volume: 1.1
+    volume: 1.7
     pitch: 1
   - category: player
     id: railgun1~4
