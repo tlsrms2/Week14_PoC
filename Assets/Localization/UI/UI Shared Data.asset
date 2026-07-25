@@ -51,10 +51,6 @@ MonoBehaviour:
     m_Key: ui.go
     m_Metadata:
       m_Items: []
-  - m_Id: 56983963140096
-    m_Key: ui.retryDetail
-    m_Metadata:
-      m_Items: []
   - m_Id: 57536428474368
     m_Key: ui.lobby
     m_Metadata:

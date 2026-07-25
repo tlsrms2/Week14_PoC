@@ -36,7 +36,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   cooldownSeconds: 20
-  price: 2
+  price: 3
   slowMultiplier: 0.1
   durationSeconds: 3
   sfxId: TimeSlowSkill
