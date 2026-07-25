@@ -185,6 +185,30 @@ MonoBehaviour:
     m_Key: ui.language
     m_Metadata:
       m_Items: []
+  - m_Id: 8731220751253504
+    m_Key: ui.newgame
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8731268608262144
+    m_Key: ui.continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8732561896734720
+    m_Key: ui.delete
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8736093915938816
+    m_Key: ui.yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8736125926866944
+    m_Key: ui.no
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8737385946120192
+    m_Key: ui.delete.text
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
