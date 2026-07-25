@@ -326,10 +326,10 @@ namespace Week14.UI
                     originalGraphicColors.Add(graphic, originalColor);
                 }
 
-                // 버튼에 항상 붙어있어야 하는 "Outline" 그래픽은 위치 기반 지연 노출 대상에서 제외한다.
+                // 버튼에 항상 붙어있어야 하는 "Outline"/"Fill" 그래픽은 위치 기반 지연 노출 대상에서 제외한다.
                 // 그렇지 않으면 챌린지 연출을 스킵했을 때, 버튼은 즉시 나타나는데 이 리빌 타임라인은
-                // 별도 코루틴으로 계속 진행 중이어서 버튼과 아웃라인의 등장 시점이 어긋날 수 있다.
-                float revealEnd = IsAlwaysVisibleOutline(graphic) ? 0f : GetGraphicRevealEnd(graphic);
+                // 별도 코루틴으로 계속 진행 중이어서 버튼과 아웃라인/Fill의 등장(알파 복원) 시점이 어긋날 수 있다.
+                float revealEnd = IsAlwaysVisibleGraphic(graphic) ? 0f : GetGraphicRevealEnd(graphic);
                 contentGraphics.Add(new GraphicState(graphic, originalColor, revealEnd));
             }
 
@@ -425,11 +425,20 @@ namespace Week14.UI
             return cellRoot != null && graphic.transform.IsChildOf(cellRoot);
         }
 
-        private const string AlwaysVisibleOutlineName = "Outline";
+        private static readonly string[] AlwaysVisibleGraphicNames = { "Outline", "Fill" };
 
-        private static bool IsAlwaysVisibleOutline(Graphic graphic)
+        private static bool IsAlwaysVisibleGraphic(Graphic graphic)
         {
-            return graphic.gameObject.name == AlwaysVisibleOutlineName;
+            string name = graphic.gameObject.name;
+            for (int i = 0; i < AlwaysVisibleGraphicNames.Length; i++)
+            {
+                if (name == AlwaysVisibleGraphicNames[i])
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void SetProgress(float progress)

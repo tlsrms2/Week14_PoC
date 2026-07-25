@@ -64,6 +64,10 @@ namespace Week14.Weapons
         [Tooltip("차징을 최대로 유지했을 때 배트 표시 스프라이트가 커지는 Local Scale입니다. " +
             "Display Scale보다 커야 커지는 효과가 보입니다. 차징 진행도(0~1)에 비례해 Display Scale에서 이 값까지 커집니다.")]
         [SerializeField] private Vector3 maxChargeScale = new(1.3f, 1.3f, 1.3f);
+        [Tooltip("차징이 100%에 도달했을 때 배트가 부들부들 떨리는 회전 진폭(도)입니다. 0이면 떨지 않습니다.")]
+        [SerializeField, Min(0f)] private float fullChargeShakeDegrees = 3f;
+        [Tooltip("최대 차징 떨림의 속도입니다. 클수록 더 빠르게 떱니다.")]
+        [SerializeField, Min(0f)] private float fullChargeShakeSpeed = 20f;
         [Tooltip("배트 표시 스프라이트의 Sorting Order입니다.")]
         [SerializeField] private int displaySortingOrder = 69;
         [Tooltip("차징이 50% 미만(대기 상태 포함)일 때 배트 표시 스프라이트 색상입니다.")]
@@ -82,6 +86,8 @@ namespace Week14.Weapons
         public float DisplaySpriteRotationOffsetDegrees => displaySpriteRotationOffsetDegrees;
         public Vector3 DisplayScale => displayScale;
         public Vector3 MaxChargeScale => maxChargeScale;
+        public float FullChargeShakeDegrees => fullChargeShakeDegrees;
+        public float FullChargeShakeSpeed => fullChargeShakeSpeed;
         public int DisplaySortingOrder => displaySortingOrder;
 
         // 차징 단계별 프리팹을 고르는 ResolveSwingVfxPrefab과 동일한 기준(50%/100%)으로 색상을 고릅니다.

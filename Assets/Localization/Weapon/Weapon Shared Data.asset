@@ -31,50 +31,6 @@ MonoBehaviour:
     m_Key: shotgun.Desc
     m_Metadata:
       m_Items: []
-  - m_Id: 860581101568
-    m_Key: 'sniper.Name '
-    m_Metadata:
-      m_Items: []
-  - m_Id: 913773264896
-    m_Key: 'sniper.Desc '
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5028800724992
-    m_Key: pistol.parryRange
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5101211189248
-    m_Key: pistol.maxBullets
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5168085172224
-    m_Key: pistol.Damage
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5361870405632
-    m_Key: 'shotgun.parryRange '
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5374021304320
-    m_Key: 'shotgun.maxBullets '
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5404807495680
-    m_Key: 'shotgun.Damage '
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5808177905664
-    m_Key: 'sniper.parryRange  '
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5835298275328
-    m_Key: sniper.maxBullets
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5851316322304
-    m_Key: sniper.Damage
-    m_Metadata:
-      m_Items: []
   - m_Id: 3331155001966592
     m_Key: Railgun.Name
     m_Metadata:
@@ -83,20 +39,12 @@ MonoBehaviour:
     m_Key: Railgun.Desc
     m_Metadata:
       m_Items: []
-  - m_Id: 3331357406494720
-    m_Key: Railgun.parryRange
+  - m_Id: 860581101568
+    m_Key: 'sniper.Name '
     m_Metadata:
       m_Items: []
-  - m_Id: 3331698302746624
-    m_Key: Bayonet.Name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 3331701683355648
-    m_Key: Bayonet.Desc
-    m_Metadata:
-      m_Items: []
-  - m_Id: 3331702840983552
-    m_Key: Bayonet.parryRange
+  - m_Id: 913773264896
+    m_Key: 'sniper.Desc '
     m_Metadata:
       m_Items: []
   - m_Id: 4219156515446784

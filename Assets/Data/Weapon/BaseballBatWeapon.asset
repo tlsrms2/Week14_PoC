@@ -35,7 +35,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  price: 4
+  price: 7
   inGameSprite: {fileID: 21300000, guid: 6187ad3bd064dba4d8077e6df39f9103, type: 3}
   projectilePrefab: {fileID: 0}
   leftArmController: {fileID: 0}
@@ -96,7 +96,7 @@ MonoBehaviour:
     rangeIndicatorColor: {r: 1, g: 0.55, b: 0.1, a: 0}
     previewRangeColor: {r: 1, g: 0.75, b: 0.2, a: 0}
     displayOffsetDistance: 0.8
-    displayWindUpDegrees: -100
+    displayWindUpDegrees: -120
     windUpSnapRatio: 0.7
     windUpSnapSeconds: 0.08
     swingHoldSeconds: 0.1
@@ -104,6 +104,8 @@ MonoBehaviour:
     displaySpriteRotationOffsetDegrees: -137
     displayScale: {x: 4, y: 4, z: 4}
     maxChargeScale: {x: 6, y: 6, z: 6}
+    fullChargeShakeDegrees: 3
+    fullChargeShakeSpeed: 20
     displaySortingOrder: 69
     displayColorDefault: {r: 1, g: 1, b: 1, a: 1}
     displayColorHalfCharge: {r: 1, g: 0.6327303, b: 0, a: 1}

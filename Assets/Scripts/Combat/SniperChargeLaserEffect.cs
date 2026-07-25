@@ -72,7 +72,8 @@ namespace Week14.Combat
 
             SetVisible(true);
 
-            Vector3 origin = player.LeftGunOrigin != null ? player.LeftGunOrigin.position : player.transform.position;
+            Transform fireOrigin = player.LeftFireOrigin;
+            Vector3 origin = fireOrigin != null ? fireOrigin.position : player.transform.position;
             origin.z = 0f;
 
             // 실제 발사 방향(PlayerAimController.GetAimPoint)과 동일한 기준을 써야 한다 — 락온 타겟이
