@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e62841563d930594b8893b6f903ecd5c
+guid: cd2e819d878c3ff4e9f387b3164bdcbb
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3123274338380731564
-    second: AssassinPanel_0
+      213: 3212591663127260399
+    second: Conductor Boss Panel_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: AssassinPanel_0
+      name: Conductor Boss Panel_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ca4d6438679185b20800000000000000
-      internalID: 3123274338380731564
+      spriteID: fece419b81b659c20800000000000000
+      internalID: 3212591663127260399
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      AssassinPanel_0: 3123274338380731564
+      Conductor Boss Panel_0: 3212591663127260399
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

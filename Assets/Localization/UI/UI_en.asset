@@ -189,6 +189,30 @@ MonoBehaviour:
     m_Localized: <sprite name="icon_language"> Language
     m_Metadata:
       m_Items: []
+  - m_Id: 8731220751253504
+    m_Localized: New Game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8731268608262144
+    m_Localized: Continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8732561896734720
+    m_Localized: Delete
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8736093915938816
+    m_Localized: Yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8736125926866944
+    m_Localized: No
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8737385946120192
+    m_Localized: Are you sure you want to delete this save data?
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

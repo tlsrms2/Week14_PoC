@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 35b2acb266d1a1048bbf850ebf7fe5d1
+guid: 7ad4ef6da3b8f5a45b81e94453f7cca4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4705439062768921474
-    second: Boss_Muscle_Lobby_0
+      213: -9019370739758930421
+    second: Hacker Boss Panel_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Boss_Muscle_Lobby_0
+      name: Hacker Boss Panel_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e7459675a1ce2beb0800000000000000
-      internalID: -4705439062768921474
+      spriteID: b06ed1f4912c4d280800000000000000
+      internalID: -9019370739758930421
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Boss_Muscle_Lobby_0: -4705439062768921474
+      Hacker Boss Panel_0: -9019370739758930421
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

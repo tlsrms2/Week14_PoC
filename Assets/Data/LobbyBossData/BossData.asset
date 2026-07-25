@@ -28,18 +28,18 @@ MonoBehaviour:
     m_LocalVariables: []
   localizedCrime:
     m_TableReference:
-      m_TableCollectionName: GUID:b1a0083a9ae987c4c95c94f0dce7f455
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 2201940492288
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   localizedDescription:
     m_TableReference:
-      m_TableCollectionName: GUID:b1a0083a9ae987c4c95c94f0dce7f455
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 2249952690176
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
