@@ -553,10 +553,7 @@ namespace Week14.Combat
             float reflectedSpeed,
             BaseballBatVfxSettings vfxSettings,
             float charge01,
-            string reflectionSuccessSfxId,
-            float reflectionSfxBasePitch,
-            float reflectionSfxPitchStep,
-            float reflectionSfxMaxPitch)
+            string reflectionSuccessSfxId)
         {
             if (range <= 0f)
             {
@@ -600,10 +597,7 @@ namespace Week14.Combat
                     range,
                     reflectedDamage,
                     reflectedSpeed,
-                    reflectionSuccessSfxId,
-                    reflectionSfxBasePitch,
-                    reflectionSfxPitchStep,
-                    reflectionSfxMaxPitch));
+                    reflectionSuccessSfxId));
         }
 
         private IEnumerator ResolveBaseballBatHitsDuringWindow(
@@ -613,10 +607,7 @@ namespace Week14.Combat
             float range,
             int reflectedDamage,
             float reflectedSpeed,
-            string reflectionSuccessSfxId,
-            float reflectionSfxBasePitch,
-            float reflectionSfxPitchStep,
-            float reflectionSfxMaxPitch)
+            string reflectionSuccessSfxId)
         {
             if (delaySeconds > 0f)
             {
@@ -626,10 +617,7 @@ namespace Week14.Combat
             context.Owner.NotifyPlayerAttackPerformed(reflectedDamage, range, reflectedSpeed);
 
             float activeEndsAt = Time.time + Mathf.Max(0.01f, activeSeconds);
-            float safeBasePitch = Mathf.Clamp(reflectionSfxBasePitch, 0.1f, 3f);
-            float safePitchStep = Mathf.Max(0f, reflectionSfxPitchStep);
-            float safeMaxPitch = Mathf.Clamp(reflectionSfxMaxPitch, safeBasePitch, 3f);
-            int reflectedProjectileCount = 0;
+            bool playedReflectionSfx = false;
             do
             {
                 int newlyReflectedCount = ResolveBaseballBatHit(
@@ -637,17 +625,12 @@ namespace Week14.Combat
                     range,
                     reflectedDamage,
                     reflectedSpeed);
-                for (int i = 0; i < newlyReflectedCount; i++)
+                if (newlyReflectedCount > 0
+                    && !playedReflectionSfx
+                    && !string.IsNullOrEmpty(reflectionSuccessSfxId))
                 {
-                    float pitch = Mathf.Min(
-                        safeMaxPitch,
-                        safeBasePitch + safePitchStep * reflectedProjectileCount);
-                    if (!string.IsNullOrEmpty(reflectionSuccessSfxId))
-                    {
-                        SoundManager.PlaySfx(reflectionSuccessSfxId, pitch);
-                    }
-
-                    reflectedProjectileCount++;
+                    SoundManager.PlaySfx(reflectionSuccessSfxId);
+                    playedReflectionSfx = true;
                 }
 
                 yield return null;
