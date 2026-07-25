@@ -83,10 +83,7 @@ public sealed class BaseballBatWeaponSOEditor : Editor
         EditorGUILayout.LabelField("효과음", EditorStyles.boldLabel);
         DrawProperties(
             "chargingSfxId",
-            "reflectionSuccessSfxId",
-            "reflectionSfxBasePitch",
-            "reflectionSfxPitchStep",
-            "reflectionSfxMaxPitch");
+            "reflectionSuccessSfxId");
     }
 
     private void DrawVfxTab()
