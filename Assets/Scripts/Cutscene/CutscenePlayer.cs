@@ -227,10 +227,13 @@ namespace Week14.Cutscene
             ApplyAudio(step);
 
             IReadOnlyList<CutsceneDialogue> dialogues = step.Dialogues;
-            if (dialogues.Count > 0)
+            if (dialogues.Count == 0)
             {
-                yield return WaitDialogueStartDelay();
+                yield return WaitNoDialogueHold(step.NoDialogueHoldSeconds);
+                yield break;
             }
+
+            yield return WaitDialogueStartDelay();
 
             for (int i = 0; i < dialogues.Count && !skipRequested && !skipSectionRequested; i++)
             {
@@ -241,6 +244,16 @@ namespace Week14.Cutscene
                 }
 
                 yield return PlayDialogue(dialogue);
+            }
+        }
+
+        private IEnumerator WaitNoDialogueHold(float seconds)
+        {
+            for (float elapsed = 0f;
+                 elapsed < seconds && !skipRequested && !skipSectionRequested;
+                 elapsed += Time.unscaledDeltaTime)
+            {
+                yield return null;
             }
         }
 
