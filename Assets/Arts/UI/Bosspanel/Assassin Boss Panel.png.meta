@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 97bfeec2fd29c144cb6baefd29866d15
+guid: 6f3562b22d76de34499807d0ff4c7ffc
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8935517823185562573
-    second: Boss_Hog_Lobby_0
+      213: 7169763562888549714
+    second: Assassin Boss Panel_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Boss_Hog_Lobby_0
+      name: Assassin Boss Panel_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 469
-        height: 149
+        width: 700
+        height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3345ad8d1e9aef380800000000000000
-      internalID: -8935517823185562573
+      spriteID: 255d28139fd108360800000000000000
+      internalID: 7169763562888549714
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Boss_Hog_Lobby_0: -8935517823185562573
+      Assassin Boss Panel_0: 7169763562888549714
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

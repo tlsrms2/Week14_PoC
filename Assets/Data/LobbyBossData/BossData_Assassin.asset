@@ -27,9 +27,9 @@ MonoBehaviour:
     m_LocalVariables: []
   localizedCrime:
     m_TableReference:
-      m_TableCollectionName: GUID:b1a0083a9ae987c4c95c94f0dce7f455
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 4200012361072640
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -54,7 +54,7 @@ MonoBehaviour:
     m_LocalVariables: []
   icon: {fileID: 260377163, guid: 0a81645402fd1154aa03d9c0142c35ae, type: 3}
   deathImage: {fileID: 21300000, guid: d515290cb6097eb4e8822b7877bcd8dd, type: 3}
-  panelIcon: {fileID: 21300000, guid: e62841563d930594b8893b6f903ecd5c, type: 3}
+  panelIcon: {fileID: 21300000, guid: 6f3562b22d76de34499807d0ff4c7ffc, type: 3}
   sceneName: Boss_Assassin
   bgmId: Boss4BGM
   bgmFadeSeconds: 3
