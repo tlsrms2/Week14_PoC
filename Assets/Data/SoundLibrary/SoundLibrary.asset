@@ -45,8 +45,8 @@ MonoBehaviour:
     pitch: 1
   - category: 
     id: Boss5BGM
-    clip: {fileID: 8300000, guid: 3352307de28ce974282942f05310a98c, type: 3}
-    volume: 1.35
+    clip: {fileID: 8300000, guid: 9f85842260f809147bf2610ea765a833, type: 3}
+    volume: 0.4
     pitch: 1
   - category: 
     id: CutSceneBGM

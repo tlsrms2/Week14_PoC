@@ -827,6 +827,16 @@ MonoBehaviour:
   topLetterboxPanel: {fileID: 0}
   bottomLetterboxPanel: {fileID: 0}
   bossCombatUiRect: {fileID: 0}
+  skipHintText: {fileID: 0}
+  localizedSkipHintText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   boss: {fileID: 0}
   player: {fileID: 0}
   cameraFollow: {fileID: 0}
@@ -2378,6 +2388,14 @@ PrefabInstance:
       propertyPath: image
       value: 
       objectReference: {fileID: 34756400}
+    - target: {fileID: 2303374336768699719, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
+      propertyPath: colorOnlyRenderers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2303374336768699719, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
+      propertyPath: 'colorOnlyRenderers.Array.data[1]'
+      value: 
+      objectReference: {fileID: 741641527}
     - target: {fileID: 2328319091128216988, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
       propertyPath: playerHpView
       value: 
@@ -2431,6 +2449,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
+--- !u!212 &741641527 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 5103855550194505473, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
+  m_PrefabInstance: {fileID: 741641526}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &910100000
 GameObject:
   m_ObjectHideFlags: 0
