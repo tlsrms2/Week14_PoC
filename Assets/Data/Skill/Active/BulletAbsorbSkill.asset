@@ -36,7 +36,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   cooldownSeconds: 20
-  price: 2
+  price: 3
   durationSeconds: 2
   absorbRadius: 5
   ammoPerAbsorbedProjectile: 1

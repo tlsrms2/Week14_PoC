@@ -54,10 +54,6 @@ MonoBehaviour:
     m_Localized: VISIT
     m_Metadata:
       m_Items: []
-  - m_Id: 56983963140096
-    m_Localized: Click RETRY Button To Try Again
-    m_Metadata:
-      m_Items: []
   - m_Id: 57536428474368
     m_Localized: LOBBY
     m_Metadata:

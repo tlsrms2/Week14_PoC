@@ -23,32 +23,12 @@ MonoBehaviour:
     m_Key: dealer.name
     m_Metadata:
       m_Items: []
-  - m_Id: 2201940492288
-    m_Key: dealer.crime
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2249952690176
-    m_Key: dealer.description
-    m_Metadata:
-      m_Items: []
   - m_Id: 3144186691584
     m_Key: conductor.name
     m_Metadata:
       m_Items: []
-  - m_Id: 3213078134784
-    m_Key: conductor.crime
-    m_Metadata:
-      m_Items: []
-  - m_Id: 3242782195712
-    m_Key: conductor.description
-    m_Metadata:
-      m_Items: []
   - m_Id: 1036685002768384
     m_Key: muscle.name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1036872689483776
-    m_Key: muscle.crime
     m_Metadata:
       m_Items: []
   - m_Id: 1036882034393088
@@ -59,20 +39,12 @@ MonoBehaviour:
     m_Key: assassin.name
     m_Metadata:
       m_Items: []
-  - m_Id: 4200012361072640
-    m_Key: assassin.crime
-    m_Metadata:
-      m_Items: []
   - m_Id: 4200013929742336
     m_Key: assassin.description
     m_Metadata:
       m_Items: []
   - m_Id: 4212237473775616
     m_Key: hacker.name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 4212276363362304
-    m_Key: hacker.crime
     m_Metadata:
       m_Items: []
   - m_Id: 4212323251486720

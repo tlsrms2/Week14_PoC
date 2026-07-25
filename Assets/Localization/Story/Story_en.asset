@@ -31,7 +31,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 43636948828163
-    m_Localized: Enemy Bullets Hit {0}/{1}
+    m_Localized: Enemy Projectiles Hit {0}/{1}
     m_Metadata:
       m_Items: []
   - m_Id: 43636948828164
@@ -55,7 +55,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333520318465
-    m_Localized: <color=#73f3ff>Codename Lee On</color>, Class K26, No mission in progress.
+    m_Localized: <color=#73f3ff>Codename Lee On</color>, Class K26, No mission in
+      progress.
     m_Metadata:
       m_Items: []
   - m_Id: 5333520318466
@@ -63,8 +64,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512768
-    m_Localized: <color=#FF4C5C>Amputation of the right upper limb, extensive burns extending from
-      the face to the shoulder, and nervous system damage</color> have been detected.
+    m_Localized: <color=#FF4C5C>Amputation of the right upper limb, extensive burns
+      extending from the face to the shoulder, and nervous system damage</color>
+      have been detected.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512769
@@ -80,7 +82,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512772
-    m_Localized: ...R-2 Block, <color=#ddbd78>Cafe Vesper</color>. All video records around 17:33 today.
+    m_Localized: ...R-2 Block, <color=#ddbd78>Cafe Vesper</color>. All video records
+      around 17:33 today.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512773
@@ -89,14 +92,16 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512774
-    m_Localized: Per your request, the visual calibration function of the <color=#73f3ff>ARGUS tactical
-      prosthetic eye</color> has been linked with the prosthetic arm's motion control system.
+    m_Localized: Per your request, the visual calibration function of the <color=#73f3ff>ARGUS
+      tactical prosthetic eye</color> has been linked with the prosthetic arm's motion
+      control system.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512775
-    m_Localized: Additionally, the <color=#73f3ff>AEGIS core interface</color> has been implanted into the
-      nervous system. Upon completing <color=#73f3ff>adaptation training</color>, reaction speed and control
-      precision are expected to improve beyond pre-loss levels.
+    m_Localized: Additionally, the <color=#73f3ff>AEGIS core interface</color> has
+      been implanted into the nervous system. Upon completing <color=#73f3ff>adaptation
+      training</color>, reaction speed and control precision are expected to improve
+      beyond pre-loss levels.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512776
@@ -118,11 +123,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512780
-    m_Localized: '<color=#A8B2BC>[ R-2 Block Cafe Vesper. July 21st, 17:29:20 ]</color>'
+    m_Localized: <color=#A8B2BC>[ R-2 Block Cafe Vesper. July 21st, 17:29:20 ]</color>
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512781
-    m_Localized: '<color=#A8B2BC>[ Playing back the reconstructed recording media. ]</color>'
+    m_Localized: <color=#A8B2BC>[ Playing back the reconstructed recording media.
+      ]</color>
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512782
@@ -135,8 +141,8 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5333524512784
     m_Localized: A patient I operated on this time gave it to me as a premium tea
-      set <color=#ddbd78>to show gratitude</color>, so I brought it along since it's been a while since
-      I've seen <color=#73f3ff>my daughter</color>.
+      set <color=#ddbd78>to show gratitude</color>, so I brought it along since it's
+      been a while since I've seen <color=#73f3ff>my daughter</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512785
@@ -154,12 +160,14 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512788
-    m_Localized: ...Ahem. Still, wouldn't it be fine if it's <color=#FF4C5C>someone who does terrible
-      things who dies</color>? Just like a surgery cutting away a bad tumor.
+    m_Localized: ...Ahem. Still, wouldn't it be fine if it's <color=#FF4C5C>someone
+      who does terrible things who dies</color>? Just like a surgery cutting away
+      a bad tumor.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512789
-    m_Localized: There is nothing you won't say in front of a doctor, <color=#73f3ff>my dear daughter</color>.
+    m_Localized: There is nothing you won't say in front of a doctor, <color=#73f3ff>my
+      dear daughter</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512790
@@ -167,12 +175,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512791
-    m_Localized: However. When it comes to <color=#ddbd78>saving a person</color>, what's important is-
+    m_Localized: However. When it comes to <color=#ddbd78>saving a person</color>,
+      what's important is-
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512792
-    m_Localized: '<color=#A8B2BC>[ The recording between 17:32:26 and 17:32:41 has been corrupted.
-      ]</color>'
+    m_Localized: <color=#A8B2BC>[ The recording between 17:32:26 and 17:32:41 has
+      been corrupted. ]</color>
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512793
@@ -184,17 +193,18 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512795
-    m_Localized: <color=#73f3ff>You're a smart girl</color>, so I believe you'll understand someday.
+    m_Localized: <color=#73f3ff>You're a smart girl</color>, so I believe you'll
+      understand someday.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512796
-    m_Localized: Ah, I should try the <color=#ddbd78>tea I received as a gift</color>. I'm sure <color=#73f3ff>you</color> liked
-      green tea-
+    m_Localized: Ah, I should try the <color=#ddbd78>tea I received as a gift</color>.
+      I'm sure <color=#73f3ff>you</color> liked green tea-
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512797
-    m_Localized: '<color=#A8B2BC>[ From 17:33:44 onwards, the recording media were destroyed by
-      the explosion, and no data exists. ]</color>'
+    m_Localized: <color=#A8B2BC>[ From 17:33:44 onwards, the recording media were
+      destroyed by the explosion, and no data exists. ]</color>
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512798
@@ -224,8 +234,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512804
-    m_Localized: <color=#73f3ff>Codename Lee On</color>, after investigating Jin's data, I have finished
-      analyzing the individuals who appear to be connected to the incident.
+    m_Localized: <color=#73f3ff>Codename Lee On</color>, after investigating Jin's
+      data, I have finished analyzing the individuals who appear to be connected
+      to the incident.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512805
@@ -241,7 +252,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512808
-    m_Localized: However. When it comes to <color=#ddbd78>saving a person</color>, what's important is,
+    m_Localized: However. When it comes to <color=#ddbd78>saving a person</color>,
+      what's important is,
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512809
@@ -254,7 +266,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512811
-    m_Localized: <color=#73f3ff>You're a smart girl</color>, so I believe you'll understand someday.
+    m_Localized: <color=#73f3ff>You're a smart girl</color>, so I believe you'll
+      understand someday.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512812
@@ -282,8 +295,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512818
-    m_Localized: That <color=#FF4C5C>cutting away the bad</color> isn't the end, but <color=#ddbd78>caring for the remaining
-      wounds is also necessary</color>.
+    m_Localized: That <color=#FF4C5C>cutting away the bad</color> isn't the end,
+      but <color=#ddbd78>caring for the remaining wounds is also necessary</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512819
@@ -310,19 +323,20 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512824
-    m_Localized: The location is a <color=#ddbd78>black market</color> situated in a closed subway near
-      <color=#ddbd78>M-8 Block</color>. The seller is <color=#ddbd78>Salvo</color> <color=#ddbd78>the Arms Dealer</color>.
+    m_Localized: The location is a <color=#ddbd78>black market</color> situated in
+      a closed subway near <color=#ddbd78>M-8 Block</color>. The seller is <color=#ddbd78>Salvo</color>
+      <color=#ddbd78>the Arms Dealer</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512825
-    m_Localized: The eccentric guy rumored to <color=#ddbd78>ride around on those guns</color>? What about
-      the buyer?
+    m_Localized: The eccentric guy rumored to <color=#ddbd78>ride around on those
+      guns</color>? What about the buyer?
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512826
     m_Localized: They used a pseudonym, making tracking difficult. As you know, due
-      to the nature of <color=#ddbd78>unofficial missions</color>, there are heavy constraints on tracking
-      targets whose identities are not clearly revealed.
+      to the nature of <color=#ddbd78>unofficial missions</color>, there are heavy
+      constraints on tracking targets whose identities are not clearly revealed.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512827
@@ -351,7 +365,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512832
-    m_Localized: ...And I also happen to need someone to <color=#FF4C5C>take my anger out on</color>.
+    m_Localized: ...And I also happen to need someone to <color=#FF4C5C>take my anger
+      out on</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512833
@@ -364,9 +379,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512835
-    m_Localized: The individual is a <color=#ddbd78>bulky mercenary</color> named <color=#ddbd78>Ram</color>,
-      and because they are equipped with <color=#ddbd78>high-output physical enhancement gear</color>, they
-      were not difficult to identify.
+    m_Localized: The individual is a <color=#ddbd78>bulky mercenary</color> named
+      <color=#ddbd78>Ram</color>, and because they are equipped with <color=#ddbd78>high-output
+      physical enhancement gear</color>, they were not difficult to identify.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512836
@@ -380,11 +395,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512838
-    m_Localized: Please wait. I will <color=#73f3ff>register the relevant data on the panel</color>.
+    m_Localized: Please wait. I will <color=#73f3ff>register the relevant data on
+      the panel</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512839
-    m_Localized: Verifying identity. <color=#73f3ff>Codename Lee On</color>. Welcome back.
+    m_Localized: Verifying identity. <color=#73f3ff>Codename Lee On</color>. Welcome
+      back.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512840
@@ -393,12 +410,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512841
-    m_Localized: The purpose of the bomb's delivery. I want to know <color=#ddbd78>why my dad had
-      to die</color>.
+    m_Localized: The purpose of the bomb's delivery. I want to know <color=#ddbd78>why
+      my dad had to die</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512842
-    m_Localized: The reason is simple. The <color=#FF4C5C>explosion at Vesper was an accident</color>.
+    m_Localized: The reason is simple. The <color=#FF4C5C>explosion at Vesper was
+      an accident</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512843
@@ -419,8 +437,8 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5333524512846
     m_Localized: Circumstantially, the explosive being delivered to your father was
-      an unplanned variable; originally, it appears they <color=#FF4C5C>intended to detonate it
-      at the target's residence and disguise it as a gas accident</color>.
+      an unplanned variable; originally, it appears they <color=#FF4C5C>intended
+      to detonate it at the target's residence and disguise it as a gas accident</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512847
@@ -428,14 +446,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512848
-    m_Localized: The day after the Vesper incident, he was <color=#FF4C5C>found dead at home, apparently
-      by suicide</color>. The distorted figure captured in nearby surveillance footage suggests
-      that <color=#ddbd78>Mirage</color> <color=#FF4C5C>visited</color> him.
+    m_Localized: The day after the Vesper incident, he was <color=#FF4C5C>found dead
+      at home, apparently by suicide</color>. The distorted figure captured in nearby
+      surveillance footage suggests that <color=#ddbd78>Mirage</color> <color=#FF4C5C>visited</color>
+      him.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512849
-    m_Localized: <color=#ddbd78>Mirage</color>.. is it the <color=#ddbd78>one who disappears in
-      front of you and suddenly appears and stabs you in the back</color>?
+    m_Localized: <color=#ddbd78>Mirage</color>.. is it the <color=#ddbd78>one who
+      disappears in front of you and suddenly appears and stabs you in the back</color>?
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512850
@@ -445,8 +464,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512851
-    m_Localized: No need for that. If I loiter around <color=#ddbd78>that accountant</color>'s house, he'll
-      come to <color=#FF4C5C>visit</color> me on his own.
+    m_Localized: No need for that. If I loiter around <color=#ddbd78>that accountant</color>'s
+      house, he'll come to <color=#FF4C5C>visit</color> me on his own.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512852
@@ -462,7 +481,8 @@ MonoBehaviour:
   - m_Id: 5333524512854
     m_Localized: Correct. The person who led the operation is <color=#ddbd78>Canon</color>,
       and the person who made the final decision is someone named <color=#ddbd78>Jin</color>,
-      who is presumed to be part of the <color=#ddbd78>Syndicate</color>'s executive leadership.
+      who is presumed to be part of the <color=#ddbd78>Syndicate</color>'s executive
+      leadership.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512855
@@ -481,9 +501,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512858
-    m_Localized: However, since <color=#FF4C5C>we also</color> maintain a collaborative relationship with
-      the <color=#ddbd78>Syndicate</color>, it will be difficult to grant you accommodations if you <color=#FF4C5C>visit</color>
-      the related individual without going through proper procedures.
+    m_Localized: However, since <color=#FF4C5C>we also</color> maintain a collaborative
+      relationship with the <color=#ddbd78>Syndicate</color>, it will be difficult
+      to grant you accommodations if you <color=#FF4C5C>visit</color> the related
+      individual without going through proper procedures.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512859
@@ -500,12 +521,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512862
-    m_Localized: Confirmed. Before you depart, please check as we have <color=#73f3ff>expanded the
-      available modules</color>.
+    m_Localized: Confirmed. Before you depart, please check as we have <color=#73f3ff>expanded
+      the available modules</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512863
-    m_Localized: Verifying identity. <color=#73f3ff>Codename Lee On</color>. Welcome back.
+    m_Localized: Verifying identity. <color=#73f3ff>Codename Lee On</color>. Welcome
+      back.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512864
@@ -530,21 +552,25 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5333524512868
     m_Localized: Not long ago, a new mission was registered under the name of the
-      client, <color=#ddbd78>Jin</color>. <color=#FF4C5C>Visitor</color> codename <color=#ddbd78>ECHO</color>.
+      client, <color=#ddbd78>Jin</color>. <color=#FF4C5C>Visitor</color> codename
+      <color=#ddbd78>ECHO</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512869
-    m_Localized: <color=#FF4C5C>The target of the visit</color>. <color=#73f3ff>Codename Lee On</color>, it is you.
+    m_Localized: <color=#FF4C5C>The target of the visit</color>. <color=#73f3ff>Codename
+      Lee On</color>, it is you.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512870
-    m_Localized: <color=#ddbd78>That bastard</color> must have caught wind of it. <color=#ddbd78>Echo</color>..
-      of all people, he brought the most troublesome opponent.
+    m_Localized: <color=#ddbd78>That bastard</color> must have caught wind of it.
+      <color=#ddbd78>Echo</color>.. of all people, he brought the most troublesome
+      opponent.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512871
-    m_Localized: By the way, <color=#73f3ff>ERIS</color>. If it has been designated as an official mission,
-      you have no reason to take my side anymore, so why are you informing me?
+    m_Localized: By the way, <color=#73f3ff>ERIS</color>. If it has been designated
+      as an official mission, you have no reason to take my side anymore, so why
+      are you informing me?
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512872
@@ -560,8 +586,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512875
-    m_Localized: However, <color=#ddbd78>those who move according to profit</color> are bound to have their
-      judgment clouded and eventually become corrupt.
+    m_Localized: However, <color=#ddbd78>those who move according to profit</color>
+      are bound to have their judgment clouded and eventually become corrupt.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512876
@@ -571,8 +597,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512877
-    m_Localized: Therefore, it is judged that helping you, <color=#73f3ff>Lee On</color>, to continue your
-      <color=#FF4C5C>visits</color> is beneficial to society as a whole.
+    m_Localized: Therefore, it is judged that helping you, <color=#73f3ff>Lee On</color>,
+      to continue your <color=#FF4C5C>visits</color> is beneficial to society as
+      a whole.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512878
@@ -580,9 +607,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512879
-    m_Localized: I have <color=#73f3ff>registered <color=#ddbd78>Jin</color>'s location on the panel</color>.
-      It is recommended that you <color=#FF4C5C>visit</color> him first before codename <color=#ddbd78>Echo</color>
-      arrives.
+    m_Localized: I have <color=#73f3ff>registered <color=#ddbd78>Jin</color>'s location
+      on the panel</color>. It is recommended that you <color=#FF4C5C>visit</color>
+      him first before codename <color=#ddbd78>Echo</color> arrives.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512880
@@ -591,12 +618,14 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512881
-    m_Localized: Through the <color=#73f3ff>tactical panel</color>, you can <color=#73f3ff>check the target's information</color>
-      and <color=#73f3ff>move to the corresponding location</color>
+    m_Localized: Through the <color=#73f3ff>tactical panel</color>, you can <color=#73f3ff>check
+      the target's information</color> and <color=#73f3ff>move to the corresponding
+      location</color>
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512882
-    m_Localized: When you <color=#73f3ff>access the panel</color>, the following interface will be displayed.
+    m_Localized: When you <color=#73f3ff>access the panel</color>, the following
+      interface will be displayed.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512883
@@ -606,47 +635,53 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5333524512884
     m_Localized: Even if it is a target you have already completed a <color=#FF4C5C>visit</color>
-      to, it is possible to <color=#73f3ff>record that individual's data and engage in battle repeatedly</color>.
+      to, it is possible to <color=#73f3ff>record that individual's data and engage
+      in battle repeatedly</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512885
-    m_Localized: If you <color=#73f3ff>achieve additional conditions</color>, you can <color=#73f3ff>secure more battle
-      data</color> in addition to the incident data to be analyzed.
+    m_Localized: If you <color=#73f3ff>achieve additional conditions</color>, you
+      can <color=#73f3ff>secure more battle data</color> in addition to the incident
+      data to be analyzed.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512886
-    m_Localized: Since the <color=#73f3ff>collected data chips</color> are subsequently used for <color=#73f3ff>module
-      expansion</color> to <color=#73f3ff>improve equipment performance</color>, it is recommended to prioritize
-      <color=#73f3ff>securing data chips</color> if the battle is challenging.
+    m_Localized: Since the <color=#73f3ff>collected data chips</color> are subsequently
+      used for <color=#73f3ff>module expansion</color> to <color=#73f3ff>improve
+      equipment performance</color>, it is recommended to prioritize <color=#73f3ff>securing
+      data chips</color> if the battle is challenging.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512887
-    m_Localized: Now that you have secured a certain amount of <color=#73f3ff>battle data chips</color>,
-      I will explain the <color=#73f3ff>module expansion function</color>.
+    m_Localized: Now that you have secured a certain amount of <color=#73f3ff>battle
+      data chips</color>, I will explain the <color=#73f3ff>module expansion function</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512888
-    m_Localized: By <color=#73f3ff>accessing the corresponding module panel</color>, you can <color=#73f3ff>improve the
-      performance of your implanted equipment</color>.
+    m_Localized: By <color=#73f3ff>accessing the corresponding module panel</color>,
+      you can <color=#73f3ff>improve the performance of your implanted equipment</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512889
-    m_Localized: When you <color=#73f3ff>access the panel</color>, the following interface will be displayed.
+    m_Localized: When you <color=#73f3ff>access the panel</color>, the following
+      interface will be displayed.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512890
-    m_Localized: You can <color=#73f3ff>consume the battle data chips you possess</color> to <color=#73f3ff>expand and
-      equip the modules you want</color>.
+    m_Localized: You can <color=#73f3ff>consume the battle data chips you possess</color>
+      to <color=#73f3ff>expand and equip the modules you want</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512891
-    m_Localized: <color=#73f3ff>Expanded modules can be changed freely</color>, but please note that <color=#FF4C5C>modules
-      of the same type cannot be equipped duplicate</color>.
+    m_Localized: <color=#73f3ff>Expanded modules can be changed freely</color>, but
+      please note that <color=#FF4C5C>modules of the same type cannot be equipped
+      duplicate</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333528707072
-    m_Localized: You can also <color=#73f3ff>refund selected modules back into data chips</color>, so if
-      a <color=#73f3ff>battle is challenging, it is recommended to utilize various module combinations</color>.
+    m_Localized: You can also <color=#73f3ff>refund selected modules back into data
+      chips</color>, so if a <color=#73f3ff>battle is challenging, it is recommended
+      to utilize various module combinations</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901376
@@ -672,8 +707,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901381
-    m_Localized: Next, we will measure the impact of momentary shock. <color=#73f3ff>Please fire
-      the gun held in your left hand.</color>
+    m_Localized: Next, we will measure the impact of momentary shock. <color=#73f3ff>Please
+      fire the gun held in your left hand.</color>
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901382
@@ -681,8 +716,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901383
-    m_Localized: <sprite name="icon_leftclick"> to <color=#73f3ff>fire a bullet-type energy core
-      in the direction of the cursor.</color>
+    m_Localized: <sprite name="icon_leftclick"> to <color=#73f3ff>fire a bullet-type
+      energy core in the direction of the cursor.</color>
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901384
@@ -699,18 +734,18 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901387
-    m_Localized: First, let's test a <color=#73f3ff>module that automatically calibrates its aim
-      to adversarial objects</color>. <color=#73f3ff>Shoot anywhere.</color>
+    m_Localized: First, let's test a <color=#73f3ff>module that automatically calibrates
+      its aim to adversarial objects</color>. <color=#73f3ff>Shoot anywhere.</color>
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901388
-    m_Localized: Aim calibration module normal. <color=#73f3ff>This module can be removed later
-      if it becomes unnecessary.</color>
+    m_Localized: Aim calibration module normal. <color=#73f3ff>This module can be
+      removed later if it becomes unnecessary.</color>
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901389
-    m_Localized: Next, we will verify the <color=#73f3ff>AEGIS interface's operation</color> using the dummy's
-      suppressive fire.
+    m_Localized: Next, we will verify the <color=#73f3ff>AEGIS interface's operation</color>
+      using the dummy's suppressive fire.
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901390
@@ -718,9 +753,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901391
-    m_Localized: <color=#73f3ff>The AEGIS system is an important function that consumes the core
-      at the time of attack to momentarily block fatal damage</color>, and we will check
-      it in advance for safety.
+    m_Localized: <color=#73f3ff>The AEGIS system is an important function that consumes
+      the core at the time of attack to momentarily block fatal damage</color>, and
+      we will check it in advance for safety.
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901392
@@ -728,12 +763,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901393
-    m_Localized: 'When hit by an enemy attack, <color=#73f3ff>a bullet-type energy core is consumed
-      first to absorb the damage.</color>
+    m_Localized: 'When hit by an enemy attack, <color=#73f3ff>a bullet-type energy
+      core is consumed first to absorb the damage.</color>
 
 
-      <color=#FF4C5C>If you take damage while possessing zero
-      cores, it will result in death.</color>'
+      <color=#FF4C5C>If
+      you take damage while possessing zero cores, it will result in death.</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901394
@@ -747,14 +782,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5333532901396
     m_Localized: Additionally, please be extremely cautious, as the AEGIS system
-      will not function if <color=#FF4C5C>there are no bullet-type energy cores available to block
-      the attack</color>, which may result in <color=#FF4C5C>fatal injury</color>.
+      will not function if <color=#FF4C5C>there are no bullet-type energy cores available
+      to block the attack</color>, which may result in <color=#FF4C5C>fatal injury</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901397
-    m_Localized: Next is <color=#73f3ff>training utilizing the ARGUS tactical prosthetic eye and
-      the prosthetic arm's motion control system</color>. Try to intercept the <color=#73f3ff>bullets fired
-      by the dummy</color>.
+    m_Localized: Next is <color=#73f3ff>training utilizing the ARGUS tactical prosthetic
+      eye and the prosthetic arm's motion control system</color>. Try to intercept
+      the <color=#73f3ff>bullets fired by the dummy</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901398
@@ -762,28 +797,29 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901399
-    m_Localized: '<sprite name="icon_rightclick"> to <color=#73f3ff>capture enemy projectiles with
-      the ARGUS eye, allowing your prosthetic arm to automatically intercept them.</color>
+    m_Localized: '<sprite name="icon_rightclick"> to <color=#73f3ff>capture enemy
+      projectiles with the ARGUS eye, allowing your prosthetic arm to automatically
+      intercept them.</color>
 
 
-      <color=#73f3ff>A
-      successful intercept neutralizes the attack and automatically absorbs its energy
-      into the core.</color>
+      <color=#73f3ff>A successful intercept neutralizes
+      the attack and automatically absorbs its energy into the core.</color>
 
 
-      <color=#FF4C5C>Failing multiple intercepts in a short time</color> strains
-      the ARGUS eye, <color=#FF4C5C>gradually reducing its capture range.</color>'
+      <color=#FF4C5C>Failing
+      multiple intercepts in a short time</color> strains the ARGUS eye, <color=#FF4C5C>gradually
+      reducing its capture range.</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901400
-    m_Localized: <color=#73f3ff>Intercepting is the only way to replenish bullet-type energy cores
-      during combat.</color> Please note that some projectiles cannot be intercepted depending
-      on their type.
+    m_Localized: <color=#73f3ff>Intercepting is the only way to replenish bullet-type
+      energy cores during combat.</color> Please note that some projectiles cannot
+      be intercepted depending on their type.
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901401
-    m_Localized: Next is the explanation regarding <color=#73f3ff>Overload</color>. Energy cores continuously
-      release energy to maintain the AEGIS system.
+    m_Localized: Next is the explanation regarding <color=#73f3ff>Overload</color>.
+      Energy cores continuously release energy to maintain the AEGIS system.
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901403
@@ -791,17 +827,18 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901404
-    m_Localized: 'Bullet-type energy cores will <color=#73f3ff>overload and be automatically discharged
-      if held for too long.</color>
+    m_Localized: 'Bullet-type energy cores will <color=#73f3ff>overload and be automatically
+      discharged if held for too long.</color>
 
 
-      The ammo icon in the magazine indicates the time
-      remaining until overload.'
+      The ammo icon in the magazine
+      indicates the time remaining until overload.'
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901405
-    m_Localized: Next is <color=#73f3ff>Active Skill</color>. You can recycle a portion of the energy released
-      by the core to use it as a <color=#73f3ff>momentary enhancement of physical capability</color>.
+    m_Localized: Next is <color=#73f3ff>Active Skill</color>. You can recycle a portion
+      of the energy released by the core to use it as a <color=#73f3ff>momentary
+      enhancement of physical capability</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901406
@@ -809,19 +846,21 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901407
-    m_Localized: 'Press the <sprite name="icon_space"> to <color=#73f3ff>use a active skill.</color>
+    m_Localized: 'Press the <sprite name="icon_space"> to <color=#73f3ff>use a active
+      skill.</color>
 
 
-      <color=#73f3ff>Active
-      Skills have a cooldown</color> and can be used again after a certain time.
+      <color=#73f3ff>Active Skills have a cooldown</color>
+      and can be used again after a certain time.
 
 
-      The
-      <color=#73f3ff>skill gauge around the magazine</color> indicates when the skill is ready to use.'
+      The <color=#73f3ff>skill
+      gauge around the magazine</color> indicates when the skill is ready to use.'
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901408
-    m_Localized: Try to dodge the enemy attack using the <color=#73f3ff>Tactical Dodge skill</color>.
+    m_Localized: Try to dodge the enemy attack using the <color=#73f3ff>Tactical
+      Dodge skill</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901409
@@ -830,8 +869,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901410
-    m_Localized: Utilize <color=#73f3ff>attack, interception, and active skill</color> appropriately to
-      <color=#73f3ff>destroy the dummy.</color>
+    m_Localized: Utilize <color=#73f3ff>attack, interception, and active skill</color>
+      appropriately to <color=#73f3ff>destroy the dummy.</color>
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901411
@@ -840,8 +879,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901412
-    m_Localized: The data analysis related to <color=#ddbd78>Cafe Vesper</color> is 98% complete. Please
-      return to the lobby.
+    m_Localized: The data analysis related to <color=#ddbd78>Cafe Vesper</color>
+      is 98% complete. Please return to the lobby.
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901413
@@ -854,7 +893,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901415
-    m_Localized: <color=#FF4C5C>All bullet-type energy cores have been depleted</color>; resupplying now.
+    m_Localized: <color=#FF4C5C>All bullet-type energy cores have been depleted</color>;
+      resupplying now.
     m_Metadata:
       m_Items: []
   - m_Id: 43636894302208
@@ -863,13 +903,14 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901402
-    m_Localized: If the same core is <color=#FF4C5C>not consumed for a long time, it will overload</color>
-      and be <color=#FF4C5C>automatically discharged</color>, as it can inflict thermal damage to the user.
+    m_Localized: If the same core is <color=#FF4C5C>not consumed for a long time,
+      it will overload</color> and be <color=#FF4C5C>automatically discharged</color>,
+      as it can inflict thermal damage to the user.
     m_Metadata:
       m_Items: []
   - m_Id: 739306561925120
-    m_Localized: In addition, the <color=#73f3ff>bullet-type energy core displayed on the magazine
-      is consumed</color> when shooting.
+    m_Localized: In addition, the <color=#73f3ff>bullet-type energy core displayed
+      on the magazine is consumed</color> when shooting.
     m_Metadata:
       m_Items: []
   - m_Id: 1108486769008640
@@ -877,8 +918,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1345961062363136
-    m_Localized: That's a reasonable guess, then I recommend you <color=#73f3ff>check the module</color>
-      for the last time before combat.
+    m_Localized: That's a reasonable guess, then I recommend you <color=#73f3ff>check
+      the module</color> for the last time before combat.
     m_Metadata:
       m_Items: []
   - m_Id: 1424586970947584
@@ -895,13 +936,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1826406452789249
-    m_Localized: When an enemy prepares <color=#FF4C5C>certain powerful attacks</color>, the <color=#73f3ff>ARGUS tactical
-      prosthetic eye may detect a vulnerable energy core</color>.
+    m_Localized: When an enemy prepares <color=#FF4C5C>certain powerful attacks</color>,
+      the <color=#73f3ff>ARGUS tactical prosthetic eye may detect a vulnerable energy
+      core</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 1826406452789250
-    m_Localized: <color=#73f3ff>Intercepting that core</color> will not only <color=#73f3ff>stun the enemy but also generate
-      extra energy</color>, so utilizing this can lead the battle to your advantage.
+    m_Localized: <color=#73f3ff>Intercepting that core</color> will not only <color=#73f3ff>stun
+      the enemy but also generate extra energy</color>, so utilizing this can lead
+      the battle to your advantage.
     m_Metadata:
       m_Items: []
   - m_Id: 1826406452789251
@@ -909,12 +952,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1826406452789252
-    m_Localized: 'When an enemy prepares <color=#FF4C5C>certain powerful attacks</color>, the <color=#73f3ff>ARGUS tactical
-      prosthetic eye detects a vulnerable blue energy core.</color>
+    m_Localized: 'When an enemy prepares <color=#FF4C5C>certain powerful attacks</color>,
+      the <color=#73f3ff>ARGUS tactical prosthetic eye detects a vulnerable blue
+      energy core.</color>
 
 
-      <color=#73f3ff>Intercepting that core stuns the enemy and generates extra
-      energy nearby.</color>'
+      <color=#73f3ff>Intercepting that core stuns the
+      enemy and generates extra energy nearby.</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 2147990514270208
