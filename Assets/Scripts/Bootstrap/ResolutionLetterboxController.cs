@@ -10,6 +10,11 @@ namespace Week14.Bootstrap
     // OS/드라이버가 borderless를 어떻게 늘리든 상관없이 Unity가 그리는 프레임 자체에서 비율을 보정하므로 항상 동작한다.
     public sealed class ResolutionLetterboxController : MonoBehaviour
     {
+        // SettingsManager.ResolutionWidth/Height가 아직 저장되지 않은 상태(설정을 한 번도 안 바꾼 최초 실행 등)에서
+        // 화면 자기 자신과 비교해버리면 항상 "일치"로 나와 레터박스가 무력화되므로, 그 대신 이 게임의 실제 디자인
+        // 기준 해상도(FullScreenModeResolver.DefaultContentWidth/Height, UICanvas 기준 해상도와 동일)를 기준으로 삼는다.
+        private const float DefaultTargetAspect = FullScreenModeResolver.DefaultContentWidth / (float)FullScreenModeResolver.DefaultContentHeight;
+
         private static ResolutionLetterboxController instance;
 
         private Camera backgroundCamera;
@@ -112,7 +117,7 @@ namespace Week14.Bootstrap
             int targetHeight = SettingsManager.ResolutionHeight;
             float targetAspect = targetWidth > 0 && targetHeight > 0
                 ? targetWidth / (float)targetHeight
-                : screenWidth / (float)screenHeight;
+                : DefaultTargetAspect;
             float screenAspect = screenWidth / (float)screenHeight;
 
             Rect rect;
