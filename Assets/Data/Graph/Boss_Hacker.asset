@@ -241,7 +241,7 @@ MonoBehaviour:
     action:
       rid: 6489939186800656587
     sequences: []
-    editorPosition: {x: 3065, y: -280}
+    editorPosition: {x: 3066, y: -281}
   - nodeId: Melee Attack10
     nodeGuid: 154c1df5f1924c59a255653b1bf72f2e
     nodeKind: 0
@@ -448,7 +448,7 @@ MonoBehaviour:
     action:
       rid: 6489939186800656653
     sequences: []
-    editorPosition: {x: 3263, y: 1050}
+    editorPosition: {x: 3264, y: 1051}
   - nodeId: Hologram Replay4
     nodeGuid: 54bfd5b45ea749879f26cf8e60b6c3ca
     nodeKind: 0
@@ -11742,23 +11742,23 @@ MonoBehaviour:
           m_RotationOrder: 4
         thrustAdvanceTrackingAngleDegrees: 75
         parryAnchorPath: "ParryingPoint/\uCC0C\uB974\uAE30 Point"
-        parryWindowSeconds: 0.8
+        parryWindowSeconds: 0.7
         parrySpawnEffect:
           effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
           positionOffset: {x: 0, y: 0.15}
           scale: 5
         attackEffect:
-          enabled: 0
-          effectPrefab: {fileID: 0}
-          spawnPointPath: 
+          enabled: 1
+          effectPrefab: {fileID: 2918268691801267300, guid: 783cb82d6f6ab4442b2fe7e28d145533, type: 3}
+          spawnPointPath: EffectPrefabPoint/Thrust
           positionOffset: {x: 0, y: 0}
           scale: 1
           followMode: 1
           followRotation: 1
         parriedEffect:
-          enabled: 0
-          effectPrefab: {fileID: 0}
-          spawnPointPath: 
+          enabled: 1
+          effectPrefab: {fileID: 6793697235893187851, guid: 5672310a4d9871f4cbd6a12348a1525a, type: 3}
+          spawnPointPath: EffectPrefabPoint/Thrust
           positionOffset: {x: 0, y: 0}
           scale: 1
           followMode: 1
@@ -13578,17 +13578,17 @@ MonoBehaviour:
           positionOffset: {x: 0, y: 0.15}
           scale: 5
         attackEffect:
-          enabled: 0
-          effectPrefab: {fileID: 0}
-          spawnPointPath: 
+          enabled: 1
+          effectPrefab: {fileID: 2918268691801267300, guid: 783cb82d6f6ab4442b2fe7e28d145533, type: 3}
+          spawnPointPath: EffectPrefabPoint/Thrust
           positionOffset: {x: 0, y: 0}
           scale: 1
           followMode: 1
           followRotation: 1
         parriedEffect:
-          enabled: 0
-          effectPrefab: {fileID: 0}
-          spawnPointPath: 
+          enabled: 1
+          effectPrefab: {fileID: 6793697235893187851, guid: 5672310a4d9871f4cbd6a12348a1525a, type: 3}
+          spawnPointPath: EffectPrefabPoint/Thrust
           positionOffset: {x: 0, y: 0}
           scale: 1
           followMode: 1
