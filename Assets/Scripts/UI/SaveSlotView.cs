@@ -37,6 +37,11 @@ namespace Week14.UI
         [SerializeField] private string progressFormat = "{0}%";
         [SerializeField] private LocalizedString localizedProgressFormat;
 
+        [Header("진행도 바")]
+        [Tooltip("원본 배경 위에서 왼쪽부터 색상이 채워질 오버레이 Image입니다.")]
+        [SerializeField] private Image progressBarFillImage;
+        [SerializeField] private Color progressBarFillColor = Color.white;
+
         [Header("100% 달성 시 선택 버튼 강조")]
         [Tooltip("선택 버튼의 배경 이미지입니다. 100% 달성 시 아래 색으로 바뀝니다. 비워두면 강조하지 않습니다.")]
         [SerializeField] private Image selectButtonImage;
@@ -117,6 +122,7 @@ namespace Week14.UI
 
             ApplyStateLabel(exists);
             ApplyProgressText(exists, percent);
+            ApplyProgressBar(exists, percent);
             ApplySelectButtonColor(exists, percent);
 
             if (deleteButton != null)
@@ -152,6 +158,24 @@ namespace Week14.UI
             }
 
             progressText.text = LoadoutSelectedSkillPanelLocalization.ResolveLocalizedFormat(localizedProgressFormat, progressFormat, percent);
+        }
+
+        private void ApplyProgressBar(bool exists, int percent)
+        {
+            if (progressBarFillImage == null)
+            {
+                return;
+            }
+
+            float progress = exists && challengeDatabase != null
+                ? Mathf.Clamp01(percent / 100f)
+                : 0f;
+
+            progressBarFillImage.type = Image.Type.Filled;
+            progressBarFillImage.fillMethod = Image.FillMethod.Horizontal;
+            progressBarFillImage.fillOrigin = (int)Image.OriginHorizontal.Left;
+            progressBarFillImage.fillAmount = progress;
+            progressBarFillImage.color = progressBarFillColor;
         }
 
         private void ApplySelectButtonColor(bool exists, int percent)
