@@ -454,6 +454,8 @@ MonoBehaviour:
   victoryChallengePanel: {fileID: 2102367215806449985}
   victoryElapsedTimeText: {fileID: 6524034115857296368}
   lobbySceneName: LobbyScene
+  victorySfxId: 
+  defeatSfxId: 
   rewardPopupView: {fileID: 1986540572273515895}
 --- !u!1 &1789873434246221092
 GameObject:
@@ -1333,7 +1335,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <sprite name="icon_point" color=#00FFFF> Enhancement Points +{0}
+  m_text: <sprite name="icon_point" color=#00FFFF> Data Chips +{0}
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 39fe875309345e4428668a1b8e322dfa, type: 2}
   m_sharedMaterial: {fileID: -9187303386302699777, guid: 39fe875309345e4428668a1b8e322dfa, type: 2}
