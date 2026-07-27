@@ -479,6 +479,17 @@ namespace Week14.Combat
                     continue;
                 }
 
+                ConductorTurretProjectile turret = collider.GetComponentInParent<ConductorTurretProjectile>();
+                if (turret != null)
+                {
+                    if (turret.IsAliveTurret && hitTargets.Add(turret.Health))
+                    {
+                        turret.ReceivePlayerHit(damage, turret.transform.position, direction);
+                    }
+
+                    continue;
+                }
+
                 Health targetHealth = collider.GetComponentInParent<Health>();
                 if (!IsValidAreaDamageTarget(targetHealth) || !hitTargets.Add(targetHealth))
                 {
