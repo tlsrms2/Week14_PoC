@@ -2127,14 +2127,22 @@ PrefabInstance:
       objectReference: {fileID: 4801602864313990611}
     - target: {fileID: 2508148588114896726, guid: 35547a9f6d31fcb489b52635089a4378, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2508148588114896726, guid: 35547a9f6d31fcb489b52635089a4378, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2782628315444270625, guid: 35547a9f6d31fcb489b52635089a4378, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 3876170640663037700, guid: 35547a9f6d31fcb489b52635089a4378, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4220170325854200996, guid: 35547a9f6d31fcb489b52635089a4378, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5448329364088607857, guid: 35547a9f6d31fcb489b52635089a4378, type: 3}

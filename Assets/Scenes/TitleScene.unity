@@ -26511,22 +26511,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6518155665405861956, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
-      propertyPath: m_Type
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6518155665405861956, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 413b01be200548e45bc5cf94e11798b5, type: 3}
-    - target: {fileID: 6957708917751316273, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
-      propertyPath: m_Type
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6957708917751316273, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -3161605369823022220, guid: 15356499057130a4aa4a8f14bc1ef788, type: 3}
     - target: {fileID: 7113382959732691671, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ReturnToTitle
@@ -26542,10 +26526,6 @@ PrefabInstance:
     - target: {fileID: 7625243295146896537, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684637409477141177, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
-      propertyPath: m_Size
-      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
