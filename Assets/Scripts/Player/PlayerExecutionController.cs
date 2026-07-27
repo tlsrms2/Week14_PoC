@@ -158,6 +158,7 @@ namespace Week14.Combat
 
             rig.StopBody();
             presentation.HidePlayerHpForExecution();
+            context.HideBaseballBatDisplay();
             BossAI executionBoss = executionTarget.GetComponentInParent<BossAI>();
             bool isFinalBossExecution = executionBoss != null && executionBoss.CurrentLives <= 1;
             if (isFinalBossExecution)

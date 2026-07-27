@@ -291,6 +291,7 @@ namespace Week14.Combat
             public Transform BaseballBatVfxAnchor => controller.baseballBatVfxAnchor != null
                 ? controller.baseballBatVfxAnchor
                 : CombatCenterOrigin;
+            public void HideBaseballBatDisplay() => controller.Shooter.HideBaseballBatDisplay();
             public LayerMask EnemyMask => controller.enemyMask;
             public Rigidbody2D Body => controller.body;
             public Health Health => controller.health;
