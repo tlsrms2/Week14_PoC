@@ -105,14 +105,6 @@ MonoBehaviour:
     m_Key: ui.Loadout.hint.canEquipAndRefund
     m_Metadata:
       m_Items: []
-  - m_Id: 3326175926910976
-    m_Key: ui.Loadout.hint.unequip
-    m_Metadata:
-      m_Items: []
-  - m_Id: 3326292574699520
-    m_Key: ui.Loadout.hint.equip
-    m_Metadata:
-      m_Items: []
   - m_Id: 5398084768686080
     m_Key: ui.Loadout.hint.canEquip
     m_Metadata:

@@ -34,24 +34,12 @@ MonoBehaviour:
     m_Localized: Ram
     m_Metadata:
       m_Items: []
-  - m_Id: 1036882034393088
-    m_Localized: Security Director
-    m_Metadata:
-      m_Items: []
   - m_Id: 4200008682668032
     m_Localized: Mirage
     m_Metadata:
       m_Items: []
-  - m_Id: 4200013929742336
-    m_Localized: Assassin
-    m_Metadata:
-      m_Items: []
   - m_Id: 4212237473775616
     m_Localized: Echo
-    m_Metadata:
-      m_Items: []
-  - m_Id: 4212323251486720
-    m_Localized: Assassin
     m_Metadata:
       m_Items: []
   - m_Id: 5817060254908416

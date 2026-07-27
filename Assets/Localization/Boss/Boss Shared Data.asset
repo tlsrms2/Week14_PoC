@@ -31,24 +31,12 @@ MonoBehaviour:
     m_Key: muscle.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1036882034393088
-    m_Key: muscle.description
-    m_Metadata:
-      m_Items: []
   - m_Id: 4200008682668032
     m_Key: assassin.name
     m_Metadata:
       m_Items: []
-  - m_Id: 4200013929742336
-    m_Key: assassin.description
-    m_Metadata:
-      m_Items: []
   - m_Id: 4212237473775616
     m_Key: hacker.name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 4212323251486720
-    m_Key: hacker.description
     m_Metadata:
       m_Items: []
   - m_Id: 5817060254908416
