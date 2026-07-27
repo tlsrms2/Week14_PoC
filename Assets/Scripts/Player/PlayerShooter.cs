@@ -356,7 +356,7 @@ namespace Week14.Combat
                 vfxSettings.DisplaySpriteRotationOffsetDegrees);
         }
 
-        private void HideBaseballBatDisplay()
+        public void HideBaseballBatDisplay()
         {
             baseballBatWindingUp = false;
             baseballBatSwinging = false;

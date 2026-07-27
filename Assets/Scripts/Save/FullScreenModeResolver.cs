@@ -8,6 +8,11 @@ namespace Week14.Save
     // 대신 ExclusiveFullScreen(실제 디스플레이 출력 모드 전환)을 사용해 이를 피한다.
     public static class FullScreenModeResolver
     {
+        // UICanvas의 m_ReferenceResolution과 동일한, 이 게임의 실제 디자인 기준 해상도(16:9).
+        // 유저가 해상도를 한 번도 고른 적이 없어 저장된 콘텐츠 해상도가 없을 때 이 값을 대신 쓴다.
+        public const int DefaultContentWidth = 1920;
+        public const int DefaultContentHeight = 1080;
+
         public static FullScreenMode Resolve(int width, int height, FullScreenMode requestedMode)
         {
             if (requestedMode != FullScreenMode.FullScreenWindow)
