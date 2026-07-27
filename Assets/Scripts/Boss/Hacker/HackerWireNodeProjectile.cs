@@ -215,9 +215,11 @@ namespace Week14.Enemy
 
             PlayerCombatController player = PlayerCombatController.Active;
             bool isTouching = IsPlayerTouchingWire(player);
-            if (isTouching && !playerWasTouching && wireOwner != null)
+            if (isTouching && !playerWasTouching)
             {
-                wireOwner.ApplyWireLifetimePenalty(player);
+                wireOwner?.ApplyWireLifetimePenalty(player);
+                dissolveStartedAt = Time.time;
+                return;
             }
 
             playerWasTouching = isTouching;
