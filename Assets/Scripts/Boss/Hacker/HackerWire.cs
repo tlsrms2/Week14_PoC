@@ -49,6 +49,8 @@ namespace Week14.Enemy
         private LineRenderer line;
         private Material lineMaterial;
         private float dissolveStartedAt;
+        private float lineWidth;
+        private Color lineColor;
 
         private int wallLayer = -1;
 
@@ -486,17 +488,6 @@ namespace Week14.Enemy
             dissolveStartedAt = Time.time;
         }
 
-        internal void RemoveImmediate()
-        {
-            state = WireState.Dissolving;
-            if (line != null)
-            {
-                line.enabled = false;
-            }
-
-            Destroy(gameObject);
-        }
-
         private void UpdateLine()
         {
             if (line == null)
@@ -509,6 +500,13 @@ namespace Week14.Enemy
             if (state == WireState.Dissolving)
             {
                 float progress = Mathf.Clamp01((Time.time - dissolveStartedAt) / DissolveSeconds);
+                float remaining = 1f - progress;
+                Color fadingColor = lineColor;
+                fadingColor.a *= remaining;
+                line.startColor = fadingColor;
+                line.endColor = fadingColor;
+                line.startWidth = lineWidth * remaining;
+                line.endWidth = lineWidth * remaining;
                 line.SetPosition(0, Vector3.Lerp(start, end, progress));
                 line.SetPosition(1, end);
                 return;
@@ -521,12 +519,14 @@ namespace Week14.Enemy
         private void CreateLine(Color color, float width)
         {
             line = gameObject.AddComponent<LineRenderer>();
+            lineWidth = Mathf.Max(0.01f, width);
+            lineColor = color;
             line.useWorldSpace = true;
             line.positionCount = 2;
-            line.startWidth = Mathf.Max(0.01f, width);
-            line.endWidth = Mathf.Max(0.01f, width);
-            line.startColor = color;
-            line.endColor = color;
+            line.startWidth = lineWidth;
+            line.endWidth = lineWidth;
+            line.startColor = lineColor;
+            line.endColor = lineColor;
             BossSorting.Apply(line);
             line.sortingOrder = 20;
             Shader shader = Shader.Find("Sprites/Default");

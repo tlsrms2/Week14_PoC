@@ -30,6 +30,7 @@ namespace Week14.Enemy
         private readonly Dictionary<string, EnemyProjectile> projectileHandles = new();
         private readonly List<GameObject> transientVisuals = new();
         private readonly HashSet<object> facingLockOwners = new();
+        private readonly HashSet<object> playerCollisionIgnoreOwners = new();
         private string currentNodeId;
         private int activeNodeExecutionCount;
         private int nodeExecutionVersion;
@@ -97,7 +98,15 @@ namespace Week14.Enemy
                 Boss?.SetAutomaticDashContactDamageSuppressed(false);
             }
 
-            Boss?.SetIgnorePlayerCollision(dashing);
+            RefreshPlayerCollisionIgnore();
+        }
+
+        public IDisposable AcquirePlayerCollisionIgnore()
+        {
+            object owner = new();
+            playerCollisionIgnoreOwners.Add(owner);
+            RefreshPlayerCollisionIgnore();
+            return new PlayerCollisionIgnoreLease(this, owner);
         }
 
         public void SetAutomaticDashContactDamageSuppressed(bool suppressed)
@@ -161,6 +170,40 @@ namespace Week14.Enemy
             public void Dispose()
             {
                 context?.SetFacingLocked(owner, false);
+                context = null;
+                owner = null;
+            }
+        }
+
+        private void ReleasePlayerCollisionIgnore(object owner)
+        {
+            if (owner == null || !playerCollisionIgnoreOwners.Remove(owner))
+            {
+                return;
+            }
+
+            RefreshPlayerCollisionIgnore();
+        }
+
+        private void RefreshPlayerCollisionIgnore()
+        {
+            Boss?.SetIgnorePlayerCollision(IsDashing || playerCollisionIgnoreOwners.Count > 0);
+        }
+
+        private sealed class PlayerCollisionIgnoreLease : IDisposable
+        {
+            private BossActionContext context;
+            private object owner;
+
+            internal PlayerCollisionIgnoreLease(BossActionContext context, object owner)
+            {
+                this.context = context;
+                this.owner = owner;
+            }
+
+            public void Dispose()
+            {
+                context?.ReleasePlayerCollisionIgnore(owner);
                 context = null;
                 owner = null;
             }

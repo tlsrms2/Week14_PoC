@@ -2973,6 +2973,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: playerNearbyWallTargetColliders.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       propertyPath: parryRewardProjectileSettings.chargeSeconds
       value: 0
       objectReference: {fileID: 0}
@@ -2984,6 +2988,18 @@ PrefabInstance:
       propertyPath: graphProjectiles.Array.data[9].projectileName
       value: Projectile10
       objectReference: {fileID: 0}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: 'playerNearbyWallTargetColliders.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1672176223}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: 'playerNearbyWallTargetColliders.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1083280347}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: 'playerNearbyWallTargetColliders.Array.data[2]'
+      value: 
+      objectReference: {fileID: 260137311}
     - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       propertyPath: parryRewardProjectileSettings.chargeDriftSpeed
       value: 0

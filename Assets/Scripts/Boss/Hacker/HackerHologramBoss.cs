@@ -361,6 +361,10 @@ namespace Week14.Enemy
             ? sourceBoss.WireSettings
             : base.WireSettings;
 
+        internal override IReadOnlyList<Collider2D> PlayerNearbyWallTargetColliders => sourceBoss != null
+            ? sourceBoss.PlayerNearbyWallTargetColliders
+            : base.PlayerNearbyWallTargetColliders;
+
         internal override BossProjectileSettings ParryProjectileSettings => sourceBoss != null
             ? sourceBoss.ParryProjectileSettings
             : base.ParryProjectileSettings;

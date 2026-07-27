@@ -58,6 +58,9 @@ namespace Week14.Enemy
 
         [Header("Wire Settings")]
         [SerializeField] private HackerWireSettings wireSettings = new();
+        [Tooltip("Fire Wire의 Target Mode가 Player Nearby Wall일 때 사용할 씬 Wall 콜라이더 목록입니다.")]
+        [InspectorName("Player Nearby Wall 타겟 콜라이더")]
+        [SerializeField] private List<Collider2D> playerNearbyWallTargetColliders = new();
 
         [Header("Parry Bait Projectile")]
         [Tooltip("Melee, Thrust, Dash Sweep이 공통으로 사용하는 ParryBaitRewardProjectile 설정입니다.")]
@@ -131,6 +134,8 @@ namespace Week14.Enemy
         protected virtual bool UsesHackerPresentationUpdates => true;
         public override bool SuppressesBodyContactDamage => true;
         internal virtual HackerWireSettings WireSettings => wireSettings ??= new HackerWireSettings();
+        internal virtual IReadOnlyList<Collider2D> PlayerNearbyWallTargetColliders =>
+            playerNearbyWallTargetColliders;
         internal virtual BossProjectileSettings ParryProjectileSettings => parryProjectileSettings ??= new BossProjectileSettings();
         internal virtual bool ShowsAttackRangeIndicators => showAttackRangeIndicators;
 
