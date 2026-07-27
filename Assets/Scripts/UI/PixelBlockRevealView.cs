@@ -378,7 +378,9 @@ namespace Week14.UI
             {
                 if (contentGraphics[i].Graphic == graphic)
                 {
-                    contentGraphics[i] = new GraphicState(graphic, color, contentGraphics[i].RevealEnd);
+                    GraphicState updatedState = new(graphic, color, contentGraphics[i].RevealEnd);
+                    contentGraphics[i] = updatedState;
+                    ApplyGraphicProgress(updatedState, revealCurve.Evaluate(currentProgress));
                     break;
                 }
             }
@@ -518,17 +520,7 @@ namespace Week14.UI
         {
             for (int i = 0; i < contentGraphics.Count; i++)
             {
-                GraphicState state = contentGraphics[i];
-                if (state.Graphic == null)
-                {
-                    continue;
-                }
-
-                float trigger = syncContentWithReveal ? state.RevealEnd : contentFadeStart;
-                float alpha = progress >= trigger ? 1f : 0f;
-                Color color = state.OriginalColor;
-                color.a *= alpha;
-                state.Graphic.color = color;
+                ApplyGraphicProgress(contentGraphics[i], progress);
             }
 
             bool interactable = !blockInteractionUntilComplete || progress >= 1f;
@@ -540,6 +532,19 @@ namespace Week14.UI
                     state.Selectable.interactable = state.OriginalInteractable && interactable;
                 }
             }
+        }
+
+        private void ApplyGraphicProgress(GraphicState state, float progress)
+        {
+            if (state.Graphic == null)
+            {
+                return;
+            }
+
+            float trigger = syncContentWithReveal ? state.RevealEnd : contentFadeStart;
+            Color color = state.OriginalColor;
+            color.a *= progress >= trigger ? 1f : 0f;
+            state.Graphic.color = color;
         }
 
         private void RestoreContent()

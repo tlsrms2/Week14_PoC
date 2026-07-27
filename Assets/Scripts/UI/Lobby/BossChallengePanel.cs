@@ -137,7 +137,6 @@ namespace Week14.UI
                 if (color.a <= 0f && !string.IsNullOrEmpty(text.text))
                 {
                     color.a = 1f;
-                    text.color = color;
                 }
 
                 revealView.SetOriginalColor(text, color);
