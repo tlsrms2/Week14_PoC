@@ -3390,6 +3390,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 741641528}
     - target: {fileID: 3375592416611051039, guid: 87b6686f424f85e419dfcf9ae5fdfc13, type: 3}
+      propertyPath: bossTimeRect
+      value: 
+      objectReference: {fileID: 1441857810}
+    - target: {fileID: 3375592416611051039, guid: 87b6686f424f85e419dfcf9ae5fdfc13, type: 3}
       propertyPath: cameraFollow
       value: 
       objectReference: {fileID: 519420033}
