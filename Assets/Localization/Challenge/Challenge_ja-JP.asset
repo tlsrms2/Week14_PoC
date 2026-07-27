@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -17,7 +17,75 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 2d8f4a1c6e7f3a9c2e8b4d1f6a9c3e7b, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 3519743778283520
+    m_Localized: "[累計] {0}個の追尾型投射物を迎撃してください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3448495471427584
+    m_Localized: "投射物を{0}回迎撃してから戦闘に勝利してください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 507800000000
+    m_Localized: "{0}以内に戦闘に勝利してください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 502600000000
+    m_Localized: "[累計] 第2フェーズに3回到達してください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3527906837585920
+    m_Localized: "[累計] 第3フェーズに3回到達してください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3533872441950208
+    m_Localized: "すべてのカウンターを成功させて戦闘に勝利してください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3440320454164480
+    m_Localized: "戦闘に勝利してください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 500000000000
+    m_Localized: "1回を超えてダメージを受けずに戦闘に勝利してください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3451950613233664
+    m_Localized: "[累計] カウンターを{0}回成功させてください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3524778109100032
+    m_Localized: "2回を超えてダメージを受けずに戦闘に勝利してください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 505200000000
+    m_Localized: "[累計] 第2フェーズに6回到達してください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3530476930564096
+    m_Localized: "[累計] フラットタレットを8回破壊してください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3443865412796416
+    m_Localized: "[累計] {0}個の投射物を迎撃してください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3522615781810176
+    m_Localized: "[累計] {0}個のワイヤー型投射物を迎撃してください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3521787301912576
+    m_Localized: "[累計] {0}個の爆発型投射物を迎撃してください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3521113910599680
+    m_Localized: "[累計] {0}個の音符型投射物を迎撃してください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3525347422953472
+    m_Localized: "3回を超えてダメージを受けずに戦闘に勝利してください。"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

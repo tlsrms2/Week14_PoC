@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -17,7 +17,87 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: c2940797846812f4881a7a287f9eb620, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 373298637312
+    m_Localized: "加速モジュール"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362898637312
+    m_Localized: "自動追尾モジュール"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 368098637312
+    m_Localized: "高性能迎撃モジュール"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 352498637312
+    m_Localized: "磁力モジュール"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 347285585920
+    m_Localized: "時間操作モジュール"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 303861956608
+    m_Localized: "現在位置に10秒間ホログラムを残します。ホログラムはプレイヤーと同時に攻撃し、敵に通常の50%のダメージを与えます。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370698637312
+    m_Localized: "迎撃範囲がわずかに広がります。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 378498637312
+    m_Localized: "エネルギー変換モジュール"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63427674112
+    m_Localized: "戦術回避モジュール"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 381098637312
+    m_Localized: "迎撃に成功すると、アクティブスキルのクールタイムが0.5秒短縮されます。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 349898637312
+    m_Localized: "3秒間、周囲の時間を遅くします。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 300527484928
+    m_Localized: "ホログラム複製モジュール"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 238342733824
+    m_Localized: "短距離をダッシュし、周囲の投射物を消去します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 355098637312
+    m_Localized: "2秒間、周囲の投射物を吸収して弾薬を回復します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 360298637312
+    m_Localized: "ごく短時間、無敵状態になります。この間にダメージを受けると弾薬をすべて回復します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 357698637312
+    m_Localized: "パリィモジュール"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365498637312
+    m_Localized: "弾は常に敵へ向けて発射されます。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 375898637312
+    m_Localized: "所持弾薬がない時、移動速度がわずかに上昇します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 383698637312
+    m_Localized: "緊急プロトコルモジュール"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 386298637312
+    m_Localized: "致命的なダメージを受けた時、1回だけ危機を回避します。"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

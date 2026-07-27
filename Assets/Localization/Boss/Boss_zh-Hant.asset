@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -17,7 +17,55 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: b1a0083a9ae987c4c95c94f0dce7f455, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 3144186691584
+    m_Localized: "卡農"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5817807012986880
+    m_Localized: "ATLAS停車樓"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5817060254908416
+    m_Localized: "M-8黑市"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6813745152
+    m_Localized: "處決"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5818062072807424
+    m_Localized: "DUEL塔"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4200008682668032
+    m_Localized: "米拉玖"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2169673711616
+    m_Localized: "薩爾沃"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5817958821625856
+    m_Localized: "V-4空地"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5817555392495616
+    m_Localized: "MAKELA飯店屋頂"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1036685002768384
+    m_Localized: "拉姆"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5784546324439040
+    m_Localized: "訓練用機器人"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4212237473775616
+    m_Localized: "艾可"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

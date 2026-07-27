@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -17,7 +17,75 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 2d8f4a1c6e7f3a9c2e8b4d1f6a9c3e7b, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 3519743778283520
+    m_Localized: "[累計] 攔截{0}個追蹤型投射物。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3448495471427584
+    m_Localized: "攔截{0}次投射物後贏得戰鬥。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 507800000000
+    m_Localized: "在{0}內贏得戰鬥。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 502600000000
+    m_Localized: "[累計] 進入第2階段3次。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3527906837585920
+    m_Localized: "[累計] 進入第3階段3次。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3533872441950208
+    m_Localized: "不漏掉任何一次反擊並贏得戰鬥。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3440320454164480
+    m_Localized: "贏得戰鬥。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 500000000000
+    m_Localized: "受到傷害不超過1次並贏得戰鬥。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3451950613233664
+    m_Localized: "[累計] 成功發動反擊{0}次。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3524778109100032
+    m_Localized: "受到傷害不超過2次並贏得戰鬥。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 505200000000
+    m_Localized: "[累計] 進入第2階段6次。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3530476930564096
+    m_Localized: "[累計] 摧毀8座平面砲塔。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3443865412796416
+    m_Localized: "[累計] 攔截{0}個投射物。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3522615781810176
+    m_Localized: "[累計] 攔截{0}個線纜型投射物。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3521787301912576
+    m_Localized: "[累計] 攔截{0}個爆炸型投射物。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3521113910599680
+    m_Localized: "[累計] 攔截{0}個音符型投射物。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3525347422953472
+    m_Localized: "受到傷害不超過3次並贏得戰鬥。"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
