@@ -134,15 +134,6 @@ MonoBehaviour:
       rid: 6489939042083012891
     sequences: []
     editorPosition: {x: 330, y: -1102}
-  - nodeId: Move Toward Player1
-    nodeGuid: 04e0fde208134262b4e6df1ca9e3b80b
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 6489938902049095687
-    sequences: []
-    editorPosition: {x: -9, y: -1053}
   - nodeId: Formation Circle2
     nodeGuid: d356adc35ae84c2caeb0683b961a9505
     nodeKind: 4
@@ -728,15 +719,6 @@ MonoBehaviour:
       rid: 6489939042083012884
     sequences: []
     editorPosition: {x: 2347, y: 775}
-  - nodeId: Move Toward Player2
-    nodeGuid: f262b2669ad04a509ac686bb98f2a9ef
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 6489939042083012885
-    sequences: []
-    editorPosition: {x: 2379, y: 932}
   - nodeId: Wander14
     nodeGuid: c4691a2817fa48d2967062155eb61608
     nodeKind: 4
@@ -746,15 +728,6 @@ MonoBehaviour:
       rid: 6489939042083012886
     sequences: []
     editorPosition: {x: 1372, y: 786}
-  - nodeId: Move Toward Player3
-    nodeGuid: 0d407bda86484479b8b22d733b75ed2e
-    nodeKind: 1
-    phaseIndex: 0
-    selectionMode: 0
-    action:
-      rid: 6489939042083012887
-    sequences: []
-    editorPosition: {x: 1334, y: 945}
   - nodeId: Conducting Cue1
     nodeGuid: a818309a69c640b281a310c5c85d8b0a
     nodeKind: 0
@@ -1682,6 +1655,24 @@ MonoBehaviour:
       rid: 6489939292510748948
     sequences: []
     editorPosition: {x: 3183, y: 442}
+  - nodeId: Maintain Player Distance26
+    nodeGuid: e33f8c12282840f2bdf326c66360a832
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939464547991635
+    sequences: []
+    editorPosition: {x: 1349, y: 932}
+  - nodeId: Maintain Player Distance27
+    nodeGuid: 78e73475215841bcb9733b49d6e3b22e
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939464547991636
+    sequences: []
+    editorPosition: {x: 2346, y: 920}
   patterns:
   - patternId: Summon
     nodeGuids:
@@ -1689,13 +1680,11 @@ MonoBehaviour:
     - 631205d2ef87491f9bd6e91b47875965
     - ec4ca827679f477a9a7618b2093d31d4
     - 52807003c9334e2ba91f979e7668eaa9
-    - 04e0fde208134262b4e6df1ca9e3b80b
     nodeIds:
     - Summon1
     - Wander3
     - Maintain Player Distance4
     - Wander2
-    - Move Toward Player1
   - patternId: "\uD328\uD134 \uC0AC\uC774"
     nodeGuids:
     - 5acd38a936824a9cbeb10fcec9bd6aaf
@@ -1934,7 +1923,6 @@ MonoBehaviour:
   - patternId: P8
     nodeGuids:
     - 3099361750dc4b72b21af79acbf483fa
-    - 0d407bda86484479b8b22d733b75ed2e
     - e24aec6548eb4e17a793d6cdff596ef1
     - c2e88829a1834d19ab22f21cb59cdb63
     - c4691a2817fa48d2967062155eb61608
@@ -1942,9 +1930,9 @@ MonoBehaviour:
     - 25adb2e9705446769aab3870b54c4b6c
     - b55baa77273946dc8ba23ed5b344266c
     - eace931c3dca439f94e816a14d43dd3a
+    - e33f8c12282840f2bdf326c66360a832
     nodeIds:
     - Stop Movement8
-    - Move Toward Player3
     - Conducting Cue7
     - Spawn Turrets2
     - Wander14
@@ -1952,10 +1940,10 @@ MonoBehaviour:
     - Wander10
     - Conducting Cue8
     - Wander17
+    - Maintain Player Distance26
   - patternId: P9
     nodeGuids:
     - 96a7843f49574bdb9278ec96144db5f0
-    - f262b2669ad04a509ac686bb98f2a9ef
     - ed3e8b0209924e5cbdf1593a9e52b6b2
     - 5076326c98a14e7481ee7ada8c15df6a
     - 21aa2420d0384ded8b1de1bd06b5dd67
@@ -1963,9 +1951,9 @@ MonoBehaviour:
     - 8ff0b40780bb48fea70b0ddd526d3f26
     - 43a23d0338af4a8481209b843144e3dc
     - 154080bb695444af912902a6f14025d4
+    - 78e73475215841bcb9733b49d6e3b22e
     nodeIds:
     - Stop Movement9
-    - Move Toward Player2
     - Conducting Cue9
     - Conducting Cue10
     - Spawn Turrets3
@@ -1973,6 +1961,7 @@ MonoBehaviour:
     - Player Path Side Fire7
     - Wander11
     - Wander18
+    - Maintain Player Distance27
   - patternId: P10
     nodeGuids:
     - aa726d3bbfd544f88ef36db7366fe1cf
@@ -2882,12 +2871,6 @@ MonoBehaviour:
     toNodeId: Stop Movement1
     laneIndex: 0
     targetLaneIndex: 0
-  - fromNodeGuid: 52807003c9334e2ba91f979e7668eaa9
-    toNodeGuid: 04e0fde208134262b4e6df1ca9e3b80b
-    fromNodeId: Wander2
-    toNodeId: Move Toward Player1
-    laneIndex: 0
-    targetLaneIndex: 0
   - fromNodeGuid: 75ea4bf519ce4f9f92cc715d5fc28f4e
     toNodeGuid: d356adc35ae84c2caeb0683b961a9505
     fromNodeId: Maintain Player Distance6
@@ -3036,18 +3019,6 @@ MonoBehaviour:
     toNodeGuid: 222111eb1168418d8db0b33968c75f51
     fromNodeId: Repeat Fire10
     toNodeId: Maintain Player Distance18
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: bec357e33a914061b9ba9d0968a47d5d
-    toNodeGuid: f262b2669ad04a509ac686bb98f2a9ef
-    fromNodeId: Wander13
-    toNodeId: Move Toward Player2
-    laneIndex: 0
-    targetLaneIndex: 0
-  - fromNodeGuid: c4691a2817fa48d2967062155eb61608
-    toNodeGuid: 0d407bda86484479b8b22d733b75ed2e
-    fromNodeId: Wander14
-    toNodeId: Move Toward Player3
     laneIndex: 0
     targetLaneIndex: 0
   - fromNodeGuid: a818309a69c640b281a310c5c85d8b0a
@@ -3362,6 +3333,18 @@ MonoBehaviour:
     toNodeId: Diamond Collapse4
     laneIndex: 0
     targetLaneIndex: 0
+  - fromNodeGuid: c4691a2817fa48d2967062155eb61608
+    toNodeGuid: e33f8c12282840f2bdf326c66360a832
+    fromNodeId: Wander14
+    toNodeId: Maintain Player Distance26
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: bec357e33a914061b9ba9d0968a47d5d
+    toNodeGuid: 78e73475215841bcb9733b49d6e3b22e
+    fromNodeId: Wander13
+    toNodeId: Maintain Player Distance27
+    laneIndex: 0
+    targetLaneIndex: 0
   debugForceSinglePattern: 0
   debugForcedPatternId: P10
   references:
@@ -3616,37 +3599,6 @@ MonoBehaviour:
           - serializedVersion: 3
             time: 1
             value: 0.004837036
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        speedCurveInitialized: 1
-        stopWhenFinished: 1
-    - rid: 6489938902049095687
-      type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        seconds: 1
-        speedMultiplier: 1
-        speedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 1
             inSlope: 0
             outSlope: 0
             tangentMode: 0
@@ -8969,37 +8921,6 @@ MonoBehaviour:
         radius: 2.8
         retargetSeconds: 1.5
         waitForDuration: 1
-    - rid: 6489939042083012885
-      type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        seconds: 2
-        speedMultiplier: 1
-        speedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        speedCurveInitialized: 1
-        stopWhenFinished: 1
     - rid: 6489939042083012886
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -9008,37 +8929,6 @@ MonoBehaviour:
         radius: 2.8
         retargetSeconds: 1.5
         waitForDuration: 1
-    - rid: 6489939042083012887
-      type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
-      data:
-        seconds: 2
-        speedMultiplier: 1
-        speedCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        speedCurveInitialized: 1
-        stopWhenFinished: 1
     - rid: 6489939042083012891
       type: {class: StopMovementAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data: 
@@ -14587,3 +14477,69 @@ MonoBehaviour:
         bossMoveSpeedMultiplier: 1
         bossArriveDistance: 0.04
         bossMoveTimeoutSeconds: 5
+    - rid: 6489939464547991635
+      type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        durationSeconds: 2
+        distance: 5.5
+        tolerance: 0.3
+        speedMultiplier: 1
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 0.004837036
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
+    - rid: 6489939464547991636
+      type: {class: MaintainPlayerDistanceAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        durationSeconds: 2
+        distance: 5.5
+        tolerance: 0.3
+        speedMultiplier: 1
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 0.004837036
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        stopWhenFinished: 1
