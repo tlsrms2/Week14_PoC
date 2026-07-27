@@ -7,6 +7,7 @@ using UnityEngine.Localization;
 using UnityEngine.Localization.Tables;
 using UnityEngine.UI;
 using Week14.Story;
+using Week14.UI;
 
 namespace Week14.Tutorial
 {
@@ -201,6 +202,7 @@ namespace Week14.Tutorial
 
         private void Awake()
         {
+            ClipDialogueToReferenceFrame();
             ResolveObjectiveTextReferences();
             CacheShownPosition();
             CacheDefaultDialogueColor();
@@ -208,6 +210,11 @@ namespace Week14.Tutorial
             CachePortraitSlots();
 
             Hide();
+        }
+
+        private void ClipDialogueToReferenceFrame()
+        {
+            UISafeFrameUtility.ClipToReferenceFrame(transform as RectTransform);
         }
 
         public void ShowLine(

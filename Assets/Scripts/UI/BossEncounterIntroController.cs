@@ -212,6 +212,7 @@ namespace Week14.UI
             }
 
             ResolveCanvasGroup();
+            ClipIntroUiToReferenceFrame();
             CacheTargetPositions();
             CacheTransitionTargetPositions();
             SetVisible(false);
@@ -1507,6 +1508,26 @@ namespace Week14.UI
             if (canvasGroup == null)
             {
                 canvasGroup = gameObject.AddComponent<CanvasGroup>();
+            }
+        }
+
+        private void ClipIntroUiToReferenceFrame()
+        {
+            ClipToReferenceFrame(locationIntroFlyObjects);
+            UISafeFrameUtility.ClipToReferenceFrame(bossInfoPanel);
+            UISafeFrameUtility.ClipToReferenceFrame(skipHintText != null ? skipHintText.transform as RectTransform : null);
+        }
+
+        private static void ClipToReferenceFrame(RectTransform[] targets)
+        {
+            if (targets == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < targets.Length; i++)
+            {
+                UISafeFrameUtility.ClipToReferenceFrame(targets[i]);
             }
         }
 

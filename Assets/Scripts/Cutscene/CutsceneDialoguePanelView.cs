@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Week14.UI;
 
 namespace Week14.Cutscene
 {
@@ -28,8 +29,14 @@ namespace Week14.Cutscene
 
         private void Awake()
         {
+            ClipDialogueToReferenceFrame();
             CacheAdvancePromptImage();
             Hide();
+        }
+
+        private void ClipDialogueToReferenceFrame()
+        {
+            UISafeFrameUtility.ClipToReferenceFrame(transform as RectTransform);
         }
 
         public void ShowLine(string speaker, string text)
