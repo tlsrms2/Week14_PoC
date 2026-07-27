@@ -31,9 +31,8 @@ namespace Week14.Bootstrap
                 height = FullScreenModeResolver.DefaultContentHeight;
             }
 
-            (int effectiveWidth, int effectiveHeight) = FullScreenModeResolver.GetEffectiveScreenResolution(width, height, requestedMode);
-            FullScreenMode mode = FullScreenModeResolver.Resolve(effectiveWidth, effectiveHeight, requestedMode);
-            Screen.SetResolution(effectiveWidth, effectiveHeight, mode);
+            FullScreenMode mode = FullScreenModeResolver.Resolve(width, height, requestedMode);
+            Screen.SetResolution(width, height, mode);
             SettingsManager.SetResolution(width, height);
         }
     }
