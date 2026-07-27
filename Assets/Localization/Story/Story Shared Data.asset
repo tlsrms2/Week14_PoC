@@ -15,8 +15,56 @@ MonoBehaviour:
   m_TableCollectionName: Story
   m_TableCollectionNameGuidString: 8a8e32e629c410a4c97867fa550435ab
   m_Entries:
-  - m_Id: 5333461598208
-    m_Key: Speaker_ERIS
+  - m_Id: 5333524512880
+    m_Key: 03-1-LobbyTutorial-Boss_01_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512881
+    m_Key: 03-1-LobbyTutorial-Boss_02_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512882
+    m_Key: 03-1-LobbyTutorial-Boss_03_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512883
+    m_Key: 03-1-LobbyTutorial-Boss_04_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512884
+    m_Key: 03-1-LobbyTutorial-Boss_05_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512885
+    m_Key: 03-1-LobbyTutorial-Boss_06_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512886
+    m_Key: 03-1-LobbyTutorial-Boss_07_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512887
+    m_Key: 03-2-LobbyTutorial-Skill_01_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512888
+    m_Key: 03-2-LobbyTutorial-Skill_02_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512889
+    m_Key: 03-2-LobbyTutorial-Skill_03_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512890
+    m_Key: 03-2-LobbyTutorial-Skill_04_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512891
+    m_Key: 03-2-LobbyTutorial-Skill_05_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333528707072
+    m_Key: 03-2-LobbyTutorial-Skill_06_Text
     m_Metadata:
       m_Items: []
   - m_Id: 5333520318464
@@ -41,10 +89,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5333524512770
     m_Key: Cutscene_01-Prologue_06_Text
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5333524512771
-    m_Key: "Speaker_\uC774\uC628"
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512772
@@ -89,10 +133,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5333524512782
     m_Key: Cutscene_02-Record_03_Text
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5333524512783
-    m_Key: "Speaker_\uC544\uBC84\uC9C0"
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512784
@@ -343,6 +383,10 @@ MonoBehaviour:
     m_Key: InGame_04-Act2_07_Text
     m_Metadata:
       m_Items: []
+  - m_Id: 1424586970947584
+    m_Key: InGame_04-Act2_08_Text
+    m_Metadata:
+      m_Items: []
   - m_Id: 5333524512846
     m_Key: InGame_04-Act2_09_Text
     m_Metadata:
@@ -479,88 +523,60 @@ MonoBehaviour:
     m_Key: InGame_05-Act3_17_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512880
-    m_Key: 03-1-LobbyTutorial-Boss_01_Text
+  - m_Id: 43636894302208
+    m_Key: InGame_05-Act3_18_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512881
-    m_Key: 03-1-LobbyTutorial-Boss_02_Text
+  - m_Id: 1345961062363136
+    m_Key: InGame_05-Act3_19_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512882
-    m_Key: 03-1-LobbyTutorial-Boss_03_Text
+  - m_Id: 5333461598208
+    m_Key: Speaker_ERIS
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512883
-    m_Key: 03-1-LobbyTutorial-Boss_04_Text
+  - m_Id: 4972079872663552
+    m_Key: "Speaker_\uC544\uBC84\uC9C0"
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512884
-    m_Key: 03-1-LobbyTutorial-Boss_05_Text
+  - m_Id: 4972079872663553
+    m_Key: "Speaker_\uC774\uC628"
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512885
-    m_Key: 03-1-LobbyTutorial-Boss_06_Text
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5333524512886
-    m_Key: 03-1-LobbyTutorial-Boss_07_Text
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5333524512887
-    m_Key: 03-2-LobbyTutorial-Skill_01_Text
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5333524512888
-    m_Key: 03-2-LobbyTutorial-Skill_02_Text
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5333524512889
-    m_Key: 03-2-LobbyTutorial-Skill_03_Text
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5333524512890
-    m_Key: 03-2-LobbyTutorial-Skill_04_Text
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5333524512891
-    m_Key: 03-2-LobbyTutorial-Skill_05_Text
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5333528707072
-    m_Key: 03-2-LobbyTutorial-Skill_06_Text
+  - m_Id: 2147990514270208
+    m_Key: Tutorial.Room
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901376
     m_Key: TutorialDialogueSet_01_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333532901377
-    m_Key: TutorialDialogueSet_02_Text
+  - m_Id: 5333532901379
+    m_Key: TutorialDialogueSet_02_ExplanationText
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901378
     m_Key: TutorialDialogueSet_02_ExplanationTitle
     m_Metadata:
       m_Items: []
-  - m_Id: 5333532901379
-    m_Key: TutorialDialogueSet_02_ExplanationText
+  - m_Id: 5333532901377
+    m_Key: TutorialDialogueSet_02_Text
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901380
     m_Key: TutorialDialogueSet_03_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333532901381
-    m_Key: TutorialDialogueSet_04_Text
+  - m_Id: 5333532901383
+    m_Key: TutorialDialogueSet_04_ExplanationText
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901382
     m_Key: TutorialDialogueSet_04_ExplanationTitle
     m_Metadata:
       m_Items: []
-  - m_Id: 5333532901383
-    m_Key: TutorialDialogueSet_04_ExplanationText
+  - m_Id: 5333532901381
+    m_Key: TutorialDialogueSet_04_Text
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901384
@@ -591,16 +607,16 @@ MonoBehaviour:
     m_Key: TutorialDialogueSet_11_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333532901391
-    m_Key: TutorialDialogueSet_12_Text
+  - m_Id: 5333532901393
+    m_Key: TutorialDialogueSet_12_ExplanationText
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901392
     m_Key: TutorialDialogueSet_12_ExplanationTitle
     m_Metadata:
       m_Items: []
-  - m_Id: 5333532901393
-    m_Key: TutorialDialogueSet_12_ExplanationText
+  - m_Id: 5333532901391
+    m_Key: TutorialDialogueSet_12_Text
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901394
@@ -615,16 +631,16 @@ MonoBehaviour:
     m_Key: TutorialDialogueSet_15_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333532901397
-    m_Key: TutorialDialogueSet_16_Text
+  - m_Id: 5333532901399
+    m_Key: TutorialDialogueSet_16_ExplanationText
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901398
     m_Key: TutorialDialogueSet_16_ExplanationTitle
     m_Metadata:
       m_Items: []
-  - m_Id: 5333532901399
-    m_Key: TutorialDialogueSet_16_ExplanationText
+  - m_Id: 5333532901397
+    m_Key: TutorialDialogueSet_16_Text
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901400
@@ -635,28 +651,28 @@ MonoBehaviour:
     m_Key: TutorialDialogueSet_18_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333532901402
-    m_Key: TutorialDialogueSet_19_Text
+  - m_Id: 5333532901404
+    m_Key: TutorialDialogueSet_19_ExplanationText
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901403
     m_Key: TutorialDialogueSet_19_ExplanationTitle
     m_Metadata:
       m_Items: []
-  - m_Id: 5333532901404
-    m_Key: TutorialDialogueSet_19_ExplanationText
+  - m_Id: 5333532901402
+    m_Key: TutorialDialogueSet_19_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 5333532901405
-    m_Key: TutorialDialogueSet_20_Text
+  - m_Id: 5333532901407
+    m_Key: TutorialDialogueSet_20_ExplanationText
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901406
     m_Key: TutorialDialogueSet_20_ExplanationTitle
     m_Metadata:
       m_Items: []
-  - m_Id: 5333532901407
-    m_Key: TutorialDialogueSet_20_ExplanationText
+  - m_Id: 5333532901405
+    m_Key: TutorialDialogueSet_20_Text
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901408
@@ -691,58 +707,6 @@ MonoBehaviour:
     m_Key: TutorialDialogueSet_28_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 43636894302208
-    m_Key: InGame_05-Act3_18_Text
-    m_Metadata:
-      m_Items: []
-  - m_Id: 43636948828160
-    m_Key: TutorialDialogueSet_Move_ObjectiveFormat
-    m_Metadata:
-      m_Items: []
-  - m_Id: 43636948828161
-    m_Key: TutorialDialogueSet_Shoot_ObjectiveFormat
-    m_Metadata:
-      m_Items: []
-  - m_Id: 43636948828162
-    m_Key: TutorialDialogueSet_Attack_ObjectiveFormat
-    m_Metadata:
-      m_Items: []
-  - m_Id: 43636948828163
-    m_Key: TutorialDialogueSet_Hit_ObjectiveFormat
-    m_Metadata:
-      m_Items: []
-  - m_Id: 43636948828164
-    m_Key: TutorialDialogueSet_Parry_ObjectiveFormat
-    m_Metadata:
-      m_Items: []
-  - m_Id: 43636948828165
-    m_Key: TutorialDialogueSet_Skill_ObjectiveFormat
-    m_Metadata:
-      m_Items: []
-  - m_Id: 43636948828166
-    m_Key: TutorialDialogueSet_Duel_ObjectiveFormat
-    m_Metadata:
-      m_Items: []
-  - m_Id: 739306561925120
-    m_Key: TutorialDialogueSet_9_1_Text
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1108486769008640
-    m_Key: TutorialDialogueSet_Objective
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1345961062363136
-    m_Key: InGame_05-Act3_19_Text
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1424586970947584
-    m_Key: InGame_04-Act2_08_Text
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1826406394068992
-    m_Key: TutorialDialogueSet_Suppress_ObjectiveFormat
-    m_Metadata:
-      m_Items: []
   - m_Id: 1826406452789248
     m_Key: TutorialDialogueSet_30_Text
     m_Metadata:
@@ -751,20 +715,56 @@ MonoBehaviour:
     m_Key: TutorialDialogueSet_31_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 1826406452789250
-    m_Key: TutorialDialogueSet_32_Text
+  - m_Id: 1826406452789252
+    m_Key: TutorialDialogueSet_32_ExplanationText
     m_Metadata:
       m_Items: []
   - m_Id: 1826406452789251
     m_Key: TutorialDialogueSet_32_ExplanationTitle
     m_Metadata:
       m_Items: []
-  - m_Id: 1826406452789252
-    m_Key: TutorialDialogueSet_32_ExplanationText
+  - m_Id: 1826406452789250
+    m_Key: TutorialDialogueSet_32_Text
     m_Metadata:
       m_Items: []
-  - m_Id: 2147990514270208
-    m_Key: Tutorial.Room
+  - m_Id: 739306561925120
+    m_Key: TutorialDialogueSet_9_1_Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828162
+    m_Key: TutorialDialogueSet_Attack_ObjectiveFormat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828166
+    m_Key: TutorialDialogueSet_Duel_ObjectiveFormat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828163
+    m_Key: TutorialDialogueSet_Hit_ObjectiveFormat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828160
+    m_Key: TutorialDialogueSet_Move_ObjectiveFormat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1108486769008640
+    m_Key: TutorialDialogueSet_Objective
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828164
+    m_Key: TutorialDialogueSet_Parry_ObjectiveFormat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828161
+    m_Key: TutorialDialogueSet_Shoot_ObjectiveFormat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828165
+    m_Key: TutorialDialogueSet_Skill_ObjectiveFormat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406394068992
+    m_Key: TutorialDialogueSet_Suppress_ObjectiveFormat
     m_Metadata:
       m_Items: []
   m_Metadata:

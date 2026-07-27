@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -17,7 +17,47 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 844e39019e591984499c4858a8ec6fa8, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 3331155001966592
+    m_Localized: "軌道炮"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20524924928
+    m_Localized: "手槍"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 201567862784
+    m_Localized: "最基礎的武器。\\n\\n最大彈藥量: 5\\n子彈傷害: 1-2-3-4-5"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 465628659712
+    m_Localized: "霰彈槍"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 753810898944
+    m_Localized: "子彈會分裂成三個方向發射。\\n\\n最大彈藥量: 3\\n子彈傷害: 1-2-3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3331352159420416
+    m_Localized: "消耗所有彈藥，一次性發射。\\n\\n最大彈藥量: 5\\n子彈傷害: 5-4-3-2-1"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4219302263316480
+    m_Localized: "揮動球棒，反射範圍內的敵方投射物。\\n按住攻擊按鈕會擴大反射範圍。\\n基礎移動速度大幅提升。\\n\\n最大彈藥量: 0\\n子彈傷害: 3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 913773264896
+    m_Localized: "按住攻擊按鈕可進行蓄力攻擊。\\n蓄力攻擊時傷害會提高。\\n\\n最大彈藥量: 3\\n子彈傷害: 2-3-4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4219156515446784
+    m_Localized: "棒球棒"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 860581101568
+    m_Localized: "狙擊步槍"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

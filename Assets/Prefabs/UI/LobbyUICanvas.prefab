@@ -2600,18 +2600,18 @@ MonoBehaviour:
     m_LocalVariables: []
   localizedUnequipHintText:
     m_TableReference:
-      m_TableCollectionName: GUID:54d974a73685256428bdf277f9c3cd3b
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 3326175926910976
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   localizedEquippedLabelText:
     m_TableReference:
-      m_TableCollectionName: GUID:54d974a73685256428bdf277f9c3cd3b
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 3326292574699520
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0

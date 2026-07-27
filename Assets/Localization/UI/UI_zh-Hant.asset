@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -18,8 +18,188 @@ MonoBehaviour:
   m_Metadata:
     m_Items: []
   m_TableData:
+  - m_Id: 3325868144689152
+    m_Localized: "<sprite name=\"icon_leftclick\"> 購買"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326766715600896
+    m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> 資料晶片: {0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8736125926866944
+    m_Localized: "否"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4304213502164992
+    m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> 資料晶片 +{0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3316549172953088
+    m_Localized: "被動"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326043365933056
+    m_Localized: "<sprite name=\"icon_leftclick\"> 裝備 <sprite name=\"icon_rightclick\"> 退款"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7504308305920
+    m_Localized: "靜音"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3324365581418496
+    m_Localized: "[武器]"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7022185644032
+    m_Localized: "返回"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326345653616640
+    m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> 不可退款"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57536428474368
+    m_Localized: "大廳"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3316497654317056
+    m_Localized: "主動"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8736093915938816
+    m_Localized: "是"
+    m_Metadata:
+      m_Items: []
   - m_Id: 35762831360
-    m_Localized: Localiztion Test CHHT
+    m_Localized: "開始遊戲"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3663321485377536
+    m_Localized: "關閉"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58052210425856
+    m_Localized: "重試"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4478459079655424
+    m_Localized: "目標"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44079612264448
+    m_Localized: "暫停"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326817575731200
+    m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> 所需晶片: {0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98681342754816
+    m_Localized: "背景音樂"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5398084768686080
+    m_Localized: "<sprite name=\"icon_leftclick\"> 裝備"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6563875845234688
+    m_Localized: "按下 <sprite name=\"icon_escape\"> 跳過"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8732561896734720
+    m_Localized: "刪除"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7957354798309376
+    m_Localized: "<sprite name=\"icon_language\"> 語言"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98699957075968
+    m_Localized: "音效"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8731268608262144
+    m_Localized: "繼續"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7305159874281472
+    m_Localized: "解析度"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326845836951552
+    m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> 退款返還晶片: {0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4984524653649920
+    m_Localized: "強化"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8731220751253504
+    m_Localized: "新遊戲"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737487026782208
+    m_Localized: "最佳時間: {0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4984204011692032
+    m_Localized: "戰鬥"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 221037821952
+    m_Localized: "結束"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3666672696524800
+    m_Localized: "挑戰"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8737385946120192
+    m_Localized: "確定要刪除此存檔資料嗎？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7302183986233344
+    m_Localized: "全螢幕"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326669890093056
+    m_Localized: "冷卻時間: {0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44034297004032
+    m_Localized: "主選單"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103836385280
+    m_Localized: "<sprite name=\"icon_option\"> 設定"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44213293121536
+    m_Localized: "繼續"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44328653258752
+    m_Localized: "訪問"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3316185476464640
+    m_Localized: "強化"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3666520502009856
+    m_Localized: "戰鬥"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3316405463515136
+    m_Localized: "武器"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3324359885553664
+    m_Localized: "[被動]"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3324277605892096
+    m_Localized: "[主動]"
     m_Metadata:
       m_Items: []
   references:

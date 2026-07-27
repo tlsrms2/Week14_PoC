@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -17,7 +17,87 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: c2940797846812f4881a7a287f9eb620, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 373298637312
+    m_Localized: "加速模組"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362898637312
+    m_Localized: "自動追蹤模組"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 368098637312
+    m_Localized: "高性能攔截模組"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 352498637312
+    m_Localized: "磁力模組"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 347285585920
+    m_Localized: "時間操縱模組"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 303861956608
+    m_Localized: "在目前位置留下持續10秒的全息影像。全息影像會與玩家一同攻擊，對敵人造成50%的普通傷害。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370698637312
+    m_Localized: "略微增加攔截範圍。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 378498637312
+    m_Localized: "能量轉換模組"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63427674112
+    m_Localized: "戰術閃避模組"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 381098637312
+    m_Localized: "成功攔截時，主動技能冷卻時間減少0.5秒。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 349898637312
+    m_Localized: "使周圍的時間減緩3秒。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 300527484928
+    m_Localized: "全息複製模組"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 238342733824
+    m_Localized: "向短距離突進，並清除周圍的投射物。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 355098637312
+    m_Localized: "在2秒內吸收周圍投射物以恢復彈藥。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 360298637312
+    m_Localized: "在極短時間內進入無敵狀態。若在此期間受到傷害，將恢復全部彈藥。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 357698637312
+    m_Localized: "招架模組"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365498637312
+    m_Localized: "子彈始終會朝敵人發射。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 375898637312
+    m_Localized: "沒有持有彈藥時，移動速度略微提升。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 383698637312
+    m_Localized: "緊急協議模組"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 386298637312
+    m_Localized: "受到致命傷害時，僅限一次避開危機。"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

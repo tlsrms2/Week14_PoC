@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -17,7 +17,759 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 8a8e32e629c410a4c97867fa550435ab, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 5333532901383
+    m_Localized: "通过<sprite name=\"icon_leftclick\">输入，可<color=#73f3ff>向光标方向发射弹丸型能量核心</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901389
+    m_Localized: "接下来将通过假人的压制弹，确认<color=#73f3ff>AEGIS界面的运作状态</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789249
+    m_Localized: "敌人在准备<color=#ff4c5c>部分强力攻击</color>时，<color=#73f3ff>ARGUS战术义眼有时会捕捉到脆弱的能量核心</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901404
+    m_Localized: "弹丸型能量核心若<color=#73f3ff>持有过久，将会过载并自动排出</color>。可通过弹匣中的子弹图标确认距离过载的剩余时间。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512789
+    m_Localized: "在医生面前还真是什么都敢说啊，<color=#73f3ff>我的女儿。</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512788
+    m_Localized: "...咳。可是如果是<color=#ff4c5c>做了非常坏的事的人死掉</color>，不也没关系吗？就像切除坏组织的手术一样。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512781
+    m_Localized: "<color=#A8B2BC>[ 正在播放重建后的记录介质。 ]</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512884
+    m_Localized: "即使是已经完成<color=#FF4C5C>访问</color>的目标，也可以<color=#73f3ff>记录该人物的数据并反复进行战斗</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512885
+    m_Localized: "<color=#73f3ff>达成额外条件</color>后，除需要分析的事件资料外，还可取得更多<color=#73f3ff>战斗数据</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512886
+    m_Localized: "<color=#73f3ff>收集到的数据芯片</color>之后会用于<color=#73f3ff>提升装备性能的模块扩展</color>。若<color=#73f3ff>战斗较为困难，建议优先取得数据芯片</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512887
+    m_Localized: "您已经取得了一定数量的<color=#73f3ff>数据芯片</color>，接下来我将说明<color=#73f3ff>模块扩展功能</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512880
+    m_Localized: "已将身份已确认人物的位置<color=#73f3ff>登记到战术面板</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512881
+    m_Localized: "可通过该<color=#73f3ff>战术面板</color><color=#73f3ff>确认目标信息</color>，并<color=#73f3ff>移动至对应位置</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512882
+    m_Localized: "<color=#73f3ff>靠近面板</color>后，会显示如下界面。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512883
+    m_Localized: "请<color=#FF4C5C>访问</color>任意目标并取得资料。取得有效资料后，我会立即分析。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512786
+    m_Localized: "连感谢的心意都拒绝的话，医生这份工作不就太冷清了吗？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512785
+    m_Localized: "可以随便收患者这种东西吗？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512769
+    m_Localized: "出入许可。建议立即接受急救处理。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512768
+    m_Localized: "检测到<color=#FF4C5C>右上肢缺失、从面部延伸至肩部的大面积烧伤及神经系统损伤</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512888
+    m_Localized: "<color=#73f3ff>靠近该模块面板</color>后，可以<color=#73f3ff>提升已植入装备的性能</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512889
+    m_Localized: "<color=#73f3ff>靠近面板</color>后，会显示如下界面。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512831
+    m_Localized: "那样更轻松，也少些后患。再说，那家伙已经越线太多了。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512866
+    m_Localized: "那么首先，分析受雇者的设备后，我们已确定<color=#ddbd78>辛迪加总部</color>的位置。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512867
+    m_Localized: "坏消息呢？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512860
+    m_Localized: "如果我在乎利益，现在就该收手了..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1424586970947584
+    m_Localized: "但尚未确认其被指定为清除目标的原因。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512814
+    m_Localized: "不..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512815
+    m_Localized: "把名单删掉。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512816
+    m_Localized: "...明白。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512817
+    m_Localized: "爸爸。我现在终于明白你那时说的话了。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512810
+    m_Localized: "我不太懂..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512811
+    m_Localized: "<color=#73f3ff>我的女儿</color>这么聪明，总有一天会明白的。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512812
+    m_Localized: "..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512813
+    m_Localized: "<color=#ff4c5c>要发送下一个目标的名单吗？</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901386
+    m_Localized: "接下来是<color=#73f3ff>使用假人的适应训练</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901408
+    m_Localized: "<color=#73f3ff>请通过战术闪避技能躲避敌人的攻击。</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333528707072
+    m_Localized: "也可以将选中的模块<color=#73f3ff>重新返还为数据芯片</color>。若<color=#73f3ff>战斗较为困难，建议尝试不同的模块组合</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901406
+    m_Localized: "主动技能"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512818
+    m_Localized: "<color=#ff4c5c>切除坏的东西</color>并不是终点，<color=#ddbd78>还必须照顾留下的伤口。</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512819
+    m_Localized: "我也要开始寻找那个方法了。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512856
+    m_Localized: "对外是结合音乐与无人机表演的艺术家，但实际上似乎隶属于<color=#ddbd78>辛迪加</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901387
+    m_Localized: "首先测试会对敌对个体<color=#73f3ff>自动修正瞄准的模块</color>。<color=#73f3ff>请向任意位置射击。</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901401
+    m_Localized: "接下来说明<color=#73f3ff>过载</color>。能量核心会持续释放能量，以维持AEGIS系统。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901400
+    m_Localized: "拦截是<color=#73f3ff>战斗中补充弹丸型能量核心的唯一手段</color>。部分投射物因形态不同无法拦截，请注意。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901403
+    m_Localized: "过载"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901388
+    m_Localized: "瞄准修正模块无异常。<color=#73f3ff>之后若不需要，可移除此模块</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828163
+    m_Localized: "敌方投射物受击 {0}/{1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901409
+    m_Localized: "已完成植入装备的基础训练。最后，将进行<color=#73f3ff>与敌方假人的模拟战斗</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512825
+    m_Localized: "是传闻中<color=#ddbd78>骑着那些枪到处跑</color>的怪人吗？买家呢？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512845
+    m_Localized: "该人物推测是负责管理武器、情报与资金流通的组织<color=#ddbd78>辛迪加</color>的会计人员。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512865
+    m_Localized: "...一个个说。我听完再判断。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512792
+    m_Localized: "<color=#A8B2BC>[ 17点32分26秒至41秒之间的记录已损坏。 ]</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828161
+    m_Localized: "基础射击 {0}/{1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512820
+    m_Localized: "...我走了。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512874
+    m_Localized: "如您所知，我们通过<color=#ff4c5c>访问</color>来调整社会的平衡。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 739306561925120
+    m_Localized: "此外，射击时会<color=#73f3ff>消耗弹匣中显示的弹丸型能量核心</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901413
+    m_Localized: "<color=#ff4c5c>战术闪避失败。</color>请重试。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512877
+    m_Localized: "因此，<color=#73f3ff>伊温</color>，协助你继续进行<color=#ff4c5c>访问</color>，被判断为对整个社会有益。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512863
+    m_Localized: "正在确认身份。代号<color=#73f3ff>伊温</color>，欢迎回来。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512794
+    m_Localized: "我不太懂..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901378
+    m_Localized: "移动"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901379
+    m_Localized: "按下<sprite name=\"icon_w\"><sprite name=\"icon_a\"><sprite name=\"icon_s\"><sprite name=\"icon_d\">键即可<color=#73f3ff>移动</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901381
+    m_Localized: "接下来测量瞬间冲击造成的影响。请使用左手的枪<color=#73f3ff>进行射击</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789250
+    m_Localized: "<color=#73f3ff>拦截该核心</color>时，不仅能<color=#73f3ff>使敌人眩晕，还会生成额外能量</color>。善加利用即可取得战斗优势。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512872
+    m_Localized: "简单来说，是一种投资。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512834
+    m_Localized: "是谁？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512840
+    m_Localized: "您取得的资料已经几乎分析完毕。有什么想问的吗？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512878
+    m_Localized: "...明白了。那么你能支援到什么程度？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901376
+    m_Localized: "开始<color=#73f3ff>装备适应训练</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4972079872663552
+    m_Localized: "父亲"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901384
+    m_Localized: "后坐力控制及姿态修正正常。身体平衡系统无异常。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512799
+    m_Localized: "..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512798
+    m_Localized: "...我来了，爸爸。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1108486769008640
+    m_Localized: "[ 目标 ]"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512837
+    m_Localized: "看来那家伙也得亲自去<color=#FF4C5C>访问</color>了。知道他现在在哪里吗？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512793
+    m_Localized: "<color=#ddbd78>...放下...才行。</color> 明白吗？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512890
+    m_Localized: "可以消耗持有的<color=#73f3ff>数据芯片</color>，<color=#73f3ff>扩展并装备</color>所需模块。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512891
+    m_Localized: "已完成扩展的模块可以<color=#73f3ff>自由更换</color>，但请注意，<color=#ff4c5c>同一类型的模块无法重复装备</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512780
+    m_Localized: "<color=#A8B2BC>[ R-2街区 维斯珀咖啡馆。7月21日 17点29分20秒 ]</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512797
+    m_Localized: "<color=#A8B2BC>[ 17点33分44秒之后，记录介质因爆炸被破坏，数据不存在。 ]</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512796
+    m_Localized: "对了，来喝喝<color=#ddbd78>别人送的茶</color>吧。<color=#73f3ff>你</color>应该喜欢绿茶——"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512795
+    m_Localized: "<color=#73f3ff>我的女儿</color>这么聪明，总有一天会明白的。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512779
+    m_Localized: "开始吧。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512778
+    m_Localized: "预计需要一些时间，建议您在等待期间<color=#73f3ff>进行适应训练</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512842
+    m_Localized: "理由很简单。<color=#FF4C5C>维斯珀的爆炸是意外</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512843
+    m_Localized: "...什么？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512875
+    m_Localized: "然而<color=#ddbd78>逐利而动的人</color>终会判断混浊，走向腐败。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512876
+    m_Localized: "相反，不以利益而以<color=#FF4C5C>一贯的动机</color>为驱动力的人，会成为纯粹且可预测的动力。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512773
+    m_Localized: "身体机能恢复率79%。右侧<color=#73f3ff>义手</color>神经连接已完成。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512772
+    m_Localized: "...R-2街区，<color=#ddbd78>维斯珀咖啡馆。</color> 今天17点33分前后的全部影像记录。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512848
+    m_Localized: "维斯珀事故次日，他被<color=#FF4C5C>发现死于家中，疑似自杀</color>。从附近录像设备记录中的扭曲身影判断，推测是<color=#ddbd78>米拉玖</color><color=#FF4C5C>访问</color>了他。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512770
+    m_Localized: "还有其他请求吗？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512777
+    m_Localized: "由于爆炸导致大部分原始记录遗失，目前正从附近记录设备残留的碎片中重建数据。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512776
+    m_Localized: "<color=#ddbd78>维斯珀</color>的资料呢？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512775
+    m_Localized: "另外，已将<color=#73f3ff>AEGIS核心接口</color>移植至神经系统。完成<color=#73f3ff>适应训练</color>后，预计反应速度与操作精度可提升至损伤前以上。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512774
+    m_Localized: "已按请求将<color=#73f3ff>ARGUS战术义眼</color>的视觉校准功能与义手的运动控制系统联动。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512821
+    m_Localized: "影像记录已结束。我们已尽力重建，但仍有部分遗失，敬请谅解。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512822
+    m_Localized: "...这样就够了。爆炸物的来源呢？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512823
+    m_Localized: "对碎片中零件的流通路径进行反向追踪后，确认事件两天前有同系列物品的销售记录。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901377
+    m_Localized: "首先确认装备植入是否对神经系统造成不良影响。<color=#73f3ff>请向前移动。</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512828
+    m_Localized: "不可能。若您亲自登记为正式任务则可行，但同时暴露给目标的可能性也很高，因此不建议。另一种方法是..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512829
+    m_Localized: "直接去<color=#ddbd78>萨尔沃</color>那里<color=#FF4C5C>访问</color>，把情报拿到手。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512849
+    m_Localized: "<color=#ddbd78>米拉玖</color>... 就是<color=#ddbd78>会在眼前消失又突然出现，从背后刺人的那个家伙</color>吗？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901412
+    m_Localized: "<color=#ddbd78>维斯珀咖啡馆</color>相关数据分析已完成98%。请返回大厅。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901411
+    m_Localized: "适应训练结束。信息更新。上调代号<color=#73f3ff>伊温</color>的身体能力信息。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901410
+    m_Localized: "请合理运用<color=#73f3ff>攻击、拦截、主动技能</color>，<color=#73f3ff>摧毁假人。</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901402
+    m_Localized: "若同一核心<color=#ff4c5c>长时间未被消耗，将会过载</color>，可能因热量对使用者造成伤害，因此会<color=#ff4c5c>自动排出</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901414
+    m_Localized: "请在即将接触投射物前执行战术闪避。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512826
+    m_Localized: "对方使用了假名，难以追踪。如您所知，<color=#ddbd78>非正式任务</color>的性质决定了追踪身份未明对象会受到很大限制。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789251
+    m_Localized: "反击"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512852
+    m_Localized: "已确认。另外，通过<color=#ddbd78>萨尔沃</color>的交易记录，掌握了部分<color=#ddbd78>与该事件有关的人物</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512791
+    m_Localized: "不过啊。<color=#ddbd78>救人时最重要的是——</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512861
+    m_Localized: "<color=#FF4C5C>这是极其私人的复仇。</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828166
+    m_Localized: "假人摧毁 {0}/{1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828162
+    m_Localized: "基础攻击命中 {0}/{1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901393
+    m_Localized: "遭受敌人攻击时，会<color=#73f3ff>优先消耗弹丸型能量核心来吸收伤害</color>。<color=#ff4c5c>在没有任何核心的状态下受击将会死亡</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901398
+    m_Localized: "拦截"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901399
+    m_Localized: "通过<sprite name=\"icon_rightclick\">输入，<color=#73f3ff>ARGUS眼球捕捉到敌方投射物后，义手会自动执行拦截</color>。成功捕捉并拦截后，会<color=#73f3ff>使敌方攻击无效化，并自动将其能量吸收到核心中</color>。若在短时间内<color=#ff4c5c>连续拦截失败</color>，ARGUS眼球会承受负荷，<color=#ff4c5c>捕捉范围将逐渐缩小</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512870
+    m_Localized: "<color=#ddbd78>那些家伙</color>看来察觉到了。<color=#ddbd78>艾可</color>... 偏偏带来了最麻烦的对手。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512858
+    m_Localized: "不过，由于<color=#ff4c5c>我们</color>也与<color=#ddbd78>辛迪加</color>保持合作关系，若未经程序便<color=#FF4C5C>访问</color>相关人物，我们很难提供便利。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512869
+    m_Localized: "<color=#ff4c5c>访问目标</color>。代号<color=#73f3ff>伊温</color>，就是你。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512846
+    m_Localized: "从情况来看，爆炸物被送到你父亲手上是计划外的变数，<color=#FF4C5C>原本似乎打算在目标家中引爆后伪装成燃气事故</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901390
+    m_Localized: "等一下，我不是才刚做完手术吗？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2147990514270208
+    m_Localized: "训练场"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901392
+    m_Localized: "受击"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901382
+    m_Localized: "基础攻击"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901394
+    m_Localized: "AEGIS系统无异常。可以使身体损伤无效化，但无法缓解冲击和疼痛，请知悉。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901395
+    m_Localized: "我知道..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901396
+    m_Localized: "另外，如果<color=#ff4c5c>没有用于阻断攻击的弹丸型能量核心</color>，AEGIS系统将不会启动，可能会受到<color=#ff4c5c>致命伤</color>。请务必注意。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901397
+    m_Localized: "接下来是<color=#73f3ff>运用ARGUS战术义眼与义手运动控制系统的训练</color>。请<color=#73f3ff>拦截假人发射的投射物</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512873
+    m_Localized: "投资？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512832
+    m_Localized: "...我也正好需要一个<color=#ff4c5c>发泄怒火</color>的对象。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512841
+    m_Localized: "炸弹的运送目的。我想知道<color=#ddbd78>为什么爸爸非死不可</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512782
+    m_Localized: "爸爸，这个盒子是？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512879
+    m_Localized: "已将<color=#ddbd78>辛迪加总部</color>的位置<color=#73f3ff>登记到面板</color>。建议在代号<color=#ddbd78>艾可</color>到来前先去<color=#ff4c5c>访问</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901385
+    m_Localized: "开放前方隔墙。请前进。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828164
+    m_Localized: "投射物拦截 {0}/{1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789248
+    m_Localized: "最后是<color=#73f3ff>反击</color>训练。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901405
+    m_Localized: "接下来是<color=#73f3ff>主动技能</color>。可以回收核心释放出的部分能量，用于<color=#73f3ff>瞬间强化身体能力</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828160
+    m_Localized: "移动训练 {0}/{1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1345961062363136
+    m_Localized: "这是合理推测。那么建议您在战斗前最后<color=#73f3ff>检查一次模块</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4972079872663553
+    m_Localized: "伊温"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512854
+    m_Localized: "没错。主导该行动的人是<color=#ddbd78>卡农</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512855
+    m_Localized: "<color=#ddbd78>卡农</color>？那个人也是这边的人？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512787
+    m_Localized: "爸爸要浑身是血地花上好几个小时救人... 真难理解，人为什么会想杀人。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512857
+    m_Localized: "通常很难确定这种高级干部的位置，但<color=#ddbd78>卡农</color>已知信息较多，因此能轻易锁定位置。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512850
+    m_Localized: "目前数据库中确有<color=#ddbd78>米拉玖</color>的推定位置，但... 若未登记为正式任务，则无法提供，敬请谅解。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512851
+    m_Localized: "没那个必要。只要在<color=#ddbd78>那个会计负责人</color>家附近晃悠，他自然会来<color=#FF4C5C>访问</color>我。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512804
+    m_Localized: "代号<color=#73f3ff>伊温</color>，调查辛迪加的资料后，已完成对疑似与事件有关人物的分析。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512805
+    m_Localized: "<color=#ff4c5c>要发送下一个目标的名单吗？</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512806
+    m_Localized: "..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512807
+    m_Localized: "不过... 是啊。<color=#ff4c5c>有时确实会需要手术</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512800
+    m_Localized: "我也想像爸爸一样... 成为一个好人..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512801
+    m_Localized: "就算形式有些不同... 我也想成为拯救他人的人..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512802
+    m_Localized: "连深爱的家人都没能保护... 我..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512803
+    m_Localized: "<color=#FF4C5C>我想创造一个好人不再受伤的世界。</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512835
+    m_Localized: "该人物是名为<color=#ddbd78>拉姆</color>的<color=#ddbd78>魁梧佣兵</color>，因其装备了<color=#ddbd78>高输出身体强化装备</color>，并不难锁定。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512836
+    m_Localized: "不过同样无法追踪是谁指使他运送爆炸物。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512784
+    m_Localized: "这次手术的患者说是作为<color=#ddbd78>感谢的礼物</color>送我的高级茶具。正好好久没见<color=#73f3ff>我的女儿</color>了，就带来了。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512830
+    m_Localized: "只要取得资料就能分析情报，您真的要<color=#FF4C5C>访问</color>他吗？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512808
+    m_Localized: "不过啊。<color=#ddbd78>救人时最重要的是，</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512809
+    m_Localized: "<color=#ddbd78>不只是切除坏组织，放下刀、缝合留下的伤口也同样重要。</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512833
+    m_Localized: "已确认。另外，已能确定<color=#ddbd78>运送该爆炸物的运送人</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828165
+    m_Localized: "技能闪避 {0}/{1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789252
+    m_Localized: "敌人在准备<color=#ff4c5c>部分强力攻击</color>时，<color=#73f3ff>ARGUS战术义眼会捕捉到脆弱的蓝色能量核心</color>。<color=#73f3ff>拦截该核心</color>时，将<color=#73f3ff>使敌人眩晕，并在周围生成额外能量</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512838
+    m_Localized: "请稍候。我会将<color=#73f3ff>相关资料登记到面板</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512839
+    m_Localized: "正在确认身份。代号<color=#73f3ff>伊温</color>，欢迎回来。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512824
+    m_Localized: "地点是<color=#ddbd78>M-8街区</color>附近废弃地铁内的<color=#ddbd78>黑市</color>。卖家是<color=#ddbd78>武器商萨尔沃</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512864
+    m_Localized: "目前有两项情报已完成分析。借用惯用说法，就是有好消息和坏消息。您想先听哪一个？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901407
+    m_Localized: "通过<sprite name=\"icon_space\">输入，可<color=#73f3ff>使用主动技能</color>。主动技能有<color=#73f3ff>冷却时间</color>，经过一定时间后可再次使用。可通过<color=#73f3ff>弹匣边框的技能量表</color>确认技能是否可用。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406394068992
+    m_Localized: "反击 {0}/{1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901415
+    m_Localized: "由于<color=#ff4c5c>弹丸型能量核心已全部耗尽</color>，将进行重新补给。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333461598208
+    m_Localized: "E.R.I.S."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512827
+    m_Localized: "支付追加费用也不行吗？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512853
+    m_Localized: "应该是<color=#ddbd78>辛迪加</color>那边的人吧。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512790
+    m_Localized: "不过... 是啊。<color=#ff4c5c>有时确实会需要手术</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333520318464
+    m_Localized: "正在确认身份。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333520318465
+    m_Localized: "代号<color=#73f3ff>伊温</color>，等级K26，当前无执行中的任务。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333520318466
+    m_Localized: "异常事项。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901391
+    m_Localized: "<color=#73f3ff>AEGIS系统是在受到攻击时消耗核心，瞬间阻断致命损伤的重要功能</color>。为确保安全，将提前进行确认。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512862
+    m_Localized: "已确认。出发前，请确认我们已<color=#73f3ff>扩展可用模块</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512868
+    m_Localized: "不久前，以委托人<color=#ddbd78>辛迪加</color>的名义登记了一项新任务。<color=#ff4c5c>访问者</color>，代号<color=#ddbd78>艾可</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512844
+    m_Localized: "调查<color=#ddbd78>拉姆</color>的终端后确认，清除目标是那份礼物原本的收件人，也就是<color=#ddbd78>你父亲负责治疗的患者</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901380
+    m_Localized: "动作正常。无异常事项。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512871
+    m_Localized: "话说回来，<color=#73f3ff>E.R.I.S.</color>。既然已经被指定为正式任务，你就没有理由再站在我这边了，为什么还要告诉我？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512859
+    m_Localized: "<color=#ff4c5c>即便如此也要进行吗？</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512847
+    m_Localized: "那么... <color=#ddbd78>那个人</color>现在在哪里？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636894302208
+    m_Localized: "恐怕对方也已经知道我会去，正和<color=#ddbd78>艾可</color>一起等着我。"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
