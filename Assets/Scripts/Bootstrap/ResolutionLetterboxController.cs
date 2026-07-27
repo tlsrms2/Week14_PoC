@@ -20,18 +20,6 @@ namespace Week14.Bootstrap
         private Camera backgroundCamera;
         private Camera mainCamera;
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-        private static void Install()
-        {
-            if (instance != null)
-            {
-                return;
-            }
-
-            var controllerObject = new GameObject(nameof(ResolutionLetterboxController));
-            instance = controllerObject.AddComponent<ResolutionLetterboxController>();
-        }
-
         private void Awake()
         {
             if (instance != null && instance != this)
