@@ -3562,9 +3562,9 @@ MonoBehaviour:
         trajectoryTileRotationOffset: 0
         trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
         trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
-        dashDustEffectPrefab: {fileID: 0}
-        dashDustSpawnPointPath: 
-        dashDustEffectScale: 1
+        dashDustEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashDustSpawnPointPath: DashDust
+        dashDustEffectScale: 0.6
     - rid: 4705778169994805735
       type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -3953,9 +3953,9 @@ MonoBehaviour:
         trajectoryTileRotationOffset: 0
         trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
         trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
-        dashDustEffectPrefab: {fileID: 0}
-        dashDustSpawnPointPath: 
-        dashDustEffectScale: 1
+        dashDustEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashDustSpawnPointPath: DashDust
+        dashDustEffectScale: 0.6
     - rid: 4705778196242497744
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4022,9 +4022,9 @@ MonoBehaviour:
         trajectoryTileRotationOffset: 0
         trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
         trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
-        dashDustEffectPrefab: {fileID: 0}
-        dashDustSpawnPointPath: 
-        dashDustEffectScale: 1
+        dashDustEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashDustSpawnPointPath: DashDust
+        dashDustEffectScale: 0.6
     - rid: 4705778196242497746
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4661,9 +4661,9 @@ MonoBehaviour:
         trajectoryTileRotationOffset: 0
         trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
         trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
-        dashDustEffectPrefab: {fileID: 0}
-        dashDustSpawnPointPath: 
-        dashDustEffectScale: 1
+        dashDustEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashDustSpawnPointPath: DashDust
+        dashDustEffectScale: 0.6
     - rid: 4705778205525803209
       type: {class: AssassinFireNextCloneShooterAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -4819,9 +4819,9 @@ MonoBehaviour:
         trajectoryTileRotationOffset: 0
         trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
         trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
-        dashDustEffectPrefab: {fileID: 0}
-        dashDustSpawnPointPath: 
-        dashDustEffectScale: 1
+        dashDustEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashDustSpawnPointPath: DashDust
+        dashDustEffectScale: 0.6
     - rid: 4705778205525803238
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -5187,9 +5187,9 @@ MonoBehaviour:
         trajectoryTileRotationOffset: 0
         trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
         trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
-        dashDustEffectPrefab: {fileID: 0}
-        dashDustSpawnPointPath: 
-        dashDustEffectScale: 1
+        dashDustEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashDustSpawnPointPath: DashDust
+        dashDustEffectScale: 0.6
     - rid: 4705778205525803310
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -5463,9 +5463,9 @@ MonoBehaviour:
         trajectoryTileRotationOffset: 0
         trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
         trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
-        dashDustEffectPrefab: {fileID: 0}
-        dashDustSpawnPointPath: 
-        dashDustEffectScale: 1
+        dashDustEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
+        dashDustSpawnPointPath: DashDust
+        dashDustEffectScale: 0.6
     - rid: 4705778205525803323
       type: {class: AssassinTeleportAroundPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:

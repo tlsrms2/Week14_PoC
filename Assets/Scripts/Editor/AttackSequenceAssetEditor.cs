@@ -1566,6 +1566,8 @@ internal static class BossGraphSfxIdOptions
     private const double RefreshIntervalSeconds = 1d;
 
     private static readonly List<string> ids = new();
+    private static readonly Dictionary<string, string> categoryById =
+        new(StringComparer.Ordinal);
     private static double nextRefreshAt;
 
     public static IReadOnlyList<string> Ids
@@ -1577,6 +1579,13 @@ internal static class BossGraphSfxIdOptions
         }
     }
 
+    public static string GetDisplayName(string id)
+    {
+        return categoryById.TryGetValue(id, out string category)
+            ? $"{category}/{id}"
+            : id;
+    }
+
     private static void RefreshIfNeeded()
     {
         if (EditorApplication.timeSinceStartup < nextRefreshAt)
@@ -1586,6 +1595,7 @@ internal static class BossGraphSfxIdOptions
 
         nextRefreshAt = EditorApplication.timeSinceStartup + RefreshIntervalSeconds;
         ids.Clear();
+        categoryById.Clear();
 
         string[] guids = AssetDatabase.FindAssets("t:SoundLibrary");
         for (int i = 0; i < guids.Length; i++)
@@ -1597,16 +1607,26 @@ internal static class BossGraphSfxIdOptions
                 continue;
             }
 
-            foreach (string id in library.SfxIds)
+            foreach (SoundLibrary.SoundEntry entry in library.SfxEntries)
             {
+                if (entry == null)
+                {
+                    continue;
+                }
+
+                string id = entry.Id;
                 if (!string.IsNullOrWhiteSpace(id) && !ids.Contains(id))
                 {
                     ids.Add(id);
+                    categoryById.Add(id, entry.Category);
                 }
             }
         }
 
-        ids.Sort(StringComparer.OrdinalIgnoreCase);
+        ids.Sort((left, right) => string.Compare(
+            GetDisplayName(left),
+            GetDisplayName(right),
+            StringComparison.OrdinalIgnoreCase));
     }
 }
 
@@ -2259,7 +2279,7 @@ internal sealed class BossGraphSfxIdDrawer : PropertyDrawer
         for (int i = 0; i < ids.Count; i++)
         {
             values.Add(ids[i]);
-            labels.Add(new GUIContent(ids[i]));
+            labels.Add(new GUIContent(BossGraphSfxIdOptions.GetDisplayName(ids[i])));
         }
 
         if (!string.IsNullOrWhiteSpace(property.stringValue) && !values.Contains(property.stringValue))

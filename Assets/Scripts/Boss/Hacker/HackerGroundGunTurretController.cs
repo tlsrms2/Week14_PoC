@@ -51,7 +51,7 @@ namespace Week14.Enemy
             fireEffectPrefab = nextFireEffectPrefab;
             fireEffectRotationOffsetDegrees = nextFireEffectRotationOffsetDegrees;
             fireEffectScale = Mathf.Max(0.01f, nextFireEffectScale);
-            fireSfxId = nextFireSfxId;
+            fireSfxId = HackerSfxIds.Resolve(nextFireSfxId, HackerSfxIds.BossNormalShot);
             elapsed = 0f;
             nextFireAt = 0f;
             shotCount = 0;
@@ -125,10 +125,9 @@ namespace Week14.Enemy
                     null,
                     fireEffectScale,
                     false);
+                IgnoreWeaponCollisions(firedProjectile);
+                context.PlaySfx(fireSfxId);
             }
-
-            IgnoreWeaponCollisions(firedProjectile);
-            context.PlaySfx(fireSfxId);
         }
 
         private void IgnoreWeaponCollisions(EnemyProjectile projectile)

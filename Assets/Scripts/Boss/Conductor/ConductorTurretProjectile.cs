@@ -144,6 +144,12 @@ namespace Week14.Enemy
             return true;
         }
 
+        public bool TryDestroyByBaseballBat(Vector3 hitPosition, Vector2 hitDirection)
+        {
+            // 이동 배치 중에는 공격 대상이 아니며, 설치 완료 후에는 배트 한 번으로 파괴됩니다.
+            return IsPlayerTargetable && ReceivePlayerHit(1, hitPosition, hitDirection);
+        }
+
         protected override void OnProjectileTick()
         {
             ForceZeroRotation();

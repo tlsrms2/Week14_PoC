@@ -589,6 +589,7 @@ MonoBehaviour:
   hpEmptyColor: {r: 0.45, g: 0.65, b: 1, a: 1}
   staggeredColor: {r: 1, g: 0.95, b: 0.35, a: 1}
   moveSpeed: 3.5
+  maxDirectMoveStepSeconds: 0.02
   bodyRoot: {fileID: 2186068290515178274}
   body: {fileID: 8932169065044441375}
   statusView: {fileID: 3117858263439591997}
@@ -656,7 +657,7 @@ MonoBehaviour:
       trailWidthMultiplier: 3
   - projectileName: "\uC800\uACA9\uD0C4"
     projectile:
-      prefab: {fileID: 5897565683229663206, guid: 1de8a3b518abacb4d96072b911884631, type: 3}
+      prefab: {fileID: 7932661546996378384, guid: 1de8a3b518abacb4d96072b911884631, type: 3}
       bulletDamage: 1
       chargeSeconds: 0
       chargeDriftSpeed: 0
@@ -695,7 +696,7 @@ MonoBehaviour:
       trailWidthMultiplier: 3
   - projectileName: "\uCD08\uC800\uACA9\uD0C4"
     projectile:
-      prefab: {fileID: 5897565683229663206, guid: 1de8a3b518abacb4d96072b911884631, type: 3}
+      prefab: {fileID: 7932661546996378384, guid: 1de8a3b518abacb4d96072b911884631, type: 3}
       bulletDamage: 1
       chargeSeconds: 0
       chargeDriftSpeed: 0
@@ -738,6 +739,8 @@ MonoBehaviour:
   wireContactFlashColor: {r: 0.2, g: 0.7, b: 1, a: 1}
   wireContactFlashSeconds: 0.18
   wireBulletShakeIntensity: 0.4
+  wireBulletWhiteFadeSeconds: 1
+  wireProtectedBulletFlashSeconds: 0.15
   wireSettings:
     flightSpeed: 20
     width: 0.04
@@ -757,8 +760,23 @@ MonoBehaviour:
     radius: 0.01
     trailSeconds: 1
     trailWidthMultiplier: 3
+  parryRewardProjectileSettings:
+    prefab: {fileID: 0}
+    bulletDamage: 1
+    chargeSeconds: 0.15
+    chargeDriftSpeed: 0.25
+    aimAtPlayerWhileCharging: 1
+    aimAtPlayerOnLaunch: 0
+    speed: 7
+    lifetime: 3
+    radius: 0.12
+    trailSeconds: 0.1
+    trailWidthMultiplier: 3
+  parryRewardSpawnRadius: 1.5
   hologramPrefab: {fileID: 2776275271019330438, guid: 4ada7c0abb03bd74b8343d37c63b6fea, type: 3}
   hologramStartPhaseNumber: 3
+  hologramSfxId: Hologram
+  hologramSfxDelaySeconds: 1
   facingVisual: {fileID: 417437570628517833}
   facingHand: {fileID: 3826212517247301555}
   facingParryingPoint: {fileID: 4252293946166106329}

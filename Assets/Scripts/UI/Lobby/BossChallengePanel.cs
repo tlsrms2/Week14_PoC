@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Challenge;
+using Week14.Enemy;
 using Week14.Save;
 
 namespace Week14.UI
@@ -23,6 +25,9 @@ namespace Week14.UI
         [SerializeField, Min(0f)] private float initialDelaySeconds = 0.3f;
         [Tooltip("슬롯 연출 사이사이의 대기 시간(초, 언스케일드)입니다. 첫 슬롯 전에는 적용되지 않습니다.")]
         [SerializeField, Min(0f)] private float betweenSlotsDelaySeconds = 0.15f;
+        [Tooltip("결과 화면에서 챌린지 한 항목의 공개 연출이 시작될 때 재생할 SoundLibrary SFX ID입니다.")]
+        [BossGraphSfxId]
+        [SerializeField] private string challengeResultSfxId = "ChallengeResult";
         [Tooltip("스윕이 도달하기 전, 판정 대기 중인 슬롯에 표시할 기본 텍스트 색상입니다.")]
         [SerializeField] private Color defaultTextColor = Color.white;
         [Tooltip("챌린지를 클리어했을 때의 텍스트 색상입니다. Show()(로비 호버)에서도 사용됩니다.")]
@@ -40,6 +45,9 @@ namespace Week14.UI
         public event Action RevealCompleted;
 
         private Coroutine revealRoutine;
+        private BossData activeRevealBossData;
+
+        public bool IsRevealPlaying => revealRoutine != null && activeRevealBossData != null;
 
         public void Show(BossData bossData)
         {
@@ -129,7 +137,6 @@ namespace Week14.UI
                 if (color.a <= 0f && !string.IsNullOrEmpty(text.text))
                 {
                     color.a = 1f;
-                    text.color = color;
                 }
 
                 revealView.SetOriginalColor(text, color);
@@ -149,7 +156,23 @@ namespace Week14.UI
                 return;
             }
 
+            activeRevealBossData = bossData;
             revealRoutine = StartCoroutine(PlayRevealRoutine(bossData));
+        }
+
+        // 진행 중인 슬롯별 공개 연출을 중단하고 모든 슬롯의 최종 판정 상태를 한 번에 표시합니다.
+        // 완료 이벤트는 일반 연출이 끝났을 때와 동일하게 한 번만 발생합니다.
+        public void CompleteRevealImmediately()
+        {
+            if (!IsRevealPlaying)
+            {
+                return;
+            }
+
+            BossData bossData = activeRevealBossData;
+            StopRevealRoutine();
+            ShowRevealResultsImmediate(bossData);
+            RevealCompleted?.Invoke();
         }
 
         public void Hide()
@@ -222,6 +245,11 @@ namespace Week14.UI
 
                     isFirstSlot = false;
 
+                    if (!string.IsNullOrEmpty(challengeResultSfxId))
+                    {
+                        SoundManager.PlaySfx(challengeResultSfxId);
+                    }
+
                     yield return slot.PlayRevealCoroutine(
                         definition, bossId, completedSprite, incompleteSprite,
                         clearedTextColor, notClearedTextColor,
@@ -232,7 +260,42 @@ namespace Week14.UI
             }
 
             revealRoutine = null;
+            activeRevealBossData = null;
             RevealCompleted?.Invoke();
+        }
+
+        private void ShowRevealResultsImmediate(BossData bossData)
+        {
+            string bossId = bossData.Id;
+            int index = 0;
+            foreach (ChallengeDefinitionSO definition in database.ForBoss(bossId))
+            {
+                if (index >= slots.Length)
+                {
+                    break;
+                }
+
+                if (slots[index] != null)
+                {
+                    slots[index].ShowRevealResultImmediate(
+                        definition,
+                        bossId,
+                        completedSprite,
+                        incompleteSprite,
+                        clearedTextColor,
+                        notClearedTextColor);
+                }
+
+                index++;
+            }
+
+            for (; index < slots.Length; index++)
+            {
+                if (slots[index] != null)
+                {
+                    slots[index].Clear();
+                }
+            }
         }
 
         private static bool IsAlreadyClearedBeforeRun(string bossId, string challengeId)
@@ -248,6 +311,8 @@ namespace Week14.UI
                 StopCoroutine(revealRoutine);
                 revealRoutine = null;
             }
+
+            activeRevealBossData = null;
         }
 
         private void ClearAll()

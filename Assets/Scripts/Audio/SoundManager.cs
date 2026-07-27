@@ -10,6 +10,19 @@ namespace Week14.Audio
     {
         private const int InitialSfxSourceCount = 8;
 
+        public sealed class SfxPlaybackHandle
+        {
+            internal SfxPlaybackHandle(AudioSource source, int playbackId)
+            {
+                Source = source;
+                PlaybackId = playbackId;
+            }
+
+            internal AudioSource Source { get; set; }
+            internal int PlaybackId { get; }
+            public bool IsPlaying => IsSfxPlaying(this);
+        }
+
         [SerializeField] private SoundLibrary library;
         [SerializeField] private AudioMixerGroup bgmOutput;
         [SerializeField] private AudioMixerGroup sfxOutput;
@@ -24,6 +37,8 @@ namespace Week14.Audio
 
         private AudioSource bgmSource;
         private readonly List<AudioSource> sfxSources = new();
+        private readonly Dictionary<AudioSource, int> sfxPlaybackIds = new();
+        private int nextSfxPlaybackId;
         private Coroutine bgmRoutine;
         private string currentBgmId;
         private float currentBgmEntryVolume = 1f;
@@ -156,6 +171,78 @@ namespace Week14.Audio
             }
 
             instance.PlaySfxInternal(clip, volume, pitch);
+        }
+
+        public static SfxPlaybackHandle PlayLoopingSfx(string id)
+        {
+            return PlaySfxWithHandle(id, true);
+        }
+
+        public static SfxPlaybackHandle PlayTrackedSfx(string id)
+        {
+            return PlaySfxWithHandle(id, false);
+        }
+
+        private static SfxPlaybackHandle PlaySfxWithHandle(string id, bool loop)
+        {
+            if (instance == null || instance.library == null)
+            {
+                return null;
+            }
+
+            SoundLibrary.SoundEntry entry = instance.library.FindSfx(id);
+            if (entry == null || entry.Clip == null)
+            {
+                Debug.LogWarning($"{nameof(SoundManager)}: SFX id '{id}' not found.");
+                return null;
+            }
+
+            AudioSource source = instance.PlaySfxInternal(entry.Clip, entry.Volume, entry.Pitch, loop);
+            if (source == null
+                || !instance.sfxPlaybackIds.TryGetValue(source, out int playbackId))
+            {
+                return null;
+            }
+
+            return new SfxPlaybackHandle(source, playbackId);
+        }
+
+        public static void StopSfx(SfxPlaybackHandle handle)
+        {
+            if (handle == null)
+            {
+                return;
+            }
+
+            AudioSource source = handle.Source;
+            handle.Source = null;
+            if (source == null
+                || instance == null
+                || !instance.sfxPlaybackIds.TryGetValue(source, out int playbackId)
+                || playbackId != handle.PlaybackId)
+            {
+                return;
+            }
+
+            source.Stop();
+            source.loop = false;
+            source.clip = null;
+            source.volume = 0f;
+            source.pitch = 1f;
+            instance.sfxPlaybackIds.Remove(source);
+        }
+
+        private static bool IsSfxPlaying(SfxPlaybackHandle handle)
+        {
+            if (handle?.Source == null || instance == null)
+            {
+                return false;
+            }
+
+            AudioSource source = handle.Source;
+            return source.isPlaying
+                && instance.sfxPlaybackIds.TryGetValue(source, out int playbackId)
+                && playbackId == handle.PlaybackId;
         }
 
         public static void PlaySfxAtPoint(string id, Vector3 position)
@@ -312,18 +399,24 @@ namespace Week14.Audio
             bgmRoutine = null;
         }
 
-        private void PlaySfxInternal(AudioClip clip, float entryVolume, float pitch)
+        private AudioSource PlaySfxInternal(AudioClip clip, float entryVolume, float pitch, bool loop = false)
         {
             if (sfxMuted)
             {
-                return;
+                return null;
             }
 
             AudioSource source = GetAvailableSfxSource();
             source.clip = clip;
             source.volume = Mathf.Clamp(entryVolume, 0f, 2f) * sfxVolume;
             source.pitch = pitch;
+            source.loop = loop;
+            nextSfxPlaybackId = nextSfxPlaybackId == int.MaxValue
+                ? 1
+                : nextSfxPlaybackId + 1;
+            sfxPlaybackIds[source] = nextSfxPlaybackId;
             source.Play();
+            return source;
         }
 
         private AudioSource GetAvailableSfxSource()

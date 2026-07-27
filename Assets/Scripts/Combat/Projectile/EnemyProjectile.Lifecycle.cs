@@ -266,6 +266,7 @@ namespace Week14.Combat
         protected virtual void OnProjectileTick() { }
         protected virtual void OnProjectileChargeTick() { }
         protected virtual void OnProjectileLaunched() { }
+        protected virtual void OnProjectileReflected() { }
         protected virtual void TickHoming() { }
         protected virtual void UpdateHomingChargeBlink() { }
         protected virtual bool ShouldAimAtPlayerOnLaunch()

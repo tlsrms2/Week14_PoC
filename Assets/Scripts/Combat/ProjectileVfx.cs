@@ -171,6 +171,171 @@ namespace Week14.Combat
             return instance;
         }
 
+        public static GameObject PlayAnchoredPrefab(
+            GameObject prefab,
+            Transform spawnParent,
+            Vector2 direction,
+            Vector2 rightFacingLocalOffset,
+            float rotationOffsetDegrees,
+            Vector3 localScale,
+            float playbackSpeed = 1f,
+            int sortingOrder = 0)
+        {
+            if (prefab == null || spawnParent == null)
+            {
+                return null;
+            }
+
+            GameObject instance = PlayPrefab(
+                prefab,
+                spawnParent.position,
+                Quaternion.identity,
+                null,
+                1f,
+                true,
+                playbackSpeed);
+            if (instance == null)
+            {
+                return null;
+            }
+
+            instance.transform.SetParent(spawnParent, false);
+            Vector2 worldForward = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
+            Vector3 localForward3 = spawnParent.InverseTransformDirection(worldForward);
+            Vector2 localForward = new Vector2(localForward3.x, localForward3.y).normalized;
+            float localAngle = Mathf.Atan2(localForward.y, localForward.x) * Mathf.Rad2Deg;
+            Quaternion directionRotation = Quaternion.Euler(0f, 0f, localAngle);
+            instance.transform.localPosition = directionRotation * rightFacingLocalOffset;
+            instance.transform.localRotation = Quaternion.Euler(0f, 0f, localAngle + rotationOffsetDegrees);
+            instance.transform.localScale = localScale;
+
+            Renderer[] renderers = instance.GetComponentsInChildren<Renderer>(true);
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                if (renderers[i] != null)
+                {
+                    renderers[i].sortingOrder = sortingOrder;
+                }
+            }
+
+            return instance;
+        }
+
+        public static GameObject PlayAnchoredBeamPrefab(
+            GameObject prefab,
+            Transform spawnParent,
+            Vector3 origin,
+            Vector2 direction,
+            float beamLength,
+            bool lengthAlongLocalY,
+            float muzzleOffset,
+            float rotationOffsetDegrees,
+            float playbackSpeed = 1f,
+            int sortingOrder = 0)
+        {
+            if (prefab == null || spawnParent == null || beamLength <= 0f)
+            {
+                return null;
+            }
+
+            origin.z = 0f;
+            Vector2 forward = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.right;
+            GameObject instance = PlayPrefab(
+                prefab,
+                origin,
+                Quaternion.identity,
+                null,
+                1f,
+                true,
+                playbackSpeed);
+            if (instance == null)
+            {
+                return null;
+            }
+
+            Vector2 sourceAxis = lengthAlongLocalY ? Vector2.up : Vector2.right;
+            float sourceLength = TryGetRendererProjectionSpan(instance, sourceAxis, out float sourceMin, out float sourceMax)
+                ? sourceMax - sourceMin
+                : 1f;
+            float lengthScale = Mathf.Max(0.01f, beamLength) / Mathf.Max(0.0001f, sourceLength);
+            Vector3 stretchedScale = instance.transform.localScale;
+            if (lengthAlongLocalY)
+            {
+                stretchedScale.y *= lengthScale;
+            }
+            else
+            {
+                stretchedScale.x *= lengthScale;
+            }
+
+            instance.transform.localScale = stretchedScale;
+            float directionAngle = Mathf.Atan2(forward.y, forward.x) * Mathf.Rad2Deg;
+            float axisCorrectionDegrees = lengthAlongLocalY ? -90f : 0f;
+            instance.transform.rotation = Quaternion.Euler(
+                0f,
+                0f,
+                directionAngle + axisCorrectionDegrees + rotationOffsetDegrees);
+
+            Vector3 desiredStart = origin + (Vector3)(forward * muzzleOffset);
+            instance.transform.position = desiredStart;
+            if (TryGetRendererProjectionSpan(instance, forward, out float stretchedMin, out _))
+            {
+                float desiredStartProjection = Vector2.Dot(desiredStart, forward);
+                instance.transform.position += (Vector3)(forward * (desiredStartProjection - stretchedMin));
+            }
+
+            // 월드 길이와 총구 정렬을 먼저 확정한 뒤 부모를 연결해, 총의 반전/회전 상태와 무관하게
+            // 발사 순간에는 실제 판정 사거리와 정확히 같은 길이로 보이게 합니다.
+            instance.transform.SetParent(spawnParent, true);
+
+            Renderer[] renderers = instance.GetComponentsInChildren<Renderer>(true);
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                if (renderers[i] != null)
+                {
+                    renderers[i].sortingOrder = sortingOrder;
+                }
+            }
+
+            return instance;
+        }
+
+        private static bool TryGetRendererProjectionSpan(
+            GameObject owner,
+            Vector2 axis,
+            out float minProjection,
+            out float maxProjection)
+        {
+            minProjection = float.PositiveInfinity;
+            maxProjection = float.NegativeInfinity;
+            if (owner == null || axis.sqrMagnitude <= 0.0001f)
+            {
+                return false;
+            }
+
+            Vector2 normalizedAxis = axis.normalized;
+            Renderer[] renderers = owner.GetComponentsInChildren<Renderer>(true);
+            bool foundRenderer = false;
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                Renderer renderer = renderers[i];
+                if (renderer == null || !renderer.enabled)
+                {
+                    continue;
+                }
+
+                Bounds bounds = renderer.bounds;
+                float projectedCenter = Vector2.Dot(bounds.center, normalizedAxis);
+                float projectedRadius = Mathf.Abs(normalizedAxis.x) * bounds.extents.x
+                    + Mathf.Abs(normalizedAxis.y) * bounds.extents.y;
+                minProjection = Mathf.Min(minProjection, projectedCenter - projectedRadius);
+                maxProjection = Mathf.Max(maxProjection, projectedCenter + projectedRadius);
+                foundRenderer = true;
+            }
+
+            return foundRenderer && maxProjection > minProjection;
+        }
+
         public static GameObject PlayShotLine(
             Vector3 start,
             Vector3 end,

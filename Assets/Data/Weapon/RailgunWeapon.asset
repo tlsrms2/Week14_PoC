@@ -35,7 +35,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  price: 2
+  price: 3
   inGameSprite: {fileID: 0}
   projectilePrefab: {fileID: 0}
   leftArmController: {fileID: 9100000, guid: 1d997e41831007f458700092b95af506, type: 2}
@@ -55,9 +55,9 @@ MonoBehaviour:
   parryingRangeTooltipTextFormat: 
   localizedParryingRangeTooltipText:
     m_TableReference:
-      m_TableCollectionName: GUID:844e39019e591984499c4858a8ec6fa8
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 3331357406494720
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -72,12 +72,24 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  laserSpeed: 60
+  laserSpeed: 35
   laserLifetimeSeconds: 0.4
   beamVisualSeconds: 0.12
   beamWidth: 0.08
   beamColor: {r: 0.5, g: 0.9, b: 1, a: 1}
-  fireSfxId: 
+  vfxSettings:
+    oneToTwoAmmoBeamPrefab: {fileID: 6931047726105842260, guid: ac35ddf4abb846bca2f6f32dc9e33a61, type: 3}
+    threeToFourAmmoBeamPrefab: {fileID: 6931047726105842260, guid: d1f5e270f0633164a823257a60efcd11, type: 3}
+    fiveAmmoBeamPrefab: {fileID: 6931047726105842260, guid: 74e6d3557c201cf4c8ec510233f92853, type: 3}
+    muzzleFlashPrefab: {fileID: 100538496412770034, guid: 45a3459a0a61d564e8b8cf1b18602335, type: 3}
+    fiveAmmoMuzzleFlashPrefab: {fileID: 7679067838388594500, guid: 9ae35c8c720f03148b5a3b5e9161e309, type: 3}
+    beamLengthAxis: 1
+    muzzleOffset: 0
+    rotationOffsetDegrees: 0
+    playbackSpeed: 1
+    sortingOrder: 73
+  oneToFourAmmoFireSfxId: railgun1~4
+  fiveAmmoFireSfxId: railgun5
   references:
     version: 2
     RefIds: []

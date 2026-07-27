@@ -20,6 +20,7 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float landingDistance = 2.5f;
         [SerializeField, Min(0f)] private float landingSideOffset;
         [SerializeField] private AnimationCurve flightSpeedCurve = AnimationCurve.Linear(0f, 1f, 1f, 1f);
+        [SerializeField, BossGraphSfxId] private string landingSfxId = HackerSfxIds.PutTurret;
 
         [Header("Weapon Sprite")]
         [Tooltip("무기가 땅에 완전히 떨어지기 전까지 사용할 스프라이트입니다. 비어 있으면 프리팹 원본을 사용합니다.")]
@@ -92,7 +93,8 @@ namespace Week14.Enemy
                 flightSpeedCurve,
                 equippedWeapon,
                 flyingSprite,
-                groundedSprite);
+                groundedSprite,
+                HackerSfxIds.Resolve(landingSfxId, HackerSfxIds.PutTurret));
             yield return HackerMeleeAttackAction.Wait(context, flightSeconds);
             yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
         }

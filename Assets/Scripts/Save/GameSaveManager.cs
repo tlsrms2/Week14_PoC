@@ -11,11 +11,94 @@ namespace Week14.Save
     public static class GameSaveManager
     {
         private const string SaveFolderName = "Saves";
-        private const string SaveFileName = "game_data.json";
         private const string ConfigResourcePath = "GameSaveConfig";
         private const string FallbackFirstBossId = "1";
 
-        private static string SavePath => Path.Combine(Application.persistentDataPath, SaveFolderName, SaveFileName);
+        public const int SlotCount = 3;
+
+        // 슬롯 선택 패널을 거치지 않고 씬을 바로 재생하는 에디터 디버그 상황을 위한 기본값입니다.
+        private static int currentSlot;
+
+        public static int CurrentSlot => currentSlot;
+
+        private static string GetSlotPath(int slot)
+        {
+            return Path.Combine(Application.persistentDataPath, SaveFolderName, $"game_data_{slot}.json");
+        }
+
+        private static string SavePath => GetSlotPath(currentSlot);
+
+        // 슬롯을 전환하고 캐시를 무효화합니다. 다음 Data 접근 시 해당 슬롯 파일을 새로 Load()합니다.
+        public static void SelectSlot(int slot)
+        {
+            if (slot < 0 || slot >= SlotCount || slot == currentSlot)
+            {
+                return;
+            }
+
+            currentSlot = slot;
+            data = null;
+        }
+
+        // Data/Load()를 거치지 않고 파일 존재 여부만 확인합니다.
+        // Data에 접근하면 기본 해금 로직이 돌며 파일이 즉시 생성되므로, "슬롯이 비어있는지" 판정에는
+        // 반드시 이 메서드를 써야 합니다.
+        public static bool DoesSlotExist(int slot)
+        {
+            return slot >= 0 && slot < SlotCount && File.Exists(GetSlotPath(slot));
+        }
+
+        // 해당 슬롯의 세이브 파일을 삭제합니다. 삭제 대상이 현재 활성 슬롯이면 메모리 캐시도 무효화합니다.
+        public static void DeleteSlot(int slot)
+        {
+            if (slot < 0 || slot >= SlotCount)
+            {
+                return;
+            }
+
+            string path = GetSlotPath(slot);
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+
+            string tempPath = path + ".tmp";
+            if (File.Exists(tempPath))
+            {
+                File.Delete(tempPath);
+            }
+
+            if (slot == currentSlot)
+            {
+                data = null;
+            }
+        }
+
+        // Data/Load()를 거치지 않고 파일에서 완료한 챌린지 개수만 직접 읽습니다(슬롯 진행도 미리보기용).
+        // DoesSlotExist와 마찬가지로 Data에 접근하지 않으므로 다른 슬롯의 기본 해금/저장을 유발하지 않습니다.
+        public static int GetSlotCompletedChallengeCount(int slot)
+        {
+            if (slot < 0 || slot >= SlotCount)
+            {
+                return 0;
+            }
+
+            string path = GetSlotPath(slot);
+            if (!File.Exists(path))
+            {
+                return 0;
+            }
+
+            try
+            {
+                GameSaveData preview = JsonUtility.FromJson<GameSaveData>(File.ReadAllText(path));
+                return preview?.completedChallengeIds?.Count ?? 0;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
 
         private static GameSaveConfigSO cachedConfig;
         private static bool configLoadAttempted;

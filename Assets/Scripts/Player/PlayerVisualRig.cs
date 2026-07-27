@@ -259,6 +259,15 @@ namespace Week14.Combat
                 return;
             }
 
+            // 무기는 장착돼 있는데 Left Arm Controller를 일부러 안 지정한 경우
+            // (예: 야구 배트처럼 총을 안 드는 무기) 기본 컨트롤러로 대체하지 않고 왼팔 자체를 숨깁니다.
+            if (weapon != null && weapon.LeftArmController == null)
+            {
+                SetLeftArmVisible(false);
+                return;
+            }
+
+            SetLeftArmVisible(true);
             RuntimeAnimatorController controller = weapon != null && weapon.LeftArmController != null
                 ? weapon.LeftArmController
                 : defaultLeftArmController;

@@ -39,7 +39,7 @@ MonoBehaviour:
   durationSeconds: 10
   damageMultiplier: 0.5
   cloneTint: {r: 0.45, g: 0.9, b: 1, a: 0.55}
-  activateSfxId: 
+  activateSfxId: Hologram
   references:
     version: 2
     RefIds: []

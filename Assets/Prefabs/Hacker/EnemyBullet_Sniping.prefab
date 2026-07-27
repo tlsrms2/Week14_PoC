@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2354031526117083692}
   - component: {fileID: 6474464507318701271}
   - component: {fileID: 6470095641802324841}
-  - component: {fileID: 5897565683229663206}
+  - component: {fileID: 7932661546996378384}
   m_Layer: 7
   m_Name: EnemyBullet_Sniping
   m_TagString: Untagged
@@ -99,7 +99,7 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: -0.000000014901161, y: 0.0022179484}
   m_Radius: 0.15399449
---- !u!114 &5897565683229663206
+--- !u!114 &7932661546996378384
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,14 +108,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 744419277602116065}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7adab327b2876a4db7387db73fb3dc1, type: 3}
+  m_Script: {fileID: 11500000, guid: 0f711391ab967fc4d9cd53fb45805df8, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.EnemyProjectile
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.HomingEnemyProjectileIgnoreWalls
   indicatorColor: {r: 0.9333334, g: 0.9215687, b: 0.20000002, a: 1}
   parryLockOnIndicatorRoot: {fileID: 4117313247110016133}
   parryLockOnReticle: {fileID: 3563560499679751554}
   parryLockOnRotatingRoot: {fileID: 992607595532873848}
   parryLockOnRotationSpeedDegrees: 180
+  trailColor: {r: 0.93333334, g: 0.92156863, b: 0.2, a: 1}
+  defaultHomingSeconds: 10
+  defaultTurnDegreesPerSecond: 540
+  chargeBlinkColor: {r: 0, g: 0, b: 0, a: 0}
+  chargeBlinkMinRate: 2
+  chargeBlinkMaxRate: 8
+  chargeSolidColorRemainingRatio: 0.25
+  chargingSprite: {fileID: 0}
+  launchedSprite: {fileID: 0}
+  chargeGaugeRenderer: {fileID: 0}
 --- !u!1 &895001679937465001
 GameObject:
   m_ObjectHideFlags: 0

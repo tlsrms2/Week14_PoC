@@ -692,7 +692,6 @@ MonoBehaviour:
   oneWeaponVisual: {fileID: 0}
   phaseVisualSwitchFallbackSeconds: 1
   showAttackRangeIndicators: 1
-  bgmId: 
   drawApproachRangeGizmos: 1
 --- !u!114 &5967073204653944249
 MonoBehaviour:

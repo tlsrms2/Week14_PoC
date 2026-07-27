@@ -10,8 +10,20 @@ namespace Week14.UI
     {
         [SerializeField] private TMP_Dropdown resolutionDropdown;
         [SerializeField] private Toggle fullscreenToggle;
+        [SerializeField]
+        private List<Vector2Int> fixedResolutions = new List<Vector2Int>
+        {
+            new Vector2Int(1280, 720),
+            new Vector2Int(1920, 1080),
+            new Vector2Int(2560, 1440),
+            new Vector2Int(3840, 2160),
+            new Vector2Int(1280, 800),
+            new Vector2Int(1680, 1050),
+            new Vector2Int(1920, 1200),
+            new Vector2Int(2560, 1600),
+        };
 
-        private readonly List<Resolution> resolutions = new List<Resolution>();
+        private readonly List<Vector2Int> resolutions = new List<Vector2Int>();
 
         private void Awake()
         {
@@ -40,8 +52,10 @@ namespace Week14.UI
             FullScreenMode requestedMode = isFullscreen ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
             SettingsManager.SetFullScreenMode(requestedMode);
 
-            int width = SettingsManager.ResolutionWidth > 0 ? SettingsManager.ResolutionWidth : Screen.width;
-            int height = SettingsManager.ResolutionHeight > 0 ? SettingsManager.ResolutionHeight : Screen.height;
+            int contentWidth = SettingsManager.ResolutionWidth > 0 ? SettingsManager.ResolutionWidth : Screen.width;
+            int contentHeight = SettingsManager.ResolutionHeight > 0 ? SettingsManager.ResolutionHeight : Screen.height;
+            SettingsManager.SetResolution(contentWidth, contentHeight);
+            (int width, int height) = FullScreenModeResolver.GetEffectiveScreenResolution(contentWidth, contentHeight, requestedMode);
             FullScreenMode mode = FullScreenModeResolver.Resolve(width, height, requestedMode);
             Screen.SetResolution(width, height, mode);
         }
@@ -54,18 +68,21 @@ namespace Week14.UI
             }
 
             resolutions.Clear();
-            var seen = new HashSet<(int width, int height)>();
+            var seen = new HashSet<Vector2Int>();
             var options = new List<string>();
 
-            foreach (Resolution resolution in Screen.resolutions)
+            var sortedResolutions = new List<Vector2Int>(fixedResolutions);
+            sortedResolutions.Sort((a, b) => (a.x * a.y).CompareTo(b.x * b.y));
+
+            foreach (Vector2Int resolution in sortedResolutions)
             {
-                if (!seen.Add((resolution.width, resolution.height)))
+                if (!seen.Add(resolution))
                 {
                     continue;
                 }
 
                 resolutions.Add(resolution);
-                options.Add($"{resolution.width} x {resolution.height}");
+                options.Add($"{resolution.x} x {resolution.y}");
             }
 
             int selectedIndex = FindIndex(SettingsManager.ResolutionWidth, SettingsManager.ResolutionHeight);
@@ -84,7 +101,7 @@ namespace Week14.UI
         {
             for (int i = 0; i < resolutions.Count; i++)
             {
-                if (resolutions[i].width == width && resolutions[i].height == height)
+                if (resolutions[i].x == width && resolutions[i].y == height)
                 {
                     return i;
                 }
@@ -100,12 +117,13 @@ namespace Week14.UI
                 return;
             }
 
-            Resolution resolution = resolutions[index];
-            SettingsManager.SetResolution(resolution.width, resolution.height);
+            Vector2Int resolution = resolutions[index];
+            SettingsManager.SetResolution(resolution.x, resolution.y);
 
             FullScreenMode requestedMode = SettingsManager.FullScreenModeValue ?? Screen.fullScreenMode;
-            FullScreenMode mode = FullScreenModeResolver.Resolve(resolution.width, resolution.height, requestedMode);
-            Screen.SetResolution(resolution.width, resolution.height, mode);
+            (int width, int height) = FullScreenModeResolver.GetEffectiveScreenResolution(resolution.x, resolution.y, requestedMode);
+            FullScreenMode mode = FullScreenModeResolver.Resolve(width, height, requestedMode);
+            Screen.SetResolution(width, height, mode);
         }
     }
 }

@@ -37,6 +37,8 @@ namespace Week14.Combat
         [SerializeField] private Transform leftGunOrigin;
         [SerializeField] private Transform leftGunFireOrigin;
         [SerializeField] private Transform rightGunFireOrigin;
+        [SerializeField, Tooltip("야구배트 이펙트가 자식으로 생성될 위치입니다. 플레이어 프리팹의 앵커 Transform을 연결합니다.")]
+        private Transform baseballBatVfxAnchor;
         [SerializeField] private LayerMask enemyMask = ~0;
         [SerializeField] private Rigidbody2D body;
         [SerializeField] private ExecutionImageEffect executionImage;
@@ -89,18 +91,25 @@ namespace Week14.Combat
 
         public readonly struct PlayerAttackEchoInfo
         {
-            public PlayerAttackEchoInfo(BaseWeaponSO weapon, int damage, float range, float reflectedProjectileSpeed)
+            public PlayerAttackEchoInfo(
+                BaseWeaponSO weapon,
+                int damage,
+                float range,
+                float reflectedProjectileSpeed,
+                int ammoSpent)
             {
                 Weapon = weapon;
                 Damage = damage;
                 Range = range;
                 ReflectedProjectileSpeed = reflectedProjectileSpeed;
+                AmmoSpent = ammoSpent;
             }
 
             public BaseWeaponSO Weapon { get; }
             public int Damage { get; }
             public float Range { get; }
             public float ReflectedProjectileSpeed { get; }
+            public int AmmoSpent { get; }
         }
 
         public event Action<PlayerAttackEchoInfo> PlayerAttackPerformed;
@@ -129,6 +138,7 @@ namespace Week14.Combat
         public Health Health => Context.Health;
         public BulletGauge Bullets => Context.Bullets;
         public Transform LeftGunOrigin => Context.LeftGunOrigin;
+        public Transform LeftFireOrigin => Rig.GetLeftFireOrigin();
         public bool IsReticleVisible => config != null
             && !GameModalState.BlocksGameplayInput
             && !IsPlayerControlLocked
@@ -278,6 +288,10 @@ namespace Week14.Combat
                 get => controller.rightGunFireOrigin;
                 internal set => controller.rightGunFireOrigin = value;
             }
+            public Transform BaseballBatVfxAnchor => controller.baseballBatVfxAnchor != null
+                ? controller.baseballBatVfxAnchor
+                : CombatCenterOrigin;
+            public void HideBaseballBatDisplay() => controller.Shooter.HideBaseballBatDisplay();
             public LayerMask EnemyMask => controller.enemyMask;
             public Rigidbody2D Body => controller.body;
             public Health Health => controller.health;
@@ -406,6 +420,7 @@ namespace Week14.Combat
 #if ENABLE_INPUT_SYSTEM
             GameInput.Unbind(playerInput);
 #endif
+            CancelActiveCharge();
             externalMovementLockCount = 0;
 
             if (Active == this)
@@ -462,6 +477,7 @@ namespace Week14.Combat
 
             if (health.IsDead)
             {
+                CancelActiveCharge();
                 StopBody();
                 SetMouseParryReticleVisible(false);
                 SetProjectileLockOnIndicatorVisible(false);
@@ -472,6 +488,7 @@ namespace Week14.Combat
 
             if (IsExecuting)
             {
+                CancelActiveCharge();
                 StopBody();
                 SetMouseParryReticleVisible(false);
                 SetProjectileLockOnIndicatorVisible(false);
@@ -481,6 +498,7 @@ namespace Week14.Combat
 
             if (IsPlayerControlLocked || GameModalState.BlocksGameplayInput)
             {
+                CancelActiveCharge();
                 StopBody();
                 SetMouseParryReticleVisible(false);
                 SetProjectileLockOnIndicatorVisible(false);
@@ -516,6 +534,7 @@ namespace Week14.Combat
             UpdateLockOnTarget();
             UpdateHoveredExecutionTarget();
             RotateToAim();
+            Shooter.UpdateBaseballBatDisplay();
             UpdateMouseParryRangeRecovery();
             bool isParrySuppressed = IsParrySuppressed;
             UpdateMouseParryReticle();
@@ -563,6 +582,14 @@ namespace Week14.Combat
                 {
                     ApplyMouseParryMissPenalty();
                 }
+            }
+        }
+
+        private void CancelActiveCharge()
+        {
+            if (shooter?.IsCharging == true)
+            {
+                shooter.EndCharge();
             }
         }
 
@@ -745,6 +772,13 @@ namespace Week14.Combat
             return ParryController.AutoParryProjectilesNear(center, radius, vfxSettings);
         }
 
+        // 야구방망이가 반사 불가(요격 전용) 투사체를 때렸을 때 마우스 즉시 패링과 동일한 성공 처리를 타도록
+        // PlayerShooter가 호출하는 통로입니다.
+        internal bool TryParryProjectileForMelee(EnemyProjectile target)
+        {
+            return ParryController.TryParryProjectileForMelee(target);
+        }
+
         // 다음으로 성공하는 공격 1회(무기 종류 무관: 권총 한 발, 샷건 한 발의 전체 펠릿, 스나이퍼 차지샷 1회)에만
         // 배율을 적용하고 자동으로 해제됩니다. PlayerShooter의 각 발사 지점(TryShootEnemy/FireSpread/FireSingle)이
         // 공격이 실제로 나가는 걸 확정한 시점에 ConsumeNextAttackDamageMultiplier를 호출해서 소모합니다.
@@ -754,12 +788,21 @@ namespace Week14.Combat
             nextAttackDamageMultiplier = Mathf.Max(1f, multiplier);
         }
 
-        internal void NotifyPlayerAttackPerformed(int damage, float range = 0f, float reflectedProjectileSpeed = 0f)
+        internal void NotifyPlayerAttackPerformed(
+            int damage,
+            float range = 0f,
+            float reflectedProjectileSpeed = 0f,
+            int ammoSpent = 0)
         {
             if (damage > 0)
             {
                 BaseWeaponSO weapon = WeaponLoadoutManager.Instance != null ? WeaponLoadoutManager.Instance.CurrentWeapon : null;
-                PlayerAttackPerformed?.Invoke(new PlayerAttackEchoInfo(weapon, damage, range, reflectedProjectileSpeed));
+                PlayerAttackPerformed?.Invoke(new PlayerAttackEchoInfo(
+                    weapon,
+                    damage,
+                    range,
+                    reflectedProjectileSpeed,
+                    ammoSpent));
             }
         }
 

@@ -347,22 +347,38 @@ namespace Week14.Story
                 yield break;
             }
 
-            BeginStorySegment();
-
-            for (int i = 0; i < dialogues.Count && !skipRequested; i++)
+            bool blocksLobbyPanelBackClose = IsLobbyTutorialEpisode(episodeId);
+            if (blocksLobbyPanelBackClose)
             {
-                InGameDialogueLine line = dialogues[i];
-                if (line == null)
-                {
-                    continue;
-                }
-
-                BeginLobbyTutorialCue(episodeId, i + 1);
-                yield return PlayLine(line, skippable);
-                EndLobbyTutorialCueLine();
+                lobbyMenuController?.SetBackCloseBlocked(true);
             }
 
-            GameSaveManager.MarkStoryEpisodeSeen(GetEpisodeSaveId(episodeId));
+            try
+            {
+                BeginStorySegment();
+
+                for (int i = 0; i < dialogues.Count && !skipRequested; i++)
+                {
+                    InGameDialogueLine line = dialogues[i];
+                    if (line == null)
+                    {
+                        continue;
+                    }
+
+                    BeginLobbyTutorialCue(episodeId, i + 1);
+                    yield return PlayLine(line, skippable);
+                    EndLobbyTutorialCueLine();
+                }
+
+                GameSaveManager.MarkStoryEpisodeSeen(GetEpisodeSaveId(episodeId));
+            }
+            finally
+            {
+                if (blocksLobbyPanelBackClose)
+                {
+                    lobbyMenuController?.SetBackCloseBlocked(false);
+                }
+            }
         }
 
         private IEnumerator PlayLine(InGameDialogueLine line, bool skippable)
@@ -373,7 +389,13 @@ namespace Week14.Story
 
             string speaker = line.HasLocalizedSpeaker ? line.LocalizedSpeaker.GetLocalizedString() : line.Speaker;
             string text = line.HasLocalizedText ? line.LocalizedText.GetLocalizedString() : line.Text;
-            dialoguePanel.ShowLine(speaker, text, line.Speaker);
+            dialoguePanel.ShowLine(
+                speaker,
+                text,
+                line.Speaker,
+                line.ExpressionId,
+                line.PortraitSlot,
+                line.ClearPortraitsBeforeLine);
 
             IEnumerator typing = dialoguePanel.PlayTypewriter(
                 text,

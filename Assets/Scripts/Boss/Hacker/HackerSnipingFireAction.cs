@@ -20,7 +20,7 @@ namespace Week14.Enemy
         [SerializeField, BossGraphBossChildPath] private string firePointPath;
         [SerializeField, Tooltip("0 이상이면 Projectile Settings의 Charge Seconds 대신 이 값을 사용합니다. 음수(-1)면 오버라이드하지 않습니다.")]
         private float chargeSecondsOverride = -1f;
-        [SerializeField, BossGraphSfxId] private string fireSfxId;
+        [SerializeField, BossGraphSfxId] private string fireSfxId = HackerSfxIds.SnipierShot;
         [SerializeField, BossGraphSfxId] private string launchSfxId;
 
         [Header("Fire Effects (Muzzle Flash)")]
@@ -49,6 +49,7 @@ namespace Week14.Enemy
 
         [Header("Charge")]
         [SerializeField, Min(0f)] private float windupSeconds = 0.8f;
+        [SerializeField, BossGraphSfxId] private string chargeSfxId = HackerSfxIds.GunCharge;
         [SerializeField, Min(0.01f)] private float chargeStartRadius = 1.1f;
         [SerializeField, Min(0.01f)] private float chargeEndRadius = 0.08f;
         [SerializeField, Min(0.005f)] private float chargeLineWidth = 0.05f;
@@ -108,6 +109,7 @@ namespace Week14.Enemy
         private IEnumerator ExecuteFacingLocked(BossActionContext context, Transform firePoint)
         {
             context.BeginSnipingTelegraph(ShootAnimationTrigger, HoldTelegraphAnimationParameter);
+            context.PlaySfx(HackerSfxIds.Resolve(chargeSfxId, HackerSfxIds.GunCharge));
             if (windupSeconds > 0f)
             {
                 HackerSnipingChargeIndicator chargeIndicator = HackerSnipingChargeIndicator.Create(
@@ -205,7 +207,7 @@ namespace Week14.Enemy
                     homingTurnDegreesPerSecond);
             }
 
-            context.PlaySfx(fireSfxId);
+            context.PlaySfx(HackerSfxIds.Resolve(fireSfxId, HackerSfxIds.SnipierShot));
             context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
             context.PlayOriginBurst(effects, spawnOrigin);
             PlayMuzzleFlash(context, firePoint, finalDirection);

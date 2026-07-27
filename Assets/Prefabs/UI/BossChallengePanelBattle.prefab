@@ -503,6 +503,7 @@ MonoBehaviour:
   completedSprite: {fileID: 7053541066537896939, guid: 20b5e1efa60e11844bb93978de40b600, type: 3}
   initialDelaySeconds: 1
   betweenSlotsDelaySeconds: 0.15
+  challengeResultSfxId: ChallengeResult
   defaultTextColor: {r: 1, g: 1, b: 1, a: 1}
   clearedTextColor: {r: 0, g: 1, b: 0.16993475, a: 1}
   notClearedTextColor: {r: 1, g: 0, b: 0, a: 1}

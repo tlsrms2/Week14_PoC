@@ -46,7 +46,6 @@ MonoBehaviour:
   executionFinishSeconds: 0.12
   executionCameraFocusWeight: 1
   executionCameraZoomMultiplier: 0.55
-  executionTeleportStartDistance: 4.5
   executionTeleportDistance: 4.5
   executionShotDimSeconds: 0.5
   executionShotDimAlpha: 1
@@ -69,4 +68,6 @@ MonoBehaviour:
   deathCameraFocusWeight: 1
   deathCameraZoomMultiplier: 0.4
   deathWorldFreezeDelaySeconds: 0.5
+  deathDetectedSfxId: PlayerDeath2
+  deathSequenceSfxId: PlayerDeath
   deathAnimationSeconds: 2.1

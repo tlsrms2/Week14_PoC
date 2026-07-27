@@ -37,7 +37,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   cooldownSeconds: 12
-  price: 2
+  price: 4
   durationSeconds: 0.5
   parryClearRadius: 3
   postParryInvulnerabilitySeconds: 0.3

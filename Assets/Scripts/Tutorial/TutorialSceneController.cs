@@ -12,10 +12,12 @@ using UnityEngine.Video;
 using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Combat;
+using Week14.Enemy;
 using Week14.Input;
 using Week14.Save;
 using Week14.Skills;
 using Week14.GameFlow;
+using Week14.Story;
 using Week14.UI;
 
 #if ENABLE_INPUT_SYSTEM
@@ -89,6 +91,15 @@ namespace Week14.Tutorial
         [Header("Respawn")]
         [SerializeField] private Transform firstRoomRespawnPoint;
 
+        [Header("Audio")]
+        [Tooltip("튜토리얼 진입 및 사망 후 재시작 시 재생할 BGM입니다.")]
+        [SerializeField, BossGraphBgmId] private string tutorialBgmId = "CutSceneBGM";
+        [SerializeField, Min(0f)] private float tutorialBgmFadeSeconds = 0.5f;
+        [Tooltip("각 튜토리얼 목표 완료 연출이 시작될 때 재생할 SFX입니다.")]
+        [SerializeField, BossGraphSfxId] private string objectiveCompleteSfxId;
+        [Tooltip("훈련용 더미가 바닥에서 올라오기 시작할 때 재생할 SFX입니다.")]
+        [SerializeField, BossGraphSfxId] private string trainingEnemyRaiseSfxId;
+
         [Header("Goals")]
         [SerializeField, Min(1)] private int attackHitGoal = 3;
         [SerializeField, Min(1)] private int hitGoal = 1;
@@ -156,6 +167,11 @@ namespace Week14.Tutorial
 
         private void Awake()
         {
+            if (!string.IsNullOrEmpty(tutorialBgmId))
+            {
+                SoundManager.PlayBgm(tutorialBgmId);
+            }
+
             ResolveDialoguePanels();
         }
 
@@ -266,6 +282,7 @@ namespace Week14.Tutorial
             HideExplanation();
             SetBossUiVisible(false);
             TryPushInitialMovementLock();
+            PlayTutorialBgm();
             tutorialRoutine = StartCoroutine(RunTutorial());
         }
 
@@ -637,6 +654,8 @@ namespace Week14.Tutorial
 
         private IEnumerator CompleteObjectivePanel(TutorialStepId step, int goal)
         {
+            PlaySfx(objectiveCompleteSfxId);
+
             if (objectiveDialoguePanel != null)
             {
                 yield return objectiveDialoguePanel.PlayObjectiveCompleted(
@@ -695,8 +714,14 @@ namespace Week14.Tutorial
             string text = ResolveDialogueText(line);
             bool revealRequested = false;
             bool canAcceptAdvance = false;
-            PlayDialogueSfx(line.SfxId);
-            textDialoguePanel.ShowLine(speaker, text, line.Speaker);
+            PlaySfx(line.SfxId);
+            textDialoguePanel.ShowLine(
+                speaker,
+                text,
+                line.Speaker,
+                line.ExpressionId,
+                line.PortraitSlot,
+                line.ClearPortraitsBeforeLine);
             IEnumerator typing = textDialoguePanel.PlayTypewriter(
                 text,
                 () => revealRequested || currentTextDialogueRevealRequestedByLocale);
@@ -796,7 +821,9 @@ namespace Week14.Tutorial
             textDialoguePanel.ReplaceLineText(
                 ResolveDialogueSpeaker(currentTextDialogueLine),
                 ResolveDialogueText(currentTextDialogueLine),
-                currentTextDialogueLine.Speaker);
+                currentTextDialogueLine.Speaker,
+                currentTextDialogueLine.ExpressionId,
+                currentTextDialogueLine.PortraitSlot);
             currentTextDialogueRevealRequestedByLocale = true;
         }
 
@@ -1121,7 +1148,7 @@ namespace Week14.Tutorial
             }
         }
 
-        private static void PlayDialogueSfx(string sfxId)
+        private static void PlaySfx(string sfxId)
         {
             if (!string.IsNullOrWhiteSpace(sfxId))
             {
@@ -1194,6 +1221,8 @@ namespace Week14.Tutorial
 
         private IEnumerator AnimateUnderfloorRaising()
         {
+            PlaySfx(trainingEnemyRaiseSfxId);
+
             float duration = Mathf.Max(0f, underfloorRaiseSeconds);
             if (duration <= 0f)
             {
@@ -2116,10 +2145,19 @@ namespace Week14.Tutorial
             {
                 RestorePlayerForRetry();
                 ConfigureInputSuppressionForStep(restartStep);
+                PlayTutorialBgm();
             });
 
             deathRoutine = null;
             tutorialRoutine = StartCoroutine(RunTutorialFrom(restartStep, false));
+        }
+
+        private void PlayTutorialBgm()
+        {
+            if (!string.IsNullOrWhiteSpace(tutorialBgmId))
+            {
+                SoundManager.PlayBgm(tutorialBgmId, Mathf.Max(0f, tutorialBgmFadeSeconds));
+            }
         }
 
         private void PushCompletionInvulnerability()

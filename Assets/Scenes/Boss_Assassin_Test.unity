@@ -9821,7 +9821,6 @@ MonoBehaviour:
       radius: 0.12
       trailSeconds: 0.1
       trailWidthMultiplier: 3
-  bgmId: 
   rotateBodyToPlayer: 0
 --- !u!222 &8937255414088847800
 CanvasRenderer:

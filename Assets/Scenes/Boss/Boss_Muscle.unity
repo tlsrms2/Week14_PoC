@@ -1051,6 +1051,10 @@ PrefabInstance:
       propertyPath: bossCombatUiRect
       value: 
       objectReference: {fileID: 1023516956}
+    - target: {fileID: 3375592416611051039, guid: 87b6686f424f85e419dfcf9ae5fdfc13, type: 3}
+      propertyPath: bossViewportFillRatio
+      value: 0.98
+      objectReference: {fileID: 0}
     - target: {fileID: 4005723614143604908, guid: 87b6686f424f85e419dfcf9ae5fdfc13, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -1635,6 +1639,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 773062704807472559, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 773062704807472559, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1359867847197000872, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
       propertyPath: m_Layer
       value: 10
@@ -1754,6 +1766,10 @@ PrefabInstance:
     - target: {fileID: 7315919716654902703, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7328522225088234491, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
+      propertyPath: m_Controller
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7698871802538057319, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
       propertyPath: m_Layer
@@ -3941,6 +3957,14 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4801602864313990611, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: openSfxId
+      value: PausePanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801602864313990611, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: closeSfxId
+      value: PausePanel
+      objectReference: {fileID: 0}
     - target: {fileID: 7333452412212431720, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -4246,6 +4270,7 @@ GameObject:
   - component: {fileID: 8111027705455617867}
   - component: {fileID: 4792026079266770237}
   - component: {fileID: 2104472610112323686}
+  - component: {fileID: 8111027705455617868}
   m_Layer: 6
   m_Name: Execution_Text
   m_TagString: Untagged
@@ -5138,6 +5163,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1436752412426234458, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+      propertyPath: defeatSfxId
+      value: Defeat
+      objectReference: {fileID: 0}
+    - target: {fileID: 1436752412426234458, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+      propertyPath: victorySfxId
+      value: Victory
+      objectReference: {fileID: 0}
+    - target: {fileID: 1436752412426234458, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+      propertyPath: victoryRestartButton
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1610243985912707304, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
       propertyPath: m_Name
       value: GameResultViewUI
@@ -5455,6 +5492,7 @@ PrefabInstance:
     - {fileID: 5351797262317333366, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
     - {fileID: 7278329924981756233, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
     - {fileID: 3459445456882823415, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+    - {fileID: 1918307981181876423, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2723632015128479934, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
@@ -5716,6 +5754,46 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 60}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8111027705455617868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1838507348908351733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:b1a0083a9ae987c4c95c94f0dce7f455
+    m_TableEntryReference:
+      m_KeyId: 6813745152
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2104472610112323686}
+        m_TargetAssemblyTypeName: TMPro.TextMeshProUGUI, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &9098114456209176994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5845,7 +5923,6 @@ MonoBehaviour:
   patternGroggyAnimator: {fileID: 0}
   walkAnimator: {fileID: 0}
   walkVelocityThreshold: 0.01
-  bgmId: Boss2BGM
 --- !u!4 &9185060628594991249
 Transform:
   m_ObjectHideFlags: 0

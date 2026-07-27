@@ -67,6 +67,10 @@ namespace Week14.Cutscene
         [SerializeField, Min(0f)] private float fadeOutSeconds = 0.25f;
         [SerializeField, Min(0f)] private float darkHoldSeconds;
 
+        [Header("Timing")]
+        [Tooltip("대사가 없는 스텝에서 이미지를 유지한 뒤 다음 스텝으로 넘어가기까지의 시간입니다.")]
+        [SerializeField, Min(0f)] private float noDialogueHoldSeconds;
+
         [Header("Background Motion")]
         [SerializeField, Min(0f)] private float motionSeconds;
         [SerializeField] private Vector2 startOffset;
@@ -93,6 +97,7 @@ namespace Week14.Cutscene
         public float FadeInSeconds => Mathf.Max(0f, fadeInSeconds);
         public float FadeOutSeconds => Mathf.Max(0f, fadeOutSeconds);
         public float DarkHoldSeconds => Mathf.Max(0f, darkHoldSeconds);
+        public float NoDialogueHoldSeconds => Mathf.Max(0f, noDialogueHoldSeconds);
         public float MotionSeconds => motionSeconds;
         public Vector2 StartOffset => startOffset;
         public Vector2 EndOffset => endOffset;

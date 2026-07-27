@@ -1258,7 +1258,7 @@ MonoBehaviour:
     action:
       rid: 4705778169994805632
     sequences: []
-    editorPosition: {x: 212, y: 266}
+    editorPosition: {x: 212, y: 265}
   - nodeId: Boss Area Damage1
     nodeGuid: 75be7b25277a42ffb1a873493373023c
     nodeKind: 0
@@ -3331,7 +3331,7 @@ MonoBehaviour:
         fireOrder: 2
         fireInterval: 0.05
         windupSeconds: 0
-        fireSfxId: BossNormalShot
+        fireSfxId: 
         launchSfxId: 
         effects:
           smoke:
@@ -5054,7 +5054,7 @@ MonoBehaviour:
           mode: 0
           angleDegrees: 90
         windupSeconds: 0
-        fireSfxId: BossNormalShot
+        fireSfxId: 
         launchSfxId: BossSpecialShot
         effects:
           smoke:
@@ -6785,7 +6785,7 @@ MonoBehaviour:
         impactEventId: SlamImpact
         impactEventTimeoutSeconds: 2
         windupSfxId: 
-        explosionSfxId: 
+        explosionSfxId: Smash
         explosionEffectPrefab: {fileID: 5541814149196066934, guid: fee3148d28f951a449cb8d5a3e932f72, type: 3}
         explosionEffectScale: 1
     - rid: 4705778169994805671
@@ -6849,7 +6849,7 @@ MonoBehaviour:
         impactEventId: SlamImpact
         impactEventTimeoutSeconds: 2
         windupSfxId: 
-        explosionSfxId: 
+        explosionSfxId: Smash
         explosionEffectPrefab: {fileID: 5541814149196066934, guid: fee3148d28f951a449cb8d5a3e932f72, type: 3}
         explosionEffectScale: 1
     - rid: 4705778169994805673

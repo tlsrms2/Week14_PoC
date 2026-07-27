@@ -15,8 +15,10 @@ namespace Week14.Skills
         [SerializeField, Range(0f, 1f)] private float slowMultiplier = 0.2f;
         [Tooltip("느려진 상태가 유지되는 시간(초)입니다.")]
         [SerializeField, Min(0f)] private float durationSeconds = 5f;
+
+        [Header("Audio")]
         [Tooltip("스킬 발동 시 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
-        [SerializeField] private string sfxId;
+        [SerializeField, BossGraphSfxId] private string sfxId;
 
         [Header("VFX")]
         [Tooltip("효과가 지속되는 동안 잔상이 생성되는 간격(초)입니다.")]

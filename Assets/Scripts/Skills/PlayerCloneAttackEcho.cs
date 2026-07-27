@@ -115,7 +115,7 @@ namespace Week14.Skills
 
             if (weapon is RailgunWeaponSO railgun)
             {
-                FireCloneLaser(origin, direction, cloneDamage, railgun);
+                FireCloneLaser(origin, direction, cloneDamage, railgun, attackInfo.AmmoSpent);
                 return;
             }
 
@@ -132,7 +132,14 @@ namespace Week14.Skills
                 float speed = attackInfo.ReflectedProjectileSpeed > 0f
                     ? attackInfo.ReflectedProjectileSpeed
                     : baseballBat.ReflectedProjectileSpeed;
-                SwingCloneBaseballBat(origin, direction, range, cloneDamage, speed, baseballBat.RangeFlashColor, baseballBat.RangeFlashSeconds);
+                SwingCloneBaseballBat(
+                    origin,
+                    direction,
+                    range,
+                    cloneDamage,
+                    speed,
+                    baseballBat.VfxSettings,
+                    baseballBat.GetCharge01FromRange(range));
                 return;
             }
 
@@ -189,7 +196,12 @@ namespace Week14.Skills
                 0.8f);
         }
 
-        private void FireCloneLaser(Vector2 origin, Vector2 direction, int damage, RailgunWeaponSO railgun)
+        private void FireCloneLaser(
+            Vector2 origin,
+            Vector2 direction,
+            int damage,
+            RailgunWeaponSO railgun,
+            int spentAmmo)
         {
             if (railgun == null || damage <= 0)
             {
@@ -199,9 +211,33 @@ namespace Week14.Skills
             float beamLength = Mathf.Max(0.1f, railgun.LaserSpeed * railgun.LaserLifetimeSeconds);
             DamageEnemiesAlongLine(origin, direction, beamLength, railgun.BeamWidth, damage);
             Vector3 beamEnd = origin + direction * beamLength;
-            ProjectileVfx.PlayShotLine(origin, beamEnd, cloneTint, railgun.BeamVisualSeconds, railgun.BeamWidth);
+            RailgunVfxSettings vfxSettings = railgun.VfxSettings;
+            GameObject beamPrefab = vfxSettings.ResolveBeamPrefab(Mathf.Max(1, spentAmmo));
+            if (beamPrefab != null)
+            {
+                ProjectileVfx.PlayAnchoredBeamPrefab(
+                    beamPrefab,
+                    cloneVisualRoot.transform,
+                    origin,
+                    direction,
+                    beamLength,
+                    vfxSettings.BeamLengthAxis == RailgunBeamLengthAxis.LocalY,
+                    vfxSettings.MuzzleOffset,
+                    vfxSettings.RotationOffsetDegrees,
+                    vfxSettings.PlaybackSpeed,
+                    vfxSettings.SortingOrder);
+            }
+            else
+            {
+                ProjectileVfx.PlayShotLine(origin, beamEnd, cloneTint, railgun.BeamVisualSeconds, railgun.BeamWidth);
+            }
+
+            GameObject railgunMuzzleFlashPrefab = vfxSettings.ResolveMuzzleFlashPrefab(spentAmmo);
+            GameObject muzzleFlashPrefab = railgunMuzzleFlashPrefab != null
+                ? railgunMuzzleFlashPrefab
+                : owner.Config.PlayerMuzzleFlashVfxPrefab;
             ProjectileVfx.PlayPrefab(
-                owner.Config.PlayerMuzzleFlashVfxPrefab,
+                muzzleFlashPrefab,
                 origin,
                 direction,
                 cloneVisualRoot.transform);
@@ -225,16 +261,98 @@ namespace Week14.Skills
             float range,
             int damage,
             float reflectedSpeed,
-            Color flashColor,
-            float flashSeconds)
+            BaseballBatVfxSettings vfxSettings,
+            float charge01)
         {
             if (range <= 0f)
             {
                 return;
             }
 
-            ReflectProjectilesInSemicircle(origin, direction, range, damage, reflectedSpeed);
-            ProjectileVfx.PlaySemicircleFlash(origin, direction, range, flashColor, flashSeconds);
+            if (vfxSettings != null)
+            {
+                // PlayAnchoredPrefab은 spawnParent(cloneVisualRoot)의 lossyScale을 그대로 곱해서 적용합니다.
+                // cloneVisualRoot는 플레이어 몸통 스케일을 복제해서 쓰기 때문에 스케일이 1이 아니고,
+                // 실제 배트 스윙이 붙는 BaseballBatVfxAnchor도 (그 조상 오브젝트 스케일 때문에) 1이 아닙니다.
+                // 두 앵커의 실제 런타임 lossyScale 비율만큼 미리 보정해야 실제 스윙과 같은 월드 크기로 나옵니다.
+                Transform realAnchor = owner != null ? owner.Context.BaseballBatVfxAnchor : null;
+                Vector3 realAnchorScale = realAnchor != null ? realAnchor.lossyScale : Vector3.one;
+                Vector3 cloneParentScale = cloneVisualRoot.transform.lossyScale;
+                Vector3 scaleRatio = new Vector3(
+                    GetSafeScaleRatio(realAnchorScale.x, cloneParentScale.x),
+                    GetSafeScaleRatio(realAnchorScale.y, cloneParentScale.y),
+                    GetSafeScaleRatio(realAnchorScale.z, cloneParentScale.z));
+
+                Vector2 rawOffset = vfxSettings.GetRightFacingLocalOffset(charge01);
+                Vector2 compensatedOffset = new Vector2(
+                    rawOffset.x * scaleRatio.x,
+                    rawOffset.y * scaleRatio.y);
+
+                Vector3 rawScale = vfxSettings.GetLocalScale(range);
+                Vector3 compensatedScale = Vector3.Scale(rawScale, scaleRatio);
+
+                ProjectileVfx.PlayAnchoredPrefab(
+                    vfxSettings.ResolveSwingVfxPrefab(charge01),
+                    cloneVisualRoot.transform,
+                    direction,
+                    compensatedOffset,
+                    vfxSettings.RotationOffsetDegrees,
+                    compensatedScale,
+                    vfxSettings.PlaybackSpeed,
+                    vfxSettings.SortingOrder);
+                ProjectileVfx.PlaySemicircleFlash(
+                    origin,
+                    direction,
+                    range,
+                    vfxSettings.RangeIndicatorColor,
+                    vfxSettings.RangeIndicatorSeconds);
+            }
+
+            float hitDelaySeconds = vfxSettings != null ? vfxSettings.AttackHitDelaySeconds : 0f;
+            float activeSeconds = vfxSettings != null ? vfxSettings.AttackActiveSeconds : 0.01f;
+            StartCoroutine(ResolveCloneBaseballBatHitsDuringWindow(
+                hitDelaySeconds,
+                activeSeconds,
+                origin,
+                direction,
+                range,
+                damage,
+                reflectedSpeed));
+        }
+
+        private IEnumerator ResolveCloneBaseballBatHitsDuringWindow(
+            float delaySeconds,
+            float activeSeconds,
+            Vector2 fallbackOrigin,
+            Vector2 direction,
+            float range,
+            int damage,
+            float reflectedSpeed)
+        {
+            if (delaySeconds > 0f)
+            {
+                yield return new WaitForSeconds(delaySeconds);
+            }
+
+            float activeEndsAt = Time.time + Mathf.Max(0.01f, activeSeconds);
+            do
+            {
+                Vector2 origin = cloneVisualRoot != null
+                    ? cloneVisualRoot.transform.position
+                    : fallbackOrigin;
+                DestroyDeployedConductorTurretsInSemicircle(origin, direction, range);
+                ReflectProjectilesInSemicircle(origin, direction, range, damage, reflectedSpeed);
+                yield return null;
+            }
+            while (Time.time < activeEndsAt);
+        }
+
+        // targetScale/parentScale 둘 다 부호(좌우 반전)는 무시하고 크기 비율만 계산합니다.
+        // 반전에 따른 회전 보정은 PlayAnchoredPrefab의 InverseTransformDirection이 이미 처리합니다.
+        private static float GetSafeScaleRatio(float targetScale, float parentScale)
+        {
+            float safeParentScale = Mathf.Max(0.0001f, Mathf.Abs(parentScale));
+            return Mathf.Abs(targetScale) / safeParentScale;
         }
 
         private BossAI ResolveTargetBoss()
@@ -716,7 +834,7 @@ namespace Week14.Skills
             for (int i = activeProjectiles.Count - 1; i >= 0; i--)
             {
                 EnemyProjectile projectile = activeProjectiles[i];
-                if (projectile == null || !projectile.CanBeIntercepted || !OverlapsSemicircle(projectile, origin, direction, range))
+                if (projectile == null || !projectile.CanBeReflected || !OverlapsSemicircle(projectile, origin, direction, range))
                 {
                     continue;
                 }
@@ -730,6 +848,25 @@ namespace Week14.Skills
                         0.12f,
                         new Color(1f, 0.65f, 0.25f, 0.85f));
                 }
+            }
+        }
+
+        private static void DestroyDeployedConductorTurretsInSemicircle(
+            Vector2 origin,
+            Vector2 direction,
+            float range)
+        {
+            var activeProjectiles = EnemyProjectile.ActiveProjectiles;
+            for (int i = activeProjectiles.Count - 1; i >= 0; i--)
+            {
+                if (activeProjectiles[i] is not ConductorTurretProjectile turret
+                    || !turret.IsPlayerTargetable
+                    || !OverlapsSemicircle(turret, origin, direction, range))
+                {
+                    continue;
+                }
+
+                turret.TryDestroyByBaseballBat(turret.transform.position, direction);
             }
         }
 

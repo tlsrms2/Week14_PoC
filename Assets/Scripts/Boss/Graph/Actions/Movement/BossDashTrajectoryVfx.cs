@@ -3,6 +3,104 @@ using UnityEngine;
 
 namespace Week14.Enemy
 {
+    internal readonly struct BossDashAttackArea
+    {
+        internal BossDashAttackArea(float length, float width, float lateralOffset)
+        {
+            Length = Mathf.Max(0f, length);
+            Width = Mathf.Max(0f, width);
+            LateralOffset = lateralOffset;
+        }
+
+        internal float Length { get; }
+        internal float Width { get; }
+        internal float LateralOffset { get; }
+        internal bool IsValid => Length > 0.0001f && Width > 0.0001f;
+
+        internal bool TryGetSegmentBox(
+            Vector2 origin,
+            Vector2 direction,
+            float fromDistance,
+            float toDistance,
+            out Vector2 center,
+            out Vector2 size,
+            out float angle)
+        {
+            center = default;
+            size = default;
+            angle = 0f;
+            if (!IsValid || direction.sqrMagnitude <= 0.0001f)
+            {
+                return false;
+            }
+
+            Vector2 forward = direction.normalized;
+            Vector2 lateral = new(-forward.y, forward.x);
+            float start = Mathf.Clamp(Mathf.Min(fromDistance, toDistance), 0f, Length);
+            float end = Mathf.Clamp(Mathf.Max(fromDistance, toDistance), 0f, Length);
+            float segmentLength = end - start;
+            if (segmentLength <= 0.0001f)
+            {
+                return false;
+            }
+
+            center = origin
+                + forward * ((start + end) * 0.5f)
+                + lateral * LateralOffset;
+            size = new Vector2(segmentLength, Width);
+            angle = Mathf.Atan2(forward.y, forward.x) * Mathf.Rad2Deg;
+            return true;
+        }
+    }
+
+    internal static class BossDashMotion
+    {
+        private const int IntegrationStepCount = 64;
+
+        internal static float GetDistance(float speed, float duration, AnimationCurve curve)
+        {
+            return GetDistanceAtProgress(speed, duration, curve, 1f);
+        }
+
+        internal static float GetDistanceAtProgress(
+            float speed,
+            float duration,
+            AnimationCurve curve,
+            float progress)
+        {
+            float clampedProgress = Mathf.Clamp01(progress);
+            if (speed <= 0f || duration <= 0f || clampedProgress <= 0f)
+            {
+                return 0f;
+            }
+
+            float integral = 0f;
+            float step = 1f / IntegrationStepCount;
+            for (int i = 0; i < IntegrationStepCount; i++)
+            {
+                float start = i * step;
+                if (start >= clampedProgress)
+                {
+                    break;
+                }
+
+                float end = Mathf.Min(start + step, clampedProgress);
+                float startValue = EvaluateSpeedCurve(curve, start);
+                float endValue = EvaluateSpeedCurve(curve, end);
+                integral += (startValue + endValue) * 0.5f * (end - start);
+            }
+
+            return Mathf.Max(0f, speed) * Mathf.Max(0f, duration) * integral;
+        }
+
+        private static float EvaluateSpeedCurve(AnimationCurve curve, float progress)
+        {
+            return curve != null && curve.length > 0
+                ? Mathf.Max(0f, curve.Evaluate(progress))
+                : 1f;
+        }
+    }
+
     // 프리팹 타일을 한 프레임에 생성해 각 Animator의 재생 위상을 맞춘다.
     internal sealed class BossDashTrajectoryVfx : MonoBehaviour
     {
@@ -12,6 +110,8 @@ namespace Week14.Enemy
         private Color readyColor;
         private Color chargedColor;
         private Color currentColor;
+
+        internal BossDashAttackArea AttackArea { get; private set; }
 
         internal static BossDashTrajectoryVfx Spawn(
             GameObject indicatorPrefab,
@@ -45,8 +145,14 @@ namespace Week14.Enemy
             currentColor = readyColor;
 
             GameObject firstTile = CreateTile(indicatorPrefab, tileRotationOffset, out Transform firstSlot);
-            MeasureTileGeometry(firstTile, out float sourceLength, out float sourceCenterOffset);
+            MeasureTileGeometry(
+                firstTile,
+                out float sourceLength,
+                out float sourceCenterOffset,
+                out float sourceWidth,
+                out float sourceLateralOffset);
             AlignTileCenter(firstTile.transform, sourceCenterOffset);
+            AttackArea = new BossDashAttackArea(length, sourceWidth, sourceLateralOffset);
 
             float segmentLength = tileSpacing > 0f
                 ? tileSpacing
@@ -128,7 +234,9 @@ namespace Week14.Enemy
         private static void MeasureTileGeometry(
             GameObject tile,
             out float sourceLength,
-            out float sourceCenterOffset)
+            out float sourceCenterOffset,
+            out float sourceWidth,
+            out float sourceLateralOffset)
         {
             SpriteRenderer[] tileRenderers = tile.GetComponentsInChildren<SpriteRenderer>(true);
             bool hasBounds = false;
@@ -156,11 +264,15 @@ namespace Week14.Enemy
             {
                 sourceLength = DefaultTileLength;
                 sourceCenterOffset = 0f;
+                sourceWidth = 0f;
+                sourceLateralOffset = 0f;
                 return;
             }
 
             sourceLength = bounds.size.x;
             sourceCenterOffset = bounds.center.x;
+            sourceWidth = Mathf.Max(0.0001f, bounds.size.y);
+            sourceLateralOffset = bounds.center.y;
         }
 
         private void RegisterRenderers(GameObject tile)

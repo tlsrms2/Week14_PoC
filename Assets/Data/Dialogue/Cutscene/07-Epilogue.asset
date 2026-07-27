@@ -218,6 +218,7 @@ MonoBehaviour:
     fadeInSeconds: 1
     fadeOutSeconds: 0.5
     darkHoldSeconds: 0.5
+    noDialogueHoldSeconds: 0
     motionSeconds: 0
     startOffset: {x: 0, y: 0}
     endOffset: {x: 0, y: 0}
@@ -352,6 +353,7 @@ MonoBehaviour:
     fadeInSeconds: 1
     fadeOutSeconds: 0.5
     darkHoldSeconds: 0.5
+    noDialogueHoldSeconds: 0
     motionSeconds: 0
     startOffset: {x: 0, y: 0}
     endOffset: {x: 0, y: 0}
@@ -439,6 +441,7 @@ MonoBehaviour:
     fadeInSeconds: 1
     fadeOutSeconds: 0.5
     darkHoldSeconds: 0.5
+    noDialogueHoldSeconds: 0
     motionSeconds: 0
     startOffset: {x: 0, y: 0}
     endOffset: {x: 0, y: 0}
@@ -463,6 +466,7 @@ MonoBehaviour:
     fadeInSeconds: 1
     fadeOutSeconds: 0.5
     darkHoldSeconds: 0.5
+    noDialogueHoldSeconds: 1.5
     motionSeconds: 0
     startOffset: {x: 0, y: 0}
     endOffset: {x: 0, y: 0}
@@ -487,6 +491,7 @@ MonoBehaviour:
     fadeInSeconds: 1
     fadeOutSeconds: 0.5
     darkHoldSeconds: 0.5
+    noDialogueHoldSeconds: 2.25
     motionSeconds: 0
     startOffset: {x: 0, y: 0}
     endOffset: {x: 0, y: 0}
@@ -640,6 +645,7 @@ MonoBehaviour:
     fadeInSeconds: 1
     fadeOutSeconds: 0.5
     darkHoldSeconds: 0.5
+    noDialogueHoldSeconds: 0
     motionSeconds: 0
     startOffset: {x: 0, y: 0}
     endOffset: {x: 0, y: 0}

@@ -1,4 +1,5 @@
 using UnityEngine;
+using Week14.Audio;
 
 namespace Week14.Enemy
 {
@@ -35,6 +36,7 @@ namespace Week14.Enemy
         private Sprite originalSprite;
         private Sprite flyingSprite;
         private Sprite groundedSprite;
+        private string landingSfxId;
 
         public HackerThrownWeaponType WeaponType { get; private set; }
         public bool IsGrounded => !isThrown && !isRecalling && !isOrbiting;
@@ -80,7 +82,8 @@ namespace Week14.Enemy
             AnimationCurve nextTravelSpeedCurve,
             Transform nextEquippedWeapon,
             Sprite nextFlyingSprite,
-            Sprite nextGroundedSprite)
+            Sprite nextGroundedSprite,
+            string nextLandingSfxId)
         {
             owner = nextOwner;
             WeaponType = nextWeaponType;
@@ -96,6 +99,7 @@ namespace Week14.Enemy
             CacheWeaponRenderer();
             flyingSprite = nextFlyingSprite;
             groundedSprite = nextGroundedSprite;
+            landingSfxId = nextLandingSfxId;
             ApplyWeaponSprite(flyingSprite);
             MatchEquippedWeaponWorldScale();
             restoreEquippedWeapon = equippedWeapon != null && equippedWeapon.gameObject.activeSelf;
@@ -186,6 +190,7 @@ namespace Week14.Enemy
                 ApplyWeaponSprite(groundedSprite);
                 owner?.RegisterGroundedWeapon(this);
                 FacePlayer();
+                SoundManager.PlaySfx(landingSfxId);
             }
         }
 

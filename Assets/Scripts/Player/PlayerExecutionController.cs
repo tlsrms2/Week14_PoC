@@ -11,6 +11,9 @@ namespace Week14.Combat
         private const string FinalExecutionHeadName = "Head";
         private const string WallLayerName = "Wall";
         private const float TeleportColliderInset = 0.02f;
+        private const float TeleportFallbackMinStep = 0.25f;
+        private const float TeleportFallbackColliderHeightRatio = 0.5f;
+        private const int TeleportFallbackMaxSteps = 8;
 
         private readonly PlayerCombatController.PlayerCombatContext context;
         private readonly PlayerCombatRig rig;
@@ -155,6 +158,7 @@ namespace Week14.Combat
 
             rig.StopBody();
             presentation.HidePlayerHpForExecution();
+            context.HideBaseballBatDisplay();
             BossAI executionBoss = executionTarget.GetComponentInParent<BossAI>();
             bool isFinalBossExecution = executionBoss != null && executionBoss.CurrentLives <= 1;
             if (isFinalBossExecution)
@@ -510,16 +514,12 @@ namespace Week14.Combat
                 ? body.GetComponentsInChildren<Collider2D>(true)
                 : playerTransform.GetComponentsInChildren<Collider2D>(true);
 
-            Vector2 destination;
-            if (IsWallFreeTeleportPosition(originalPosition, preferredPosition, playerColliders))
-            {
-                destination = preferredPosition;
-            }
-            else if (IsWallFreeTeleportPosition(originalPosition, fallbackPosition, playerColliders))
-            {
-                destination = fallbackPosition;
-            }
-            else
+            if (!TryResolveTeleportDestination(
+                    originalPosition,
+                    preferredPosition,
+                    fallbackPosition,
+                    playerColliders,
+                    out Vector2 destination))
             {
                 return false;
             }
@@ -540,6 +540,92 @@ namespace Week14.Combat
             return true;
         }
 
+        private static bool TryResolveTeleportDestination(
+            Vector2 originalPosition,
+            Vector2 preferredPosition,
+            Vector2 fallbackPosition,
+            Collider2D[] playerColliders,
+            out Vector2 destination)
+        {
+            if (IsSafeTeleportPosition(originalPosition, preferredPosition, playerColliders))
+            {
+                destination = preferredPosition;
+                return true;
+            }
+
+            if (TryFindSafeTeleportPositionBelow(
+                    originalPosition,
+                    preferredPosition,
+                    playerColliders,
+                    out destination))
+            {
+                return true;
+            }
+
+            if (IsSafeTeleportPosition(originalPosition, fallbackPosition, playerColliders))
+            {
+                destination = fallbackPosition;
+                return true;
+            }
+
+            return TryFindSafeTeleportPositionBelow(
+                originalPosition,
+                fallbackPosition,
+                playerColliders,
+                out destination);
+        }
+
+        private static bool TryFindSafeTeleportPositionBelow(
+            Vector2 originalPosition,
+            Vector2 blockedPosition,
+            Collider2D[] playerColliders,
+            out Vector2 destination)
+        {
+            float stepDistance = GetTeleportFallbackStep(playerColliders);
+            for (int step = 1; step <= TeleportFallbackMaxSteps; step++)
+            {
+                Vector2 candidate = blockedPosition + Vector2.down * (stepDistance * step);
+                if (IsSafeTeleportPosition(originalPosition, candidate, playerColliders))
+                {
+                    destination = candidate;
+                    return true;
+                }
+            }
+
+            destination = default;
+            return false;
+        }
+
+        private static float GetTeleportFallbackStep(Collider2D[] playerColliders)
+        {
+            float maxColliderHeight = 0f;
+            for (int i = 0; i < playerColliders.Length; i++)
+            {
+                Collider2D playerCollider = playerColliders[i];
+                if (IsUsableTeleportCollider(playerCollider))
+                {
+                    maxColliderHeight = Mathf.Max(maxColliderHeight, playerCollider.bounds.size.y);
+                }
+            }
+
+            return Mathf.Max(
+                TeleportFallbackMinStep,
+                maxColliderHeight * TeleportFallbackColliderHeightRatio);
+        }
+
+        private static bool IsSafeTeleportPosition(
+            Vector2 originalPosition,
+            Vector2 candidatePosition,
+            Collider2D[] playerColliders)
+        {
+            return IsWallFreeTeleportPosition(originalPosition, candidatePosition, playerColliders)
+                && GroundMovementConstraint.IsColliderFootprintGrounded(
+                    originalPosition,
+                    candidatePosition,
+                    playerColliders,
+                    TeleportColliderInset);
+        }
+
         private static bool IsWallFreeTeleportPosition(
             Vector2 originalPosition,
             Vector2 candidatePosition,
@@ -557,10 +643,7 @@ namespace Week14.Combat
             for (int i = 0; i < playerColliders.Length; i++)
             {
                 Collider2D playerCollider = playerColliders[i];
-                if (playerCollider == null
-                    || !playerCollider.enabled
-                    || playerCollider.isTrigger
-                    || !playerCollider.gameObject.activeInHierarchy)
+                if (!IsUsableTeleportCollider(playerCollider))
                 {
                     continue;
                 }
@@ -578,6 +661,14 @@ namespace Week14.Combat
 
             return checkedCollider
                 || Physics2D.OverlapCircle(candidatePosition, 0.01f, wallMask) == null;
+        }
+
+        private static bool IsUsableTeleportCollider(Collider2D collider)
+        {
+            return collider != null
+                && collider.enabled
+                && !collider.isTrigger
+                && collider.gameObject.activeInHierarchy;
         }
 
         private IEnumerator RunExecutionFlourish(ExecutionTarget executionTarget)

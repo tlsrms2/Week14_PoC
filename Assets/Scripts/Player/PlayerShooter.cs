@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Week14.Audio;
@@ -14,8 +15,29 @@ namespace Week14.Combat
         private float chargeTime;
         private bool isCharging;
         private bool hasShownChargeLaser;
+        private bool hasPlayedBaseballBatChargingSfx;
         private float nextBayonetAttackTime;
         private BaseballBatRangePreviewVfx baseballBatRangePreview;
+        private BaseballBatDisplayVfx baseballBatDisplayVfx;
+        private float baseballBatCurrentRotationDegrees;
+        private Vector3 baseballBatCurrentScale = Vector3.one;
+        private Color baseballBatCurrentColor = Color.white;
+        private bool baseballBatWindingUp;
+        private float baseballBatWindUpElapsed;
+        private float baseballBatWindUpDuration;
+        private bool baseballBatSwinging;
+        private float baseballBatSwingElapsed;
+        private float baseballBatSwingDuration;
+        private float baseballBatSwingStartDegrees;
+        private Vector3 baseballBatSwingStartScale;
+        private Color baseballBatSwingColor = Color.white;
+        private bool baseballBatHolding;
+        private float baseballBatHoldElapsed;
+        private bool baseballBatReturning;
+        private float baseballBatReturnElapsed;
+        private Coroutine baseballBatHitRoutine;
+        private SoundManager.SfxPlaybackHandle baseballBatChargingSfxHandle;
+        private SoundManager.SfxPlaybackHandle sniperChargeSfxHandle;
 
         internal PlayerShooter(
             PlayerCombatController.PlayerCombatContext context,
@@ -31,9 +53,12 @@ namespace Week14.Combat
 
         internal void BeginAttack()
         {
+            StopBaseballBatChargingSfx();
+            StopSniperChargeSfx();
             chargeTime = 0f;
             isCharging = true;
             hasShownChargeLaser = false;
+            hasPlayedBaseballBatChargingSfx = false;
             context.PlayerHpView?.FreezeNewestBullet(true);
             WeaponLoadoutManager.Instance?.CurrentWeapon?.BeginAttack(this);
         }
@@ -50,12 +75,15 @@ namespace Week14.Combat
         {
             if (!isCharging) return;
             context.PlayerHpView?.FreezeNewestBullet(false);
+            StopBaseballBatChargingSfx();
+            StopSniperChargeSfx();
             WeaponLoadoutManager.Instance?.CurrentWeapon?.ReleaseAttack(this, chargeTime);
             context.SniperChargeLaserEffect?.EndCharge();
             HideBaseballBatRangePreview();
             isCharging = false;
             chargeTime = 0f;
             hasShownChargeLaser = false;
+            hasPlayedBaseballBatChargingSfx = false;
         }
 
         // 홀드가 일정 시간(첫 등장 딜레이) 이상 지속됐을 때 딱 한 번만 레이저 연출을 켭니다.
@@ -72,14 +100,49 @@ namespace Week14.Combat
             context.SniperChargeLaserEffect?.SetProgress(progress);
         }
 
+        public void PlaySniperChargeSfx(string sfxId)
+        {
+            StopSniperChargeSfx();
+            if (!string.IsNullOrWhiteSpace(sfxId))
+            {
+                sniperChargeSfxHandle = SoundManager.PlayTrackedSfx(sfxId);
+            }
+        }
+
+        private void StopSniperChargeSfx()
+        {
+            SoundManager.StopSfx(sniperChargeSfxHandle);
+            sniperChargeSfxHandle = null;
+        }
+
         public void EndCharge()
         {
+            StopBaseballBatChargingSfx();
+            StopSniperChargeSfx();
             context.PlayerHpView?.FreezeNewestBullet(false);
             context.SniperChargeLaserEffect?.EndCharge();
             HideBaseballBatRangePreview();
             isCharging = false;
             chargeTime = 0f;
             hasShownChargeLaser = false;
+            hasPlayedBaseballBatChargingSfx = false;
+        }
+
+        public void PlayBaseballBatChargingSfxOnce(string sfxId)
+        {
+            if (hasPlayedBaseballBatChargingSfx || string.IsNullOrEmpty(sfxId))
+            {
+                return;
+            }
+
+            hasPlayedBaseballBatChargingSfx = true;
+            baseballBatChargingSfxHandle = SoundManager.PlayTrackedSfx(sfxId);
+        }
+
+        private void StopBaseballBatChargingSfx()
+        {
+            SoundManager.StopSfx(baseballBatChargingSfxHandle);
+            baseballBatChargingSfxHandle = null;
         }
 
         public void PreviewBaseballBatRange(float range, Color color)
@@ -113,6 +176,202 @@ namespace Week14.Combat
             baseballBatRangePreview = null;
         }
 
+        // 차징이 시작되는 순간(BeginAttack) 호출됩니다. 현재 각도(idle 0도)에서 스냅 목표 각도까지
+        // WindUpSnapSeconds 동안 빠르게 회전하는 1단계 트윈을 시작합니다. 실제 진행은
+        // UpdateBaseballBatCharging이 매 홀드 프레임마다 처리합니다.
+        public void BeginBaseballBatWindUp(BaseballBatVfxSettings vfxSettings)
+        {
+            if (vfxSettings == null)
+            {
+                return;
+            }
+
+            baseballBatSwinging = false;
+            baseballBatHolding = false;
+            baseballBatReturning = false;
+            baseballBatWindingUp = true;
+            baseballBatWindUpElapsed = 0f;
+            baseballBatWindUpDuration = Mathf.Max(0.01f, vfxSettings.WindUpSnapSeconds);
+        }
+
+        // 차징 중(HoldAttack)에 매 프레임 호출됩니다. 1단계(스냅)가 진행 중이면 0도에서 스냅 목표
+        // 각도까지 빠르게 회전시키고, 끝난 뒤에는 2단계로 넘어가 스냅 목표 각도에서 -N도까지
+        // 차징 진행도(0~1)에 비례해서 마저 회전합니다.
+        public void UpdateBaseballBatCharging(float charge01, BaseballBatVfxSettings vfxSettings, Sprite sprite)
+        {
+            if (vfxSettings == null)
+            {
+                return;
+            }
+
+            float clampedCharge01 = Mathf.Clamp01(charge01);
+            float fullTargetDegrees = -vfxSettings.DisplayWindUpDegrees;
+            float snapTargetDegrees = Mathf.Lerp(0f, fullTargetDegrees, vfxSettings.WindUpSnapRatio);
+
+            if (baseballBatWindingUp)
+            {
+                baseballBatWindUpElapsed += Time.deltaTime;
+                float snapT = Mathf.Clamp01(baseballBatWindUpElapsed / baseballBatWindUpDuration);
+                baseballBatCurrentRotationDegrees = Mathf.Lerp(0f, snapTargetDegrees, snapT);
+                if (snapT >= 1f)
+                {
+                    baseballBatWindingUp = false;
+                }
+            }
+            else
+            {
+                baseballBatCurrentRotationDegrees = Mathf.Lerp(snapTargetDegrees, fullTargetDegrees, clampedCharge01);
+                if (clampedCharge01 >= 1f && vfxSettings.FullChargeShakeDegrees > 0f)
+                {
+                    float noise = Mathf.PerlinNoise(Time.time * vfxSettings.FullChargeShakeSpeed, 0.37f) - 0.5f;
+                    baseballBatCurrentRotationDegrees += noise * 2f * vfxSettings.FullChargeShakeDegrees;
+                }
+            }
+
+            Vector3 scale = Vector3.Lerp(vfxSettings.DisplayScale, vfxSettings.MaxChargeScale, clampedCharge01);
+            Color color = vfxSettings.ResolveDisplayColor(charge01);
+            ApplyBaseballBatDisplayPose(vfxSettings, sprite, baseballBatCurrentRotationDegrees, scale, color);
+        }
+
+        // 공격이 실제로 나가는 순간(ReleaseAttack) 호출됩니다. 현재 각도(보통 -N)에서 +N까지
+        // durationSeconds 동안 빠르게 스윙하고, 동시에 크기를 기본 Display Scale로 되돌립니다.
+        // 실제 진행은 매 프레임 UpdateBaseballBatDisplay에서 처리되며, 스윙이 끝나면 곧바로
+        // 원래 각도로 돌아가지 않고 SwingHoldSeconds 동안 유지한 뒤 SwingReturnSeconds에 걸쳐 서서히 복귀합니다.
+        public void StartBaseballBatSwingThrough(BaseballBatVfxSettings vfxSettings, float durationSeconds)
+        {
+            if (vfxSettings == null)
+            {
+                return;
+            }
+
+            baseballBatWindingUp = false;
+            baseballBatSwinging = true;
+            baseballBatHolding = false;
+            baseballBatReturning = false;
+            baseballBatSwingElapsed = 0f;
+            baseballBatSwingDuration = Mathf.Max(0.01f, durationSeconds);
+            baseballBatSwingStartDegrees = baseballBatCurrentRotationDegrees;
+            baseballBatSwingStartScale = baseballBatCurrentScale;
+            baseballBatSwingColor = baseballBatCurrentColor;
+        }
+
+        // 매 프레임(차징 여부와 무관하게) 호출됩니다. 차징 중일 때는 UpdateBaseballBatCharging이 이미
+        // 포즈를 갱신하므로 여기서는 건드리지 않고, 스윙 스루 진행 또는 조준 방향을 향하는 대기 포즈만 처리합니다.
+        public void UpdateBaseballBatDisplay()
+        {
+            BaseballBatWeaponSO bat = WeaponLoadoutManager.Instance?.CurrentWeapon as BaseballBatWeaponSO;
+            if (bat == null)
+            {
+                HideBaseballBatDisplay();
+                return;
+            }
+
+            if (isCharging)
+            {
+                return;
+            }
+
+            BaseballBatVfxSettings vfxSettings = bat.VfxSettings;
+            if (baseballBatSwinging)
+            {
+                baseballBatSwingElapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(baseballBatSwingElapsed / baseballBatSwingDuration);
+                float rotation = Mathf.Lerp(baseballBatSwingStartDegrees, vfxSettings.DisplayWindUpDegrees, t);
+                Vector3 scale = Vector3.Lerp(baseballBatSwingStartScale, vfxSettings.DisplayScale, t);
+                ApplyBaseballBatDisplayPose(vfxSettings, bat.InGameSprite, rotation, scale, baseballBatSwingColor);
+                if (t >= 1f)
+                {
+                    baseballBatSwinging = false;
+                    baseballBatHolding = true;
+                    baseballBatHoldElapsed = 0f;
+                }
+
+                return;
+            }
+
+            if (baseballBatHolding)
+            {
+                baseballBatHoldElapsed += Time.deltaTime;
+                ApplyBaseballBatDisplayPose(vfxSettings, bat.InGameSprite, vfxSettings.DisplayWindUpDegrees, vfxSettings.DisplayScale, baseballBatSwingColor);
+                if (baseballBatHoldElapsed >= vfxSettings.SwingHoldSeconds)
+                {
+                    baseballBatHolding = false;
+                    baseballBatReturning = true;
+                    baseballBatReturnElapsed = 0f;
+                }
+
+                return;
+            }
+
+            if (baseballBatReturning)
+            {
+                baseballBatReturnElapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(baseballBatReturnElapsed / vfxSettings.SwingReturnSeconds);
+                float rotation = Mathf.Lerp(vfxSettings.DisplayWindUpDegrees, 0f, t);
+                Color color = Color.Lerp(baseballBatSwingColor, vfxSettings.ResolveDisplayColor(0f), t);
+                ApplyBaseballBatDisplayPose(vfxSettings, bat.InGameSprite, rotation, vfxSettings.DisplayScale, color);
+                if (t >= 1f)
+                {
+                    baseballBatReturning = false;
+                }
+
+                return;
+            }
+
+            ApplyBaseballBatDisplayPose(vfxSettings, bat.InGameSprite, 0f, vfxSettings.DisplayScale, vfxSettings.ResolveDisplayColor(0f));
+        }
+
+        private void ApplyBaseballBatDisplayPose(BaseballBatVfxSettings vfxSettings, Sprite sprite, float rotationDegrees, Vector3 scale, Color color)
+        {
+            if (vfxSettings == null || context.BaseballBatVfxAnchor == null)
+            {
+                return;
+            }
+
+            if (baseballBatDisplayVfx == null)
+            {
+                GameObject displayObject = new GameObject("BaseballBatDisplayVfx");
+                displayObject.transform.SetParent(context.BaseballBatVfxAnchor, false);
+                baseballBatDisplayVfx = displayObject.AddComponent<BaseballBatDisplayVfx>();
+                baseballBatDisplayVfx.Initialize(sprite, vfxSettings.DisplaySortingOrder, scale, color);
+            }
+            else
+            {
+                baseballBatDisplayVfx.SetSprite(sprite);
+                baseballBatDisplayVfx.SetScale(scale);
+                baseballBatDisplayVfx.SetColor(color);
+            }
+
+            baseballBatCurrentRotationDegrees = rotationDegrees;
+            baseballBatCurrentScale = scale;
+            baseballBatCurrentColor = color;
+
+            Vector3 origin = context.BaseballBatVfxAnchor.position;
+            Vector2 direction = aimController.GetAimDirection(context.BaseballBatVfxAnchor);
+            baseballBatDisplayVfx.SetPose(
+                origin,
+                direction,
+                vfxSettings.DisplayOffsetDistance,
+                rotationDegrees,
+                vfxSettings.DisplaySpriteRotationOffsetDegrees);
+        }
+
+        public void HideBaseballBatDisplay()
+        {
+            baseballBatWindingUp = false;
+            baseballBatSwinging = false;
+            baseballBatHolding = false;
+            baseballBatReturning = false;
+            baseballBatCurrentRotationDegrees = 0f;
+            if (baseballBatDisplayVfx == null)
+            {
+                return;
+            }
+
+            Object.Destroy(baseballBatDisplayVfx.gameObject);
+            baseballBatDisplayVfx = null;
+        }
+
         public bool TrySpendOneBullet()
         {
             BulletGauge bullets = context.Bullets;
@@ -128,10 +387,19 @@ namespace Week14.Combat
             return bullets.TrySpend(bullets.CurrentBullets, BulletChangeSource.Attack);
         }
 
-        // 관통(레일건) 전용 발사. 물리 투사체를 날리는 게 아니라, 화면에 그려지는 빔 그 자체를 즉시
-        // CircleCastAll로 스윕해서 일직선상의 모든 대상에게 damage를 그대로(분할 없이) 적용합니다.
-        // ShotLine 연출이 곧 판정 범위와 일치합니다(연출과 판정이 분리돼 있지 않음).
-        public void FireLaser(int damage, float speed, float lifetime, float beamVisualSeconds, float beamWidth, Color beamColor, string fireSfxId)
+        // 관통(레일건) 전용 발사. 물리 투사체를 날리는 게 아니라 실제 사거리만큼 즉시 CircleCastAll로
+        // 스윕해서 일직선상의 모든 대상에게 damage를 그대로(분할 없이) 적용합니다. 프리팹 이펙트는
+        // 같은 사거리까지 자동으로 늘어나며, 프리팹이 없을 때만 ShotLine을 대체 연출로 사용합니다.
+        public void FireLaser(
+            int damage,
+            int spentAmmo,
+            float speed,
+            float lifetime,
+            float beamVisualSeconds,
+            float beamWidth,
+            Color beamColor,
+            RailgunVfxSettings vfxSettings,
+            string fireSfxId)
         {
             PlayerCombatConfig config = context.Config;
             if (config == null) return;
@@ -147,11 +415,43 @@ namespace Week14.Combat
             Vector2 origin = fireOrigin.position;
 
             DamageEnemiesAlongLine(origin, direction, beamLength, config.ProjectileRadius, finalDamage);
-            context.Owner.NotifyPlayerAttackPerformed(finalDamage);
+            context.Owner.NotifyPlayerAttackPerformed(finalDamage, ammoSpent: spentAmmo);
 
             Vector3 beamEnd = fireOrigin.position + (Vector3)(direction * beamLength);
-            ProjectileVfx.PlayShotLine(fireOrigin.position, beamEnd, beamColor, beamVisualSeconds, beamWidth);
-            ProjectileVfx.PlayPrefab(config.PlayerMuzzleFlashVfxPrefab, fireOrigin.position, direction, fireOrigin, 1.2f);
+            GameObject beamPrefab = vfxSettings?.ResolveBeamPrefab(spentAmmo);
+            if (beamPrefab != null)
+            {
+                ProjectileVfx.PlayAnchoredBeamPrefab(
+                    beamPrefab,
+                    fireOrigin,
+                    origin,
+                    direction,
+                    beamLength,
+                    vfxSettings.BeamLengthAxis == RailgunBeamLengthAxis.LocalY,
+                    vfxSettings.MuzzleOffset,
+                    vfxSettings.RotationOffsetDegrees,
+                    vfxSettings.PlaybackSpeed,
+                    vfxSettings.SortingOrder);
+            }
+            else
+            {
+                ProjectileVfx.PlayShotLine(fireOrigin.position, beamEnd, beamColor, beamVisualSeconds, beamWidth);
+            }
+
+            GameObject muzzleFlashPrefab = vfxSettings?.ResolveMuzzleFlashPrefab(spentAmmo);
+            float muzzleFlashScale = 1f;
+            if (muzzleFlashPrefab == null)
+            {
+                muzzleFlashPrefab = config.PlayerMuzzleFlashVfxPrefab;
+                muzzleFlashScale = 1.2f;
+            }
+
+            ProjectileVfx.PlayPrefab(
+                muzzleFlashPrefab,
+                fireOrigin.position,
+                direction,
+                fireOrigin,
+                muzzleFlashScale);
             context.Visual?.PlayShot();
             if (!string.IsNullOrEmpty(fireSfxId))
             {
@@ -218,7 +518,9 @@ namespace Week14.Combat
 
         public void ResetChargeTime()
         {
+            StopBaseballBatChargingSfx();
             chargeTime = 0f;
+            hasPlayedBaseballBatChargingSfx = false;
         }
 
         // 근접 반원 공격(총검): 조준 방향(락온 중이면 GetAimDirection이 알아서 보스 방향을 반환) 기준
@@ -249,26 +551,171 @@ namespace Week14.Combat
             int reflectedDamage,
             float range,
             float reflectedSpeed,
-            Color rangeFlashColor,
-            float rangeFlashSeconds,
-            string swingSfxId)
+            BaseballBatVfxSettings vfxSettings,
+            float charge01,
+            string reflectionSuccessSfxId)
         {
             if (range <= 0f)
             {
                 return;
             }
 
-            Vector2 origin = context.CombatCenterOrigin.position;
             Vector2 direction = aimController.GetAimDirection(context.CombatCenterOrigin);
-
-            ReflectProjectilesInSemicircle(origin, direction, range, reflectedDamage, reflectedSpeed);
-            context.Owner.NotifyPlayerAttackPerformed(reflectedDamage, range, reflectedSpeed);
-            ProjectileVfx.PlaySemicircleFlash(origin, direction, range, rangeFlashColor, rangeFlashSeconds);
-
-            if (!string.IsNullOrEmpty(swingSfxId))
+            if (vfxSettings != null)
             {
-                SoundManager.PlaySfx(swingSfxId);
+                ProjectileVfx.PlayAnchoredPrefab(
+                    vfxSettings.ResolveSwingVfxPrefab(charge01),
+                    context.BaseballBatVfxAnchor,
+                    direction,
+                    vfxSettings.GetRightFacingLocalOffset(charge01),
+                    vfxSettings.RotationOffsetDegrees,
+                    vfxSettings.GetLocalScale(range),
+                    vfxSettings.PlaybackSpeed,
+                    vfxSettings.SortingOrder);
+
+                Vector2 indicatorOrigin = context.CombatCenterOrigin.position;
+                ProjectileVfx.PlaySemicircleFlash(
+                    indicatorOrigin,
+                    direction,
+                    range,
+                    vfxSettings.RangeIndicatorColor,
+                    vfxSettings.RangeIndicatorSeconds);
             }
+
+            float hitDelaySeconds = vfxSettings != null ? vfxSettings.AttackHitDelaySeconds : 0f;
+            float activeSeconds = vfxSettings != null ? vfxSettings.AttackActiveSeconds : 0.01f;
+            if (baseballBatHitRoutine != null)
+            {
+                context.CoroutineHost.StopCoroutine(baseballBatHitRoutine);
+            }
+
+            baseballBatHitRoutine = context.CoroutineHost.StartCoroutine(
+                ResolveBaseballBatHitsDuringWindow(
+                    hitDelaySeconds,
+                    activeSeconds,
+                    direction,
+                    range,
+                    reflectedDamage,
+                    reflectedSpeed,
+                    reflectionSuccessSfxId));
+        }
+
+        private IEnumerator ResolveBaseballBatHitsDuringWindow(
+            float delaySeconds,
+            float activeSeconds,
+            Vector2 direction,
+            float range,
+            int reflectedDamage,
+            float reflectedSpeed,
+            string reflectionSuccessSfxId)
+        {
+            if (delaySeconds > 0f)
+            {
+                yield return new WaitForSeconds(delaySeconds);
+            }
+
+            context.Owner.NotifyPlayerAttackPerformed(reflectedDamage, range, reflectedSpeed);
+
+            float activeEndsAt = Time.time + Mathf.Max(0.01f, activeSeconds);
+            bool playedReflectionSfx = false;
+            do
+            {
+                int newlyReflectedCount = ResolveBaseballBatHit(
+                    direction,
+                    range,
+                    reflectedDamage,
+                    reflectedSpeed);
+                if (newlyReflectedCount > 0
+                    && !playedReflectionSfx
+                    && !string.IsNullOrEmpty(reflectionSuccessSfxId))
+                {
+                    SoundManager.PlaySfx(reflectionSuccessSfxId);
+                    playedReflectionSfx = true;
+                }
+
+                yield return null;
+            }
+            while (Time.time < activeEndsAt);
+
+            baseballBatHitRoutine = null;
+        }
+
+        private int ResolveBaseballBatHit(
+            Vector2 direction,
+            float range,
+            int reflectedDamage,
+            float reflectedSpeed)
+        {
+            Vector2 origin = context.CombatCenterOrigin.position;
+            DestroyDeployedConductorTurretsInSemicircle(
+                origin,
+                direction,
+                range);
+            int reflectedCount = ReflectProjectilesInSemicircle(
+                origin,
+                direction,
+                range,
+                reflectedDamage,
+                reflectedSpeed);
+            InterceptNonReflectableProjectilesInSemicircle(origin, direction, range);
+            return reflectedCount;
+        }
+
+        // 반사는 안 되지만 요격은 되는 투사체(패링 미끼 등)를 처리합니다. 반사 가능한 투사체를 먼저 처리했으므로
+        // 여기 남아 있는 CanBeIntercepted 대상은 반사되지 않은 투사체뿐입니다. 마우스 패링과 같은 통로를 사용해
+        // 패링 성공 이벤트, 챌린지 집계와 보스 패턴 억제가 동일하게 동작하도록 합니다.
+        private void InterceptNonReflectableProjectilesInSemicircle(Vector2 origin, Vector2 direction, float range)
+        {
+            IReadOnlyList<EnemyProjectile> activeProjectiles = EnemyProjectile.ActiveProjectiles;
+
+            for (int i = activeProjectiles.Count - 1; i >= 0; i--)
+            {
+                EnemyProjectile projectile = activeProjectiles[i];
+                if (projectile == null || !projectile.CanBeIntercepted)
+                {
+                    continue;
+                }
+
+                if (!OverlapsSemicircle(projectile, origin, direction, range))
+                {
+                    continue;
+                }
+
+                PlayerDashVfx.PlayProjectileAbsorb(
+                    context.CoroutineHost,
+                    projectile,
+                    origin,
+                    0.16f,
+                    new Color(0.9f, 0.9f, 1f, 0.85f));
+                context.Owner.TryParryProjectileForMelee(projectile);
+            }
+        }
+
+        private static bool DestroyDeployedConductorTurretsInSemicircle(
+            Vector2 origin,
+            Vector2 direction,
+            float range)
+        {
+            IReadOnlyList<EnemyProjectile> activeProjectiles = EnemyProjectile.ActiveProjectiles;
+            bool destroyedAnyTurret = false;
+
+            // 파괴 시 활성 투사체 목록에서 빠지므로 인덱스가 밀리지 않도록 뒤에서부터 순회합니다.
+            for (int i = activeProjectiles.Count - 1; i >= 0; i--)
+            {
+                if (activeProjectiles[i] is not ConductorTurretProjectile turret
+                    || !turret.IsPlayerTargetable
+                    || !OverlapsSemicircle(turret, origin, direction, range))
+                {
+                    continue;
+                }
+
+                if (turret.TryDestroyByBaseballBat(turret.transform.position, direction))
+                {
+                    destroyedAnyTurret = true;
+                }
+            }
+
+            return destroyedAnyTurret;
         }
 
         private void ClearProjectilesInSemicircle(Vector2 origin, Vector2 direction, float range)
@@ -303,7 +750,7 @@ namespace Week14.Combat
             }
         }
 
-        private void ReflectProjectilesInSemicircle(
+        private int ReflectProjectilesInSemicircle(
             Vector2 origin,
             Vector2 direction,
             float range,
@@ -311,11 +758,12 @@ namespace Week14.Combat
             float reflectedSpeed)
         {
             IReadOnlyList<EnemyProjectile> activeProjectiles = EnemyProjectile.ActiveProjectiles;
+            int reflectedCount = 0;
 
             for (int i = activeProjectiles.Count - 1; i >= 0; i--)
             {
                 EnemyProjectile projectile = activeProjectiles[i];
-                if (projectile == null || !projectile.CanBeIntercepted)
+                if (projectile == null || !projectile.CanBeReflected)
                 {
                     continue;
                 }
@@ -327,6 +775,7 @@ namespace Week14.Combat
 
                 if (projectile.TryReflectTowardOwnerBoss(reflectedSpeed, reflectedDamage, out _))
                 {
+                    reflectedCount++;
                     PlayerDashVfx.PlayProjectileAbsorb(
                         context.CoroutineHost,
                         projectile,
@@ -335,6 +784,8 @@ namespace Week14.Combat
                         new Color(1f, 0.65f, 0.25f, 0.85f));
                 }
             }
+
+            return reflectedCount;
         }
 
         private void DamageEnemiesInSemicircle(Vector2 origin, Vector2 direction, float range, int damage)

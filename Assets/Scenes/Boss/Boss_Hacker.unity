@@ -1505,6 +1505,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 773062704807472559, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 773062704807472559, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1458687320501734866, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
       propertyPath: image
       value: 
@@ -1564,6 +1572,10 @@ PrefabInstance:
     - target: {fileID: 5490999076672185777, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7328522225088234491, guid: 03871c44cdede3646a2bd37f77db23d1, type: 3}
+      propertyPath: m_Controller
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2930,10 +2942,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
-      propertyPath: bgmId
-      value: Boss5BGM
-      objectReference: {fileID: 0}
-    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       propertyPath: bossNameText
       value: 
       objectReference: {fileID: 1023516957}
@@ -3022,6 +3030,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: playerNearbyWallTargetColliders.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       propertyPath: parryRewardProjectileSettings.chargeSeconds
       value: 0
       objectReference: {fileID: 0}
@@ -3033,6 +3045,18 @@ PrefabInstance:
       propertyPath: graphProjectiles.Array.data[9].projectileName
       value: Projectile10
       objectReference: {fileID: 0}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: 'playerNearbyWallTargetColliders.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1672176223}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: 'playerNearbyWallTargetColliders.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1083280347}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: 'playerNearbyWallTargetColliders.Array.data[2]'
+      value: 
+      objectReference: {fileID: 260137311}
     - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       propertyPath: parryRewardProjectileSettings.chargeDriftSpeed
       value: 0
@@ -4341,6 +4365,14 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4801602864313990611, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: openSfxId
+      value: PausePanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 4801602864313990611, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
+      propertyPath: closeSfxId
+      value: PausePanel
+      objectReference: {fileID: 0}
     - target: {fileID: 7625243295146896537, guid: 5beaaecec568b3a428ec7ef455bf19ad, type: 3}
       propertyPath: m_Name
       value: UICanvas
@@ -4551,6 +4583,18 @@ PrefabInstance:
     - target: {fileID: 916228608262628890, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1436752412426234458, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+      propertyPath: defeatSfxId
+      value: Defeat
+      objectReference: {fileID: 0}
+    - target: {fileID: 1436752412426234458, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+      propertyPath: victorySfxId
+      value: Victory
+      objectReference: {fileID: 0}
+    - target: {fileID: 1436752412426234458, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+      propertyPath: victoryRestartButton
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1610243985912707304, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
       propertyPath: m_Name
@@ -4865,7 +4909,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 1918307981181876423, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 218813ba59c83c74190ce20f103782d5, type: 3}

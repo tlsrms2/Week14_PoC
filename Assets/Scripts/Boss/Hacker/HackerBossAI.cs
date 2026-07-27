@@ -58,6 +58,9 @@ namespace Week14.Enemy
 
         [Header("Wire Settings")]
         [SerializeField] private HackerWireSettings wireSettings = new();
+        [Tooltip("Fire Wire의 Target Mode가 Player Nearby Wall일 때 사용할 씬 Wall 콜라이더 목록입니다.")]
+        [InspectorName("Player Nearby Wall 타겟 콜라이더")]
+        [SerializeField] private List<Collider2D> playerNearbyWallTargetColliders = new();
 
         [Header("Parry Bait Projectile")]
         [Tooltip("Melee, Thrust, Dash Sweep이 공통으로 사용하는 ParryBaitRewardProjectile 설정입니다.")]
@@ -69,6 +72,8 @@ namespace Week14.Enemy
         [Header("Hologram")]
         [SerializeField] private HackerHologramBoss hologramPrefab;
         [SerializeField, Min(1)] private int hologramStartPhaseNumber = 3;
+        [SerializeField, BossGraphSfxId] private string hologramSfxId = HackerSfxIds.Hologram;
+        [SerializeField, Min(0f)] private float hologramSfxDelaySeconds = 1f;
 
         [Header("Facing")]
         [SerializeField] private Transform facingVisual;
@@ -90,11 +95,6 @@ namespace Week14.Enemy
         [InspectorName("Melee / Thrust / Sweep 인디케이터 표시")]
         [SerializeField] private bool showAttackRangeIndicators = true;
 
-        [Header("BGM")]
-        [Tooltip("전투 시작 시 재생할 BGM의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
-        [BossGraphBgmId]
-        [SerializeField] private string bgmId;
-
         [Header("Editor")]
         [SerializeField] private bool drawApproachRangeGizmos = true;
 
@@ -115,17 +115,27 @@ namespace Week14.Enemy
         private bool isHologramSummonUnlocked;
         private HackerFireWireResult lastFireWireResult;
         private HackerHologramBoss hologram;
+        private Coroutine hologramSfxRoutine;
         private HackerPatternParryRewardTracker activePatternParryRewardTracker;
         private Animator twoWeaponAnimator;
         private Animator oneWeaponAnimator;
-        private Coroutine phaseVisualSwitchRoutine;
+        private bool isPhaseVisualSwitchPending;
+        private bool hasEnteredTwoWeaponStunEnd;
+        private float phaseVisualSwitchElapsedSeconds;
+        private float phaseVisualSwitchTimeoutSeconds;
         private bool isOneWeaponVisualActive;
         private Collider2D[] playerBlockingBossColliders = new Collider2D[0];
+        private Collider2D[] playerBlockingPlayerColliders = new Collider2D[0];
+        private PlayerOnlyMovementBarrier[] playerMovementBarriers = new PlayerOnlyMovementBarrier[0];
         private Vector2 previousPlayerBlockingPosition;
         private bool hasPreviousPlayerBlockingPosition;
+        private bool isPlayerBlockingSuppressed;
+        private bool isPlayerBlockingResumePending;
         protected virtual bool UsesHackerPresentationUpdates => true;
         public override bool SuppressesBodyContactDamage => true;
         internal virtual HackerWireSettings WireSettings => wireSettings ??= new HackerWireSettings();
+        internal virtual IReadOnlyList<Collider2D> PlayerNearbyWallTargetColliders =>
+            playerNearbyWallTargetColliders;
         internal virtual BossProjectileSettings ParryProjectileSettings => parryProjectileSettings ??= new BossProjectileSettings();
         internal virtual bool ShowsAttackRangeIndicators => showAttackRangeIndicators;
 
@@ -229,20 +239,13 @@ namespace Week14.Enemy
         {
             if (UsesHackerPresentationUpdates)
             {
-                ResolvePlayerBlockingFromBossMovement();
+                TickPlayerBlocking();
                 UpdateWalkState();
                 UpdateFacingFromPlayer();
             }
 
+            TickOneWeaponVisualSwitch();
             OnIdleHackerLateUpdate();
-        }
-
-        protected override void OnCombatStarted()
-        {
-            if (!string.IsNullOrWhiteSpace(bgmId))
-            {
-                SoundManager.PlayBgm(bgmId);
-            }
         }
 
         protected override void OnBossDied()
@@ -287,6 +290,7 @@ namespace Week14.Enemy
         protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
         {
             CancelPatternParryRewardTracking();
+            CancelHologramSfx();
             base.OnBossPhaseChanged(phaseIndex, phaseNumber);
             HackerWireNodeProjectile.ClearAttachedNodes(this);
 
@@ -301,7 +305,10 @@ namespace Week14.Enemy
             {
                 // 홀로그램 리플레이 노드가 먼저 실행되어도 3페이즈 전에는 생성하지 않는다.
                 isHologramSummonUnlocked = true;
-                TryEnsureHologram(playSummonEntrance: true);
+                if (TryEnsureHologram(playSummonEntrance: true))
+                {
+                    ScheduleHologramSfx();
+                }
             }
         }
 
@@ -329,17 +336,38 @@ namespace Week14.Enemy
         protected override void OnDisable()
         {
             CancelPatternParryRewardTracking();
-            if (phaseVisualSwitchRoutine != null)
-            {
-                StopCoroutine(phaseVisualSwitchRoutine);
-                phaseVisualSwitchRoutine = null;
-            }
+            CancelOneWeaponVisualSwitch();
 
             ApplyWalkState(false, true);
             EndGunWalkCounterParry();
             ClearGroundedWeapons();
             DestroyHologram();
             base.OnDisable();
+        }
+
+        protected override void OnPlayerCollisionIgnoreChanged(bool ignore)
+        {
+            if (!UsesHackerPresentationUpdates || isPlayerBlockingSuppressed == ignore)
+            {
+                if (!ignore && isPlayerBlockingResumePending)
+                {
+                    TryResumePlayerBlocking();
+                }
+
+                return;
+            }
+
+            isPlayerBlockingSuppressed = ignore;
+            if (ignore)
+            {
+                isPlayerBlockingResumePending = false;
+                SetPlayerMovementBarriersBlocked(false);
+                RecordPlayerBlockingPosition();
+                return;
+            }
+
+            isPlayerBlockingResumePending = true;
+            TryResumePlayerBlocking();
         }
 
         internal void SpawnPatternParryRewards(int count)
@@ -409,6 +437,7 @@ namespace Week14.Enemy
 
         private void BeginOneWeaponVisualSwitch()
         {
+            CancelOneWeaponVisualSwitch();
             ResolvePhaseVisuals();
             if (twoWeaponVisual == null || oneWeaponVisual == null || twoWeaponAnimator == null)
             {
@@ -416,49 +445,64 @@ namespace Week14.Enemy
                 return;
             }
 
-            if (phaseVisualSwitchRoutine != null)
-            {
-                StopCoroutine(phaseVisualSwitchRoutine);
-            }
-
-            phaseVisualSwitchRoutine = StartCoroutine(SwitchToOneWeaponAfterStunEnd());
+            isPhaseVisualSwitchPending = true;
+            phaseVisualSwitchTimeoutSeconds = ResolveTwoWeaponStunEndTimeout();
         }
 
-        private IEnumerator SwitchToOneWeaponAfterStunEnd()
+        // Animator는 Update 이후 렌더링 전에 상태와 스프라이트를 평가합니다. 코루틴에서 다음 프레임에
+        // 상태 이탈을 확인하면 2w Idle이 이미 한 번 그려질 수 있으므로, Animator 평가가 끝난
+        // LateUpdate에서 stun-end 종료를 확인하고 같은 프레임 렌더링 전에 비주얼을 교체합니다.
+        private void TickOneWeaponVisualSwitch()
         {
-            int stunEndStateHash = Animator.StringToHash(TwoWeaponStunEndStateName);
-            float timeoutSeconds = ResolveTwoWeaponStunEndTimeout();
-            float elapsed = 0f;
-            bool enteredStunEnd = false;
-
-            yield return null;
-            while (elapsed < timeoutSeconds && twoWeaponAnimator != null && twoWeaponAnimator.isActiveAndEnabled)
+            if (!isPhaseVisualSwitchPending)
             {
-                bool isTransitioning = twoWeaponAnimator.IsInTransition(0);
-                AnimatorStateInfo currentState = twoWeaponAnimator.GetCurrentAnimatorStateInfo(0);
-                bool isCurrentStunEnd = currentState.shortNameHash == stunEndStateHash;
-                bool isNextStunEnd = isTransitioning
-                    && twoWeaponAnimator.GetNextAnimatorStateInfo(0).shortNameHash == stunEndStateHash;
-
-                if (!enteredStunEnd)
-                {
-                    enteredStunEnd = isCurrentStunEnd || isNextStunEnd;
-                }
-                else if (!isCurrentStunEnd && !isNextStunEnd)
-                {
-                    break;
-                }
-                else if (isCurrentStunEnd && currentState.normalizedTime >= 1f && !isTransitioning)
-                {
-                    break;
-                }
-
-                elapsed += Time.deltaTime;
-                yield return null;
+                return;
             }
 
+            if (twoWeaponAnimator == null || !twoWeaponAnimator.isActiveAndEnabled)
+            {
+                CompleteOneWeaponVisualSwitch();
+                return;
+            }
+
+            int stunEndStateHash = Animator.StringToHash(TwoWeaponStunEndStateName);
+            bool isTransitioning = twoWeaponAnimator.IsInTransition(0);
+            AnimatorStateInfo currentState = twoWeaponAnimator.GetCurrentAnimatorStateInfo(0);
+            bool isCurrentStunEnd = currentState.shortNameHash == stunEndStateHash;
+            bool isNextStunEnd = isTransitioning
+                && twoWeaponAnimator.GetNextAnimatorStateInfo(0).shortNameHash == stunEndStateHash;
+
+            if (!hasEnteredTwoWeaponStunEnd)
+            {
+                hasEnteredTwoWeaponStunEnd = isCurrentStunEnd || isNextStunEnd;
+            }
+            else if ((!isCurrentStunEnd && !isNextStunEnd)
+                || (isCurrentStunEnd && currentState.normalizedTime >= 1f)
+                || (isCurrentStunEnd && isTransitioning && !isNextStunEnd))
+            {
+                CompleteOneWeaponVisualSwitch();
+                return;
+            }
+
+            phaseVisualSwitchElapsedSeconds += Time.deltaTime;
+            if (phaseVisualSwitchElapsedSeconds >= phaseVisualSwitchTimeoutSeconds)
+            {
+                CompleteOneWeaponVisualSwitch();
+            }
+        }
+
+        private void CompleteOneWeaponVisualSwitch()
+        {
+            CancelOneWeaponVisualSwitch();
             ApplyPhaseVisual(true, true);
-            phaseVisualSwitchRoutine = null;
+        }
+
+        private void CancelOneWeaponVisualSwitch()
+        {
+            isPhaseVisualSwitchPending = false;
+            hasEnteredTwoWeaponStunEnd = false;
+            phaseVisualSwitchElapsedSeconds = 0f;
+            phaseVisualSwitchTimeoutSeconds = 0f;
         }
 
         private float ResolveTwoWeaponStunEndTimeout()
@@ -581,6 +625,17 @@ namespace Week14.Enemy
             Collider2D[] bossColliders = Body.GetComponentsInChildren<Collider2D>(true);
             Collider2D[] playerColliders = Player.GetComponentsInChildren<Collider2D>(true);
             List<Collider2D> movementColliders = new();
+            List<Collider2D> movementPlayerColliders = new();
+            List<PlayerOnlyMovementBarrier> movementBarriers = new();
+            for (int playerIndex = 0; playerIndex < playerColliders.Length; playerIndex++)
+            {
+                Collider2D playerCollider = playerColliders[playerIndex];
+                if (playerCollider != null && !playerCollider.isTrigger)
+                {
+                    movementPlayerColliders.Add(playerCollider);
+                }
+            }
+
             for (int bossIndex = 0; bossIndex < bossColliders.Length; bossIndex++)
             {
                 Collider2D bossCollider = bossColliders[bossIndex];
@@ -595,7 +650,10 @@ namespace Week14.Enemy
                     bossCollider.GetComponent<PlayerOnlyMovementBarrier>()
                     ?? bossCollider.gameObject.AddComponent<PlayerOnlyMovementBarrier>();
                 movementBarrier.ConfigureProjectileCollisionIgnored(false);
+                movementBarrier.ConfigurePlayerMovementBlocked(
+                    !isPlayerBlockingSuppressed && !isPlayerBlockingResumePending);
                 movementColliders.Add(bossCollider);
+                movementBarriers.Add(movementBarrier);
 
                 for (int playerIndex = 0; playerIndex < playerColliders.Length; playerIndex++)
                 {
@@ -608,6 +666,144 @@ namespace Week14.Enemy
             }
 
             playerBlockingBossColliders = movementColliders.ToArray();
+            playerBlockingPlayerColliders = movementPlayerColliders.ToArray();
+            playerMovementBarriers = movementBarriers.ToArray();
+            RecordPlayerBlockingPosition();
+        }
+
+        private void TickPlayerBlocking()
+        {
+            if (isPlayerBlockingSuppressed)
+            {
+                RecordPlayerBlockingPosition();
+                return;
+            }
+
+            if (isPlayerBlockingResumePending && !TryResumePlayerBlocking())
+            {
+                RecordPlayerBlockingPosition();
+                return;
+            }
+
+            ResolvePlayerBlockingFromBossMovement();
+        }
+
+        private bool TryResumePlayerBlocking()
+        {
+            if (!isPlayerBlockingResumePending)
+            {
+                return true;
+            }
+
+            if (Body == null || Player == null)
+            {
+                isPlayerBlockingResumePending = false;
+                SetPlayerMovementBarriersBlocked(true);
+                return true;
+            }
+
+            Physics2D.SyncTransforms();
+            Vector2 separationDirection = (Vector2)Player.position - Body.position;
+            if (separationDirection.sqrMagnitude <= 0.0001f)
+            {
+                separationDirection = hasPreviousPlayerBlockingPosition
+                    ? Body.position - previousPlayerBlockingPosition
+                    : Vector2.right;
+            }
+
+            if (separationDirection.sqrMagnitude <= 0.0001f)
+            {
+                separationDirection = Vector2.right;
+            }
+
+            for (int i = 0; i < playerBlockingBossColliders.Length; i++)
+            {
+                Collider2D bossCollider = playerBlockingBossColliders[i];
+                if (!IsUsablePhysicsCollider(bossCollider)
+                    || !IsPlayerOverlapping(bossCollider))
+                {
+                    continue;
+                }
+
+                if (!GroundMovementConstraint.TryPushPlayerOutOfMovingBounds(
+                        Player,
+                        bossCollider.bounds,
+                        separationDirection,
+                        0.02f))
+                {
+                    SetPlayerMovementBarriersBlocked(false);
+                    return false;
+                }
+
+                Physics2D.SyncTransforms();
+                separationDirection = (Vector2)Player.position - Body.position;
+            }
+
+            if (IsPlayerOverlappingBoss())
+            {
+                SetPlayerMovementBarriersBlocked(false);
+                return false;
+            }
+
+            isPlayerBlockingResumePending = false;
+            SetPlayerMovementBarriersBlocked(true);
+            RecordPlayerBlockingPosition();
+            return true;
+        }
+
+        private bool IsPlayerOverlappingBoss()
+        {
+            for (int i = 0; i < playerBlockingBossColliders.Length; i++)
+            {
+                if (IsUsablePhysicsCollider(playerBlockingBossColliders[i])
+                    && IsPlayerOverlapping(playerBlockingBossColliders[i]))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool IsPlayerOverlapping(Collider2D bossCollider)
+        {
+            for (int i = 0; i < playerBlockingPlayerColliders.Length; i++)
+            {
+                Collider2D playerCollider = playerBlockingPlayerColliders[i];
+                if (IsUsablePhysicsCollider(playerCollider)
+                    && Physics2D.Distance(bossCollider, playerCollider).isOverlapped)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsUsablePhysicsCollider(Collider2D collider)
+        {
+            return collider != null
+                && collider.enabled
+                && !collider.isTrigger
+                && collider.gameObject.activeInHierarchy;
+        }
+
+        private void SetPlayerMovementBarriersBlocked(bool blocked)
+        {
+            for (int i = 0; i < playerMovementBarriers.Length; i++)
+            {
+                playerMovementBarriers[i]?.ConfigurePlayerMovementBlocked(blocked);
+            }
+        }
+
+        private void RecordPlayerBlockingPosition()
+        {
+            if (Body == null)
+            {
+                hasPreviousPlayerBlockingPosition = false;
+                return;
+            }
+
             previousPlayerBlockingPosition = Body.position;
             hasPreviousPlayerBlockingPosition = true;
         }
@@ -653,13 +849,7 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                Body.position = previousPlayerBlockingPosition;
-                Body.linearVelocity = Vector2.zero;
-                transform.position = new Vector3(
-                    previousPlayerBlockingPosition.x,
-                    previousPlayerBlockingPosition.y,
-                    transform.position.z);
-                Physics2D.SyncTransforms();
+                SnapBodyPosition(previousPlayerBlockingPosition);
                 current = previousPlayerBlockingPosition;
                 break;
             }
@@ -846,11 +1036,59 @@ namespace Week14.Enemy
 
         private void DestroyHologram()
         {
+            CancelHologramSfx();
             if (hologram != null)
             {
                 Destroy(hologram.gameObject);
                 hologram = null;
             }
+        }
+
+        private void ScheduleHologramSfx()
+        {
+            CancelHologramSfx();
+
+            string sfxId = HackerSfxIds.Resolve(hologramSfxId, HackerSfxIds.Hologram);
+            if (string.IsNullOrWhiteSpace(sfxId))
+            {
+                return;
+            }
+
+            float delaySeconds = Mathf.Max(0f, hologramSfxDelaySeconds);
+            if (delaySeconds <= 0f)
+            {
+                SoundManager.PlaySfx(sfxId);
+                return;
+            }
+
+            hologramSfxRoutine = StartCoroutine(PlayHologramSfxAfterDelay(sfxId, delaySeconds));
+        }
+
+        private IEnumerator PlayHologramSfxAfterDelay(string sfxId, float delaySeconds)
+        {
+            for (float elapsed = 0f; elapsed < delaySeconds; elapsed += Time.unscaledDeltaTime)
+            {
+                yield return null;
+            }
+
+            hologramSfxRoutine = null;
+            if (!isActiveAndEnabled || hologram == null || IsDeadForState)
+            {
+                yield break;
+            }
+
+            SoundManager.PlaySfx(sfxId);
+        }
+
+        private void CancelHologramSfx()
+        {
+            if (hologramSfxRoutine == null)
+            {
+                return;
+            }
+
+            StopCoroutine(hologramSfxRoutine);
+            hologramSfxRoutine = null;
         }
 
         private static void ClearRuntimeCombatEffects()

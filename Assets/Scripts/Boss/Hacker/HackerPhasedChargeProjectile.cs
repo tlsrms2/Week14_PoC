@@ -35,6 +35,11 @@ namespace Week14.Enemy
             ApplyChargeState(false);
         }
 
+        protected override void OnProjectileReflected()
+        {
+            ApplyChargeState(false);
+        }
+
         protected override bool CanHitPlayer(PlayerCombatController player)
         {
             return !IsCharging && base.CanHitPlayer(player);

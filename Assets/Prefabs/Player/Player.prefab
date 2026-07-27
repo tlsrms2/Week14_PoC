@@ -103,6 +103,7 @@ Transform:
   - {fileID: 2865434848255548288}
   - {fileID: 69000197254271610}
   - {fileID: 7766547627996363878}
+  - {fileID: 6509821374098123456}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &4523195899730002544
@@ -199,6 +200,7 @@ MonoBehaviour:
   leftGunOrigin: {fileID: 1288290805158211368}
   leftGunFireOrigin: {fileID: 5187835753885913605}
   rightGunFireOrigin: {fileID: 9185737548225027311}
+  baseballBatVfxAnchor: {fileID: 6509821374098123456}
   enemyMask:
     serializedVersion: 2
     m_Bits: 64
@@ -210,6 +212,37 @@ MonoBehaviour:
   mouseParryReticleRenderer: {fileID: 9060883804229562612}
   mouseParryReticle: {fileID: 2303374336768699719}
   sniperChargeLaserEffect: {fileID: 3678746897390901329}
+--- !u!1 &6509821374098123457
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6509821374098123456}
+  m_Layer: 10
+  m_Name: BaseballBatVfxAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6509821374098123456
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6509821374098123457}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4309581587629039353}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2487860752467414305
 MonoBehaviour:
   m_ObjectHideFlags: 0

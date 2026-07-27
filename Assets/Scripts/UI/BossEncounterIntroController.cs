@@ -4,10 +4,15 @@ using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
+using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Combat;
 using Week14.Enemy;
 using Week14.GameFlow;
+
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem;
+#endif
 
 namespace Week14.UI
 {
@@ -54,6 +59,12 @@ namespace Week14.UI
         [Tooltip("BossAI의 전투 UI 루트입니다. 비워두면 BossAI에서 자동으로 찾습니다.")]
         [SerializeField] private RectTransform bossCombatUiRect;
 
+        [Header("연출 스킵")]
+        [Tooltip("ESC로 연출을 스킵할 수 있음을 알리는 텍스트입니다. 연출이 끝나거나 스킵되면 꺼집니다.")]
+        [SerializeField] private TMP_Text skipHintText;
+        [Tooltip("스킵 안내 텍스트에 사용할 로컬라이징 문자열입니다.")]
+        [SerializeField] private LocalizedString localizedSkipHintText;
+
         [Header("씬 참조")]
         [SerializeField] private BossAI boss;
         [SerializeField] private PlayerCombatController player;
@@ -63,6 +74,16 @@ namespace Week14.UI
         [SerializeField] private bool playOnStart = true;
         [SerializeField, Min(0f)] private float startDelaySeconds = 0.15f;
         [SerializeField, Min(0f)] private float playerWalkSpeed = 3.5f;
+
+        [Header("Sound")]
+        [Tooltip("플레이어가 인트로 위치로 걸어가는 동안 반복 재생할 SoundLibrary SFX ID입니다.")]
+        [BossGraphSfxId]
+        [SerializeField] private string playerWalkSfxId = "Walk";
+        [Tooltip("머그샷 배경이 등장할 때 재생할 SoundLibrary SFX ID입니다.")]
+        [BossGraphSfxId]
+        [SerializeField] private string mugShotBackgroundSfxId = "Whip";
+        [Tooltip("머그샷 조명과 셔터 SFX가 재생된 뒤 보스 BGM 페이드인을 시작하기까지의 시간입니다.")]
+        [SerializeField, Min(0f)] private float mugShotToBossBgmDelaySeconds = 3f;
 
         [Header("재시작 연출")]
         [Tooltip("씬 전환이 끝난 뒤 플레이어 이동과 전투 UI 전환까지 걸리는 재시작 연출 시간입니다.")]
@@ -116,6 +137,9 @@ namespace Week14.UI
         [Tooltip("배경 진입 후 머그샷 타이밍 구간에 켜둘 전용 Light2D입니다. 밝기는 Light2D의 Intensity에서 설정합니다.")]
         [FormerlySerializedAs("shutterLight")]
         [SerializeField] private Light2D mugShotLight;
+        [Tooltip("머그샷 조명·그림자가 켜지는 순간 재생할 SoundLibrary SFX ID입니다. 비워두면 재생하지 않습니다.")]
+        [BossGraphSfxId]
+        [SerializeField] private string mugShotLightingSfxId;
 
         [Header("머그샷 타이밍")]
         [Tooltip("배경 진입이 끝난 뒤 Info가 올라오기까지의 텀입니다.")]
@@ -152,6 +176,8 @@ namespace Week14.UI
         private Vector2 bossCombatUiTargetPosition;
         private Coroutine playRoutine;
         private Coroutine locationIntroRoutine;
+        private Coroutine bossBgmDelayRoutine;
+        private SoundManager.SfxPlaybackHandle playerWalkSfxHandle;
         private BossData localizedBossData;
         private LocalizedString boundLocationLocalizedString;
         private bool introControlAcquired;
@@ -168,6 +194,8 @@ namespace Week14.UI
         private bool bossAnimationFrozen;
         private bool executionLetterboxActive;
         private float canvasAlphaBeforeExecutionLetterbox;
+        private bool skipRequested;
+        private bool skipHintLocalizationBound;
 
         public bool HasExecutionLetterbox => topLetterboxPanel != null && bottomLetterboxPanel != null;
 
@@ -188,6 +216,21 @@ namespace Week14.UI
             SetTextAlpha(locationNameText, 0f);
             SetTextAlpha(bossNameText, 1f);
             SetMugShotStageVisible(false);
+            BindSkipHintLocalization();
+            SetSkipHintVisible(false);
+        }
+
+        private void Update()
+        {
+            if (playRoutine == null || !playFullBossIntro || skipRequested)
+            {
+                return;
+            }
+
+            if (EscapePressed())
+            {
+                RequestSkip();
+            }
         }
 
         private void Start()
@@ -218,6 +261,8 @@ namespace Week14.UI
                 locationIntroRoutine = null;
             }
 
+            StopBossBgmDelayRoutine();
+            StopPlayerWalkSfx();
             EndPlayerCinematicMovement();
             SetBossAnimationFrozen(false);
             HideExecutionLetterboxImmediate();
@@ -230,6 +275,9 @@ namespace Week14.UI
             ReleaseIntroControl(false);
             SetMugShotStageVisible(false);
             UnbindBossData();
+            SetSkipHintVisible(false);
+            UnbindSkipHintLocalization();
+            skipRequested = false;
         }
 
         public void SetLocationName(string value)
@@ -256,11 +304,15 @@ namespace Week14.UI
                 locationIntroRoutine = null;
             }
 
+            StopBossBgmDelayRoutine();
+            StopPlayerWalkSfx();
             SetBossAnimationFrozen(false);
 
             locationName = nextLocationName ?? string.Empty;
             ResolveReferences();
             playFullBossIntro = boss == null || !GameFlowController.ConsumeBossRestartEntry();
+            skipRequested = false;
+            SetSkipHintVisible(false);
             AcquireIntroControl();
             playRoutine = StartCoroutine(PlayRoutine());
         }
@@ -288,7 +340,9 @@ namespace Week14.UI
                 yield return SceneTransition.BeginEntryReveal();
             }
 
-            if (playFullBossIntro)
+            SetSkipHintVisible(playFullBossIntro);
+
+            if (playFullBossIntro && !skipRequested)
             {
                 locationIntroRoutine = StartCoroutine(PlayLocationIntro());
             }
@@ -297,19 +351,36 @@ namespace Week14.UI
 
             if (playFullBossIntro)
             {
-                if (locationIntroRoutine != null)
+                if (skipRequested)
                 {
-                    yield return locationIntroRoutine;
-                    locationIntroRoutine = null;
+                    // 아직 시작하지 않은 연출은 재생하지 않고 즉시 최종 상태로 정리한다.
+                    CancelLocationIntro();
                 }
+                else
+                {
+                    if (locationIntroRoutine != null)
+                    {
+                        yield return locationIntroRoutine;
+                        locationIntroRoutine = null;
+                    }
 
-                yield return PlayBossReveal();
+                    if (!skipRequested)
+                    {
+                        yield return PlayBossReveal();
+                    }
+                    else
+                    {
+                        CancelBossReveal();
+                    }
+                }
             }
 
             if (playFullBossIntro)
             {
                 yield return ReturnCameraToCombatView(GetBossFocusTarget());
             }
+
+            SetSkipHintVisible(false);
 
             boss?.ShowBossCombatUiForIntro();
             yield return AnimateCombatUiReveal();
@@ -330,6 +401,7 @@ namespace Week14.UI
             cinematicFocusActive = true;
             for (float elapsed = 0f;
                  elapsed < combatViewReturnTimeoutSeconds
+                 && !skipRequested
                  && !cameraFollow.IsCinematicReturnToCombatViewSettled(bossFocusTarget);
                  elapsed += Time.unscaledDeltaTime)
             {
@@ -366,7 +438,8 @@ namespace Week14.UI
                 : Mathf.Max(0f, restartSequenceSeconds - startDelaySeconds - restartCombatUiRevealSeconds);
             if (duration > 0f)
             {
-                for (float elapsed = 0f; elapsed < duration; elapsed += Time.unscaledDeltaTime)
+                StartPlayerWalkSfx();
+                for (float elapsed = 0f; elapsed < duration && !skipRequested; elapsed += Time.unscaledDeltaTime)
                 {
                     float progress = Mathf.Clamp01(elapsed / duration);
                     SetPlayerPosition(playerBody, Vector2.Lerp(startPosition, endPosition, progress));
@@ -376,6 +449,22 @@ namespace Week14.UI
 
             SetPlayerPosition(playerBody, endPosition);
             EndPlayerCinematicMovement();
+            StopPlayerWalkSfx();
+        }
+
+        private void StartPlayerWalkSfx()
+        {
+            StopPlayerWalkSfx();
+            if (!string.IsNullOrEmpty(playerWalkSfxId))
+            {
+                playerWalkSfxHandle = SoundManager.PlayLoopingSfx(playerWalkSfxId);
+            }
+        }
+
+        private void StopPlayerWalkSfx()
+        {
+            SoundManager.StopSfx(playerWalkSfxHandle);
+            playerWalkSfxHandle = null;
         }
 
         private IEnumerator PlayBossReveal()
@@ -391,7 +480,7 @@ namespace Week14.UI
                 yield return WaitUnscaled(bossFocusSeconds);
 
                 for (float elapsed = 0f;
-                     elapsed < bossFocusSettleTimeoutSeconds && !cameraFollow.IsCinematicZoomSettled();
+                     elapsed < bossFocusSettleTimeoutSeconds && !skipRequested && !cameraFollow.IsCinematicZoomSettled();
                      elapsed += Time.unscaledDeltaTime)
                 {
                     yield return null;
@@ -399,6 +488,11 @@ namespace Week14.UI
             }
 
             SetMugShotStageVisible(true);
+            if (!string.IsNullOrEmpty(mugShotBackgroundSfxId))
+            {
+                SoundManager.PlaySfx(mugShotBackgroundSfxId);
+            }
+
             FitMugShotBackgroundToCameraViewport();
             yield return AnimateMugShotBackground(
                 -mugShotBackgroundTravelOffsetX,
@@ -413,6 +507,11 @@ namespace Week14.UI
                 bossInfoEnterCurve);
             yield return WaitUnscaled(infoToLightDelaySeconds);
             SetMugShotLighting(true);
+            if (!string.IsNullOrEmpty(mugShotLightingSfxId))
+            {
+                SoundManager.PlaySfx(mugShotLightingSfxId);
+            }
+            ScheduleBossBgmAfterMugShot();
             SetBossAnimationFrozen(true);
             yield return WaitUnscaled(infoHoldSeconds);
             SetBossAnimationFrozen(false);
@@ -430,6 +529,35 @@ namespace Week14.UI
                 mugShotBackgroundExitSeconds,
                 mugShotBackgroundExitCurve);
             SetMugShotStageVisible(false);
+        }
+
+        private void ScheduleBossBgmAfterMugShot()
+        {
+            StopBossBgmDelayRoutine();
+            if (boss == null)
+            {
+                return;
+            }
+
+            bossBgmDelayRoutine = StartCoroutine(PlayBossBgmAfterMugShotDelay());
+        }
+
+        private IEnumerator PlayBossBgmAfterMugShotDelay()
+        {
+            yield return WaitUnscaled(Mathf.Max(0f, mugShotToBossBgmDelaySeconds));
+            boss?.PlayCombatBgmForIntro();
+            bossBgmDelayRoutine = null;
+        }
+
+        private void StopBossBgmDelayRoutine()
+        {
+            if (bossBgmDelayRoutine == null)
+            {
+                return;
+            }
+
+            StopCoroutine(bossBgmDelayRoutine);
+            bossBgmDelayRoutine = null;
         }
 
         private IEnumerator PlayLocationIntro()
@@ -638,7 +766,7 @@ namespace Week14.UI
                 yield break;
             }
 
-            for (float elapsed = 0f; elapsed < totalSeconds; elapsed += Time.unscaledDeltaTime)
+            for (float elapsed = 0f; elapsed < totalSeconds && !skipRequested; elapsed += Time.unscaledDeltaTime)
             {
                 for (int i = 0; i < objectCount; i++)
                 {
@@ -680,7 +808,7 @@ namespace Week14.UI
                 yield break;
             }
 
-            for (float elapsed = 0f; elapsed < duration; elapsed += Time.unscaledDeltaTime)
+            for (float elapsed = 0f; elapsed < duration && !skipRequested; elapsed += Time.unscaledDeltaTime)
             {
                 float progress = Mathf.Clamp01(elapsed / duration);
                 float eased = EvaluateCurve(curve, progress);
@@ -708,7 +836,7 @@ namespace Week14.UI
                 yield break;
             }
 
-            for (float elapsed = 0f; elapsed < duration; elapsed += Time.unscaledDeltaTime)
+            for (float elapsed = 0f; elapsed < duration && !skipRequested; elapsed += Time.unscaledDeltaTime)
             {
                 float progress = Mathf.Clamp01(elapsed / duration);
                 float eased = EvaluateCurve(curve, progress);
@@ -727,7 +855,7 @@ namespace Week14.UI
                 yield break;
             }
 
-            for (float elapsed = 0f; elapsed < duration; elapsed += Time.unscaledDeltaTime)
+            for (float elapsed = 0f; elapsed < duration && !skipRequested; elapsed += Time.unscaledDeltaTime)
             {
                 float progress = Mathf.Clamp01(elapsed / duration);
                 SetTextAlpha(locationNameText, Mathf.Lerp(fromAlpha, toAlpha, progress));
@@ -1388,9 +1516,95 @@ namespace Week14.UI
             return curve != null && curve.length > 0 ? curve.Evaluate(progress) : progress;
         }
 
-        private static IEnumerator WaitUnscaled(float seconds)
+        private void RequestSkip()
         {
-            for (float elapsed = 0f; elapsed < seconds; elapsed += Time.unscaledDeltaTime)
+            skipRequested = true;
+            SetSkipHintVisible(false);
+        }
+
+        // 아직 시작하지 않은 지역 인트로를 재생하지 않고 곧바로 최종(숨김) 상태로 정리한다.
+        private void CancelLocationIntro()
+        {
+            if (locationIntroRoutine != null)
+            {
+                StopCoroutine(locationIntroRoutine);
+                locationIntroRoutine = null;
+            }
+
+            SetLocationObjectsActive(false);
+            SetLocationObjectsAtOffset(-locationFlyOffsetX);
+            SetTextAlpha(locationNameText, 0f);
+        }
+
+        // 아직 시작하지 않은 보스 리빌(머그샷) 연출을 재생하지 않고 곧바로 최종(숨김) 상태로 정리한다.
+        private void CancelBossReveal()
+        {
+            StopBossBgmDelayRoutine();
+            SetBossAnimationFrozen(false);
+            SetMugShotStageVisible(false);
+            SetBossInfoPanelOffset(-bossInfoTravelOffsetY);
+            SetMugShotBackgroundOffset(-mugShotBackgroundTravelOffsetX);
+            boss?.PlayCombatBgmForIntro();
+        }
+
+        private static bool EscapePressed()
+        {
+#if ENABLE_INPUT_SYSTEM
+            return Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame;
+#else
+            return Input.GetKeyDown(KeyCode.Escape);
+#endif
+        }
+
+        private void SetSkipHintVisible(bool visible)
+        {
+            if (skipHintText != null)
+            {
+                skipHintText.gameObject.SetActive(visible);
+            }
+        }
+
+        private void BindSkipHintLocalization()
+        {
+            if (skipHintLocalizationBound
+                || skipHintText == null
+                || !LoadoutSelectedSkillPanelLocalization.HasLocalizedString(localizedSkipHintText))
+            {
+                return;
+            }
+
+            LoadoutSelectedSkillPanelLocalization.BindLocalizedString(
+                localizedSkipHintText,
+                true,
+                SetSkipHintText);
+            skipHintLocalizationBound = true;
+        }
+
+        private void UnbindSkipHintLocalization()
+        {
+            if (!skipHintLocalizationBound)
+            {
+                return;
+            }
+
+            LoadoutSelectedSkillPanelLocalization.UnbindLocalizedString(
+                localizedSkipHintText,
+                true,
+                SetSkipHintText);
+            skipHintLocalizationBound = false;
+        }
+
+        private void SetSkipHintText(string value)
+        {
+            if (skipHintText != null)
+            {
+                skipHintText.text = value ?? string.Empty;
+            }
+        }
+
+        private IEnumerator WaitUnscaled(float seconds)
+        {
+            for (float elapsed = 0f; elapsed < seconds && !skipRequested; elapsed += Time.unscaledDeltaTime)
             {
                 yield return null;
             }

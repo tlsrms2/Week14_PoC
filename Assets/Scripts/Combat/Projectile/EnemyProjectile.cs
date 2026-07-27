@@ -153,6 +153,12 @@ namespace Week14.Combat
         public Vector2 IncomingDirection => flightDirection;
         public bool IsCharging => !resolved && !isDestroying && !launched;
         public bool CanBeIntercepted => !resolved && !isDestroying && canBeIntercepted && !interceptPending;
+        public bool CanBeReflected => !resolved
+            && !isDestroying
+            && !reflectedByPlayer
+            && !interceptPending
+            && !PreventsReflectionWhileInterceptable
+            && (canBeIntercepted || AllowsReflectionWhenInterceptDisabled);
         public int InterceptGroupId => interceptGroupId;
         public float LockOnRadius => Mathf.Max(0.24f, projectileRadius * 2.6f);
         public BossAI OwnerBoss => ownerBoss;
@@ -176,6 +182,11 @@ namespace Week14.Combat
         protected bool WillSplitRadiallyOnLaunch => splitRadiallyOnLaunch && radialSplitBulletCount > 0;
         protected virtual bool UsesProjectileVisibility => true;
         protected virtual bool ShowsPathIndicator => true;
+        protected virtual bool AllowsReflectionWhenInterceptDisabled => false;
+        // 요격(패링)은 되어야 하지만 야구방망이의 "보스 쪽으로 반사"는 의미가 없는 미끼/보상형 투사체가 override합니다.
+        // true면 CanBeIntercepted가 true여도 CanBeReflected는 항상 false가 되어, 방망이가 이 투사체를 반사가 아니라
+        // 요격(TryDestroyByInterceptShot, reason=Intercepted)으로 처리하게 됩니다.
+        protected virtual bool PreventsReflectionWhileInterceptable => false;
         protected Vector2 FlightDirection
         {
             get => flightDirection;
@@ -593,7 +604,7 @@ namespace Week14.Combat
         public bool TryReflectTowardOwnerBoss(float speed, int damage, out BossAI targetBoss)
         {
             targetBoss = ResolveReflectionTargetBoss();
-            if (!CanReceiveInterceptShot() || targetBoss == null)
+            if (!CanBeReflected || targetBoss == null)
             {
                 return false;
             }
@@ -616,6 +627,7 @@ namespace Week14.Combat
             SetChargeVfxVisible(false);
             SetPathIndicatorVisible(false);
             SetParryLockOnIndicatorVisible(false);
+            OnProjectileReflected();
             RefreshReflectedDirection();
             RefreshRuntimeVelocity();
             return true;

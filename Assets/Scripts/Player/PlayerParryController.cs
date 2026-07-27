@@ -122,6 +122,19 @@ namespace Week14.Combat
             return true;
         }
 
+        // 야구방망이 등 반원 범위 근접 공격이 "반사는 안 되지만 요격은 되는" 투사체(패링 미끼 등)를 맞혔을 때
+        // 쓰는 통로입니다. 마우스 즉시 패링과 완전히 동일한 처리(ExecuteInstantParry)를 타므로, 패링 성공 이벤트/
+        // 챌린지 집계/보스 억제 로직이 무기 종류와 무관하게 똑같이 동작합니다.
+        internal bool TryParryProjectileForMelee(EnemyProjectile target)
+        {
+            if (!HasValidParryConfig() || target == null || !target.CanBeIntercepted)
+            {
+                return false;
+            }
+
+            return ExecuteInstantParry(target);
+        }
+
         internal int AutoParryProjectilesNear(Vector2 center, float radius)
         {
             return AutoParryProjectilesNear(center, radius, RollSkillVfxSettings.Default);

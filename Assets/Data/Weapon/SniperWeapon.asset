@@ -36,19 +36,19 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  price: 2
+  price: 4
   inGameSprite: {fileID: 0}
   projectilePrefab: {fileID: 0}
-  leftArmController: {fileID: 9100000, guid: 1d997e41831007f458700092b95af506, type: 2}
+  leftArmController: {fileID: 9100000, guid: 119a174933c706e439ae86bc8267b5fc, type: 2}
   maxAmmo: 3
   parryingRange: 1
   damagePerAmmoStep: 040000000300000002000000
   maxAmmoTooltipTextFormat: 
   localizedMaxAmmoTooltipText:
     m_TableReference:
-      m_TableCollectionName: GUID:844e39019e591984499c4858a8ec6fa8
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 5835298275328
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -56,9 +56,9 @@ MonoBehaviour:
   parryingRangeTooltipTextFormat: 
   localizedParryingRangeTooltipText:
     m_TableReference:
-      m_TableCollectionName: GUID:844e39019e591984499c4858a8ec6fa8
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 5808177905664
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -66,15 +66,15 @@ MonoBehaviour:
   bulletDamageTooltipTextFormat: 
   localizedBulletDamageTooltipText:
     m_TableReference:
-      m_TableCollectionName: GUID:844e39019e591984499c4858a8ec6fa8
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 5851316322304
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   chargeThresholdSeconds: 0.7
-  chargeDamageMultiplier: 2
+  chargeDamageMultiplier: 3
   chargeStartSfxId: SniperCharge
   laserFirstAppearDelaySeconds: 0.15
   laserLength: 15

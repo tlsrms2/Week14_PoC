@@ -23,6 +23,7 @@ namespace Week14.Enemy
         }
 
         public static float DeltaTime => Time.deltaTime * Current;
+        public static float FixedDeltaTime => Time.fixedDeltaTime * Current;
 
         // Time.time 기반 절대 마감 시각(destroyAt 등)에 매 프레임 더해주면, 느려진 만큼 마감 시각이
         // 뒤로 밀려나 "이동은 느려졌는데 사라지는 시점은 그대로"인 괴리를 없앨 수 있다.

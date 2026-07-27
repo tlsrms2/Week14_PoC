@@ -70,7 +70,11 @@ namespace Week14.Enemy
             float nextSmokeAt = Time.time;
             Vector2 dashDirection = context.GetDirectionToPlayer(context.OriginPosition);
 
-            BossDashTrajectoryVfx trajectoryVfx = SpawnTrajectoryVfx(ComputeDashDistance());
+            float dashDistance = ComputeDashDistance();
+            BossDashTrajectoryVfx trajectoryVfx = SpawnTrajectoryVfx(dashDistance);
+            BossDashAttackArea attackArea = trajectoryVfx != null
+                ? trajectoryVfx.AttackArea
+                : default;
             if (trajectoryVfx != null)
             {
                 context.RegisterTransientVisual(trajectoryVfx.gameObject);
@@ -129,28 +133,52 @@ namespace Week14.Enemy
             // 대쉬 페이즈
             context.SetAnimationBool(chargeBoolName, true);
             context.SetDashing(true);
+            context.SetAutomaticDashContactDamageSuppressed(attackArea.IsValid);
             context.PlaySfx(dashSfxId);
             PlayDashDustEffect(context, dashDirection);
+            Vector2 attackOrigin = context.OriginPosition;
+            float previousAttackDistance = 0f;
             elapsed = 0f;
-            while (elapsed < dashDuration)
+            try
             {
-                if (context.IsExecutionPaused)
+                while (elapsed < dashDuration)
                 {
-                    context.Stop();
+                    if (context.IsExecutionPaused)
+                    {
+                        context.Stop();
+                        yield return null;
+                        continue;
+                    }
+
+                    float t = Mathf.Clamp01(elapsed / dashDuration);
+                    float speedMultiplier = Mathf.Max(0f, speedCurve.Evaluate(t));
+                    context.Boss.SetMovementVelocity(dashDirection * (dashSpeed * speedMultiplier));
+
+                    float nextElapsed = Mathf.Min(dashDuration, elapsed + EnemyTimeScale.DeltaTime);
+                    float nextAttackDistance = BossDashMotion.GetDistanceAtProgress(
+                        dashSpeed,
+                        dashDuration,
+                        speedCurve,
+                        nextElapsed / dashDuration);
+                    ApplyDashContactDamage(
+                        context,
+                        attackArea,
+                        attackOrigin,
+                        dashDirection,
+                        previousAttackDistance,
+                        nextAttackDistance);
+                    previousAttackDistance = nextAttackDistance;
+                    elapsed = nextElapsed;
                     yield return null;
-                    continue;
                 }
-
-                float t = Mathf.Clamp01(elapsed / dashDuration);
-                context.Boss.SetMovementVelocity(dashDirection * (dashSpeed * speedCurve.Evaluate(t)));
-                elapsed += EnemyTimeScale.DeltaTime;
-                yield return null;
             }
-
-            context.SetAnimationBool(chargeBoolName, false);
-            context.SetDashing(false);
-            context.SetFacingLocked(false);
-            context.Stop();
+            finally
+            {
+                context.SetAnimationBool(chargeBoolName, false);
+                context.SetDashing(false);
+                context.SetFacingLocked(false);
+                context.Stop();
+            }
         }
 
         public void OnBeforeSerialize() => EnsureSpeedCurve();
@@ -205,19 +233,30 @@ namespace Week14.Enemy
         // 커브를 적분해 실제로 이동할 거리를 근사한다. 대쉬 1회당 한 번만 호출됨.
         private float ComputeDashDistance()
         {
-            const int sampleCount = 32;
-            float sum = 0f;
-            float prev = Mathf.Max(0f, speedCurve.Evaluate(0f));
-            for (int i = 1; i <= sampleCount; i++)
+            return BossDashMotion.GetDistance(dashSpeed, dashDuration, speedCurve);
+        }
+
+        private static void ApplyDashContactDamage(
+            BossActionContext context,
+            BossDashAttackArea attackArea,
+            Vector2 origin,
+            Vector2 direction,
+            float fromDistance,
+            float toDistance)
+        {
+            if (!attackArea.TryGetSegmentBox(
+                    origin,
+                    direction,
+                    fromDistance,
+                    toDistance,
+                    out Vector2 center,
+                    out Vector2 size,
+                    out float angle))
             {
-                float t = i / (float)sampleCount;
-                float curr = Mathf.Max(0f, speedCurve.Evaluate(t));
-                sum += (prev + curr) * 0.5f;
-                prev = curr;
+                return;
             }
 
-            float curveIntegral = sum / sampleCount;
-            return dashSpeed * dashDuration * curveIntegral;
+            context.Boss.ApplyDashContactDamageInBox(center, size, angle);
         }
 
         private static Vector2 RotateTowards(Vector2 current, Vector2 target, float maxDegreesDelta)

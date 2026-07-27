@@ -1,5 +1,4 @@
 using UnityEngine;
-using Week14.Audio;
 
 namespace Week14.Enemy
 {
@@ -11,11 +10,6 @@ namespace Week14.Enemy
 
         [SerializeField] private Animator walkAnimator;
         [SerializeField, Min(0f)] private float walkVelocityThreshold = 0.01f;
-
-        [Header("BGM")]
-        [Tooltip("전투 시작 시 재생할 BGM의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
-        [BossGraphBgmId]
-        [SerializeField] private string bgmId = "MuscleBgm";
 
         private bool hasAppliedWalkState;
         private bool lastIsWalking;
@@ -29,21 +23,17 @@ namespace Week14.Enemy
             : null;
         protected override bool RotatesBodyToPlayer => false;
 
-        protected override void OnCombatStarted()
-        {
-            if (!string.IsNullOrWhiteSpace(bgmId))
-            {
-                SoundManager.PlayBgm(bgmId);
-            }
-        }
-
         protected override void OnHpEmptyBegan()
         {
+            // 이전 사이클에서 EndStun이 Stun 스테이트 진입 전에 소모되지 못하고 남아있으면,
+            // 이번에 Stun 스테이트에 들어가자마자 그 묵은 트리거에 바로 되튕겨 나가버린다.
+            ResetAnimatorTrigger(EndStunParameter);
             SetAnimatorTrigger(StunParameter);
         }
 
         protected override void OnHpEmptyRecovered()
         {
+            ResetAnimatorTrigger(StunParameter);
             SetAnimatorTrigger(EndStunParameter);
         }
 
@@ -178,6 +168,17 @@ namespace Week14.Enemy
             }
 
             targetAnimator.SetTrigger(parameter);
+        }
+
+        private void ResetAnimatorTrigger(int parameter)
+        {
+            Animator targetAnimator = ResolveWalkAnimator();
+            if (targetAnimator == null)
+            {
+                return;
+            }
+
+            targetAnimator.ResetTrigger(parameter);
         }
 
         private Animator ResolveWalkAnimator()

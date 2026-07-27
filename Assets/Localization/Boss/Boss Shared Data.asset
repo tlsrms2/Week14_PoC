@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Boss Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: Boss
+  m_TableCollectionNameGuidString: b1a0083a9ae987c4c95c94f0dce7f455
+  m_Entries:
+  - m_Id: 6813745152
+    m_Key: boss.execute
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2169673711616
+    m_Key: dealer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3144186691584
+    m_Key: conductor.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1036685002768384
+    m_Key: muscle.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1036882034393088
+    m_Key: muscle.description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4200008682668032
+    m_Key: assassin.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4200013929742336
+    m_Key: assassin.description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4212237473775616
+    m_Key: hacker.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4212323251486720
+    m_Key: hacker.description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5817060254908416
+    m_Key: dealer.location
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5817555392495616
+    m_Key: conductor.location
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5817807012986880
+    m_Key: muscle.location
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5817958821625856
+    m_Key: assassin.location
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5818062072807424
+    m_Key: hacker.location
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5784546324439040
+    m_Key: trainingbot.name
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 6489938878495195458
+  references:
+    version: 2
+    RefIds:
+    - rid: 6489938878495195458
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1782905561931

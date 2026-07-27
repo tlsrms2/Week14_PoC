@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Challenge_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 2d8f4a1c6e7f3a9c2e8b4d1f6a9c3e7b, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 500000000000
+    m_Localized: Win the battle without taking damage more than once.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 502600000000
+    m_Localized: '[Cumulative] Enter Second Phase 3 times.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 505200000000
+    m_Localized: '[Cumulative] Enter Second Phase 6 times.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 507800000000
+    m_Localized: Win the battle within {0}.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3440320454164480
+    m_Localized: Win the battle.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3443865412796416
+    m_Localized: '[Cumulative] Intercept {0} projectiles.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3448495471427584
+    m_Localized: Intercept {0} projectiles and win the battle.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3451950613233664
+    m_Localized: '[Cumulative] Successfully perform Counter {0} times.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3519743778283520
+    m_Localized: '[Cumulative] Intercept {0} Homing Projectiles.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3521113910599680
+    m_Localized: '[Cumulative] Intercept {0} Note Projectiles.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3521787301912576
+    m_Localized: '[Cumulative] Intercept {0} Explosive Projectiles.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3522615781810176
+    m_Localized: '[Cumulative] Intercept {0} Wire Projectiles.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3524778109100032
+    m_Localized: Win the battle without taking damage more than twice.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3525347422953472
+    m_Localized: Win the battle without taking damage more than three times.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3527906837585920
+    m_Localized: '[Cumulative] Enter Third Phase 3 times.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3530476930564096
+    m_Localized: '[Cumulative] Destroy 8 Flat Turrets.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3533872441950208
+    m_Localized: Win the battle without missing a single counter.
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

@@ -7,6 +7,30 @@ using Week14.Combat;
 
 namespace Week14.Enemy
 {
+    internal static class HackerSfxIds
+    {
+        internal const string BigSlash = "BigSlash";
+        internal const string Slash = "Slash";
+        internal const string MissSlash = "MissSlash";
+        internal const string BeforeAttack = "BeforeAttack";
+        internal const string Dash = "Dash";
+        internal const string ChargeDash = "ChargeDash";
+        internal const string OrbitSweep = "OrbitSweep";
+        internal const string FireWire = "FireWire";
+        internal const string WireFlight = "WireFlight";
+        internal const string Wire = "Wire";
+        internal const string Hologram = "Hologram";
+        internal const string GunCharge = "GunCharge";
+        internal const string SnipierShot = "SnipierShot";
+        internal const string PutTurret = "PutTurret";
+        internal const string BossNormalShot = "BossNormalShot";
+
+        internal static string Resolve(string configuredId, string defaultId)
+        {
+            return string.IsNullOrWhiteSpace(configuredId) ? defaultId : configuredId;
+        }
+    }
+
     public enum HackerMeleeAttackStyle
     {
         CutTopToBottom,
@@ -127,6 +151,12 @@ namespace Week14.Enemy
         [SerializeField] private SpawnEffectFollowMode parriedEffectFollowMode = SpawnEffectFollowMode.FollowSpawnPoint;
         [SerializeField] private bool parriedEffectFollowRotation = true;
 
+        [Header("SFX")]
+        [SerializeField, BossGraphSfxId] private string beforeAttackSfxId = HackerSfxIds.BeforeAttack;
+        [SerializeField, BossGraphSfxId] private string slashSfxId = HackerSfxIds.Slash;
+        [SerializeField, BossGraphSfxId] private string bigSlashSfxId = HackerSfxIds.BigSlash;
+        [SerializeField, BossGraphSfxId] private string missSlashSfxId = HackerSfxIds.MissSlash;
+
         float IHackerApproachRangeProvider.ApproachStartDistance => approachStartDistance;
         float IHackerApproachRangeProvider.ApproachStopDistance => approachStopDistance;
 
@@ -154,6 +184,7 @@ namespace Week14.Enemy
             using IDisposable facingLock = context.AcquireFacingLock();
             try
             {
+                context.PlaySfx(HackerSfxIds.Resolve(beforeAttackSfxId, HackerSfxIds.BeforeAttack));
                 context.PlayAnimationTrigger(GetAnimationTrigger());
                 GetMeleeEllipse(context, attackDirection, out Vector2 ellipseCenter, out float ellipseAngleDegrees);
                 rangeIndicator = HackerAttackRangeIndicator.CreateEllipse(
@@ -210,6 +241,7 @@ namespace Week14.Enemy
                 parryBait?.Dispose();
                 parryBait = null;
                 context.PlayAnimationTrigger(ReleaseAnimationTrigger);
+                context.PlaySfx(GetAttackSfxId(wasParried));
 
                 if (wasParried)
                 {
@@ -256,6 +288,18 @@ namespace Week14.Enemy
             }
 
             yield return Wait(context, recoverySeconds);
+        }
+
+        private string GetAttackSfxId(bool wasParried)
+        {
+            if (wasParried)
+            {
+                return HackerSfxIds.Resolve(missSlashSfxId, HackerSfxIds.MissSlash);
+            }
+
+            return style == HackerMeleeAttackStyle.Slam
+                ? HackerSfxIds.Resolve(bigSlashSfxId, HackerSfxIds.BigSlash)
+                : HackerSfxIds.Resolve(slashSfxId, HackerSfxIds.Slash);
         }
 
         public bool TryGetDurationSeconds(out float seconds)
@@ -642,6 +686,11 @@ namespace Week14.Enemy
         [Header("Parried Effect")]
         [SerializeField] private BossActionPrefabEffectSettings parriedEffect = new();
 
+        [Header("SFX")]
+        [SerializeField, BossGraphSfxId] private string beforeAttackSfxId = HackerSfxIds.BeforeAttack;
+        [SerializeField, BossGraphSfxId] private string attackSfxId = HackerSfxIds.BigSlash;
+        [SerializeField, BossGraphSfxId] private string missSfxId = HackerSfxIds.MissSlash;
+
         protected float ThrustLength => length;
 
         float IHackerApproachRangeProvider.ApproachStartDistance => approachStartDistance;
@@ -664,6 +713,7 @@ namespace Week14.Enemy
             }
 
             using IDisposable facingLock = context.AcquireFacingLock();
+            context.PlaySfx(HackerSfxIds.Resolve(beforeAttackSfxId, HackerSfxIds.BeforeAttack));
             context.RestartAnimationTrigger(animationTriggerName);
             HackerAttackRangeIndicator rangeIndicator = HackerAttackRangeIndicator.CreateThrust(
                 context,
@@ -721,6 +771,9 @@ namespace Week14.Enemy
             bool wasParried = parryBait?.WasParried == true;
             parryBait?.Dispose();
             context.RestartAnimationTrigger(ReleaseAnimationTrigger);
+            context.PlaySfx(wasParried
+                ? HackerSfxIds.Resolve(missSfxId, HackerSfxIds.MissSlash)
+                : HackerSfxIds.Resolve(attackSfxId, HackerSfxIds.BigSlash));
             HashSet<PlayerCombatController> hitPlayers = null;
             if (wasParried)
             {
@@ -941,6 +994,7 @@ namespace Week14.Enemy
         [SerializeField] private AnimationCurve dashSpeedCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 0.7f);
         [SerializeField, Range(1f, 89f)] private float playerDiagonalAngleDegrees = 45f;
         [SerializeField, Min(0f)] private float diagonalIntervalSeconds = 0.15f;
+        [SerializeField, BossGraphSfxId] private string dashSfxId = HackerSfxIds.Dash;
 
         [Header("Dash Effect")]
         [Tooltip("실제 대시가 시작될 때 보스 뒤에 한 번 생성할 이펙트 프리팹입니다. 오른쪽 대시 방향을 기준으로 제작된 프리팹을 사용합니다.")]
@@ -1070,6 +1124,7 @@ namespace Week14.Enemy
             }
 
             dashDirection = dashDirection.sqrMagnitude > 0.0001f ? dashDirection.normalized : Vector2.right;
+            context.PlaySfx(HackerSfxIds.Resolve(dashSfxId, HackerSfxIds.Dash));
             PlayDashEffect(context, dashDirection);
             float elapsed = 0f;
             float nextAfterimageAt = 0f;

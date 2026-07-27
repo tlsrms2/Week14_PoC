@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Weapon Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: Weapon
+  m_TableCollectionNameGuidString: 844e39019e591984499c4858a8ec6fa8
+  m_Entries:
+  - m_Id: 20524924928
+    m_Key: pistol.Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 201567862784
+    m_Key: pistol.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 465628659712
+    m_Key: shotgun.Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 753810898944
+    m_Key: shotgun.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3331155001966592
+    m_Key: Railgun.Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3331352159420416
+    m_Key: Railgun.Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 860581101568
+    m_Key: 'sniper.Name '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 913773264896
+    m_Key: 'sniper.Desc '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4219156515446784
+    m_Key: bat.Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4219302263316480
+    m_Key: bat.Desc
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 6489938886596493387
+  references:
+    version: 2
+    RefIds:
+    - rid: 6489938886596493387
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1782913274078

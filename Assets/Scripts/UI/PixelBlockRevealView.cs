@@ -122,6 +122,7 @@ namespace Week14.UI
         [ContextMenu("Show Immediate")]
         public void ShowImmediate()
         {
+            StopRevealRoutine();
             CacheTarget();
             BuildCells();
             CacheContent();
@@ -131,6 +132,7 @@ namespace Week14.UI
         [ContextMenu("Hide Immediate")]
         public void HideImmediate()
         {
+            StopRevealRoutine();
             CacheTarget();
             BuildCells();
             CacheContent();
@@ -139,13 +141,21 @@ namespace Week14.UI
 
         private void PlayFromTo(float from, float to, float duration, Action onComplete)
         {
-            if (revealRoutine != null)
-            {
-                StopCoroutine(revealRoutine);
-            }
+            StopRevealRoutine();
 
             activeRevealDuration = Mathf.Max(0.0001f, duration);
             revealRoutine = StartCoroutine(PlayRoutine(from, to, activeRevealDuration, onComplete));
+        }
+
+        private void StopRevealRoutine()
+        {
+            if (revealRoutine == null)
+            {
+                return;
+            }
+
+            StopCoroutine(revealRoutine);
+            revealRoutine = null;
         }
 
         private IEnumerator PlayRoutine(float from, float to, float duration, Action onComplete)
@@ -316,7 +326,11 @@ namespace Week14.UI
                     originalGraphicColors.Add(graphic, originalColor);
                 }
 
-                contentGraphics.Add(new GraphicState(graphic, originalColor, GetGraphicRevealEnd(graphic)));
+                // 버튼에 항상 붙어있어야 하는 "Outline"/"Fill" 그래픽은 위치 기반 지연 노출 대상에서 제외한다.
+                // 그렇지 않으면 챌린지 연출을 스킵했을 때, 버튼은 즉시 나타나는데 이 리빌 타임라인은
+                // 별도 코루틴으로 계속 진행 중이어서 버튼과 아웃라인/Fill의 등장(알파 복원) 시점이 어긋날 수 있다.
+                float revealEnd = IsAlwaysVisibleGraphic(graphic) ? 0f : GetGraphicRevealEnd(graphic);
+                contentGraphics.Add(new GraphicState(graphic, originalColor, revealEnd));
             }
 
             Selectable[] selectables = root.GetComponentsInChildren<Selectable>(true);
@@ -364,7 +378,9 @@ namespace Week14.UI
             {
                 if (contentGraphics[i].Graphic == graphic)
                 {
-                    contentGraphics[i] = new GraphicState(graphic, color, contentGraphics[i].RevealEnd);
+                    GraphicState updatedState = new(graphic, color, contentGraphics[i].RevealEnd);
+                    contentGraphics[i] = updatedState;
+                    ApplyGraphicProgress(updatedState, revealCurve.Evaluate(currentProgress));
                     break;
                 }
             }
@@ -409,6 +425,22 @@ namespace Week14.UI
         private bool IsRuntimeRevealGraphic(Graphic graphic)
         {
             return cellRoot != null && graphic.transform.IsChildOf(cellRoot);
+        }
+
+        private static readonly string[] AlwaysVisibleGraphicNames = { "Outline", "Fill" };
+
+        private static bool IsAlwaysVisibleGraphic(Graphic graphic)
+        {
+            string name = graphic.gameObject.name;
+            for (int i = 0; i < AlwaysVisibleGraphicNames.Length; i++)
+            {
+                if (name == AlwaysVisibleGraphicNames[i])
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void SetProgress(float progress)
@@ -488,17 +520,7 @@ namespace Week14.UI
         {
             for (int i = 0; i < contentGraphics.Count; i++)
             {
-                GraphicState state = contentGraphics[i];
-                if (state.Graphic == null)
-                {
-                    continue;
-                }
-
-                float trigger = syncContentWithReveal ? state.RevealEnd : contentFadeStart;
-                float alpha = progress >= trigger ? 1f : 0f;
-                Color color = state.OriginalColor;
-                color.a *= alpha;
-                state.Graphic.color = color;
+                ApplyGraphicProgress(contentGraphics[i], progress);
             }
 
             bool interactable = !blockInteractionUntilComplete || progress >= 1f;
@@ -510,6 +532,19 @@ namespace Week14.UI
                     state.Selectable.interactable = state.OriginalInteractable && interactable;
                 }
             }
+        }
+
+        private void ApplyGraphicProgress(GraphicState state, float progress)
+        {
+            if (state.Graphic == null)
+            {
+                return;
+            }
+
+            float trigger = syncContentWithReveal ? state.RevealEnd : contentFadeStart;
+            Color color = state.OriginalColor;
+            color.a *= progress >= trigger ? 1f : 0f;
+            state.Graphic.color = color;
         }
 
         private void RestoreContent()

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Week14.Combat;
@@ -30,12 +31,16 @@ namespace Week14.Enemy
         [SerializeField, Min(0.05f)] private float maxFlightSeconds = 2f;
         [SerializeField] private HackerFireWireTargetMode targetMode;
         [SerializeField, Min(0.05f)] private float grabSeconds = 0.65f;
-        [SerializeField, Min(0.05f)] private float playerWallSearchRadius = 5f;
         [SerializeField, Min(0f)] private float minimumWallDistance = 2f;
         [SerializeField, Min(1)] private int fireCount = 1;
         [Tooltip("다음 와이어는 이전 와이어가 실제 생성된 시점으로부터 이 시간 이상 지난 뒤 발사됩니다.")]
         [SerializeField, Min(0f)] private float repeatIntervalSeconds = 0.15f;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.2f;
+
+        [Header("SFX")]
+        [SerializeField, BossGraphSfxId] private string fireSfxId = HackerSfxIds.FireWire;
+        [SerializeField, BossGraphSfxId] private string flightSfxId = HackerSfxIds.WireFlight;
+        [SerializeField, BossGraphSfxId] private string grabSfxId = HackerSfxIds.Wire;
 
         [Header("Fire Effect")]
         [Tooltip("와이어를 발사할 때 한 번 생성할 이펙트 프리팹입니다. 프리팹의 오른쪽(+X)을 발사 방향으로 사용합니다.")]
@@ -91,6 +96,8 @@ namespace Week14.Enemy
                         break;
                     }
 
+                    context.PlaySfx(HackerSfxIds.Resolve(fireSfxId, HackerSfxIds.FireWire));
+
                     ShotIntervalTimer intervalTimer = null;
                     Coroutine intervalCoroutine = null;
                     if (shotIndex < count - 1)
@@ -138,6 +145,7 @@ namespace Week14.Enemy
                             }
                             else if (resolution == HackerWireResolution.PlayerGrabbed)
                             {
+                                context.PlaySfx(HackerSfxIds.Resolve(grabSfxId, HackerSfxIds.Wire));
                                 playerGrabbed = true;
                                 context.SetAnimationBool(IsWireShotActiveAnimationParameter, false);
                                 context.SetAnimationBool(IsWireGrabbingAnimationParameter, true);
@@ -152,14 +160,7 @@ namespace Week14.Enemy
                             if (wire != null)
                             {
                                 wire.Resolved -= handleResolution;
-                                if (resolution == HackerWireResolution.WallAttached)
-                                {
-                                    wire.RemoveImmediate();
-                                }
-                                else
-                                {
-                                    wire.BeginDissolve();
-                                }
+                                wire.BeginDissolve();
                             }
                         }
 
@@ -270,7 +271,7 @@ namespace Week14.Enemy
             }
             else
             {
-                if (!TryGetPlayerNearbyWallAimPoint(origin, out Vector2 wallAimPoint))
+                if (!TryGetConfiguredWallAimPoint(hacker, origin, out Vector2 wallAimPoint))
                 {
                     return false;
                 }
@@ -302,31 +303,34 @@ namespace Week14.Enemy
             return true;
         }
 
-        private bool TryGetPlayerNearbyWallAimPoint(Vector2 origin, out Vector2 wallAimPoint)
+        private bool TryGetConfiguredWallAimPoint(
+            HackerBossAI hacker,
+            Vector2 origin,
+            out Vector2 wallAimPoint)
         {
             wallAimPoint = origin;
-            PlayerCombatController player = PlayerCombatController.Active;
             int wallLayer = LayerMask.NameToLayer("Wall");
-            if (player == null || wallLayer < 0)
+            IReadOnlyList<Collider2D> targetColliders = hacker.PlayerNearbyWallTargetColliders;
+            if (wallLayer < 0 || targetColliders == null || targetColliders.Count == 0)
             {
                 return false;
             }
 
-            Vector2 playerPosition = player.transform.position;
-            Collider2D[] wallColliders = Physics2D.OverlapCircleAll(
-                playerPosition,
-                playerWallSearchRadius,
-                1 << wallLayer);
-            float bestDistanceSqr = float.PositiveInfinity;
-            for (int i = 0; i < wallColliders.Length; i++)
+            int wallMask = 1 << wallLayer;
+            int startIndex = UnityEngine.Random.Range(0, targetColliders.Count);
+            for (int offset = 0; offset < targetColliders.Count; offset++)
             {
-                Collider2D wallCollider = wallColliders[i];
-                if (wallCollider == null || !wallCollider.enabled || !wallCollider.gameObject.activeInHierarchy)
+                int index = (startIndex + offset) % targetColliders.Count;
+                Collider2D wallCollider = targetColliders[index];
+                if (wallCollider == null
+                    || !wallCollider.enabled
+                    || !wallCollider.gameObject.activeInHierarchy
+                    || wallCollider.gameObject.layer != wallLayer)
                 {
                     continue;
                 }
 
-                Vector2 candidatePoint = wallCollider.ClosestPoint(playerPosition);
+                Vector2 candidatePoint = wallCollider.ClosestPoint(origin);
                 Vector2 toCandidate = candidatePoint - origin;
                 float candidateDistance = toCandidate.magnitude;
                 if (candidateDistance <= 0.0001f || candidateDistance < minimumWallDistance)
@@ -338,8 +342,9 @@ namespace Week14.Enemy
                     origin,
                     toCandidate / candidateDistance,
                     candidateDistance + 0.05f,
-                    1 << wallLayer);
-                if (hit.collider == null || hit.collider.gameObject.layer != wallLayer)
+                    wallMask);
+                if (hit.collider != wallCollider
+                    || hit.collider.gameObject.layer != wallLayer)
                 {
                     continue;
                 }
@@ -349,17 +354,11 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                float playerDistanceSqr = ((Vector2)hit.point - playerPosition).sqrMagnitude;
-                if (playerDistanceSqr >= bestDistanceSqr)
-                {
-                    continue;
-                }
-
-                bestDistanceSqr = playerDistanceSqr;
                 wallAimPoint = hit.point;
+                return true;
             }
 
-            return bestDistanceSqr < float.PositiveInfinity;
+            return false;
         }
 
         private IEnumerator FlyBossToWall(
@@ -373,6 +372,16 @@ namespace Week14.Enemy
             }
 
             Vector2 arrivalPosition = ResolveWallArrivalPosition(context.Boss, wallPosition, wallNormal);
+            Vector2 bossPosition = context.Boss.Body != null
+                ? context.Boss.Body.position
+                : (Vector2)context.Boss.transform.position;
+            if (Vector2.Distance(bossPosition, arrivalPosition) <= WallArrivalTolerance)
+            {
+                yield break;
+            }
+
+            context.PlaySfx(HackerSfxIds.Resolve(flightSfxId, HackerSfxIds.WireFlight));
+            using IDisposable playerCollisionIgnore = context.AcquirePlayerCollisionIgnore();
             context.SetFacingLocked(true);
             context.SetDashing(true);
             float elapsed = 0f;

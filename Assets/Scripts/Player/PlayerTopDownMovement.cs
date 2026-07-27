@@ -54,7 +54,7 @@ namespace Week14.Combat
                 }
                 else
                 {
-                    body.linearVelocity = ClampWallVelocity(body.linearVelocity);
+                    body.linearVelocity = ClampWallVelocity(body.linearVelocity, Time.fixedDeltaTime);
                 }
 
                 return;
@@ -69,13 +69,13 @@ namespace Week14.Combat
             }
 
             Vector2 velocity = moveInput * config.MoveSpeed * combat.MoveSpeedMultiplier;
-            body.linearVelocity = ClampWallVelocity(GroundMovementConstraint.ClampVelocity(body, velocity));
+            body.linearVelocity = ClampWallVelocity(GroundMovementConstraint.ClampVelocity(body, velocity, Time.fixedDeltaTime), Time.fixedDeltaTime);
         }
 
-        private Vector2 ClampWallVelocity(Vector2 velocity)
+        private Vector2 ClampWallVelocity(Vector2 velocity, float stepSeconds)
         {
-            Vector2 wallClampedVelocity = GroundMovementConstraint.ClampVelocityAgainstLayer(body, velocity, wallLayerMask);
-            return GroundMovementConstraint.ClampVelocityAgainstPlayerOnlyBarriers(body, wallClampedVelocity);
+            Vector2 wallClampedVelocity = GroundMovementConstraint.ClampVelocityAgainstLayer(body, velocity, wallLayerMask, stepSeconds);
+            return GroundMovementConstraint.ClampVelocityAgainstPlayerOnlyBarriers(body, wallClampedVelocity, stepSeconds);
         }
     }
 }

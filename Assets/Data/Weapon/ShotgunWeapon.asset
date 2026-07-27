@@ -46,9 +46,9 @@ MonoBehaviour:
   maxAmmoTooltipTextFormat: 
   localizedMaxAmmoTooltipText:
     m_TableReference:
-      m_TableCollectionName: GUID:844e39019e591984499c4858a8ec6fa8
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 5374021304320
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -56,9 +56,9 @@ MonoBehaviour:
   parryingRangeTooltipTextFormat: 
   localizedParryingRangeTooltipText:
     m_TableReference:
-      m_TableCollectionName: GUID:844e39019e591984499c4858a8ec6fa8
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 5361870405632
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -66,9 +66,9 @@ MonoBehaviour:
   bulletDamageTooltipTextFormat: 
   localizedBulletDamageTooltipText:
     m_TableReference:
-      m_TableCollectionName: GUID:844e39019e591984499c4858a8ec6fa8
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 5404807495680
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
