@@ -58,8 +58,6 @@ namespace Week14.UI
         private string WeaponCategoryText => localization != null ? localization.WeaponCategory : "무기";
         private string PurchaseHintText => localization != null ? localization.PurchaseHint : "좌클릭";
         private string RefundHintText => localization != null ? localization.RefundHint : "우클릭";
-        private string UnequipHintText => localization != null ? localization.UnequipHint : "장착해제";
-        private string EquippedLabelText => localization != null ? localization.EquippedLabel : "장착중";
         private string NonRefundableText => localization != null ? localization.NonRefundable : "환불 불가";
         private string DefaultGrantedNonRefundableText => localization != null ? localization.DefaultGrantedNonRefundable : "기본 지급 / 환불 불가";
 
@@ -395,10 +393,8 @@ namespace Week14.UI
                 costIcon.enabled = showCost;
             }
 
-            // 장착 중인데 해제가 불가능한 경우에는 액션 힌트 이미지는 숨기고,
-            // 대신 "장착중"이라는 상태 표시 텍스트만 보여준다(클릭해도 아무 일도 안 일어나므로).
+            // 장착 중인 항목은 클릭해도 아무 일도 일어나지 않으므로 액션 힌트를 아예 띄우지 않는다.
             bool showActionHint = cost.HasValue && !isEquipped && (!isPurchased || isRefundable);
-            bool showEquippedOnlyLabel = cost.HasValue && isEquipped;
 
             if (actionHintImage != null)
             {
@@ -408,14 +404,14 @@ namespace Week14.UI
 
             if (actionHintText != null)
             {
-                if (showActionHint)
+                if (isEquipped)
                 {
-                    actionHintText.text = isEquipped ? UnequipHintText : (isPurchased ? RefundHintText : PurchaseHintText);
-                    actionHintText.enabled = true;
+                    actionHintText.text = string.Empty;
+                    actionHintText.enabled = false;
                 }
-                else if (showEquippedOnlyLabel)
+                else if (showActionHint)
                 {
-                    actionHintText.text = EquippedLabelText;
+                    actionHintText.text = isPurchased ? RefundHintText : PurchaseHintText;
                     actionHintText.enabled = true;
                 }
                 else if (cost.HasValue && isPurchased && !isRefundable)
