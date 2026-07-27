@@ -337,7 +337,7 @@ MonoBehaviour:
   - category: ui
     id: PausePanel
     clip: {fileID: 8300000, guid: 5d9177f25bdcfd241a51efc8eba8aade, type: 3}
-    volume: 1
+    volume: 0.7
     pitch: 1
   - category: player
     id: PlayerDeath2
