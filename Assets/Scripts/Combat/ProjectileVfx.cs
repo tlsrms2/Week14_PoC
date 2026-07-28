@@ -57,6 +57,22 @@ namespace Week14.Combat
             bool followRotation = true,
             float playbackSpeed = 1f)
         {
+            return PlayPrefab(prefab, position, rotation, followTarget, scale, followRotation, playbackSpeed, out _);
+        }
+
+        // 프리팹의 실제 재생 시간(파티클/애니메이터 길이 기반 자동 계산값)을 호출부에서도 알아야 할 때
+        // 쓰는 오버로드입니다(예: 레일건 조준 고정을 빔 이펙트가 사라질 때까지 유지하는 용도).
+        public static GameObject PlayPrefab(
+            GameObject prefab,
+            Vector3 position,
+            Quaternion rotation,
+            Transform followTarget,
+            float scale,
+            bool followRotation,
+            float playbackSpeed,
+            out float lifetimeSecondsOut)
+        {
+            lifetimeSecondsOut = 0f;
             if (prefab == null || scale <= 0f)
             {
                 return null;
@@ -168,6 +184,7 @@ namespace Week14.Combat
                 ? Mathf.Max(MinimumPrefabLifetimeSeconds, lifetimeSeconds)
                 : DefaultPrefabLifetimeSeconds;
             Object.Destroy(instance, destroyAfterSeconds);
+            lifetimeSecondsOut = destroyAfterSeconds;
             return instance;
         }
 
@@ -233,6 +250,36 @@ namespace Week14.Combat
             float playbackSpeed = 1f,
             int sortingOrder = 0)
         {
+            return PlayAnchoredBeamPrefab(
+                prefab,
+                spawnParent,
+                origin,
+                direction,
+                beamLength,
+                lengthAlongLocalY,
+                muzzleOffset,
+                rotationOffsetDegrees,
+                playbackSpeed,
+                sortingOrder,
+                out _);
+        }
+
+        // 빔 프리팹의 실제 재생 시간을 호출부에서도 알아야 할 때 쓰는 오버로드입니다
+        // (예: 레일건 조준 고정을 빔 이펙트가 사라질 때까지 유지하는 용도).
+        public static GameObject PlayAnchoredBeamPrefab(
+            GameObject prefab,
+            Transform spawnParent,
+            Vector3 origin,
+            Vector2 direction,
+            float beamLength,
+            bool lengthAlongLocalY,
+            float muzzleOffset,
+            float rotationOffsetDegrees,
+            float playbackSpeed,
+            int sortingOrder,
+            out float lifetimeSecondsOut)
+        {
+            lifetimeSecondsOut = 0f;
             if (prefab == null || spawnParent == null || beamLength <= 0f)
             {
                 return null;
@@ -247,7 +294,8 @@ namespace Week14.Combat
                 null,
                 1f,
                 true,
-                playbackSpeed);
+                playbackSpeed,
+                out lifetimeSecondsOut);
             if (instance == null)
             {
                 return null;
