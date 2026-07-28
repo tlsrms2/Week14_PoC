@@ -90,6 +90,33 @@ namespace Week14.Enemy
         [SerializeField] private GameObject oneWeaponVisual;
         [SerializeField, Min(0.1f)] private float phaseVisualSwitchFallbackSeconds = 1f;
 
+        [Header("Shadow Shape")]
+        [SerializeField] private Transform hackerShadow;
+        [SerializeField] private Transform hackerShadowStretch;
+        [SerializeField] private string chargeNarrowFrameName = "atk6-charge_3";
+        [SerializeField] private string chargeNarrowRestoreFrameName = "atk6-charge_4";
+        [SerializeField] private string chargeNarrowHoldStateName = "charge-release";
+        [SerializeField] private string chargeNarrowRestoreStateName = "charge-end";
+        [SerializeField] private Vector2 chargeNarrowScale = new(0.75f, 0.75f);
+        [SerializeField] private float chargeNarrowLocalY = -0.075f;
+        [SerializeField] private string sweepTelegraphStretchFrameName = "atk9-sweep-telegraph_4";
+        [SerializeField] private float sweepTelegraphStretchLocalX = 0.135f;
+        [SerializeField, Min(0f)] private float sweepTelegraphStretchScaleX = 1.5f;
+        [SerializeField] private string sweepReleaseRestoreFrameName = "sweep-release_1";
+        [SerializeField] private string sweepReleaseForwardFrameName = "release_2";
+        [SerializeField] private string sweepReleaseForwardHoldFrameName = "release_3";
+        [SerializeField] private float sweepReleaseForwardLocalX = -0.2f;
+        [SerializeField, Min(0f)] private float sweepReleaseForwardScaleX = 1.7f;
+        [SerializeField] private string sweepTelegraphStateName = "sweep-tele";
+        [SerializeField] private string sweepReleaseStateName = "sweep-release";
+        [SerializeField] private string deathStretchFirstFrameName = "die_16";
+        [SerializeField] private float deathStretchFirstLocalX = -0.15f;
+        [SerializeField, Min(0f)] private float deathStretchFirstScaleX = 1.55f;
+        [SerializeField] private string deathStretchSecondFrameName = "die_17";
+        [SerializeField] private float deathStretchSecondLocalX = -0.225f;
+        [SerializeField, Min(0f)] private float deathStretchSecondScaleX = 1.7f;
+        [SerializeField] private string deathStretchStateName = "die";
+
         [Header("Attack Indicators")]
         [Tooltip("Melee, Thrust, Sweep 계열 공격의 범위 인디케이터를 표시합니다.")]
         [InspectorName("Melee / Thrust / Sweep 인디케이터 표시")]
@@ -131,6 +158,15 @@ namespace Week14.Enemy
         private bool hasPreviousPlayerBlockingPosition;
         private bool isPlayerBlockingSuppressed;
         private bool isPlayerBlockingResumePending;
+        private Vector3 hackerShadowBaseLocalPosition;
+        private Vector3 hackerShadowBaseLocalScale;
+        private Vector3 hackerShadowStretchBaseLocalPosition;
+        private Vector3 hackerShadowStretchBaseLocalScale;
+        private bool hackerShadowBaseCached;
+        private bool hackerShadowStretchBaseCached;
+        private bool hackerChargeShadowNarrowActive;
+        private int hackerSweepShadowStretchStage;
+        private bool hackerDeathShadowStretchActive;
         protected virtual bool UsesHackerPresentationUpdates => true;
         public override bool SuppressesBodyContactDamage => true;
         internal virtual HackerWireSettings WireSettings => wireSettings ??= new HackerWireSettings();
@@ -242,6 +278,7 @@ namespace Week14.Enemy
                 TickPlayerBlocking();
                 UpdateWalkState();
                 UpdateFacingFromPlayer();
+                UpdateHackerShadowShape();
             }
 
             TickOneWeaponVisualSwitch();
@@ -340,6 +377,10 @@ namespace Week14.Enemy
 
             ApplyWalkState(false, true);
             EndGunWalkCounterParry();
+            if (UsesHackerPresentationUpdates)
+            {
+                ResetHackerShadowShape();
+            }
             ClearGroundedWeapons();
             DestroyHologram();
             base.OnDisable();
@@ -580,6 +621,374 @@ namespace Week14.Enemy
             SetPatternGroggyAnimator(activeAnimator);
             isOneWeaponVisualActive = useOneWeapon;
             hasAppliedWalkState = false;
+        }
+
+        private void UpdateHackerShadowShape()
+        {
+            if (!ResolveHackerShadowTargets())
+            {
+                return;
+            }
+
+            CacheHackerShadowBases();
+
+            SpriteRenderer activeRenderer = ResolveActiveHackerVisualRenderer();
+            Sprite activeSprite = activeRenderer != null ? activeRenderer.sprite : null;
+            string normalizedFrameName = NormalizeHackerShadowName(activeSprite != null ? activeSprite.name : null);
+            Animator activeAnimator = ResolveActiveHackerAnimator();
+
+            if (UpdateHackerDeathShadowStretch(normalizedFrameName, activeAnimator))
+            {
+                return;
+            }
+
+            bool isNarrowFrame = MatchesHackerShadowFrame(normalizedFrameName, chargeNarrowFrameName);
+            bool isRestoreFrame = MatchesHackerShadowFrame(normalizedFrameName, chargeNarrowRestoreFrameName);
+            bool isHoldState = IsInHackerShadowState(activeAnimator, chargeNarrowHoldStateName);
+            bool isRestoreState = IsInHackerShadowState(activeAnimator, chargeNarrowRestoreStateName);
+
+            if (isNarrowFrame && !isRestoreState)
+            {
+                ApplyHackerShadowNarrow();
+                return;
+            }
+
+            if (isRestoreFrame
+                || isRestoreState
+                || (hackerChargeShadowNarrowActive && !isHoldState && !isNarrowFrame))
+            {
+                ResetHackerShadowShape();
+            }
+
+            UpdateHackerSweepShadowStretch(normalizedFrameName, activeAnimator);
+        }
+
+        private bool UpdateHackerDeathShadowStretch(string normalizedFrameName, Animator activeAnimator)
+        {
+            if (MatchesHackerShadowFrame(normalizedFrameName, deathStretchSecondFrameName))
+            {
+                ResetHackerShadowShape();
+                ApplyHackerShadowStretch(deathStretchSecondLocalX, deathStretchSecondScaleX);
+                hackerDeathShadowStretchActive = true;
+                return true;
+            }
+
+            if (MatchesHackerShadowFrame(normalizedFrameName, deathStretchFirstFrameName))
+            {
+                ResetHackerShadowShape();
+                ApplyHackerShadowStretch(deathStretchFirstLocalX, deathStretchFirstScaleX);
+                hackerDeathShadowStretchActive = true;
+                return true;
+            }
+
+            if (!hackerDeathShadowStretchActive)
+            {
+                return false;
+            }
+
+            if (IsInHackerShadowState(activeAnimator, deathStretchStateName))
+            {
+                return true;
+            }
+
+            ResetHackerShadowStretchShape();
+            hackerDeathShadowStretchActive = false;
+            return false;
+        }
+
+        private void UpdateHackerSweepShadowStretch(string normalizedFrameName, Animator activeAnimator)
+        {
+            bool isTelegraphStretchFrame =
+                MatchesHackerShadowFrame(normalizedFrameName, sweepTelegraphStretchFrameName);
+            bool isReleaseRestoreFrame =
+                MatchesHackerShadowFrame(normalizedFrameName, sweepReleaseRestoreFrameName);
+            bool isReleaseForwardFrame =
+                MatchesHackerShadowFrame(normalizedFrameName, sweepReleaseForwardFrameName);
+            bool isReleaseForwardHoldFrame =
+                MatchesHackerShadowFrame(normalizedFrameName, sweepReleaseForwardHoldFrameName);
+            bool isSweepTelegraphState = IsInHackerShadowState(activeAnimator, sweepTelegraphStateName);
+            bool isSweepReleaseState = IsInHackerShadowState(activeAnimator, sweepReleaseStateName);
+
+            if (isTelegraphStretchFrame)
+            {
+                ApplyHackerShadowStretch(sweepTelegraphStretchLocalX, sweepTelegraphStretchScaleX);
+                hackerSweepShadowStretchStage = 1;
+                return;
+            }
+
+            if (isReleaseRestoreFrame)
+            {
+                ResetHackerShadowStretchShape();
+                return;
+            }
+
+            if (isReleaseForwardFrame)
+            {
+                ApplyHackerShadowStretch(sweepReleaseForwardLocalX, sweepReleaseForwardScaleX);
+                hackerSweepShadowStretchStage = 2;
+                return;
+            }
+
+            if (hackerSweepShadowStretchStage == 2)
+            {
+                if (isReleaseForwardHoldFrame)
+                {
+                    ApplyHackerShadowStretch(sweepReleaseForwardLocalX, sweepReleaseForwardScaleX);
+                    return;
+                }
+
+                ResetHackerShadowStretchShape();
+                return;
+            }
+
+            if (hackerSweepShadowStretchStage == 1
+                && !isSweepTelegraphState
+                && !isSweepReleaseState)
+            {
+                ResetHackerShadowStretchShape();
+            }
+        }
+
+        private bool ResolveHackerShadowTargets()
+        {
+            if (hackerShadow != null && hackerShadowStretch != null)
+            {
+                return true;
+            }
+
+            ResolveFacingTargets();
+            Transform visualRoot = facingVisual != null ? facingVisual : BodyRoot;
+            if (visualRoot == null)
+            {
+                return false;
+            }
+
+            hackerShadow ??= FindDirectChild(visualRoot, "Shadow");
+            hackerShadowStretch ??= FindDirectChild(visualRoot, "Shadow-Stretch");
+            return hackerShadow != null || hackerShadowStretch != null;
+        }
+
+        private SpriteRenderer ResolveActiveHackerVisualRenderer()
+        {
+            GameObject activeVisual = ResolveActiveHackerVisual();
+            return activeVisual != null ? activeVisual.GetComponent<SpriteRenderer>() : null;
+        }
+
+        private Animator ResolveActiveHackerAnimator()
+        {
+            GameObject activeVisual = ResolveActiveHackerVisual();
+            return activeVisual != null ? activeVisual.GetComponent<Animator>() : null;
+        }
+
+        private GameObject ResolveActiveHackerVisual()
+        {
+            ResolvePhaseVisuals();
+
+            if (oneWeaponVisual != null && oneWeaponVisual.activeInHierarchy)
+            {
+                return oneWeaponVisual;
+            }
+
+            if (twoWeaponVisual != null && twoWeaponVisual.activeInHierarchy)
+            {
+                return twoWeaponVisual;
+            }
+
+            return isOneWeaponVisualActive ? oneWeaponVisual : twoWeaponVisual;
+        }
+
+        private void CacheHackerShadowBases()
+        {
+            CacheHackerShadowBase(
+                hackerShadow,
+                ref hackerShadowBaseCached,
+                ref hackerShadowBaseLocalPosition,
+                ref hackerShadowBaseLocalScale);
+            CacheHackerShadowBase(
+                hackerShadowStretch,
+                ref hackerShadowStretchBaseCached,
+                ref hackerShadowStretchBaseLocalPosition,
+                ref hackerShadowStretchBaseLocalScale);
+        }
+
+        private static void CacheHackerShadowBase(
+            Transform target,
+            ref bool cached,
+            ref Vector3 baseLocalPosition,
+            ref Vector3 baseLocalScale)
+        {
+            if (cached || target == null)
+            {
+                return;
+            }
+
+            baseLocalPosition = target.localPosition;
+            baseLocalScale = target.localScale;
+            cached = true;
+        }
+
+        private void ApplyHackerShadowNarrow()
+        {
+            ApplyHackerShadowNarrow(
+                hackerShadow,
+                hackerShadowBaseLocalPosition,
+                hackerShadowBaseLocalScale);
+            ApplyHackerShadowNarrow(
+                hackerShadowStretch,
+                hackerShadowStretchBaseLocalPosition,
+                hackerShadowStretchBaseLocalScale);
+            hackerChargeShadowNarrowActive = true;
+        }
+
+        private void ApplyHackerShadowNarrow(
+            Transform target,
+            Vector3 baseLocalPosition,
+            Vector3 baseLocalScale)
+        {
+            if (target == null)
+            {
+                return;
+            }
+
+            Vector3 nextPosition = baseLocalPosition;
+            nextPosition.y = chargeNarrowLocalY;
+            target.localPosition = nextPosition;
+
+            Vector3 nextScale = baseLocalScale;
+            nextScale.x = chargeNarrowScale.x;
+            nextScale.y = chargeNarrowScale.y;
+            target.localScale = nextScale;
+        }
+
+        private void ApplyHackerShadowStretch(float localX, float scaleX)
+        {
+            if (hackerShadowStretch == null)
+            {
+                return;
+            }
+
+            Vector3 nextPosition = hackerShadowStretchBaseLocalPosition;
+            nextPosition.x = localX;
+            hackerShadowStretch.localPosition = nextPosition;
+
+            Vector3 nextScale = hackerShadowStretchBaseLocalScale;
+            nextScale.x = scaleX;
+            hackerShadowStretch.localScale = nextScale;
+        }
+
+        private void ResetHackerShadowShape()
+        {
+            ResetHackerShadowShape(
+                hackerShadow,
+                hackerShadowBaseCached,
+                hackerShadowBaseLocalPosition,
+                hackerShadowBaseLocalScale);
+            ResetHackerShadowShape(
+                hackerShadowStretch,
+                hackerShadowStretchBaseCached,
+                hackerShadowStretchBaseLocalPosition,
+                hackerShadowStretchBaseLocalScale);
+            hackerChargeShadowNarrowActive = false;
+            hackerSweepShadowStretchStage = 0;
+            hackerDeathShadowStretchActive = false;
+        }
+
+        private void ResetHackerShadowStretchShape()
+        {
+            ResetHackerShadowShape(
+                hackerShadowStretch,
+                hackerShadowStretchBaseCached,
+                hackerShadowStretchBaseLocalPosition,
+                hackerShadowStretchBaseLocalScale);
+            hackerSweepShadowStretchStage = 0;
+            hackerDeathShadowStretchActive = false;
+        }
+
+        private static void ResetHackerShadowShape(
+            Transform target,
+            bool cached,
+            Vector3 baseLocalPosition,
+            Vector3 baseLocalScale)
+        {
+            if (target == null || !cached)
+            {
+                return;
+            }
+
+            target.localPosition = baseLocalPosition;
+            target.localScale = baseLocalScale;
+        }
+
+        private bool IsInHackerShadowState(Animator animator, string normalizedStateName)
+        {
+            if (animator == null
+                || !animator.isActiveAndEnabled
+                || string.IsNullOrEmpty(normalizedStateName))
+            {
+                return false;
+            }
+
+            if (IsHackerShadowState(animator.GetCurrentAnimatorStateInfo(0), normalizedStateName))
+            {
+                return true;
+            }
+
+            return animator.IsInTransition(0)
+                && IsHackerShadowState(animator.GetNextAnimatorStateInfo(0), normalizedStateName);
+        }
+
+        private static bool IsHackerShadowState(AnimatorStateInfo state, string normalizedStateName)
+        {
+            return state.shortNameHash == Animator.StringToHash("1w-" + normalizedStateName)
+                || state.shortNameHash == Animator.StringToHash("2w-" + normalizedStateName)
+                || state.shortNameHash == Animator.StringToHash(normalizedStateName)
+                || state.IsName("1w-" + normalizedStateName)
+                || state.IsName("2w-" + normalizedStateName)
+                || state.IsName(normalizedStateName);
+        }
+
+        private static bool MatchesHackerShadowFrame(string normalizedFrameName, string configuredFrameName)
+        {
+            string normalizedConfiguredFrameName = NormalizeHackerShadowName(configuredFrameName);
+            return !string.IsNullOrEmpty(normalizedFrameName)
+                && !string.IsNullOrEmpty(normalizedConfiguredFrameName)
+                && (normalizedFrameName == normalizedConfiguredFrameName
+                    || normalizedFrameName.EndsWith(normalizedConfiguredFrameName));
+        }
+
+        private static string NormalizeHackerShadowName(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return string.Empty;
+            }
+
+            return value
+                .ToLowerInvariant()
+                .Replace("boss-05-", string.Empty)
+                .Replace("1w-", string.Empty)
+                .Replace("2w-", string.Empty)
+                .Replace("sweep-1-telegraph", "sweep-telegraph")
+                .Replace("sweep-2-release", "sweep-release");
+        }
+
+        private static Transform FindDirectChild(Transform root, string targetName)
+        {
+            if (root == null)
+            {
+                return null;
+            }
+
+            for (int i = 0; i < root.childCount; i++)
+            {
+                Transform child = root.GetChild(i);
+                if (child != null && child.name == targetName)
+                {
+                    return child;
+                }
+            }
+
+            return null;
         }
 
         protected override bool CanStartGraphPattern()

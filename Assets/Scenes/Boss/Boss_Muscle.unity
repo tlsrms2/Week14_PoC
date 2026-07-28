@@ -5998,6 +5998,20 @@ MonoBehaviour:
   patternGroggyAnimator: {fileID: 0}
   walkAnimator: {fileID: 0}
   walkVelocityThreshold: 0.01
+  deathShadow: {fileID: 138225315}
+  deathShadowFrameSource: {fileID: 7843611011389980381}
+  deathShadowAnimator: {fileID: 5291647841609170472}
+  deathShadowAnimationStateName: Anim-Security-Die
+  deathShadowFramePrefix: Security-Die_
+  deathShadowStageOneFrameName: Security-Die_3
+  deathShadowStageOneAnimationTime: 0.2
+  deathShadowStageOneLocalX: -0.05
+  deathShadowStageOneScaleX: 0.55
+  deathShadowStageTwoFrameName: Security-Die_5
+  deathShadowStageTwoAnimationTime: 0.5
+  deathShadowStageTwoLocalX: -0.19
+  deathShadowStageTwoScaleX: 0.69
+  mirrorDeathShadowLocalXByFacing: 1
 --- !u!4 &9185060628594991249
 Transform:
   m_ObjectHideFlags: 0
