@@ -58,6 +58,8 @@ namespace Week14.UI
         [SerializeField] private RectTransform bottomLetterboxPanel;
         [Tooltip("BossAI의 전투 UI 루트입니다. 비워두면 BossAI에서 자동으로 찾습니다.")]
         [SerializeField] private RectTransform bossCombatUiRect;
+        [Tooltip("보스 경과시간(Time) 텍스트의 RectTransform입니다. 자동으로 찾지 않으니 씬마다 직접 연결해야 합니다.")]
+        [SerializeField] private RectTransform bossTimeRect;
 
         [Header("연출 스킵")]
         [Tooltip("ESC로 연출을 스킵할 수 있음을 알리는 텍스트입니다. 연출이 끝나거나 스킵되면 꺼집니다.")]
@@ -174,6 +176,7 @@ namespace Week14.UI
         private Vector2 topLetterboxTargetPosition;
         private Vector2 bottomLetterboxTargetPosition;
         private Vector2 bossCombatUiTargetPosition;
+        private Vector2 bossTimeUiTargetPosition;
         private Coroutine playRoutine;
         private Coroutine locationIntroRoutine;
         private Coroutine bossBgmDelayRoutine;
@@ -608,12 +611,14 @@ namespace Week14.UI
             Vector2 topHiddenPosition = topLetterboxTargetPosition + Vector2.up * letterboxExitOffset;
             Vector2 bottomHiddenPosition = bottomLetterboxTargetPosition + Vector2.down * letterboxExitOffset;
             Vector2 combatUiHiddenPosition = bossCombatUiTargetPosition + Vector2.down * bossCombatUiEnterOffset;
+            Vector2 timeUiHiddenPosition = bossTimeUiTargetPosition + Vector2.up * bossCombatUiEnterOffset;
 
             if (duration <= 0f)
             {
                 SetAnchoredPosition(topLetterboxPanel, topHiddenPosition);
                 SetAnchoredPosition(bottomLetterboxPanel, bottomHiddenPosition);
                 SetAnchoredPosition(bossCombatUiRect, bossCombatUiTargetPosition);
+                SetAnchoredPosition(bossTimeRect, bossTimeUiTargetPosition);
                 yield break;
             }
 
@@ -624,12 +629,14 @@ namespace Week14.UI
                 SetAnchoredPosition(topLetterboxPanel, Vector2.LerpUnclamped(topLetterboxTargetPosition, topHiddenPosition, eased));
                 SetAnchoredPosition(bottomLetterboxPanel, Vector2.LerpUnclamped(bottomLetterboxTargetPosition, bottomHiddenPosition, eased));
                 SetAnchoredPosition(bossCombatUiRect, Vector2.LerpUnclamped(combatUiHiddenPosition, bossCombatUiTargetPosition, eased));
+                SetAnchoredPosition(bossTimeRect, Vector2.LerpUnclamped(timeUiHiddenPosition, bossTimeUiTargetPosition, eased));
                 yield return null;
             }
 
             SetAnchoredPosition(topLetterboxPanel, topHiddenPosition);
             SetAnchoredPosition(bottomLetterboxPanel, bottomHiddenPosition);
             SetAnchoredPosition(bossCombatUiRect, bossCombatUiTargetPosition);
+            SetAnchoredPosition(bossTimeRect, bossTimeUiTargetPosition);
         }
 
         public IEnumerator ShowExecutionLetterbox(float duration)
@@ -969,6 +976,9 @@ namespace Week14.UI
             SetAnchoredPosition(
                 bossCombatUiRect,
                 bossCombatUiTargetPosition + Vector2.down * bossCombatUiEnterOffset);
+            SetAnchoredPosition(
+                bossTimeRect,
+                bossTimeUiTargetPosition + Vector2.up * bossCombatUiEnterOffset);
             SetVisible(true);
         }
 
@@ -1092,6 +1102,11 @@ namespace Week14.UI
             if (bossCombatUiRect != null)
             {
                 bossCombatUiTargetPosition = bossCombatUiRect.anchoredPosition;
+            }
+
+            if (bossTimeRect != null)
+            {
+                bossTimeUiTargetPosition = bossTimeRect.anchoredPosition;
             }
 
             if (bossInfoPanel != null)
