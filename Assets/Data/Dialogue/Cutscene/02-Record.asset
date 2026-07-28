@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Cutscene.CutsceneDefinition
   skippable: 1
   steps:
-  - backgroundImage: {fileID: 21300000, guid: 15573f1930a37b540a2b111587c19f7d, type: 3}
+  - backgroundImage: {fileID: 21300000, guid: 12110585af126eb4b84710467bea6d35, type: 3}
     dialogues:
     - name: ERIS
       text: " [R-2 \uBE14\uB85D \uCE74\uD398 \uBCA0\uC2A4\uD37C. 7\uC6D4 21\uC77C
@@ -285,7 +285,7 @@ MonoBehaviour:
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
-  - backgroundImage: {fileID: 21300000, guid: e9e140490be781f49aa7559ac8fdc39c, type: 3}
+  - backgroundImage: {fileID: 21300000, guid: f2e2fff8f83f2e94e9bd76d4948ae2e5, type: 3}
     dialogues:
     - name: ERIS
       text: "[ 17\uC2DC 32\uBD84 26\uCD08\uBD80\uD130 41\uCD08 \uC0AC\uC774\uC758
@@ -323,14 +323,14 @@ MonoBehaviour:
     startZoom: 1
     endZoom: 1
     glitchFrames:
-    - {fileID: 21300000, guid: 58ad79ffb76c12b45af466f38b04fe06, type: 3}
-    - {fileID: 21300000, guid: ac13425e0fe62284fa732e0010f3c669, type: 3}
-    - {fileID: 21300000, guid: ea02cfe1e116eff4899c7d889fffd244, type: 3}
-    - {fileID: 21300000, guid: 873f847547bf0304cbd1b6f11ba97f5a, type: 3}
-    - {fileID: 21300000, guid: b50fe172da9b12444a99f92f0b6ab0f0, type: 3}
-    - {fileID: 21300000, guid: 8f32e230182378b41967ab75f215da27, type: 3}
-    - {fileID: 21300000, guid: e9e140490be781f49aa7559ac8fdc39c, type: 3}
-    - {fileID: 21300000, guid: b9fbd307aa53d694e9ce84f32d266a65, type: 3}
+    - {fileID: 21300000, guid: 67e1e2ee10321b143b7d2f75de37f68d, type: 3}
+    - {fileID: 21300000, guid: f2e2fff8f83f2e94e9bd76d4948ae2e5, type: 3}
+    - {fileID: 21300000, guid: 133439d0016b34f418cdedeed72730a9, type: 3}
+    - {fileID: 21300000, guid: da239dadebdcb694f8a398cdb3c93ecf, type: 3}
+    - {fileID: 21300000, guid: b774b32264f68af4385c703a273222a7, type: 3}
+    - {fileID: 21300000, guid: 7989c622bc745c24aaeb351cc0c94caf, type: 3}
+    - {fileID: 21300000, guid: 18cbf9c432b6a954ea235d0018f61dd1, type: 3}
+    - {fileID: 21300000, guid: d23b6851ca528464b8f73186c1fb0c4a, type: 3}
     glitchHoldMinSeconds: 0.2
     glitchHoldMaxSeconds: 0.6
     glitchBurstMinFrames: 2
@@ -340,7 +340,7 @@ MonoBehaviour:
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
-  - backgroundImage: {fileID: 21300000, guid: 15573f1930a37b540a2b111587c19f7d, type: 3}
+  - backgroundImage: {fileID: 21300000, guid: 12110585af126eb4b84710467bea6d35, type: 3}
     dialogues:
     - name: "\uC544\uBC84\uC9C0"
       text: " ...\uB824\uB193...\uC57C \uD574. \uC54C\uACA0\uB2C8?"

@@ -4308,7 +4308,7 @@ MonoBehaviour:
   executionText: {fileID: 2104472610112323686}
   executionBlinkFirstObject: {fileID: 511136011218154752}
   executionBlinkSecondObject: {fileID: 5386983280650201876}
-  executionBlinkIntervalSeconds: 0.12
+  executionBlinkIntervalSeconds: 0.3
 --- !u!1 &1696071456249183736
 GameObject:
   m_ObjectHideFlags: 0
@@ -4646,7 +4646,7 @@ SpriteRenderer:
   m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -79925775, guid: 1364f1483f317134490a53f50c3cd2fb, type: 3}
+  m_Sprite: {fileID: 2687718222788331959, guid: fb358a4c5d09b1e4b86d7326dddb702b, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -4909,7 +4909,7 @@ SpriteRenderer:
   m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 1203842067, guid: 1364f1483f317134490a53f50c3cd2fb, type: 3}
+  m_Sprite: {fileID: 6506202987007345268, guid: fb358a4c5d09b1e4b86d7326dddb702b, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
