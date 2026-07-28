@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -17,7 +17,87 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: c2940797846812f4881a7a287f9eb620, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 373298637312
+    m_Localized: "加速模块"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362898637312
+    m_Localized: "自动追踪模块"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 368098637312
+    m_Localized: "高性能拦截模块"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 352498637312
+    m_Localized: "磁力模块"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 347285585920
+    m_Localized: "时间操纵模块"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 303861956608
+    m_Localized: "在当前位置留下持续10秒的全息影像。全息影像会与玩家一同攻击，对敌人造成50%的普通伤害。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370698637312
+    m_Localized: "略微增加拦截范围。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 378498637312
+    m_Localized: "能量转换模块"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 63427674112
+    m_Localized: "战术闪避模块"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 381098637312
+    m_Localized: "成功拦截时，主动技能冷却时间减少0.5秒。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 349898637312
+    m_Localized: "使周围的时间减缓3秒。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 300527484928
+    m_Localized: "全息复制模块"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 238342733824
+    m_Localized: "向短距离突进，并清除周围的投射物。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 355098637312
+    m_Localized: "在2秒内吸收周围投射物以恢复弹药。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 360298637312
+    m_Localized: "在极短时间内进入无敌状态。若在此期间受到伤害，将恢复全部弹药。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 357698637312
+    m_Localized: "招架模块"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365498637312
+    m_Localized: "子弹始终会朝敌人发射。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 375898637312
+    m_Localized: "没有持有弹药时，移动速度略微提升。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 383698637312
+    m_Localized: "紧急协议模块"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 386298637312
+    m_Localized: "受到致命伤害时，仅限一次避开危机。"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -55,9 +55,8 @@ namespace Week14.UI
             int contentWidth = SettingsManager.ResolutionWidth > 0 ? SettingsManager.ResolutionWidth : Screen.width;
             int contentHeight = SettingsManager.ResolutionHeight > 0 ? SettingsManager.ResolutionHeight : Screen.height;
             SettingsManager.SetResolution(contentWidth, contentHeight);
-            (int width, int height) = FullScreenModeResolver.GetEffectiveScreenResolution(contentWidth, contentHeight, requestedMode);
-            FullScreenMode mode = FullScreenModeResolver.Resolve(width, height, requestedMode);
-            Screen.SetResolution(width, height, mode);
+            FullScreenMode mode = FullScreenModeResolver.Resolve(contentWidth, contentHeight, requestedMode);
+            Screen.SetResolution(contentWidth, contentHeight, mode);
         }
 
         private void PopulateDropdown()
@@ -121,9 +120,8 @@ namespace Week14.UI
             SettingsManager.SetResolution(resolution.x, resolution.y);
 
             FullScreenMode requestedMode = SettingsManager.FullScreenModeValue ?? Screen.fullScreenMode;
-            (int width, int height) = FullScreenModeResolver.GetEffectiveScreenResolution(resolution.x, resolution.y, requestedMode);
-            FullScreenMode mode = FullScreenModeResolver.Resolve(width, height, requestedMode);
-            Screen.SetResolution(width, height, mode);
+            FullScreenMode mode = FullScreenModeResolver.Resolve(resolution.x, resolution.y, requestedMode);
+            Screen.SetResolution(resolution.x, resolution.y, mode);
         }
     }
 }

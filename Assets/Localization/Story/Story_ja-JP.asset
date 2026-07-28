@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -17,7 +17,759 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 8a8e32e629c410a4c97867fa550435ab, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 5333532901383
+    m_Localized: "<sprite name=\"icon_leftclick\"> 入力で<color=#73f3ff>カーソル方向へ弾丸型エネルギーコアを発射</color>します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901389
+    m_Localized: "次は、ダミーの制圧弾を通じて<color=#73f3ff>AEGISインターフェースの作動状況</color>を確認します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789249
+    m_Localized: "敵が<color=#ff4c5c>一部の強力な攻撃</color>を準備している間、<color=#73f3ff>ARGUS戦術義眼が脆弱なエネルギーコアを捕捉する</color>場合があります。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901404
+    m_Localized: "弾丸型エネルギーコアは、<color=#73f3ff>長時間保持しすぎるとオーバーロードし、自動で排出</color>されます。弾倉の弾丸アイコンから、オーバーロードまでの残り時間を確認できます。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512789
+    m_Localized: "医者の前で言えないことがないんだな、<color=#73f3ff>うちの娘。</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512788
+    m_Localized: "...こほん。それでも、<color=#ff4c5c>とても悪いことをする人が死ぬ</color>のなら、いいんじゃないかな？悪い組織を切り取る手術みたいに。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512781
+    m_Localized: "<color=#A8B2BC>[ 再構成された記録媒体を再生します。 ]</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512884
+    m_Localized: "すでに<color=#FF4C5C>訪問</color>を完了した対象でも、<color=#73f3ff>その人物のデータを記録し、繰り返し戦闘</color>することが可能です。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512885
+    m_Localized: "<color=#73f3ff>追加条件を達成</color>すると、分析対象の事件資料以外にも、より多くの<color=#73f3ff>戦闘データを確保</color>できます。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512886
+    m_Localized: "<color=#73f3ff>収集したデータチップ</color>は、以降<color=#73f3ff>装備性能を向上させるモジュール拡張</color>に使用されます。<color=#73f3ff>戦闘が難しい場合はデータチップの確保を優先すること</color>を推奨します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512887
+    m_Localized: "<color=#73f3ff>データチップ</color>をある程度確保されましたので、<color=#73f3ff>モジュール拡張機能</color>についてご説明します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512880
+    m_Localized: "身元が特定された人物たちの位置を<color=#73f3ff>戦術パネルに登録</color>しました。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512881
+    m_Localized: "この<color=#73f3ff>戦術パネル</color>から<color=#73f3ff>対象の情報を確認</color>し、<color=#73f3ff>該当位置へ移動</color>できます。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512882
+    m_Localized: "<color=#73f3ff>パネルに接近</color>すると、次のようなインターフェースが表示されます。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512883
+    m_Localized: "任意の対象を<color=#FF4C5C>訪問</color>し、資料を確保してください。有効な資料が確保され次第、ただちに分析します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512786
+    m_Localized: "感謝の気持ちまで拒んでいたら、医者の仕事もあまりに味気なくなるだろう？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512785
+    m_Localized: "患者からそんなもの、普通にもらっていいの？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512769
+    m_Localized: "入室許可。直ちに応急処置を受けることを推奨します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512768
+    m_Localized: "<color=#FF4C5C>右上肢欠損、顔面部から肩部にかけての広範囲熱傷および神経系損傷</color>を検知しました。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512888
+    m_Localized: "この<color=#73f3ff>モジュールパネルに接近</color>すると、移植済みの<color=#73f3ff>装備性能を向上</color>できます。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512889
+    m_Localized: "<color=#73f3ff>パネルに接近</color>すると、次のようなインターフェースが表示されます。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512831
+    m_Localized: "その方が楽だ。後腐れも少ない。それに、あいつはもう十分に一線を越えている。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512866
+    m_Localized: "ではまず、依頼を受けた者たちのデバイスを分析した結果、<color=#ddbd78>シンジケート本部</color>の位置を特定できました。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512867
+    m_Localized: "悪い知らせは？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512860
+    m_Localized: "利益を考えるなら、ここで手を引くだろうけど.."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1424586970947584
+    m_Localized: "しかし、排除対象に指定された理由は確認されていません。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512814
+    m_Localized: "いや..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512815
+    m_Localized: "リストを削除して。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512816
+    m_Localized: "...承知しました。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512817
+    m_Localized: "お父さん。あの時の言葉、今なら分かるよ。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512810
+    m_Localized: "よく分からない..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512811
+    m_Localized: "<color=#73f3ff>うちの娘</color>は賢いから、いつか分かると思うよ。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512812
+    m_Localized: "..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512813
+    m_Localized: "<color=#ff4c5c>次の標的のリストを送信しましょうか？</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901386
+    m_Localized: "次は<color=#73f3ff>ダミーを使用した適応訓練</color>です。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901408
+    m_Localized: "<color=#73f3ff>戦術回避スキルで敵の攻撃を回避してください。</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333528707072
+    m_Localized: "選択したモジュールを<color=#73f3ff>データチップに戻す</color>こともできます。<color=#73f3ff>戦闘が難しい場合は、複数のモジュール構成を活用</color>してみることを推奨します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901406
+    m_Localized: "アクティブスキル"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512818
+    m_Localized: "<color=#ff4c5c>悪いものを切り取る</color>だけで終わりじゃなく、<color=#ddbd78>残った傷も看なければならないってこと。</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512819
+    m_Localized: "私もこれから、その方法を探してみる。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512856
+    m_Localized: "表向きは音楽とドローンパフォーマンスを組み合わせたアーティストとして活動していますが、実際には<color=#ddbd78>シンジケート</color>所属と見られます。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901387
+    m_Localized: "まず、敵対個体に対して<color=#73f3ff>自動で照準補正されるモジュール</color>をテストします。<color=#73f3ff>どこでもいいので射撃してみてください。</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901401
+    m_Localized: "次は<color=#73f3ff>オーバーロード</color>について説明します。エネルギーコアはAEGISシステムを維持するため、継続的にエネルギーを放出します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901400
+    m_Localized: "迎撃は、<color=#73f3ff>戦闘中に弾丸型エネルギーコアを補充できる唯一の手段</color>です。形状によっては迎撃できない投射物もありますのでご注意ください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901403
+    m_Localized: "オーバーロード"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901388
+    m_Localized: "照準補正モジュールに異常なし。<color=#73f3ff>このモジュールは、以降不要な場合に取り外す</color>ことができます。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828163
+    m_Localized: "敵投射物被弾 {0}/{1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901409
+    m_Localized: "移植された装備の基本訓練が完了しました。最後に、<color=#73f3ff>敵ダミーとの模擬戦闘</color>を実施します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512825
+    m_Localized: "あの<color=#ddbd78>銃器に乗り回している</color>って噂の変人か。購入者は？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512845
+    m_Localized: "該当人物は、武器・情報・資金の流通を管理する組織、<color=#ddbd78>シンジケート</color>の会計業務を担っていた人物と推定されます。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512865
+    m_Localized: "...ひとつずつ言って。聞いてから判断する。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512792
+    m_Localized: "<color=#A8B2BC>[ 17時32分26秒から41秒までの記録が破損しています。 ]</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828161
+    m_Localized: "基本射撃 {0}/{1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512820
+    m_Localized: "...もう行くね。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512874
+    m_Localized: "ご存じの通り、我々は<color=#ff4c5c>訪問</color>を通じて社会の均衡を調整しています。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 739306561925120
+    m_Localized: "また、射撃時には<color=#73f3ff>弾倉に表示されている弾丸型エネルギーコアが消費</color>されます。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901413
+    m_Localized: "<color=#ff4c5c>戦術回避失敗。</color>もう一度お試しください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512877
+    m_Localized: "ですから<color=#73f3ff>イオン</color>、あなたが<color=#ff4c5c>訪問</color>を続けられるよう支援することは、社会全体にも有益だと判断されます。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512863
+    m_Localized: "身元確認中。コードネーム <color=#73f3ff>イオン</color>。お帰りなさい。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512794
+    m_Localized: "よく分からない..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901378
+    m_Localized: "移動"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901379
+    m_Localized: "<sprite name=\"icon_w\"><sprite name=\"icon_a\"><sprite name=\"icon_s\"><sprite name=\"icon_d\"> キーで<color=#73f3ff>移動</color>できます。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901381
+    m_Localized: "次に、瞬間的な衝撃による影響を測定します。左手の銃で<color=#73f3ff>射撃を実施してください</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789250
+    m_Localized: "その<color=#73f3ff>コアを迎撃</color>すると、<color=#73f3ff>敵をスタンさせるだけでなく、余剰エネルギーが生成</color>されます。活用すれば戦闘を有利に進められます。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512872
+    m_Localized: "簡単に説明するなら、一種の投資です。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512834
+    m_Localized: "そいつは誰だ？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512840
+    m_Localized: "取得されたデータはすでにほぼ分析済みです。ご質問はありますか？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512878
+    m_Localized: "...分かった。なら、どこまで支援できる？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901376
+    m_Localized: "<color=#73f3ff>装備適応訓練</color>を開始します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4972079872663552
+    m_Localized: "父"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901384
+    m_Localized: "反動制御および姿勢補正は正常。身体バランス系統に異常なし。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512799
+    m_Localized: "..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512798
+    m_Localized: "...来たよ。お父さん。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1108486769008640
+    m_Localized: "[ 目標 ]"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512837
+    m_Localized: "あいつも直接<color=#FF4C5C>訪問</color>する必要がありそうだな。今どこにいるか分かるか？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512793
+    m_Localized: "<color=#ddbd78>...置いて...なきゃ。</color> 分かるかい？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512890
+    m_Localized: "所持している<color=#73f3ff>データチップを消費</color>して、任意の<color=#73f3ff>モジュールを拡張し、装着</color>できます。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512891
+    m_Localized: "拡張済みのモジュールは<color=#73f3ff>自由に変更できます</color>が、<color=#ff4c5c>同じタイプのモジュールは重複装着できません</color>ので、ご留意ください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512780
+    m_Localized: "<color=#A8B2BC>[ R-2ブロック カフェ・ヴェスパー。7月21日 17時29分20秒 ]</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512797
+    m_Localized: "<color=#A8B2BC>[ 17時33分44秒以降は爆発により記録媒体が破壊され、データが存在しません。 ]</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512796
+    m_Localized: "そうだ、<color=#ddbd78>いただいたお茶</color>でも飲んでみようか。<color=#73f3ff>お前</color>は確か緑茶が好きだっ-"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512795
+    m_Localized: "<color=#73f3ff>うちの娘</color>は賢いから、いつか分かると思うよ。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512779
+    m_Localized: "始めて。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512778
+    m_Localized: "ある程度時間を要すると予想されるため、お待ちの間に<color=#73f3ff>適応訓練を進めること</color>を推奨します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512842
+    m_Localized: "理由は簡単です。<color=#FF4C5C>ヴェスパーでの爆発は偶然</color>でした。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512843
+    m_Localized: "...何？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512875
+    m_Localized: "しかし<color=#ddbd78>利益に従って動く者たち</color>は、いずれ判断が曇り、腐敗するものです。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512876
+    m_Localized: "一方で、利益ではなく<color=#FF4C5C>一貫した動機</color>を原動力として動く者は、純粋で予測可能な動力となります。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512773
+    m_Localized: "身体機能回復率79%。右側<color=#73f3ff>義手</color>の神経接続が完了しました。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512772
+    m_Localized: "...R-2ブロック、<color=#ddbd78>カフェ・ヴェスパー。</color> 今日17時33分前後の映像記録すべて。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512848
+    m_Localized: "ヴェスパー事故の翌日、<color=#FF4C5C>自宅で自殺した状態で発見</color>されました。周辺録画装置の記録に映った歪んだ姿から、<color=#ddbd78>ミラージュ</color>が<color=#FF4C5C>訪問</color>したものと推定されます。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512770
+    m_Localized: "ほかにご要望はありますか？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512777
+    m_Localized: "爆発により原本記録の大半が失われたため、周辺の記録装置に残った断片からデータを再構成しています。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512776
+    m_Localized: "<color=#ddbd78>ヴェスパー</color>のデータは？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512775
+    m_Localized: "さらに<color=#73f3ff>AEGISコアインターフェース</color>を神経系へ移植しました。<color=#73f3ff>適応訓練</color>を完了すれば、反応速度と操作精度は喪失前を上回る水準まで向上できる見込みです。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512774
+    m_Localized: "ご要望に従い、<color=#73f3ff>ARGUS戦術義眼</color>の視覚補正機能を義手の運動制御系と連動しました。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512821
+    m_Localized: "映像記録は終了しました。最善を尽くして再構成しましたが、一部が失われている点をご了承ください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512822
+    m_Localized: "...これで十分。爆発物の出所は？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512823
+    m_Localized: "破片から検出された部品の流通経路を逆追跡した結果、事件の2日前に同系統の品目が販売された記録を確認しました。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901377
+    m_Localized: "まず、装備移植が神経系に悪影響を及ぼしていないか確認します。<color=#73f3ff>前方へ移動してください。</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512828
+    m_Localized: "不可能です。ご自身で公式任務として登録されれば可能ですが、同時に対象へ露見する可能性も高いため推奨できません。別の方法は..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512829
+    m_Localized: "直接<color=#ddbd78>サルヴォ</color>を<color=#FF4C5C>訪問</color>して、情報を得るしかない。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512849
+    m_Localized: "<color=#ddbd78>ミラージュ</color>って.. <color=#ddbd78>目の前から消えたかと思えば突然現れて背後を刺すっていうあいつ</color>か？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901412
+    m_Localized: "<color=#ddbd78>カフェ・ヴェスパー</color>関連データの分析が98%完了しました。ロビーへお戻りください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901411
+    m_Localized: "適応訓練終了。情報更新。コードネーム <color=#73f3ff>イオン</color>の身体能力情報を上方修正します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901410
+    m_Localized: "<color=#73f3ff>攻撃、迎撃、アクティブスキル</color>を適切に活用し、<color=#73f3ff>ダミーを破壊してください。</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901402
+    m_Localized: "同一のコアを<color=#ff4c5c>長時間消費しないとオーバーロード</color>し、使用者に熱によるダメージを与えるおそれがあるため、<color=#ff4c5c>自動的に排出</color>されます。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901414
+    m_Localized: "投射物に触れる直前に、戦術回避を実行してください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512826
+    m_Localized: "偽名を使用しており、追跡は困難です。ご存じの通り、<color=#ddbd78>非公式任務</color>の性質上、身元が明確でない対象の追跡には大きな制約があります。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789251
+    m_Localized: "カウンター"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512852
+    m_Localized: "確認しました。加えて別件として、<color=#ddbd78>サルヴォ</color>の取引履歴から<color=#ddbd78>当該事件と関連する人物</color>を一部把握しました。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512791
+    m_Localized: "ただな。<color=#ddbd78>人を救う時に大切なのは――</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512861
+    m_Localized: "<color=#FF4C5C>これは極めて個人的な復讐だ。</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828166
+    m_Localized: "ダミー破壊 {0}/{1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828162
+    m_Localized: "基本攻撃命中 {0}/{1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901393
+    m_Localized: "敵の攻撃を受けると、<color=#73f3ff>弾丸型エネルギーコアを先に消費してダメージを吸収</color>します。<color=#ff4c5c>コアが1つもない状態で被弾すると死亡</color>します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901398
+    m_Localized: "迎撃"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901399
+    m_Localized: "<sprite name=\"icon_rightclick\"> 入力で<color=#73f3ff>ARGUS眼球が敵投射物を捕捉すると、義手が自動で迎撃を実行</color>します。捕捉および迎撃に成功すると、<color=#73f3ff>敵の攻撃を無力化し、そのエネルギーを自動でコアに吸収</color>します。短時間内に<color=#ff4c5c>迎撃に連続して失敗</color>すると、ARGUS眼球に負荷がかかり、<color=#ff4c5c>捕捉範囲が徐々に減少</color>します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512870
+    m_Localized: "<color=#ddbd78>あいつら</color>が勘づいたようだな。<color=#ddbd78>エコー</color>... よりによって一番厄介な相手を連れてくるなんて。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512858
+    m_Localized: "ただし、<color=#ff4c5c>我々</color>も<color=#ddbd78>シンジケート</color>と協力関係にあるため、関連人物を手続きなしに<color=#FF4C5C>訪問</color>する場合、便宜を図ることは困難です。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512869
+    m_Localized: "<color=#ff4c5c>訪問対象</color>。コードネーム <color=#73f3ff>イオン</color>、あなたです。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512846
+    m_Localized: "状況から見て、爆発物があなたの父へ渡ったのは計画外の変数で、<color=#FF4C5C>本来は対象の自宅で爆発させた後、ガス事故に偽装する予定</color>だったようです。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901390
+    m_Localized: "ちょっと待て、私はさっき手術したばかりなんだが？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2147990514270208
+    m_Localized: "訓練場"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901392
+    m_Localized: "被弾"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901382
+    m_Localized: "基本攻撃"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901394
+    m_Localized: "AEGISシステムに異常なし。身体の損傷は無効化できますが、衝撃と痛みまでは緩和できませんのでご了承ください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901395
+    m_Localized: "分かってるよ..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901396
+    m_Localized: "また、<color=#ff4c5c>攻撃を遮断する弾丸型エネルギーコアが存在しない場合</color>、AEGISシステムは作動せず、<color=#ff4c5c>致命傷</color>を負う可能性があります。くれぐれもご注意ください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901397
+    m_Localized: "次は<color=#73f3ff>ARGUS戦術義眼と義手運動制御系を活用した訓練</color>です。ダミーが発射する<color=#73f3ff>投射物を迎撃</color>してください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512873
+    m_Localized: "投資？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512832
+    m_Localized: "...<color=#ff4c5c>八つ当たり</color>の相手も必要だし。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512841
+    m_Localized: "爆弾の配送目的。<color=#ddbd78>どうしてお父さんが死ななければならなかったのか</color>知りたい。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512782
+    m_Localized: "お父さん、この箱は？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512879
+    m_Localized: "<color=#ddbd78>シンジケート本部</color>の位置を<color=#73f3ff>パネルに登録</color>しておきました。コードネーム <color=#ddbd78>エコー</color>が来る前に、先に<color=#ff4c5c>訪問</color>することを推奨します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901385
+    m_Localized: "前方隔壁を開放します。前進してください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828164
+    m_Localized: "投射物迎撃 {0}/{1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789248
+    m_Localized: "最後に<color=#73f3ff>カウンター</color>訓練です。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901405
+    m_Localized: "次は<color=#73f3ff>アクティブスキル</color>です。コアが放出するエネルギーの一部を再利用し、<color=#73f3ff>瞬間的な身体能力強化</color>として使用できます。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828160
+    m_Localized: "移動訓練 {0}/{1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1345961062363136
+    m_Localized: "合理的な推測です。それでは戦闘前に最後の<color=#73f3ff>モジュール点検</color>を行うことを推奨します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4972079872663553
+    m_Localized: "イオン"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512854
+    m_Localized: "その通りです。作戦を主導した人物は<color=#ddbd78>キャノン</color>です。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512855
+    m_Localized: "<color=#ddbd78>キャノン</color>？あの人がこっち側の人間だって？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512787
+    m_Localized: "お父さんは何時間も血まみれになって人を救っているのに... 何が嬉しくて人が人を殺そうとするのか、理解しがたいね。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512857
+    m_Localized: "通常、このような上級幹部の位置は容易に特定できませんが、<color=#ddbd78>キャノン</color>は公開情報が多く、位置を容易に特定できました。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512850
+    m_Localized: "現在データベースに登録されている<color=#ddbd78>ミラージュ</color>の推定位置は存在しますが.. 公式任務として登録しなければ提供できません。ご了承ください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512851
+    m_Localized: "その必要はない。<color=#ddbd78>あの会計担当者</color>の家の近くをうろつけば、向こうから<color=#FF4C5C>訪問</color>しに来るだろう。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512804
+    m_Localized: "コードネーム <color=#73f3ff>イオン</color>、シンジケートのデータを調査した結果、事件と関係があると思われる人物の分析を完了しました。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512805
+    m_Localized: "<color=#ff4c5c>次の標的のリストを送信しましょうか？</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512806
+    m_Localized: "..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512807
+    m_Localized: "だが... そうだな。<color=#ff4c5c>時には手術が必要な場合</color>もあるだろう。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512800
+    m_Localized: "私もお父さんみたいに... いい人になりたかったのに..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512801
+    m_Localized: "形は少し違っても... 人を救う人になりたかったのに..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512802
+    m_Localized: "大切な家族さえ守れなかった.. 私は..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512803
+    m_Localized: "<color=#FF4C5C>いい人がもう傷つかない世界を作りたい。</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512835
+    m_Localized: "該当人物は<color=#ddbd78>ラム</color>という<color=#ddbd78>大柄な傭兵</color>で、<color=#ddbd78>高出力の身体強化装備</color>を装着していたため、特定は難しくありませんでした。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512836
+    m_Localized: "ただし同様に、誰の指示で爆発物を運んだのかは追跡できませんでした。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512784
+    m_Localized: "今回手術した患者さんが<color=#ddbd78>感謝の贈り物</color>としてくださった高級茶のセットらしくてね。久しぶりに<color=#73f3ff>うちの娘</color>に会うついでに持ってきたんだ。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512830
+    m_Localized: "データさえ確保できれば情報分析は可能ですが、本当に<color=#FF4C5C>訪問</color>されるのですか？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512808
+    m_Localized: "ただな。<color=#ddbd78>人を救う時に大切なのは、</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512809
+    m_Localized: "<color=#ddbd78>悪い組織を切り取るだけでなく、メスを置いて傷を縫い合わせることも大切なんだ。</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512833
+    m_Localized: "確認しました。加えて、その<color=#ddbd78>爆発物を配送した運び屋</color>は特定できました。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828165
+    m_Localized: "スキル回避 {0}/{1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789252
+    m_Localized: "敵が<color=#ff4c5c>一部の強力な攻撃</color>を準備している時、<color=#73f3ff>ARGUS戦術義眼が脆弱な青色のエネルギーコア</color>を捕捉します。その<color=#73f3ff>コアを迎撃</color>すると、<color=#73f3ff>敵をスタンさせ、周囲に余剰エネルギーが生成</color>されます。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512838
+    m_Localized: "お待ちください。<color=#73f3ff>関連データをパネルに登録</color>します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512839
+    m_Localized: "身元確認中。コードネーム <color=#73f3ff>イオン</color>。お帰りなさい。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512824
+    m_Localized: "場所は<color=#ddbd78>M-8ブロック</color>近くの閉鎖地下鉄にある<color=#ddbd78>闇市場</color>。売り手は<color=#ddbd78>武器商人サルヴォ</color>です。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512864
+    m_Localized: "現在、分析が完了した情報が2件あります。慣用的な言い方を借りれば、良い知らせと悪い知らせです。どちらからお聞きになりますか？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901407
+    m_Localized: "<sprite name=\"icon_space\"> 入力で<color=#73f3ff>アクティブスキルを使用</color>できます。アクティブスキルには<color=#73f3ff>クールタイム</color>があり、一定時間が経過すると再び使用できます。<color=#73f3ff>弾倉フレームのスキルゲージ</color>から、使用可能かどうかを確認できます。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406394068992
+    m_Localized: "カウンター {0}/{1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901415
+    m_Localized: "<color=#ff4c5c>弾丸型エネルギーコアをすべて消費</color>したため、再補給します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333461598208
+    m_Localized: "E.R.I.S."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512827
+    m_Localized: "追加料金を払っても無理か？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512853
+    m_Localized: "<color=#ddbd78>シンジケート</color>側の人間だろうな。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512790
+    m_Localized: "だが... そうだな。<color=#ff4c5c>時には手術が必要な場合</color>もあるだろう。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333520318464
+    m_Localized: "身元を確認します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333520318465
+    m_Localized: "コードネーム <color=#73f3ff>イオン</color>、等級K26、遂行中の任務なし。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333520318466
+    m_Localized: "特記事項。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901391
+    m_Localized: "<color=#73f3ff>AEGISシステムは、被弾時にコアを消費して致命的な損傷を瞬時に遮断する重要な機能</color>です。安全のため、事前に確認します。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512862
+    m_Localized: "確認しました。出発前に、<color=#73f3ff>使用可能なモジュールを拡張</color>しておきましたので、ご確認ください。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512868
+    m_Localized: "先日、依頼主である<color=#ddbd78>シンジケート</color>名義で新規任務が1件登録されました。<color=#ff4c5c>訪問者</color>、コードネーム <color=#ddbd78>エコー</color>。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512844
+    m_Localized: "<color=#ddbd78>ラム</color>の端末を調査した結果、排除対象はその贈り物の本来の受取人、つまり<color=#ddbd78>あなたの父が担当していた患者</color>でした。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901380
+    m_Localized: "動作正常。特記事項なし。"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512871
+    m_Localized: "ところで<color=#73f3ff>E.R.I.S.</color>。公式任務に指定されたなら、もう私の味方をする理由はないはずなのに、なぜ教える？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512859
+    m_Localized: "<color=#ff4c5c>それでも実行しますか？</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512847
+    m_Localized: "それじゃ... <color=#ddbd78>その人</color>は今どこに？"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636894302208
+    m_Localized: "おそらく向こうも、私が行くことをすでに分かったうえで、<color=#ddbd78>エコー</color>と一緒に待っているはずだ。"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

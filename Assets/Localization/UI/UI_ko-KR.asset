@@ -107,14 +107,6 @@ MonoBehaviour:
       \uD658\uBD88"
     m_Metadata:
       m_Items: []
-  - m_Id: 3326175926910976
-    m_Localized: ' '
-    m_Metadata:
-      m_Items: []
-  - m_Id: 3326292574699520
-    m_Localized: ' '
-    m_Metadata:
-      m_Items: []
   - m_Id: 3326345653616640
     m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> \uD658\uBD88 \uBD88\uAC00"
     m_Metadata:
@@ -124,18 +116,18 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3326766715600896
-    m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> \uAC15\uD654 \uD3EC\uC778\uD2B8:
-      {0}"
+    m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> \uB370\uC774\uD130
+      \uCE69: {0}"
     m_Metadata:
       m_Items: []
   - m_Id: 3326817575731200
-    m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> \uD544\uC694 \uD3EC\uC778\uD2B8:
+    m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> \uD544\uC694 \uCE69:
       {0}"
     m_Metadata:
       m_Items: []
   - m_Id: 3326845836951552
     m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> \uD658\uBD88 \uC2DC
-      \uBC18\uD658\uB418\uB294 \uD3EC\uC778\uD2B8: {0}"
+      \uBC18\uD658\uB418\uB294 \uCE69: {0}"
     m_Metadata:
       m_Items: []
   - m_Id: 3663321485377536
@@ -155,8 +147,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4304213502164992
-    m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> \uAC15\uD654 \uD3EC\uC778\uD2B8
-      +{0}"
+    m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> \uB370\uC774\uD130
+      \uCE69 +{0}"
     m_Metadata:
       m_Items: []
   - m_Id: 4478459079655424

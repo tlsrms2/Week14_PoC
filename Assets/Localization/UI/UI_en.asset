@@ -63,7 +63,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 98681342754816
-    m_Localized: BGM
+    m_Localized: Music
     m_Metadata:
       m_Items: []
   - m_Id: 98699957075968
@@ -107,14 +107,6 @@ MonoBehaviour:
       Refund
     m_Metadata:
       m_Items: []
-  - m_Id: 3326175926910976
-    m_Localized: ' '
-    m_Metadata:
-      m_Items: []
-  - m_Id: 3326292574699520
-    m_Localized: ' '
-    m_Metadata:
-      m_Items: []
   - m_Id: 3326345653616640
     m_Localized: <sprite="Icon-point-64x" name="icon_point"> Non Refundable
     m_Metadata:
@@ -124,16 +116,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3326766715600896
-    m_Localized: '<sprite="Icon-point-64x" name="icon_point"> Enhancement Points:
-      {0}'
+    m_Localized: '<sprite="Icon-point-64x" name="icon_point"> Data Chips: {0}'
     m_Metadata:
       m_Items: []
   - m_Id: 3326817575731200
-    m_Localized: '<sprite="Icon-point-64x" name="icon_point"> Required Points: {0}'
+    m_Localized: '<sprite="Icon-point-64x" name="icon_point"> Required Chips: {0}'
     m_Metadata:
       m_Items: []
   - m_Id: 3326845836951552
-    m_Localized: '<sprite="Icon-point-64x" name="icon_point"> Points returned upon
+    m_Localized: '<sprite="Icon-point-64x" name="icon_point"> Chips returned upon
       refund: {0}'
     m_Metadata:
       m_Items: []
@@ -154,7 +145,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4304213502164992
-    m_Localized: <sprite="Icon-point-64x" name="icon_point"> Enhancement Points +{0}
+    m_Localized: <sprite="Icon-point-64x" name="icon_point"> Data Chips +{0}
     m_Metadata:
       m_Items: []
   - m_Id: 4478459079655424

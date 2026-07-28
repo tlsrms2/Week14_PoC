@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Week14.UI;
 
 namespace Week14.Story
 {
@@ -182,11 +183,17 @@ namespace Week14.Story
 
         private void Awake()
         {
+            ClipDialogueToReferenceFrame();
             CacheShownPosition();
             CacheAdvancePromptImage();
             CachePortraitSlots();
             Hide();
             SetSkipProgress(false, 0f);
+        }
+
+        private void ClipDialogueToReferenceFrame()
+        {
+            UISafeFrameUtility.ClipToReferenceFrame(transform as RectTransform);
         }
 
         public void ShowLine(

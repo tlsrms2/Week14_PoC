@@ -123,6 +123,7 @@ namespace Week14.UI
                 {
                     if (GameSaveManager.PurchaseSkill(skill.SkillId, skill.Price))
                     {
+                        SkillLoadoutManager.Instance.EquipSkill(ActiveSlot, skill.SkillId);
                         RefreshVisualState();
                         LoadoutSelectedSkillPanel.Instance?.Show(skill);
                     }

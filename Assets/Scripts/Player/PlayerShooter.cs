@@ -408,7 +408,6 @@ namespace Week14.Combat
             Vector2 direction = aimController.AimGunAndGetDirection(
                 context.LeftGunOrigin,
                 aimController.GetAimDirection(context.LeftGunOrigin));
-            aimController.LockLeftGunAim(direction);
 
             int finalDamage = ApplyNextAttackDamageMultiplier(damage);
             float beamLength = Mathf.Max(0.1f, speed * lifetime);
@@ -419,6 +418,7 @@ namespace Week14.Combat
 
             Vector3 beamEnd = fireOrigin.position + (Vector3)(direction * beamLength);
             GameObject beamPrefab = vfxSettings?.ResolveBeamPrefab(spentAmmo);
+            float beamEffectSeconds;
             if (beamPrefab != null)
             {
                 ProjectileVfx.PlayAnchoredBeamPrefab(
@@ -431,12 +431,18 @@ namespace Week14.Combat
                     vfxSettings.MuzzleOffset,
                     vfxSettings.RotationOffsetDegrees,
                     vfxSettings.PlaybackSpeed,
-                    vfxSettings.SortingOrder);
+                    vfxSettings.SortingOrder,
+                    out beamEffectSeconds);
             }
             else
             {
                 ProjectileVfx.PlayShotLine(fireOrigin.position, beamEnd, beamColor, beamVisualSeconds, beamWidth);
+                beamEffectSeconds = beamVisualSeconds;
             }
+
+            // 조준 고정을 레이저 이펙트가 화면에서 사라질 때까지 유지합니다. 빔이 총구(=몸통의 자식)에
+            // 붙어 있으므로, 몸통 반전/페이싱까지 같이 묶어야 빔이 뒤틀리지 않습니다.
+            aimController.LockLeftGunAim(direction, beamEffectSeconds, lockBodyToo: true);
 
             GameObject muzzleFlashPrefab = vfxSettings?.ResolveMuzzleFlashPrefab(spentAmmo);
             float muzzleFlashScale = 1f;
@@ -476,6 +482,17 @@ namespace Week14.Combat
                 Collider2D collider = hits[i].collider;
                 if (collider == null)
                 {
+                    continue;
+                }
+
+                ConductorTurretProjectile turret = collider.GetComponentInParent<ConductorTurretProjectile>();
+                if (turret != null)
+                {
+                    if (turret.IsAliveTurret && hitTargets.Add(turret.Health))
+                    {
+                        turret.ReceivePlayerHit(damage, turret.transform.position, direction);
+                    }
+
                     continue;
                 }
 

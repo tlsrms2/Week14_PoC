@@ -47,7 +47,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333461598208
-    m_Localized: ERIS
+    m_Localized: E.R.I.S.
     m_Metadata:
       m_Items: []
   - m_Id: 5333520318464
@@ -55,7 +55,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333520318465
-    m_Localized: <color=#73f3ff>Codename Lee On</color>, Class K26, No mission in
+    m_Localized: Code name <color=#73f3ff>Ion</color>, Class K26, No mission in
       progress.
     m_Metadata:
       m_Items: []
@@ -77,8 +77,8 @@ MonoBehaviour:
     m_Localized: Do you have any additional requests?
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512771
-    m_Localized: Lee On
+  - m_Id: 4972079872663553
+    m_Localized: Ion
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512772
@@ -135,7 +135,7 @@ MonoBehaviour:
     m_Localized: "Dad, what\u2019s this box?"
     m_Metadata:
       m_Items: []
-  - m_Id: 5333524512783
+  - m_Id: 4972079872663552
     m_Localized: Father
     m_Metadata:
       m_Items: []
@@ -234,13 +234,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512804
-    m_Localized: <color=#73f3ff>Codename Lee On</color>, after investigating Jin's
-      data, I have finished analyzing the individuals who appear to be connected
-      to the incident.
+    m_Localized: Code name <color=#73f3ff>Ion</color>, after investigating the
+      Syndicate's data, I have finished analyzing the individuals who appear to
+      be connected to the incident.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512805
-    m_Localized: <color=#FF4C5C>Should I transmit the list?</color>
+    m_Localized: <color=#FF4C5C>Should I transmit the list of the next targets?</color>
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512807
@@ -275,7 +275,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512813
-    m_Localized: <color=#FF4C5C>Should I transmit the list?</color>
+    m_Localized: <color=#FF4C5C>Should I transmit the list of the next targets?</color>
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512814
@@ -323,9 +323,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512824
-    m_Localized: The location is a <color=#ddbd78>black market</color> situated in
-      a closed subway near <color=#ddbd78>M-8 Block</color>. The seller is <color=#ddbd78>Salvo</color>
-      <color=#ddbd78>the Arms Dealer</color>.
+    m_Localized: The location is near <color=#ddbd78>M-8 Block</color>, in a closed
+      subway <color=#ddbd78>black market</color>. The seller is <color=#ddbd78>the
+      arms dealer Salvo</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512825
@@ -350,8 +350,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512829
-    m_Localized: I'll have to <color=#FF4C5C>visit</color> <color=#ddbd78>Salvo</color>
-      directly to get the information.
+    m_Localized: I'll have to go directly to <color=#ddbd78>Salvo</color> and <color=#FF4C5C>visit</color>
+      him to get the information.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512830
@@ -390,7 +390,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512837
-    m_Localized: I'll have to <color=#FF4C5C>visit</Color> that guy directly as well.
+    m_Localized: I'll have to <color=#FF4C5C>visit</color> that guy directly as well.
       Do you know where he is currently located?
     m_Metadata:
       m_Items: []
@@ -400,7 +400,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512839
-    m_Localized: Verifying identity. <color=#73f3ff>Codename Lee On</color>. Welcome
+    m_Localized: Verifying identity. Code name <color=#73f3ff>Ion</color>. Welcome
       back.
     m_Metadata:
       m_Items: []
@@ -479,10 +479,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512854
-    m_Localized: Correct. The person who led the operation is <color=#ddbd78>Canon</color>,
-      and the person who made the final decision is someone named <color=#ddbd78>Jin</color>,
-      who is presumed to be part of the <color=#ddbd78>Syndicate</color>'s executive
-      leadership.
+    m_Localized: Correct. The person who led the operation is <color=#ddbd78>Canon</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512855
@@ -495,9 +492,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512857
-    m_Localized: <color=#ddbd78>Jin</color>'s location cannot be specified, but since
-      there is a lot of known information about <color=#ddbd78>Canon</color> they
-      were easily pinpointed.
+    m_Localized: Normally, the location of such a high-ranking executive would
+      not be easy to pinpoint, but <color=#ddbd78>Canon</color> has a large public
+      information footprint, so we were able to identify their location easily.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512858
@@ -526,7 +523,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512863
-    m_Localized: Verifying identity. <color=#73f3ff>Codename Lee On</color>. Welcome
+    m_Localized: Verifying identity. Code name <color=#73f3ff>Ion</color>. Welcome
       back.
     m_Metadata:
       m_Items: []
@@ -541,9 +538,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512866
-    m_Localized: First then, as a result of analyzing the devices of those who were
-      commissioned, we were able to pinpoint <color=#ddbd78>Jin</color>'s current
-      location and movement patterns.
+    m_Localized: First, after analyzing the devices of those who were commissioned,
+      we were able to pinpoint the location of the <color=#ddbd78>Syndicate headquarters</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512867
@@ -551,24 +547,24 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512868
-    m_Localized: Not long ago, a new mission was registered under the name of the
-      client, <color=#ddbd78>Jin</color>. <color=#FF4C5C>Visitor</color> codename
-      <color=#ddbd78>ECHO</color>.
+    m_Localized: Recently, a new mission was registered under the name of the client,
+      the <color=#ddbd78>Syndicate</color>. <color=#FF4C5C>Visitor</color> Code name
+      <color=#ddbd78>Echo</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512869
-    m_Localized: <color=#FF4C5C>The target of the visit</color>. <color=#73f3ff>Codename
-      Lee On</color>, it is you.
+    m_Localized: <color=#FF4C5C>The target of the visit</color>. Code name <color=#73f3ff>Ion</color>,
+      it is you.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512870
-    m_Localized: <color=#ddbd78>That bastard</color> must have caught wind of it.
-      <color=#ddbd78>Echo</color>.. of all people, he brought the most troublesome
-      opponent.
+    m_Localized: <color=#ddbd78>Those bastards</color> must have caught the scent.
+      <color=#ddbd78>Echo</color>... Of all people, they brought in the most troublesome
+      one.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512871
-    m_Localized: By the way, <color=#73f3ff>ERIS</color>. If it has been designated
+    m_Localized: By the way, <color=#73f3ff>E.R.I.S.</color>. If it has been designated
       as an official mission, you have no reason to take my side anymore, so why
       are you informing me?
     m_Metadata:
@@ -597,7 +593,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512877
-    m_Localized: Therefore, it is judged that helping you, <color=#73f3ff>Lee On</color>,
+    m_Localized: Therefore, it is judged that helping you, <color=#73f3ff>Ion</color>,
       to continue your <color=#FF4C5C>visits</color> is beneficial to society as
       a whole.
     m_Metadata:
@@ -607,9 +603,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512879
-    m_Localized: I have <color=#73f3ff>registered <color=#ddbd78>Jin</color>'s location
-      on the panel</color>. It is recommended that you <color=#FF4C5C>visit</color>
-      him first before codename <color=#ddbd78>Echo</color> arrives.
+    m_Localized: The location of the <color=#ddbd78>Syndicate headquarters</color>
+      has been <color=#73f3ff>registered on the panel</color>. Before Code name
+      <color=#ddbd78>Echo</color> arrives, I recommend that you <color=#FF4C5C>visit</color>
+      it first.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512880
@@ -647,14 +644,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5333524512886
     m_Localized: Since the <color=#73f3ff>collected data chips</color> are subsequently
-      used for <color=#73f3ff>module expansion</color> to <color=#73f3ff>improve
-      equipment performance</color>, it is recommended to prioritize <color=#73f3ff>securing
-      data chips</color> if the battle is challenging.
+      used for <color=#73f3ff>module expansion that improves equipment performance</color>,
+      it is recommended to <color=#73f3ff>prioritize securing data chips if the
+      battle is challenging</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512887
-    m_Localized: Now that you have secured a certain amount of <color=#73f3ff>battle
-      data chips</color>, I will explain the <color=#73f3ff>module expansion function</color>.
+    m_Localized: Now that you have secured a certain amount of <color=#73f3ff>data
+      chips</color>, I will explain the <color=#73f3ff>module expansion function</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512888
@@ -668,7 +665,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512890
-    m_Localized: You can <color=#73f3ff>consume the battle data chips you possess</color>
+    m_Localized: You can <color=#73f3ff>consume the data chips you possess</color>
       to <color=#73f3ff>expand and equip the modules you want</color>.
     m_Metadata:
       m_Items: []
@@ -766,6 +763,7 @@ MonoBehaviour:
     m_Localized: 'When hit by an enemy attack, <color=#73f3ff>a bullet-type energy
       core is consumed first to absorb the damage.</color>
 
+      
 
       <color=#FF4C5C>If
       you take damage while possessing zero cores, it will result in death.</color>'
@@ -801,10 +799,12 @@ MonoBehaviour:
       projectiles with the ARGUS eye, allowing your prosthetic arm to automatically
       intercept them.</color>
 
+      
 
-      <color=#73f3ff>A successful intercept neutralizes
-      the attack and automatically absorbs its energy into the core.</color>
+      <color=#73f3ff>A successful intercept
+      neutralizes the attack and automatically absorbs its energy into the core.</color>
 
+      
 
       <color=#FF4C5C>Failing
       multiple intercepts in a short time</color> strains the ARGUS eye, <color=#FF4C5C>gradually
@@ -830,9 +830,10 @@ MonoBehaviour:
     m_Localized: 'Bullet-type energy cores will <color=#73f3ff>overload and be automatically
       discharged if held for too long.</color>
 
+      
 
-      The ammo icon in the magazine
-      indicates the time remaining until overload.'
+      The ammo icon in
+      the magazine indicates the time remaining until overload.'
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901405
@@ -849,10 +850,12 @@ MonoBehaviour:
     m_Localized: 'Press the <sprite name="icon_space"> to <color=#73f3ff>use a active
       skill.</color>
 
+      
 
       <color=#73f3ff>Active Skills have a cooldown</color>
       and can be used again after a certain time.
 
+      
 
       The <color=#73f3ff>skill
       gauge around the magazine</color> indicates when the skill is ready to use.'
@@ -875,7 +878,7 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5333532901411
     m_Localized: Adaptation training concluded. Information updated. Adjusting the
-      physical capability information of <color=#73f3ff>Codename Lee On</color> upward.
+      physical capability information of Code name <color=#73f3ff>Ion</color> upward.
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901412
@@ -954,11 +957,12 @@ MonoBehaviour:
   - m_Id: 1826406452789252
     m_Localized: 'When an enemy prepares <color=#FF4C5C>certain powerful attacks</color>,
       the <color=#73f3ff>ARGUS tactical prosthetic eye detects a vulnerable blue
-      energy core.</color>
+      energy core</color>.
 
+      
 
-      <color=#73f3ff>Intercepting that core stuns the
-      enemy and generates extra energy nearby.</color>'
+      When you <color=#73f3ff>intercept that core</color>, <color=#73f3ff>the enemy
+      is stunned and extra energy is generated nearby</color>.'
     m_Metadata:
       m_Items: []
   - m_Id: 2147990514270208
