@@ -405,7 +405,8 @@ namespace Week14.Combat
             // localScale.x 부호로 좌우 반전을 표현하는데, 반전된 상태에서는 로컬 회전이 화면에는
             // 반대 방향으로 보이므로 그만큼 부호를 보정해야 실제 이동 방향과 일치하게 돈다.
             // (화면에서 보이는 회전이 반대라면 아래 두 삼항식 중 하나의 부호만 뒤집으면 된다.)
-            float mirrorSign = visualRoot.localScale.x < 0f ? -1f : 1f;
+            bool useMirrorCorrection = currentFacing != VisualFacing.Side;
+            float mirrorSign = useMirrorCorrection && visualRoot.localScale.x < 0f ? -1f : 1f;
             float movementSign = direction.x < 0f ? 1f : -1f;
             float spinDirection = movementSign * mirrorSign;
             Quaternion startRotation = visualRoot.localRotation;
