@@ -827,6 +827,7 @@ MonoBehaviour:
   topLetterboxPanel: {fileID: 0}
   bottomLetterboxPanel: {fileID: 0}
   bossCombatUiRect: {fileID: 0}
+  bossTimeRect: {fileID: 0}
   skipHintText: {fileID: 0}
   localizedSkipHintText:
     m_TableReference:
@@ -1477,7 +1478,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.33, y: 0.3078869, z: 1.7670743}
+  m_LocalScale: {x: 0.18, y: 0.16793832, z: 0.9638587}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2043577108}
