@@ -122,6 +122,7 @@ namespace Week14.UI
                 {
                     if (GameSaveManager.PurchaseWeapon(weapon.WeaponId, weapon.Price))
                     {
+                        WeaponLoadoutManager.Instance.EquipWeapon(weapon.WeaponId);
                         RefreshVisualState();
                         LoadoutSelectedSkillPanel.Instance?.Show(weapon);
                     }
