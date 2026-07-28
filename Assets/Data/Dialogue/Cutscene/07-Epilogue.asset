@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Cutscene.CutsceneDefinition
   skippable: 1
   steps:
-  - backgroundImage: {fileID: 21300000, guid: daf8f984f106c3145a35c6d8fb5aa0bf, type: 3}
+  - backgroundImage: {fileID: 21300000, guid: bd716381498b17444b53926c8cb8c05f, type: 3}
     dialogues:
     - name: "\uC774\uC628"
       text: "...\uB098 \uC654\uC5B4. \uC544\uBE60."
@@ -369,7 +369,7 @@ MonoBehaviour:
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
-  - backgroundImage: {fileID: 21300000, guid: daf8f984f106c3145a35c6d8fb5aa0bf, type: 3}
+  - backgroundImage: {fileID: 21300000, guid: bd716381498b17444b53926c8cb8c05f, type: 3}
     dialogues:
     - name: "\uC774\uC628"
       text: ...
