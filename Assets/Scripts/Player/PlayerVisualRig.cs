@@ -382,7 +382,7 @@ namespace Week14.Combat
             UpdateWalkAnimation(true);
         }
 
-        public void PlayRoll(float duration)
+        public void PlayRoll(float duration, Vector2 direction)
         {
             SetTriggerIfExists(frontBodyAnimator, DoRollParameter);
             SetTriggerIfExists(sideBodyAnimator, DoRollParameter);
@@ -395,15 +395,19 @@ namespace Week14.Combat
                     StopCoroutine(rollSpinRoutine);
                 }
 
-                rollSpinRoutine = StartCoroutine(RollSpinRoutine(duration));
+                rollSpinRoutine = StartCoroutine(RollSpinRoutine(duration, direction));
             }
         }
 
-        private IEnumerator RollSpinRoutine(float duration)
+        private IEnumerator RollSpinRoutine(float duration, Vector2 direction)
         {
-            // visualRoot의 localScale.x 부호로 좌우 반전을 표현하므로, 그 부호에 맞춰 회전 방향을 정해야
-            // 구르는 방향과 반대로 도는 것처럼 보이지 않는다.
-            float spinDirection = visualRoot.localScale.x < 0f ? 1f : -1f;
+            // 실제 구르는 방향(월드 기준 좌/우)으로 화면상 회전 방향을 정한다. visualRoot의
+            // localScale.x 부호로 좌우 반전을 표현하는데, 반전된 상태에서는 로컬 회전이 화면에는
+            // 반대 방향으로 보이므로 그만큼 부호를 보정해야 실제 이동 방향과 일치하게 돈다.
+            // (화면에서 보이는 회전이 반대라면 아래 두 삼항식 중 하나의 부호만 뒤집으면 된다.)
+            float mirrorSign = visualRoot.localScale.x < 0f ? -1f : 1f;
+            float movementSign = direction.x < 0f ? 1f : -1f;
+            float spinDirection = movementSign * mirrorSign;
             Quaternion startRotation = visualRoot.localRotation;
             float elapsed = 0f;
 
