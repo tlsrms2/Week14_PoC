@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Cutscene.CutsceneDefinition
   skippable: 1
   steps:
-  - backgroundImage: {fileID: 21300000, guid: ccdbe1a0b7096a1458ece35bad79a014, type: 3}
+  - backgroundImage: {fileID: 21300000, guid: bd716381498b17444b53926c8cb8c05f, type: 3}
     dialogues:
     - name: "\uC774\uC628"
       text: "...\uB098 \uC654\uC5B4. \uC544\uBE60."
@@ -234,7 +234,7 @@ MonoBehaviour:
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
-  - backgroundImage: {fileID: 21300000, guid: 3af9cceafe4e9e642adcd0cf0ec43971, type: 3}
+  - backgroundImage: {fileID: 21300000, guid: 63d1a79c70913234d8ede5c8dd209278, type: 3}
     dialogues:
     - name: "\uC544\uBC84\uC9C0"
       text: " \uD558\uC9C0\uB9CC.. \uADF8\uB798. \uB54C\uB85C\uB294 \uC218\uC220\uC774
@@ -369,7 +369,7 @@ MonoBehaviour:
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
-  - backgroundImage: {fileID: 21300000, guid: ccdbe1a0b7096a1458ece35bad79a014, type: 3}
+  - backgroundImage: {fileID: 21300000, guid: bd716381498b17444b53926c8cb8c05f, type: 3}
     dialogues:
     - name: "\uC774\uC628"
       text: ...
@@ -457,7 +457,7 @@ MonoBehaviour:
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
-  - backgroundImage: {fileID: 21300000, guid: 59ccce6f5b4364b4180c6f02936afe54, type: 3}
+  - backgroundImage: {fileID: 21300000, guid: 6d08e2ab9655ca648a8489721a5f4460, type: 3}
     dialogues: []
     skippable: 0
     bgmId: 
@@ -482,7 +482,7 @@ MonoBehaviour:
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
-  - backgroundImage: {fileID: 21300000, guid: 5c9f16350d616044294df839d076520b, type: 3}
+  - backgroundImage: {fileID: 21300000, guid: fa10710592a124749abd8c5aae8dd739, type: 3}
     dialogues: []
     skippable: 0
     bgmId: 
@@ -507,7 +507,7 @@ MonoBehaviour:
     legacySpeakerName: 
     legacyDialogueText: 
     legacyWaitForInput: 0
-  - backgroundImage: {fileID: 21300000, guid: 0c4112aa14fd3d34594277b06cb0f1b0, type: 3}
+  - backgroundImage: {fileID: 21300000, guid: 6a8b075e134efaf409e9defbc0d2a87f, type: 3}
     dialogues:
     - name: "\uC774\uC628"
       text: " \uBA85\uB2E8\uC744 \uC0AD\uC81C\uD574\uC918."

@@ -424,15 +424,30 @@ namespace Week14.Combat
 
         public void PlayRoll(float duration)
         {
-            PlayRollInternal(duration, false);
+            PlayRoll(duration, Vector2.right);
+        }
+
+        public void PlayRoll(float duration, Vector2 direction)
+        {
+            PlayRollInternal(duration, direction, false);
         }
 
         public void PlayCinematicRoll(float duration)
         {
-            PlayRollInternal(duration, true);
+            PlayCinematicRoll(duration, Vector2.right);
         }
 
-        private void PlayRollInternal(float duration, bool useUnscaledTime)
+        public void PlayCinematicRoll(
+            float duration,
+            Vector2 direction)
+        {
+            PlayRollInternal(duration, direction, true);
+        }
+
+        private void PlayRollInternal(
+            float duration,
+            Vector2 direction,
+            bool useUnscaledTime)
         {
             RestartTriggerIfExists(frontBodyAnimator, DoRollParameter);
             RestartTriggerIfExists(sideBodyAnimator, DoRollParameter);
@@ -448,15 +463,23 @@ namespace Week14.Combat
 
                 rollSpinStartRotation = visualRoot.localRotation;
                 rollSpinRoutine =
-                    StartCoroutine(RollSpinRoutine(duration, useUnscaledTime));
+                    StartCoroutine(
+                        RollSpinRoutine(
+                            duration,
+                            direction,
+                            useUnscaledTime));
             }
         }
 
-        private IEnumerator RollSpinRoutine(float duration, bool useUnscaledTime)
+        private IEnumerator RollSpinRoutine(
+            float duration,
+            Vector2 direction,
+            bool useUnscaledTime)
         {
-            // visualRoot의 localScale.x 부호로 좌우 반전을 표현하므로, 그 부호에 맞춰 회전 방향을 정해야
-            // 구르는 방향과 반대로 도는 것처럼 보이지 않는다.
-            float spinDirection = visualRoot.localScale.x < 0f ? 1f : -1f;
+            bool useMirrorCorrection = currentFacing != VisualFacing.Side;
+            float mirrorSign = useMirrorCorrection && visualRoot.localScale.x < 0f ? -1f : 1f;
+            float movementSign = direction.x < 0f ? 1f : -1f;
+            float spinDirection = movementSign * mirrorSign;
             Quaternion startRotation = visualRoot.localRotation;
             float elapsed = 0f;
 
@@ -471,6 +494,7 @@ namespace Week14.Combat
             }
 
             visualRoot.localRotation = startRotation;
+            rollSpinStartRotation = startRotation;
             rollSpinRoutine = null;
         }
 

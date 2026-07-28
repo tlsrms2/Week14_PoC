@@ -530,7 +530,9 @@ namespace Week14.Combat
                 rollCameraShakeSeconds,
                 0f);
             player.Visual?.SetBodyAimDirection(direction);
-            player.Visual?.PlayCinematicRoll(duration);
+            player.Visual?.PlayCinematicRoll(
+                duration,
+                direction);
             for (float elapsed = 0f;
                  runtimePrepared && elapsed < duration;
                  elapsed += Time.unscaledDeltaTime)

@@ -438,10 +438,15 @@ namespace Week14.Combat
             }
 
             Rigidbody2D body = playerBody;
+            Vector2 start = body != null
+                ? body.position
+                : (Vector2)player.transform.position;
             float duration = Mathf.Max(0.05f, seconds);
             if (playRoll)
             {
-                player.Visual?.PlayCinematicRoll(duration);
+                player.Visual?.PlayCinematicRoll(
+                    duration,
+                    target - start);
             }
             else
             {

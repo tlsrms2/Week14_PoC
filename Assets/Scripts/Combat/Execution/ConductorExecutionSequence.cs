@@ -1193,7 +1193,9 @@ namespace Week14.Combat
             }
 
             float duration = Mathf.Max(0.05f, seconds);
-            player.Visual?.PlayCinematicRoll(duration);
+            player.Visual?.PlayCinematicRoll(
+                duration,
+                target - GetPlayerPosition());
             yield return MovePlayerSegment(target, duration);
         }
 

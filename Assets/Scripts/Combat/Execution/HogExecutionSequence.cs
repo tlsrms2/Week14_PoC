@@ -420,7 +420,9 @@ namespace Week14.Combat
             Vector2 start = body != null ? body.position : (Vector2)player.transform.position;
             Vector2 end = stage.PlayerRollEnd.position;
             float duration = Mathf.Max(0.05f, rollSeconds);
-            player.Visual?.PlayRoll(duration);
+            player.Visual?.PlayCinematicRoll(
+                duration,
+                end - start);
 
             for (float elapsed = 0f;
                  runtimePrepared && player != null && elapsed < duration;

@@ -358,7 +358,7 @@ MonoBehaviour:
     action:
       rid: 4705777917832200303
     sequences: []
-    editorPosition: {x: -136, y: 2012}
+    editorPosition: {x: -206, y: 2012}
   - nodeId: Boss Dash15
     nodeGuid: 273309f2f610471b8717081b30d02179
     nodeKind: 1
@@ -538,7 +538,7 @@ MonoBehaviour:
     action:
       rid: 4705777966128824420
     sequences: []
-    editorPosition: {x: -183, y: 2284}
+    editorPosition: {x: -206, y: 2274}
   - nodeId: Wait9
     nodeGuid: 60258f26f6e8489eb9ffb1088c891f53
     nodeKind: 3
@@ -1447,7 +1447,7 @@ MonoBehaviour:
     action:
       rid: 6489939314815009050
     sequences: []
-    editorPosition: {x: -83, y: 2163}
+    editorPosition: {x: -136, y: 2144}
   - nodeId: Boss Dash20
     nodeGuid: 4c4dc71b151c475fa62a3ceeb90ac2d0
     nodeKind: 1

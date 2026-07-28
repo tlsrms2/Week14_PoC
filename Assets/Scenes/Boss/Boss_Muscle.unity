@@ -4660,7 +4660,7 @@ MonoBehaviour:
   executionText: {fileID: 2104472610112323686}
   executionBlinkFirstObject: {fileID: 511136011218154752}
   executionBlinkSecondObject: {fileID: 5386983280650201876}
-  executionBlinkIntervalSeconds: 0.12
+  executionBlinkIntervalSeconds: 0.3
 --- !u!1 &1696071456249183736
 GameObject:
   m_ObjectHideFlags: 0
@@ -4998,7 +4998,7 @@ SpriteRenderer:
   m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -79925775, guid: 1364f1483f317134490a53f50c3cd2fb, type: 3}
+  m_Sprite: {fileID: 2687718222788331959, guid: fb358a4c5d09b1e4b86d7326dddb702b, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5261,7 +5261,7 @@ SpriteRenderer:
   m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 1203842067, guid: 1364f1483f317134490a53f50c3cd2fb, type: 3}
+  m_Sprite: {fileID: 6506202987007345268, guid: fb358a4c5d09b1e4b86d7326dddb702b, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5508,8 +5508,8 @@ Transform:
   m_GameObject: {fileID: 5597804972557861258}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.06934059, y: 0.06934059, z: 0.06934059}
+  m_LocalPosition: {x: 0, y: -0.01, z: 0}
+  m_LocalScale: {x: 0.115, y: 0.115, z: 0.115}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2364752237372838212}
@@ -6350,6 +6350,20 @@ MonoBehaviour:
   patternGroggyAnimator: {fileID: 0}
   walkAnimator: {fileID: 0}
   walkVelocityThreshold: 0.01
+  deathShadow: {fileID: 138225315}
+  deathShadowFrameSource: {fileID: 7843611011389980381}
+  deathShadowAnimator: {fileID: 5291647841609170472}
+  deathShadowAnimationStateName: Anim-Security-Die
+  deathShadowFramePrefix: Security-Die_
+  deathShadowStageOneFrameName: Security-Die_3
+  deathShadowStageOneAnimationTime: 0.2
+  deathShadowStageOneLocalX: -0.05
+  deathShadowStageOneScaleX: 0.55
+  deathShadowStageTwoFrameName: Security-Die_5
+  deathShadowStageTwoAnimationTime: 0.5
+  deathShadowStageTwoLocalX: -0.19
+  deathShadowStageTwoScaleX: 0.69
+  mirrorDeathShadowLocalXByFacing: 1
 --- !u!4 &9185060628594991249
 Transform:
   m_ObjectHideFlags: 0

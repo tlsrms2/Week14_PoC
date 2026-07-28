@@ -7241,7 +7241,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -9
   m_MaskInteraction: 0
   m_Sprite: {fileID: 8051445658188133891, guid: 340e9c808171fde44a8e04881c66e772, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -7685,6 +7685,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1023516957}
     - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: hackerShadow
+      value:
+      objectReference: {fileID: 1505174554}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       propertyPath: bossHpBarView
       value: 
       objectReference: {fileID: 1569121906}
@@ -7712,6 +7716,10 @@ PrefabInstance:
       propertyPath: bossElapsedTimeText
       value: 
       objectReference: {fileID: 1363613996}
+    - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+      propertyPath: hackerShadowStretch
+      value:
+      objectReference: {fileID: 1505174553}
     - target: {fileID: -7603082342544682491, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
       propertyPath: wireSettings.color.b
       value: 0.86274517
@@ -8071,6 +8079,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0acd04e99741d4b4785fb2a359422af7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Enemy.HackerBossAI
+--- !u!4 &1505174553 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1752335520140924181, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+  m_PrefabInstance: {fileID: 1505174551}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1505174554 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7325787571105804145, guid: 995c57d5c7e8a6947824df82aed6bb6a, type: 3}
+  m_PrefabInstance: {fileID: 1505174551}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1521775367 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 739125593154593292, guid: 4325c6b02df1e9b47ae7de8222a93c08, type: 3}
