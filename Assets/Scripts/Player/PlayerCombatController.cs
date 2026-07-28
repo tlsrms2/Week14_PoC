@@ -779,6 +779,11 @@ namespace Week14.Combat
             return ParryController.TryParryProjectileForMelee(target);
         }
 
+        internal bool TryParryProjectileForCinematic(EnemyProjectile target)
+        {
+            return ParryController.TryParryProjectileForCinematic(target);
+        }
+
         // 다음으로 성공하는 공격 1회(무기 종류 무관: 권총 한 발, 샷건 한 발의 전체 펠릿, 스나이퍼 차지샷 1회)에만
         // 배율을 적용하고 자동으로 해제됩니다. PlayerShooter의 각 발사 지점(TryShootEnemy/FireSpread/FireSingle)이
         // 공격이 실제로 나가는 걸 확정한 시점에 ConsumeNextAttackDamageMultiplier를 호출해서 소모합니다.

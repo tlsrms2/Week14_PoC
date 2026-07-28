@@ -341,6 +341,11 @@ namespace Week14.Combat
             executionFocusPoint.position = focusPosition;
         }
 
+        internal void SetExecutionFocusPoint(Vector3 worldPosition)
+        {
+            UpdateExecutionFocusPoint(worldPosition, worldPosition);
+        }
+
         internal IEnumerator WaitBeforeFinalDeathFocus()
         {
             if (context.FinalDeathCameraReturnSeconds > 0f)

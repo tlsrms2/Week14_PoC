@@ -74,23 +74,30 @@ namespace Week14.Combat
                 return false;
             }
 
-            return ExecuteInstantParry(target);
+            return ExecuteInstantParry(target, true, true);
         }
 
-        private bool ExecuteInstantParry(EnemyProjectile target)
+        private bool ExecuteInstantParry(
+            EnemyProjectile target,
+            bool restoreBullets,
+            bool notifyListeners)
         {
             if (!TryInstantParry(target, out Vector3 impactPosition, out Vector2 direction))
             {
                 return false;
             }
 
-            PlayParryImpact(impactPosition, direction, true);
+            PlayParryImpact(impactPosition, direction, restoreBullets);
 
             int currentBullets = context.Bullets != null ? context.Bullets.CurrentBullets : 0;
             int maxBullets = context.Bullets != null ? context.Bullets.MaxBullets : currentBullets;
             SoundManager.PlaySfx("Parry2", PlayerBulletAudio.GetBulletCountPitch(currentBullets, maxBullets, 1.3f));
 
-            ProjectileParried?.Invoke(target);
+            if (notifyListeners)
+            {
+                ProjectileParried?.Invoke(target);
+            }
+
             return true;
         }
 
@@ -132,7 +139,17 @@ namespace Week14.Combat
                 return false;
             }
 
-            return ExecuteInstantParry(target);
+            return ExecuteInstantParry(target, true, true);
+        }
+
+        internal bool TryParryProjectileForCinematic(EnemyProjectile target)
+        {
+            if (!HasValidParryConfig() || target == null || !target.CanBeIntercepted)
+            {
+                return false;
+            }
+
+            return ExecuteInstantParry(target, false, false);
         }
 
         internal int AutoParryProjectilesNear(Vector2 center, float radius)

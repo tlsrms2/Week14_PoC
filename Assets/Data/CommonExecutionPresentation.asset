@@ -1,0 +1,127 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 674138bac51b5c648a72fa3d4d1dd042, type: 3}
+  m_Name: CommonExecutionPresentation
+  m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.CommonExecutionPresentationProfile
+  cues:
+  - enabled: 1
+    cuePoint: 2
+    cueType: 0
+    delaySeconds: 0
+    flourishShotIndex: -1
+    sfxId: Parry
+    slowTimeScale: 0.15
+    slowDurationSeconds: 0.25
+    focusTarget: 0
+    bossFocusOffset: {x: 0, y: 0}
+    cameraFocusWeight: 1
+    cameraZoomMultiplier: 0.5
+    cameraBlendSmoothTime: 0.25
+    finalShotTravelSeconds: 0.3
+    cameraHoldSeconds: 0.2
+    restoreDefaultCameraAfterHold: 1
+  - enabled: 1
+    cuePoint: 2
+    cueType: 0
+    delaySeconds: 0
+    flourishShotIndex: 0
+    sfxId: Parry2
+    slowTimeScale: 0.15
+    slowDurationSeconds: 0.25
+    focusTarget: 0
+    bossFocusOffset: {x: 0, y: 0}
+    cameraFocusWeight: 1
+    cameraZoomMultiplier: 0.5
+    cameraBlendSmoothTime: 0.25
+    finalShotTravelSeconds: 0.3
+    cameraHoldSeconds: 0.2
+    restoreDefaultCameraAfterHold: 1
+  - enabled: 1
+    cuePoint: 2
+    cueType: 0
+    delaySeconds: 0
+    flourishShotIndex: 1
+    sfxId: Parry
+    slowTimeScale: 0.15
+    slowDurationSeconds: 0.25
+    focusTarget: 0
+    bossFocusOffset: {x: 0, y: 0}
+    cameraFocusWeight: 1
+    cameraZoomMultiplier: 0.5
+    cameraBlendSmoothTime: 0.25
+    finalShotTravelSeconds: 0.3
+    cameraHoldSeconds: 0.2
+    restoreDefaultCameraAfterHold: 1
+  - enabled: 1
+    cuePoint: 3
+    cueType: 2
+    delaySeconds: 0
+    flourishShotIndex: -1
+    sfxId: 
+    slowTimeScale: 0.15
+    slowDurationSeconds: 0.25
+    focusTarget: 1
+    bossFocusOffset: {x: 0, y: 0.4}
+    cameraFocusWeight: 1
+    cameraZoomMultiplier: 0.2
+    cameraBlendSmoothTime: 0.25
+    finalShotTravelSeconds: 0.3
+    cameraHoldSeconds: 0.6
+    restoreDefaultCameraAfterHold: 1
+  - enabled: 1
+    cuePoint: 2
+    cueType: 0
+    delaySeconds: 0
+    flourishShotIndex: 2
+    sfxId: railgun5
+    slowTimeScale: 0.15
+    slowDurationSeconds: 0.25
+    focusTarget: 0
+    bossFocusOffset: {x: 0, y: 0}
+    cameraFocusWeight: 1
+    cameraZoomMultiplier: 0.5
+    cameraBlendSmoothTime: 0.25
+    finalShotTravelSeconds: 0.3
+    cameraHoldSeconds: 0.2
+    restoreDefaultCameraAfterHold: 1
+  - enabled: 1
+    cuePoint: 4
+    cueType: 1
+    delaySeconds: 0
+    flourishShotIndex: -1
+    sfxId: 
+    slowTimeScale: 0.12
+    slowDurationSeconds: 0.6
+    focusTarget: 0
+    bossFocusOffset: {x: 0, y: 0}
+    cameraFocusWeight: 1
+    cameraZoomMultiplier: 0.5
+    cameraBlendSmoothTime: 0.25
+    finalShotTravelSeconds: 0.3
+    cameraHoldSeconds: 0.2
+    restoreDefaultCameraAfterHold: 1
+  - enabled: 1
+    cuePoint: 4
+    cueType: 2
+    delaySeconds: 0
+    flourishShotIndex: 2
+    sfxId: 
+    slowTimeScale: 0.15
+    slowDurationSeconds: 0.25
+    focusTarget: 2
+    bossFocusOffset: {x: 0, y: 0}
+    cameraFocusWeight: 1
+    cameraZoomMultiplier: 0.3
+    cameraBlendSmoothTime: 0.07
+    finalShotTravelSeconds: 0.3
+    cameraHoldSeconds: 1.25
+    restoreDefaultCameraAfterHold: 1

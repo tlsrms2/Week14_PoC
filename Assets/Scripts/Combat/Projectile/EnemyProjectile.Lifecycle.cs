@@ -141,6 +141,7 @@ namespace Week14.Combat
             ownerSlotReleased = false;
             pausedByExecution = false;
             executionPauseStartedAt = 0f;
+            ignoresExecutionPause = false;
             runtimeHomingActive = false;
             runtimeHomingEndsAt = 0f;
             runtimeHomingTurnDegreesPerSecond = 0f;
@@ -178,7 +179,7 @@ namespace Week14.Combat
                 return;
             }
 
-            if (PlayerCombatController.IsExecutionCinematicActive)
+            if (PlayerCombatController.IsExecutionCinematicActive && !ignoresExecutionPause)
             {
                 PauseForExecution();
                 return;

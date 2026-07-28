@@ -49,6 +49,7 @@ namespace Week14.Bootstrap
         private bool cinematicReturnToCombatViewActive;
         private float cinematicFocusWeight = 0.5f;
         private float cinematicZoomMultiplier = 1f;
+        private float cinematicBlendSmoothTime = -1f;
 
         private void Awake()
         {
@@ -121,6 +122,28 @@ namespace Week14.Bootstrap
 
         public void BeginCinematicFocus(Transform nextFocusTarget, float weight, float zoomMultiplier)
         {
+            BeginCinematicFocusInternal(nextFocusTarget, weight, zoomMultiplier, -1f);
+        }
+
+        public void BeginCinematicFocus(
+            Transform nextFocusTarget,
+            float weight,
+            float zoomMultiplier,
+            float blendSmoothTime)
+        {
+            BeginCinematicFocusInternal(
+                nextFocusTarget,
+                weight,
+                zoomMultiplier,
+                Mathf.Max(0.01f, blendSmoothTime));
+        }
+
+        private void BeginCinematicFocusInternal(
+            Transform nextFocusTarget,
+            float weight,
+            float zoomMultiplier,
+            float blendSmoothTime)
+        {
             if (!cinematicFocusActive)
             {
                 pendingFocusTarget = focusTarget;
@@ -130,6 +153,7 @@ namespace Week14.Bootstrap
             cinematicReturnToCombatViewActive = false;
             cinematicFocusWeight = Mathf.Clamp01(weight);
             cinematicZoomMultiplier = Mathf.Clamp(zoomMultiplier, 0.1f, 2.5f);
+            cinematicBlendSmoothTime = blendSmoothTime;
             ApplyFocusTarget(nextFocusTarget);
         }
 
@@ -221,6 +245,7 @@ namespace Week14.Bootstrap
             cinematicFocusActive = false;
             cinematicReturnToCombatViewActive = false;
             cinematicZoomMultiplier = 1f;
+            cinematicBlendSmoothTime = -1f;
             ApplyFocusTarget(pendingFocusTarget);
             pendingFocusTarget = null;
         }
@@ -243,6 +268,7 @@ namespace Week14.Bootstrap
             cinematicFocusActive = false;
             cinematicReturnToCombatViewActive = false;
             cinematicZoomMultiplier = 1f;
+            cinematicBlendSmoothTime = -1f;
             pendingFocusTarget = null;
             ApplyFocusTarget(combatFocusTarget);
 
@@ -259,6 +285,7 @@ namespace Week14.Bootstrap
             cinematicFocusActive = false;
             cinematicReturnToCombatViewActive = true;
             cinematicZoomMultiplier = 1f;
+            cinematicBlendSmoothTime = -1f;
             pendingFocusTarget = null;
             ApplyFocusTarget(combatFocusTarget);
         }
@@ -312,8 +339,10 @@ namespace Week14.Bootstrap
                 return;
             }
 
-            Vector3 desiredPosition = GetTargetPosition() + offset;
-            if (followSpeed <= 0f)
+            float deltaTime = GetCameraDeltaTime();
+            Vector3 desiredPosition = GetTargetPosition(deltaTime) + offset;
+            if (followSpeed <= 0f
+                && (!cinematicFocusActive || cinematicBlendSmoothTime <= 0f))
             {
                 currentBasePosition = desiredPosition;
                 hasBasePosition = true;
@@ -329,14 +358,16 @@ namespace Week14.Bootstrap
                 hasBasePosition = true;
             }
 
-            float smoothTime = 1f / followSpeed;
+            float smoothTime = cinematicFocusActive && cinematicBlendSmoothTime > 0f
+                ? cinematicBlendSmoothTime
+                : 1f / followSpeed;
             currentBasePosition = Vector3.SmoothDamp(
                 currentBasePosition,
                 desiredPosition,
                 ref followVelocity,
                 smoothTime,
                 Mathf.Infinity,
-                Time.deltaTime);
+                deltaTime);
             transform.position = currentBasePosition + GetShakeOffset();
             UpdateCameraZoom();
         }
@@ -359,7 +390,7 @@ namespace Week14.Bootstrap
             }
         }
 
-        private Vector3 GetTargetPosition()
+        private Vector3 GetTargetPosition(float deltaTime)
         {
             Vector3 targetPosition = targetBody != null ? targetBody.transform.position : target.position;
             float activeFocusWeight = cinematicFocusActive ? cinematicFocusWeight : 0.5f;
@@ -377,7 +408,7 @@ namespace Week14.Bootstrap
                     ref focusWeightVelocity,
                     focusSmoothTime,
                     Mathf.Infinity,
-                    Time.deltaTime);
+                    deltaTime);
             }
 
             if (focusTarget == null)
@@ -385,14 +416,14 @@ namespace Week14.Bootstrap
                 Vector3 position = currentFocusWeight > 0.001f
                     ? Vector3.Lerp(targetPosition, lastFocusPosition, currentFocusWeight)
                     : targetPosition;
-                return position + (Vector3)GetMouseLookOffset(false);
+                return position + (Vector3)GetMouseLookOffset(false, deltaTime);
             }
 
             Vector3 focusPosition = focusBody != null ? focusBody.transform.position : focusTarget.position;
             currentFocusPosition = GetSmoothedFocusPosition(focusPosition);
             lastFocusPosition = currentFocusPosition;
             return Vector3.Lerp(targetPosition, currentFocusPosition, currentFocusWeight)
-                + (Vector3)GetMouseLookOffset(true);
+                + (Vector3)GetMouseLookOffset(true, deltaTime);
         }
 
         private Vector3 GetSmoothedFocusPosition(Vector3 targetFocusPosition)
@@ -424,7 +455,7 @@ namespace Week14.Bootstrap
             return currentFocusPosition;
         }
 
-        private Vector2 GetMouseLookOffset(bool hasFocusTarget)
+        private Vector2 GetMouseLookOffset(bool hasFocusTarget, float deltaTime)
         {
             Vector2 targetOffset = Vector2.zero;
             if (!cinematicFocusActive
@@ -464,7 +495,7 @@ namespace Week14.Bootstrap
                     ref mouseLookOffsetVelocity,
                     1f / mouseLookBlendSpeed,
                     Mathf.Infinity,
-                    Time.deltaTime);
+                    deltaTime);
             }
 
             return currentMouseLookOffset;
@@ -475,7 +506,9 @@ namespace Week14.Bootstrap
             float speedSmoothTime = blendSpeed > 0f ? 1f / blendSpeed : 0f;
             if (cinematicFocusActive)
             {
-                return speedSmoothTime;
+                return cinematicBlendSmoothTime > 0f
+                    ? cinematicBlendSmoothTime
+                    : speedSmoothTime;
             }
 
             return Mathf.Max(speedSmoothTime, lockOnTransitionSmoothTime);
@@ -521,7 +554,9 @@ namespace Week14.Bootstrap
 
             targetSize = Mathf.Max(0.1f, targetSize);
 
-            if (targetSize >= controlledCamera.orthographicSize && !cinematicReturnToCombatViewActive)
+            if (targetSize >= controlledCamera.orthographicSize
+                && !cinematicReturnToCombatViewActive
+                && (!cinematicFocusActive || cinematicBlendSmoothTime <= 0f))
             {
                 controlledCamera.orthographicSize = targetSize;
                 zoomVelocity = 0f;
@@ -538,9 +573,18 @@ namespace Week14.Bootstrap
                 controlledCamera.orthographicSize,
                 targetSize,
                 ref zoomVelocity,
-                1f / zoomBlendSpeed,
+                cinematicFocusActive && cinematicBlendSmoothTime > 0f
+                    ? cinematicBlendSmoothTime
+                    : 1f / zoomBlendSpeed,
                 Mathf.Infinity,
-                Time.deltaTime);
+                GetCameraDeltaTime());
+        }
+
+        private float GetCameraDeltaTime()
+        {
+            return cinematicFocusActive || cinematicReturnToCombatViewActive
+                ? Time.unscaledDeltaTime
+                : Time.deltaTime;
         }
     }
 }

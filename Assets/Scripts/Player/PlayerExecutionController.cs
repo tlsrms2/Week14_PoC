@@ -20,8 +20,10 @@ namespace Week14.Combat
         private readonly PlayerAimController aimController;
         private readonly PlayerLockOnController lockOnController;
         private readonly PlayerExecutionPresentation presentation;
+        private readonly CommonExecutionPresentationPlayer commonPresentation;
         private Coroutine executionRoutine;
         private ExecutionTarget hoveredExecutionTarget;
+        private HogExecutionSequence activeBossExecutionSequence;
         private bool isExecuting;
         private bool isWaitingForVictoryPanel;
 
@@ -37,6 +39,7 @@ namespace Week14.Combat
             this.aimController = aimController;
             this.lockOnController = lockOnController;
             this.presentation = presentation;
+            commonPresentation = new CommonExecutionPresentationPlayer(context, presentation);
         }
 
         internal ExecutionTarget HoveredExecutionTarget => hoveredExecutionTarget;
@@ -75,6 +78,9 @@ namespace Week14.Combat
             bool preserveFinalLetterbox = false,
             bool keepPlayerHpHidden = false)
         {
+            activeBossExecutionSequence?.Cancel();
+            activeBossExecutionSequence = null;
+            commonPresentation.Stop();
             isExecuting = false;
             executionRoutine = null;
             context.Visual?.EndExecutionVisual();
@@ -161,12 +167,27 @@ namespace Week14.Combat
             context.HideBaseballBatDisplay();
             BossAI executionBoss = executionTarget.GetComponentInParent<BossAI>();
             bool isFinalBossExecution = executionBoss != null && executionBoss.CurrentLives <= 1;
+            commonPresentation.Begin(
+                !isFinalBossExecution ? config.CommonExecutionPresentationProfile : null,
+                executionBoss);
             if (isFinalBossExecution)
             {
                 executionBoss.FreezeCombatTimer();
             }
-            float flourishSeconds = Mathf.Max(0f, config.ExecutionFlourishDelaySeconds)
-                + Mathf.Max(0, config.ExecutionFlourishShotCount) * Mathf.Max(0.01f, config.ExecutionFlourishShotInterval);
+
+            HogExecutionSequence hogExecutionSequence =
+                isFinalBossExecution && executionBoss is HogBossAI
+                    ? executionBoss.GetComponent<HogExecutionSequence>()
+                    : null;
+            bool useHogExecutionSequence = hogExecutionSequence != null
+                && hogExecutionSequence.CanPlay
+                && hogExecutionSequence.Prepare(context.Owner, (HogBossAI)executionBoss);
+            activeBossExecutionSequence = useHogExecutionSequence ? hogExecutionSequence : null;
+            float flourishSeconds = useHogExecutionSequence
+                ? hogExecutionSequence.ExpectedDurationSeconds
+                : Mathf.Max(0f, config.ExecutionFlourishDelaySeconds)
+                    + Mathf.Max(0, config.ExecutionFlourishShotCount)
+                    * Mathf.Max(0.01f, config.ExecutionFlourishShotInterval);
             float holsteringSeconds = Mathf.Max(0.01f, config.ExecutionFlourishShotInterval);
             float finalPresentationSeconds = isFinalBossExecution
                 ? config.FinalExecutionLetterboxEnterSeconds
@@ -187,7 +208,8 @@ namespace Week14.Combat
             {
                 letterboxRoutine = context.CoroutineHost.StartCoroutine(
                     presentation.ShowFinalExecutionLetterbox());
-                teleported = TeleportBesideBoss(executionBoss, config.ExecutionTeleportDistance);
+                teleported = useHogExecutionSequence
+                    || TeleportBesideBoss(executionBoss, config.ExecutionTeleportDistance);
             }
 
             Vector2 targetPosition = executionTarget.transform.position;
@@ -207,10 +229,19 @@ namespace Week14.Combat
 
             presentation.UpdateExecutionFocusPoint(playerPosition, targetPosition);
             CameraFollow2D activeCamera = context.CameraFollow;
+            Transform initialFocusTarget = useHogExecutionSequence
+                ? hogExecutionSequence.InitialCameraFocus
+                : presentation.ExecutionFocusPoint != null
+                    ? presentation.ExecutionFocusPoint
+                    : executionTarget.transform;
             activeCamera?.BeginCinematicFocus(
-                presentation.ExecutionFocusPoint != null ? presentation.ExecutionFocusPoint : executionTarget.transform,
-                teleported ? 1f : config.ExecutionCameraFocusWeight,
-                config.ExecutionCameraZoomMultiplier);
+                initialFocusTarget,
+                useHogExecutionSequence
+                    ? hogExecutionSequence.WideCameraFocusWeight
+                    : teleported ? 1f : config.ExecutionCameraFocusWeight,
+                useHogExecutionSequence
+                    ? hogExecutionSequence.WideCameraZoomMultiplier
+                    : config.ExecutionCameraZoomMultiplier);
             if (teleported)
             {
                 activeCamera?.SnapToCinematicFocus();
@@ -226,6 +257,7 @@ namespace Week14.Combat
                 }
             }
 
+            commonPresentation.Trigger(CommonExecutionCuePoint.AfterLetterbox);
             SoundManager.PlaySfx("Execute");
             context.ExecutionImage?.Play(
                 flourishSeconds
@@ -236,18 +268,50 @@ namespace Week14.Combat
                 + config.ExecutionKillDelaySeconds);
             activeCamera?.PlayImpact(standDirection, 0.08f, 0.14f, 0.12f);
 
-            Transform rightFireOrigin = rig.GetRightFireOrigin();
-            Vector2 aimDirection = targetPosition - (Vector2)rightFireOrigin.position;
-            aimController.AimExecutionPose(aimDirection);
-            context.Visual?.BeginExecutionVisual(aimDirection);
-            yield return new WaitForSeconds(config.ExecutionFlourishDelaySeconds);
-            yield return RunExecutionFlourish(executionTarget);
-
-            yield return new WaitForSeconds(config.ExecutionAimSeconds);
-            if (executionTarget == null)
+            Transform rightFireOrigin;
+            Vector2 aimDirection;
+            if (useHogExecutionSequence)
             {
-                FinishExecution();
-                yield break;
+                yield return hogExecutionSequence.PlayPrelude();
+                if (executionTarget == null)
+                {
+                    FinishExecution();
+                    yield break;
+                }
+
+                targetPosition = executionTarget.transform.position;
+                playerPosition = context.Body != null
+                    ? context.Body.position
+                    : (Vector2)context.PlayerTransform.position;
+                presentation.UpdateExecutionFocusPoint(playerPosition, targetPosition);
+                activeCamera?.BeginCinematicFocus(
+                    presentation.ExecutionFocusPoint != null
+                        ? presentation.ExecutionFocusPoint
+                        : executionTarget.transform,
+                    config.ExecutionCameraFocusWeight,
+                    config.ExecutionCameraZoomMultiplier);
+
+                rightFireOrigin = rig.GetRightFireOrigin();
+                aimDirection = targetPosition - (Vector2)rightFireOrigin.position;
+                aimController.AimExecutionPose(aimDirection);
+                context.Visual?.BeginExecutionVisual(aimDirection);
+            }
+            else
+            {
+                rightFireOrigin = rig.GetRightFireOrigin();
+                aimDirection = targetPosition - (Vector2)rightFireOrigin.position;
+                aimController.AimExecutionPose(aimDirection);
+                context.Visual?.BeginExecutionVisual(aimDirection);
+                commonPresentation.Trigger(CommonExecutionCuePoint.FlourishStart);
+                yield return new WaitForSeconds(config.ExecutionFlourishDelaySeconds);
+                yield return RunExecutionFlourish(executionTarget);
+
+                yield return new WaitForSeconds(config.ExecutionAimSeconds);
+                if (executionTarget == null)
+                {
+                    FinishExecution();
+                    yield break;
+                }
             }
 
             Transform finalShotTarget = ResolveFinalExecutionShotTarget(
@@ -261,6 +325,7 @@ namespace Week14.Combat
             aimDirection = (Vector2)finalImpactPosition - (Vector2)rightFireOrigin.position;
             aimController.AimExecutionPose(aimDirection);
 
+            commonPresentation.Trigger(CommonExecutionCuePoint.BeforePowerShot);
             yield return new WaitForSeconds(config.ExecutionShotDelaySeconds);
             if (executionTarget == null)
             {
@@ -291,6 +356,10 @@ namespace Week14.Combat
             }
 
             SoundManager.PlaySfx("PlayerPowerShot");
+            commonPresentation.PrepareFinalShot(
+                rightFireOrigin.position,
+                finalImpactPosition);
+            commonPresentation.Trigger(CommonExecutionCuePoint.PowerShot);
             if (!isFinalBossExecution)
             {
                 presentation.PlayExecutionShotDim();
@@ -366,6 +435,7 @@ namespace Week14.Combat
                 }
             }
 
+            commonPresentation.Trigger(CommonExecutionCuePoint.AfterImpact);
             yield return new WaitForSeconds(config.ExecutionKillDelaySeconds);
             if (executionTarget == null)
             {
@@ -392,6 +462,7 @@ namespace Week14.Combat
             lockOnController.SetLockOnTarget(null);
             SetHoveredExecutionTarget(null);
 
+            commonPresentation.Trigger(CommonExecutionCuePoint.SequenceEnd);
             yield return new WaitForSeconds(Mathf.Max(config.ExecutionFinishSeconds, playerHpRecoverySeconds));
 
             bool executionFinished = false;
@@ -697,6 +768,7 @@ namespace Week14.Combat
 
                 SoundManager.PlaySfx("PlayerShot");
                 FireExecutionFlourishShot(executionTarget, aimDirection);
+                commonPresentation.Trigger(CommonExecutionCuePoint.FlourishShot, i);
             }
         }
 
