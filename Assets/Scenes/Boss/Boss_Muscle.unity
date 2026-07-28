@@ -4376,10 +4376,11 @@ MonoBehaviour:
   thirdWalkLeftDistance: 2.8
   thirdWalkSeconds: 0.9
   dashStateTimeoutSeconds: 3
-  finalDashSlowStartDelaySeconds: 0.08
-  bossClearanceDistance: 1.25
+  finalDashSlowStartDelaySeconds: 0.035
+  bossClearanceDistance: 0.1
   projectileClearanceDistance: 1.1
   projectileSlowMultiplier: 0.02
+  bossAnimationSlowMultiplier: 0.5
   projectileSlowSafetySeconds: 8
   preParryHoldSeconds: 0.55
   preParryCameraZoomMultiplier: 0.38
@@ -4391,7 +4392,7 @@ MonoBehaviour:
   parryCameraFocusWeight: 1
   parryCameraZoomMultiplier: 0.42
   parryCameraBlendSmoothTime: 0.08
-  aimChargeSeconds: 1.5
+  aimChargeSeconds: 1.7
   aimChargeSfxId: 
   finalDashAnimationBoolName: isCharge
   wideCameraFocusWeight: 1

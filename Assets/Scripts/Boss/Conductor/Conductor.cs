@@ -30,6 +30,7 @@ namespace Week14.Enemy
 
         private readonly Dictionary<Health, Minion> spawnedMinionsByHealth = new();
         private readonly Dictionary<Minion, Transform> spawnedMinionOutlines = new();
+        private readonly HashSet<Minion> executionOutlineHiddenMinions = new();
         private readonly Dictionary<Minion, Coroutine> outlineFlashRoutines = new();
         private readonly Dictionary<Minion, MovementPathIndicatorState> movementPathIndicators = new();
         private int minionOutlineVisibleLocks;
@@ -331,6 +332,28 @@ namespace Week14.Enemy
             return projectile;
         }
 
+        public override EnemyProjectile FireMinionProjectileForCinematic(
+            Minion source,
+            BossProjectileSettings settings,
+            Vector3 origin,
+            Vector2 direction,
+            bool playMuzzleFlash)
+        {
+            EnemyProjectile projectile =
+                base.FireMinionProjectileForCinematic(
+                    source,
+                    settings,
+                    origin,
+                    direction,
+                    playMuzzleFlash);
+            if (projectile != null)
+            {
+                FlashMinionOutline(source);
+            }
+
+            return projectile;
+        }
+
         protected override void OnMinionSpawned(Minion minion)
         {
             base.OnMinionSpawned(minion);
@@ -378,7 +401,7 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                ApplyMinionOutlineIdle(entry.Value);
+                ApplyMinionOutlineIdle(entry.Key, entry.Value);
             }
         }
 
@@ -579,6 +602,7 @@ namespace Week14.Enemy
 
             spawnedMinionsByHealth.Clear();
             spawnedMinionOutlines.Clear();
+            executionOutlineHiddenMinions.Clear();
             outlineFlashRoutines.Clear();
             movementPathIndicators.Clear();
             minionOutlineVisibleLocks = 0;
@@ -593,7 +617,7 @@ namespace Week14.Enemy
             }
 
             spawnedMinionOutlines[minion] = outline;
-            ApplyMinionOutlineIdle(outline);
+            ApplyMinionOutlineIdle(minion, outline);
         }
 
         private void FlashMinionOutline(Minion minion)
@@ -630,7 +654,7 @@ namespace Week14.Enemy
 
             if (outline != null)
             {
-                ApplyMinionOutlineIdle(outline);
+                ApplyMinionOutlineIdle(minion, outline);
             }
 
             outlineFlashRoutines.Remove(minion);
@@ -641,9 +665,44 @@ namespace Week14.Enemy
             EndMinionOutlinePatternVisibility();
         }
 
+        public void BeginExecutionMinionOutlineVisibility()
+        {
+            executionOutlineHiddenMinions.Clear();
+            BeginMinionOutlinePatternVisibility();
+        }
+
+        public void SetExecutionMinionOutlineVisible(Minion minion, bool visible)
+        {
+            if (minion == null)
+            {
+                return;
+            }
+
+            if (visible)
+            {
+                executionOutlineHiddenMinions.Remove(minion);
+            }
+            else
+            {
+                executionOutlineHiddenMinions.Add(minion);
+            }
+
+            if (spawnedMinionOutlines.TryGetValue(minion, out Transform outline))
+            {
+                ApplyMinionOutlineIdle(minion, outline);
+            }
+        }
+
+        public void EndExecutionMinionOutlineVisibility()
+        {
+            executionOutlineHiddenMinions.Clear();
+            EndMinionOutlinePatternVisibility();
+        }
+
         public void ClearMinionOutlinePatternVisibility()
         {
             minionOutlineVisibleLocks = 0;
+            executionOutlineHiddenMinions.Clear();
             StopAllMinionOutlineFlashRoutines();
             ApplyAllMinionOutlineIdle();
         }
@@ -686,9 +745,9 @@ namespace Week14.Enemy
 
         private void ApplyAllMinionOutlineIdle()
         {
-            foreach (Transform outline in spawnedMinionOutlines.Values)
+            foreach (KeyValuePair<Minion, Transform> entry in spawnedMinionOutlines)
             {
-                ApplyMinionOutlineIdle(outline);
+                ApplyMinionOutlineIdle(entry.Key, entry.Value);
             }
         }
 
@@ -708,6 +767,7 @@ namespace Week14.Enemy
             }
 
             outlineFlashRoutines.Remove(minion);
+            executionOutlineHiddenMinions.Remove(minion);
             if (spawnedMinionOutlines.TryGetValue(minion, out Transform outline) && outline != null)
             {
                 outline.gameObject.SetActive(false);
@@ -716,7 +776,7 @@ namespace Week14.Enemy
             spawnedMinionOutlines.Remove(minion);
         }
 
-        private void ApplyMinionOutlineIdle(Transform outline)
+        private void ApplyMinionOutlineIdle(Minion minion, Transform outline)
         {
             if (outline == null)
             {
@@ -724,7 +784,10 @@ namespace Week14.Enemy
             }
 
             outline.gameObject.SetActive(true);
-            SetMinionOutlineAlpha(outline, minionOutlineVisibleLocks > 0 ? 1f : 0f);
+            bool visible = minionOutlineVisibleLocks > 0
+                && (minion == null
+                    || !executionOutlineHiddenMinions.Contains(minion));
+            SetMinionOutlineAlpha(outline, visible ? 1f : 0f);
         }
 
         private static void SetMinionOutlineAlpha(Transform outline, float alpha)

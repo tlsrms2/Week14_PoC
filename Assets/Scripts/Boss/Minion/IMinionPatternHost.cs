@@ -106,6 +106,18 @@ namespace Week14.Enemy
         [SerializeField, BossGraphMinionChildPath] private string secondMinionChildPath;
         [SerializeField, Min(0f)] private float fallbackSpacing = 0.18f;
 
+        public MinionGraphProjectileOriginSpec()
+        {
+        }
+
+        public MinionGraphProjectileOriginSpec(
+            MinionGraphProjectileOriginMode mode,
+            float fallbackSpacing)
+        {
+            this.mode = mode;
+            this.fallbackSpacing = Mathf.Max(0f, fallbackSpacing);
+        }
+
         public Vector3 GetAimOrigin(Minion minion, int shotIndex)
         {
             if (minion == null)

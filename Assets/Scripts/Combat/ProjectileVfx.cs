@@ -8,6 +8,7 @@ namespace Week14.Combat
         private const float DefaultPrefabLifetimeSeconds = 1f;
         private const float MinimumPrefabLifetimeSeconds = 0.05f;
         private static Material spriteMaterial;
+        private static Sprite circleSprite;
 
         public static void ApplyVisibility(GameObject owner, Color color, float radius, float trailSeconds, float trailWidthMultiplier)
         {
@@ -375,6 +376,34 @@ namespace Week14.Combat
             return lineObject;
         }
 
+        public static GameObject PlayCircleFlash(
+            Vector3 position,
+            float diameter,
+            Color color,
+            int sortingOrder = 74,
+            int? sortingLayerId = null)
+        {
+            position.z = 0f;
+            GameObject circleObject = new GameObject("CircleFlashVfx");
+            circleObject.transform.position = position;
+            circleObject.transform.localScale =
+                Vector3.one * Mathf.Max(0.01f, diameter);
+
+            SpriteRenderer renderer =
+                circleObject.AddComponent<SpriteRenderer>();
+            BossSorting.Apply(renderer);
+            if (sortingLayerId.HasValue)
+            {
+                renderer.sortingLayerID = sortingLayerId.Value;
+            }
+
+            renderer.sprite = CreateCircleSprite();
+            renderer.color = color;
+            renderer.sortingOrder = sortingOrder;
+            renderer.sharedMaterial = GetSpriteMaterial();
+            return circleObject;
+        }
+
         // 총검 등 반원 범위 판정을 순간적으로 보여주는 꽉 찬(면이 채워진) 플래시입니다.
         // duration 동안 알파가 빠지며 사라집니다. 삼각팬(중심 + 호) 메쉬로 내부를 채웁니다.
         public static void PlaySemicircleFlash(Vector3 origin, Vector2 direction, float radius, Color color, float duration)
@@ -568,6 +597,11 @@ namespace Week14.Combat
 
         private static Sprite CreateCircleSprite()
         {
+            if (circleSprite != null)
+            {
+                return circleSprite;
+            }
+
             const int size = 32;
             Texture2D texture = new Texture2D(size, size, TextureFormat.RGBA32, false);
             Vector2 center = new Vector2((size - 1) * 0.5f, (size - 1) * 0.5f);
@@ -578,13 +612,18 @@ namespace Week14.Combat
                 for (int x = 0; x < size; x++)
                 {
                     float distance = Vector2.Distance(new Vector2(x, y), center);
-                    float alpha = Mathf.Clamp01(1f - distance / radius);
+                    float alpha = distance <= radius ? 1f : 0f;
                     texture.SetPixel(x, y, new Color(1f, 1f, 1f, alpha));
                 }
             }
 
             texture.Apply();
-            return Sprite.Create(texture, new Rect(0f, 0f, size, size), new Vector2(0.5f, 0.5f), size);
+            circleSprite = Sprite.Create(
+                texture,
+                new Rect(0f, 0f, size, size),
+                new Vector2(0.5f, 0.5f),
+                size);
+            return circleSprite;
         }
     }
 }

@@ -1889,6 +1889,51 @@ MonoBehaviour:
       rid: 6489939314815009125
     sequences: []
     editorPosition: {x: 373, y: 829}
+  - nodeId: Scatter Wire Node2
+    nodeGuid: b9bc42d789224b5eb7b15ac71ac7d1b3
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939497712877878
+    sequences: []
+    editorPosition: {x: -310, y: 2662}
+  - nodeId: Throw Weapon7
+    nodeGuid: 16eded8a67be49ce99a6487131174cc8
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939497712877884
+    sequences: []
+    editorPosition: {x: -126, y: 2663}
+  - nodeId: Weapon Wire Orbit7
+    nodeGuid: ec2c72737eb04a528849f9196cc1db97
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939497712877885
+    sequences: []
+    editorPosition: {x: 53, y: 2659}
+  - nodeId: Melee Attack37
+    nodeGuid: 6bf485c43f3e40e99a609a67beb3bef4
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939497712877886
+    sequences: []
+    editorPosition: {x: 233, y: 2656}
+  - nodeId: Fire Sequential Sweep44
+    nodeGuid: 0ab84e83858a4f909a6c8adc4f4095b4
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939497712877887
+    sequences: []
+    editorPosition: {x: 178, y: 2798}
   patterns:
   - patternId: P1-1
     nodeGuids:
@@ -2411,6 +2456,19 @@ MonoBehaviour:
     - Weapon Wire Orbit6
     - Fire Sequential Sweep42
     - Fire Sequential Sweep43
+  - patternId: Execution
+    nodeGuids:
+    - b9bc42d789224b5eb7b15ac71ac7d1b3
+    - 16eded8a67be49ce99a6487131174cc8
+    - ec2c72737eb04a528849f9196cc1db97
+    - 6bf485c43f3e40e99a609a67beb3bef4
+    - 0ab84e83858a4f909a6c8adc4f4095b4
+    nodeIds:
+    - Scatter Wire Node2
+    - Throw Weapon7
+    - Weapon Wire Orbit7
+    - Melee Attack37
+    - Fire Sequential Sweep44
   defaultPatternIds: []
   phases:
   - phaseIndex: 0
@@ -3719,6 +3777,30 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
+  - fromNodeGuid: ec2c72737eb04a528849f9196cc1db97
+    toNodeGuid: 6bf485c43f3e40e99a609a67beb3bef4
+    fromNodeId: Weapon Wire Orbit7
+    toNodeId: Melee Attack37
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: b9bc42d789224b5eb7b15ac71ac7d1b3
+    toNodeGuid: 16eded8a67be49ce99a6487131174cc8
+    fromNodeId: Scatter Wire Node2
+    toNodeId: Throw Weapon7
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 16eded8a67be49ce99a6487131174cc8
+    toNodeGuid: ec2c72737eb04a528849f9196cc1db97
+    fromNodeId: Throw Weapon7
+    toNodeId: Weapon Wire Orbit7
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
   parallelEdges:
   - fromNodeGuid: d73f6a1c02f64577b7c67c2f5553bad2
     toNodeGuid: 3b9a161932f74a81b50a8e80ca5a07c2
@@ -3964,6 +4046,12 @@ MonoBehaviour:
     toNodeGuid: d41bf5af1c2b4c358818685ad9869039
     fromNodeId: Fire Sniping Projectile3
     toNodeId: Fire Sniping Projectile4
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 6bf485c43f3e40e99a609a67beb3bef4
+    toNodeGuid: 0ab84e83858a4f909a6c8adc4f4095b4
+    fromNodeId: Melee Attack37
+    toNodeId: Fire Sequential Sweep44
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 0
@@ -11249,7 +11337,6 @@ MonoBehaviour:
         maxFlightSeconds: 3
         targetMode: 0
         grabSeconds: 0.65
-        playerWallSearchRadius: 5
         minimumWallDistance: 7
         fireCount: 3
         repeatIntervalSeconds: 0.05
@@ -14970,7 +15057,6 @@ MonoBehaviour:
         maxFlightSeconds: 3
         targetMode: 1
         grabSeconds: 0.65
-        playerWallSearchRadius: 50
         minimumWallDistance: 7
         fireCount: 1
         repeatIntervalSeconds: 0.15
@@ -15130,7 +15216,6 @@ MonoBehaviour:
         maxFlightSeconds: 3
         targetMode: 0
         grabSeconds: 0.65
-        playerWallSearchRadius: 5
         minimumWallDistance: 7
         fireCount: 3
         repeatIntervalSeconds: 0.05
@@ -16633,7 +16718,6 @@ MonoBehaviour:
         maxFlightSeconds: 3
         targetMode: 1
         grabSeconds: 0.65
-        playerWallSearchRadius: 50
         minimumWallDistance: 7
         fireCount: 1
         repeatIntervalSeconds: 0.15
@@ -17511,7 +17595,6 @@ MonoBehaviour:
         maxFlightSeconds: 3
         targetMode: 0
         grabSeconds: 0.65
-        playerWallSearchRadius: 5
         minimumWallDistance: 7
         fireCount: 3
         repeatIntervalSeconds: 0.05
@@ -19488,3 +19571,352 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         speedCurveInitialized: 1
+    - rid: 6489939497712877878
+      type: {class: HackerScatterWireNodeAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        nodeProjectileName: "\uC640\uC774\uC5B4 \uB178\uB4DC"
+        nodeProjectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        launchOriginPath: 
+        animationTriggerName: Throw
+        windupSeconds: 0.35
+        nodeCount: 6
+        startAngleOffset: 0
+        randomizeStartAngle: 1
+        minAngleDistanceDegrees: 25
+        fireInterval: 0.08
+        fireSfxId: BossNormalShot
+        recoverySeconds: 0.25
+        flyingSprite: {fileID: -7263751535809043743, guid: 20152adbaac57f440a99906ebede87d0, type: 3}
+        attachedSprite: {fileID: 299151475, guid: 5c417a1355187d84cbad5851c5137f02, type: 3}
+    - rid: 6489939497712877884
+      type: {class: HackerWeaponThrowAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        throwingWeaponPrefab: {fileID: 4033902920554242825, guid: 2d7d1d7b92324154082760e25cb8d72a, type: 3}
+        equippedThrowingWeaponPath: Hand/RightHand
+        throwOriginPath: Hand/RightHand
+        animationTriggerName: Throw
+        windupSeconds: 0.5
+        flightSpeed: 6
+        recoverySeconds: 0
+        landingDistance: 5
+        landingSideOffset: 0
+        flightSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.99540544
+            value: -0.0004503727
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        landingSfxId: PutTurret
+        flyingSprite: {fileID: 0}
+        groundedSprite: {fileID: 0}
+    - rid: 6489939497712877885
+      type: {class: HackerWeaponWireOrbitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        weaponSelection: 3
+        bossWireAnchorPath: Hand/RightHand
+        weaponWireAnchorPath: WireAnchor
+        returnAnchorPath: Hand/RightHand
+        weaponReadyWaitSeconds: 2
+        pullTriggerName: WeaponWireOrbitWindup
+        readyTriggerName: WeaponWireOrbitReady
+        orbitTriggerName: WeaponWireOrbit
+        recallTriggerName: RecallWeapon
+        readySeconds: 0.5
+        recoverySeconds: 0
+        weaponPositioningSeconds: 0.5
+        orbitSeconds: 0.5
+        orbitSfxId: OrbitSweep
+        orbitRadius: 9
+        weaponPositioningSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        rotationDegrees: 360
+        rotationDirection: 0
+        rotationSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        weaponRotationOffsetDegrees: 0
+        advanceSpeed: 9
+        advanceSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0.020076752
+            value: 0.99776614
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.9688721
+            value: 0.31077498
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        safeInnerRadius: 4.5
+        hitRadius: 0.2
+        damage: 1
+        attackEffect:
+          enabled: 1
+          effectPrefab: {fileID: 6123185058458268927, guid: 10a31ff5f22a7c64cb9c1d0bfb271d04, type: 3}
+          spawnPointPath: EffectPrefabPoint/OrbitSweep
+          positionOffset: {x: 0, y: 0}
+          scale: 1
+          followMode: 1
+          followRotation: 1
+        recallSeconds: 0.55
+        recallRotationDegrees: 0
+        wireSfxId: Wire
+    - rid: 6489939497712877886
+      type: {class: HackerMeleeAttackAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        style: 1
+        cutTopToBottomTriggerName: CutTopToBottom
+        cutBottomToTopTriggerName: CutBottomToTop
+        slamTriggerName: Slam
+        liftTriggerName: Lift
+        windupSeconds: 1
+        recoverySeconds: 0.3
+        range: 4
+        ellipseMinorRadius: 3.35
+        ellipseForwardOffset: 0.5
+        damage: 1
+        approachStartDistance: 3
+        approachStopDistance: 2
+        approachSpeed: 15
+        maxApproachSeconds: 3
+        approachSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.45
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.3600079
+            value: 0.6125244
+            inSlope: 0.7603274
+            outSlope: 0.7603274
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        attackAdvanceSeconds: 0.15
+        attackAdvanceSpeed: 25
+        attackAdvanceSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.1755882
+            value: 0.9345585
+            inSlope: -0.976386
+            outSlope: -0.976386
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.091440395
+          - serializedVersion: 3
+            time: 0.22516246
+            value: 0.8056819
+            inSlope: -1.059515
+            outSlope: -1.059515
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 1
+          - serializedVersion: 3
+            time: 0.2671337
+            value: 0.775465
+            inSlope: -0.30722776
+            outSlope: -0.30722776
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 1
+            outWeight: 0.11648905
+          - serializedVersion: 3
+            time: 1
+            value: 0.7
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        attackAdvanceTrackingAngleDegrees: 75
+        parryAnchorPath: ParryingPoint/Up->Down Point
+        parryWindowSeconds: 0.5
+        parrySpawnEffect:
+          effectPrefab: {fileID: 2568803655584866131, guid: 27eb5da337e1f4d4786ee2c82cf9193a, type: 3}
+          positionOffset: {x: 0, y: 0.15}
+          scale: 5
+        spawnEffectOnAttack: 1
+        attackEffectPrefab: {fileID: 5961364479665545813, guid: 91ba10fceb7747947b9c2ed83c7bcd8e, type: 3}
+        attackEffectSpawnPointPath: EffectPrefabPoint/Slam
+        attackEffectPositionOffset: {x: 0, y: 0}
+        attackEffectScale: 1
+        attackEffectFollowMode: 1
+        attackEffectFollowRotation: 1
+        spawnEffectOnParried: 1
+        parriedEffectPrefab: {fileID: 8019392123321661575, guid: 822e5482db07a0043a01fd2326e783e2, type: 3}
+        parriedEffectSpawnPointPath: EffectPrefabPoint/Slam
+        parriedEffectPositionOffset: {x: 0, y: 0}
+        parriedEffectScale: 1
+        parriedEffectFollowMode: 1
+        parriedEffectFollowRotation: 1
+        beforeAttackSfxId: BeforeAttack
+        slashSfxId: Slash
+        bigSlashSfxId: BigSlash
+        missSlashSfxId: MissSlash
+        slamChainSeconds: 2
+        consecutiveSlamDustPrefab: {fileID: 0}
+    - rid: 6489939497712877887
+      type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 0.5
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        windupSeconds: 0
+        bulletCount: 14
+        spawnCircleRadius: 1
+        spawnArcDegrees: 360
+        clockwise: 0
+        trackPlayerPerShot: 0
+        fireInterval: 0.02
+        recoverySeconds: 0

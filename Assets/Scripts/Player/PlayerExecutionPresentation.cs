@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using Week14.Bootstrap;
@@ -9,6 +10,7 @@ namespace Week14.Combat
     internal sealed class PlayerExecutionPresentation
     {
         private const int ExecutionDimSortingOrder = 65;
+        private const float ExecutionDimOverscan = 1.15f;
 
         private readonly PlayerCombatController.PlayerCombatContext context;
         private Transform executionFocusPoint;
@@ -154,7 +156,9 @@ namespace Week14.Combat
                 RestoreFinalExecutionSlowMotionAfter(config.FinalExecutionShotSlowSeconds));
         }
 
-        internal IEnumerator BeginFinalExecutionBlackout(BossAI boss)
+        internal IEnumerator BeginFinalExecutionBlackout(
+            BossAI boss,
+            float timeMultiplier = 1f)
         {
             Camera targetCamera = Camera.main;
             if (targetCamera == null || boss == null)
@@ -180,10 +184,14 @@ namespace Week14.Combat
             float duration = context.Config != null
                 ? context.Config.FinalExecutionBlackoutFadeInSeconds
                 : 0f;
+            duration *= Mathf.Max(0f, timeMultiplier);
             yield return FadeExecutionDim(targetCamera, dimRenderer, 0f, 1f, duration);
         }
 
-        internal IEnumerator PlayFinalExecutionImpactAndRelease(GameObject[] shotLineObjects)
+        internal IEnumerator PlayFinalExecutionImpactAndRelease(
+            GameObject[] shotLineObjects,
+            float timeMultiplier = 1f,
+            Action onBlackoutFadeOutStarted = null)
         {
             PlayerCombatConfig config = context.Config;
             if (executionDimRenderer == null || finalPhaseVfx == null || config == null)
@@ -193,17 +201,22 @@ namespace Week14.Combat
             }
 
             SetExecutionDimAlpha(executionDimRenderer, 1f);
+            float safeTimeMultiplier = Mathf.Max(0f, timeMultiplier);
             try
             {
                 finalPhaseVfx.ShowWhiteOutline(config.FinalExecutionOutlineWidthPixels);
                 yield return FadeShotLinesAndOutline(
                     shotLineObjects,
-                    config.FinalExecutionShotLineSeconds,
-                    config.FinalExecutionOutlineFlashSeconds);
+                    config.FinalExecutionShotLineSeconds
+                        * safeTimeMultiplier,
+                    config.FinalExecutionOutlineFlashSeconds
+                        * safeTimeMultiplier);
                 SetExecutionDimAlpha(executionDimRenderer, 1f);
                 if (config.FinalExecutionBlackoutHoldSeconds > 0f)
                 {
-                    yield return new WaitForSecondsRealtime(config.FinalExecutionBlackoutHoldSeconds);
+                    yield return MaintainExecutionDimForSeconds(
+                        config.FinalExecutionBlackoutHoldSeconds
+                            * safeTimeMultiplier);
                 }
             }
             finally
@@ -213,12 +226,14 @@ namespace Week14.Combat
             }
 
             Camera targetCamera = Camera.main;
+            onBlackoutFadeOutStarted?.Invoke();
             yield return FadeExecutionDim(
                 targetCamera,
                 executionDimRenderer,
                 1f,
                 0f,
-                config.FinalExecutionBlackoutFadeOutSeconds);
+                config.FinalExecutionBlackoutFadeOutSeconds
+                    * safeTimeMultiplier);
 
             executionDimRenderer.enabled = false;
             finalPhaseVfx.Restore();
@@ -233,8 +248,14 @@ namespace Week14.Combat
             float outlineDuration = Mathf.Max(0f, outlineSeconds);
             float duration = Mathf.Max(lineDuration, outlineDuration);
             bool outlineHidden = false;
+            Camera targetCamera = Camera.main;
             for (float elapsed = 0f; elapsed < duration; elapsed += Time.unscaledDeltaTime)
             {
+                UpdateExecutionDimTransform(
+                    targetCamera,
+                    executionDimRenderer != null
+                        ? executionDimRenderer.transform
+                        : null);
                 float lineAlpha = 1f - Mathf.Clamp01(elapsed / lineDuration);
                 SetShotLineAlpha(shotLineObjects, lineAlpha);
                 if (!outlineHidden && elapsed >= outlineDuration)
@@ -249,6 +270,22 @@ namespace Week14.Combat
             SetShotLineAlpha(shotLineObjects, 0f);
             DestroyShotLineObjects(shotLineObjects);
             finalPhaseVfx.HideWhiteOutline();
+        }
+
+        private IEnumerator MaintainExecutionDimForSeconds(float seconds)
+        {
+            Camera targetCamera = Camera.main;
+            for (float elapsed = 0f;
+                 elapsed < seconds;
+                 elapsed += Time.unscaledDeltaTime)
+            {
+                UpdateExecutionDimTransform(
+                    targetCamera,
+                    executionDimRenderer != null
+                        ? executionDimRenderer.transform
+                        : null);
+                yield return null;
+            }
         }
 
         private static void SetShotLineAlpha(GameObject[] shotLineObjects, float alpha)
@@ -585,7 +622,10 @@ namespace Week14.Combat
             float width = height * targetCamera.aspect;
             dimTransform.localPosition = new Vector3(0f, 0f, targetCamera.nearClipPlane + 0.05f);
             dimTransform.localRotation = Quaternion.identity;
-            dimTransform.localScale = new Vector3(width, height, 1f);
+            dimTransform.localScale = new Vector3(
+                width * ExecutionDimOverscan,
+                height * ExecutionDimOverscan,
+                1f);
         }
 
         private static Sprite GetExecutionDimSprite()

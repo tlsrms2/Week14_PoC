@@ -242,6 +242,11 @@ namespace Week14.Combat
                 && bossExecutionSequence.Prepare(context.Owner, executionBoss);
             activeBossExecutionSequence =
                 useBossExecutionSequence ? bossExecutionSequence : null;
+            float finalBlackoutTimeMultiplier = useBossExecutionSequence
+                ? Mathf.Max(
+                    0f,
+                    bossExecutionSequence.FinalBlackoutTimeMultiplier)
+                : 1f;
             float flourishSeconds = useBossExecutionSequence
                 ? bossExecutionSequence.ExpectedDurationSeconds
                 : Mathf.Max(0f, config.ExecutionFlourishDelaySeconds)
@@ -250,10 +255,11 @@ namespace Week14.Combat
             float holsteringSeconds = Mathf.Max(0.01f, config.ExecutionFlourishShotInterval);
             float finalPresentationSeconds = isFinalBossExecution
                 ? config.FinalExecutionLetterboxEnterSeconds
-                    + config.FinalExecutionBlackoutFadeInSeconds
-                    + config.FinalExecutionOutlineFlashSeconds
-                    + config.FinalExecutionBlackoutHoldSeconds
-                    + config.FinalExecutionBlackoutFadeOutSeconds
+                    + (config.FinalExecutionBlackoutFadeInSeconds
+                        + config.FinalExecutionOutlineFlashSeconds
+                        + config.FinalExecutionBlackoutHoldSeconds
+                        + config.FinalExecutionBlackoutFadeOutSeconds)
+                    * finalBlackoutTimeMultiplier
                 : 0f;
             Health targetHealth = executionTarget.GetComponent<Health>();
             if (targetHealth != null)
@@ -427,7 +433,11 @@ namespace Week14.Combat
 
             if (isFinalBossExecution)
             {
-                yield return presentation.BeginFinalExecutionBlackout(executionBoss);
+                yield return presentation.BeginFinalExecutionBlackout(
+                    executionBoss,
+                    finalBlackoutTimeMultiplier);
+                activeBossExecutionSequence?.OnFinalBlackoutStarted(
+                    executionBoss);
             }
 
             SoundManager.PlaySfx("PlayerPowerShot");
@@ -457,6 +467,10 @@ namespace Week14.Combat
                     finalImpactPosition,
                     shotLineEnd,
                     config,
+                    useBossExecutionSequence
+                        && bossExecutionSequence.UseParryColorForFinalShotLine
+                            ? config.ParryEffectColor
+                            : Color.white,
                     presentation.FinalExecutionSortingLayerId,
                     presentation.FinalExecutionBossFrontSortingOrder,
                     presentation.FinalExecutionBossBackSortingOrder);
@@ -494,7 +508,16 @@ namespace Week14.Combat
 
             if (isFinalBossExecution)
             {
-                yield return presentation.PlayFinalExecutionImpactAndRelease(finalShotLines);
+                yield return presentation.PlayFinalExecutionImpactAndRelease(
+                    finalShotLines,
+                    finalBlackoutTimeMultiplier,
+                    () => activeBossExecutionSequence
+                        ?.OnFinalBlackoutFadeOutStarted(
+                            executionBoss,
+                            config.FinalExecutionBlackoutFadeOutSeconds
+                                * finalBlackoutTimeMultiplier));
+                activeBossExecutionSequence?.OnFinalBlackoutEnded(
+                    executionBoss);
             }
 
             commonPresentation.Trigger(CommonExecutionCuePoint.AfterImpact);
@@ -870,6 +893,7 @@ namespace Week14.Combat
             Vector3 impactPosition,
             Vector3 lineEndPosition,
             PlayerCombatConfig config,
+            Color lineColor,
             int sortingLayerId,
             int frontSortingOrder,
             int backSortingOrder)
@@ -878,7 +902,7 @@ namespace Week14.Combat
             GameObject frontLine = ProjectileVfx.PlayShotLine(
                 firePosition,
                 impactPosition,
-                Color.white,
+                lineColor,
                 config.FinalExecutionShotLineSeconds,
                 0.06f,
                 frontSortingOrder,
@@ -887,7 +911,7 @@ namespace Week14.Combat
             GameObject backLine = ProjectileVfx.PlayShotLine(
                 impactPosition,
                 lineEndPosition,
-                Color.white,
+                lineColor,
                 config.FinalExecutionShotLineSeconds,
                 0.06f,
                 backSortingOrder,

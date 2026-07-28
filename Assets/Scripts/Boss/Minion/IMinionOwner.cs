@@ -16,6 +16,13 @@ namespace Week14.Enemy
             Vector3 origin,
             Vector2 direction,
             bool playMuzzleFlash);
+
+        EnemyProjectile FireMinionProjectileForCinematic(
+            Minion source,
+            BossProjectileSettings settings,
+            Vector3 origin,
+            Vector2 direction,
+            bool playMuzzleFlash);
     }
 
     public interface IMinionPlayerHitHandler
