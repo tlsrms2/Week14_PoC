@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Week14.Cutscene;
 using Week14.GameFlow;
@@ -7,6 +8,10 @@ namespace Week14.Ending
 {
     public sealed class EndingSceneController : MonoBehaviour
     {
+        // 엔딩 크레딧(아웃트로)이 실제로 표시되기 시작하는 시점에 발생합니다. Steam 업적 연동 등
+        // 씬 밖에서 "크레딧을 봤는지"를 알아야 하는 곳에서 구독합니다.
+        public static event Action CreditsShown;
+
         [Header("Cutscene")]
         [SerializeField] private CutscenePlayer cutscenePlayer;
         [SerializeField] private CutsceneDefinition endingCutscene;
@@ -47,6 +52,7 @@ namespace Week14.Ending
                 GameSaveManager.MarkEndingSeen();
             }
 
+            CreditsShown?.Invoke();
             outroSequence.Play(FinishEnding);
         }
 
