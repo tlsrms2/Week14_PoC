@@ -141,7 +141,7 @@ namespace Week14.Combat
             ownerSlotReleased = false;
             pausedByExecution = false;
             executionPauseStartedAt = 0f;
-            ignoresExecutionPause = false;
+            ResetCinematicRuntimeState();
             runtimeHomingActive = false;
             runtimeHomingEndsAt = 0f;
             runtimeHomingTurnDegreesPerSecond = 0f;
@@ -225,7 +225,10 @@ namespace Week14.Combat
                     }
                 }
 
-                if (!externalMotionDriven && body != null)
+                bool heldForCinematicClearance = ApplyCinematicPlayerClearance();
+                if (!externalMotionDriven
+                    && !heldForCinematicClearance
+                    && body != null)
                 {
                     body.linearVelocity = flightDirection * projectileSpeed * EnemyTimeScale.Current;
                 }

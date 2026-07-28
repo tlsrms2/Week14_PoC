@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CommonExecutionPresentation
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Combat.CommonExecutionPresentationProfile
   cues:
-  - enabled: 1
+  - enabled: 0
     cuePoint: 2
     cueType: 0
     delaySeconds: 0
@@ -29,7 +29,7 @@ MonoBehaviour:
     finalShotTravelSeconds: 0.3
     cameraHoldSeconds: 0.2
     restoreDefaultCameraAfterHold: 1
-  - enabled: 1
+  - enabled: 0
     cuePoint: 2
     cueType: 0
     delaySeconds: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
     finalShotTravelSeconds: 0.3
     cameraHoldSeconds: 0.2
     restoreDefaultCameraAfterHold: 1
-  - enabled: 1
+  - enabled: 0
     cuePoint: 2
     cueType: 0
     delaySeconds: 0
@@ -77,7 +77,7 @@ MonoBehaviour:
     finalShotTravelSeconds: 0.3
     cameraHoldSeconds: 0.6
     restoreDefaultCameraAfterHold: 1
-  - enabled: 1
+  - enabled: 0
     cuePoint: 2
     cueType: 0
     delaySeconds: 0

@@ -134,7 +134,7 @@ namespace Week14.Combat
         internal int FinalExecutionBossBackSortingOrder => finalPhaseVfx?.BossBackSortingOrder ?? 66;
         internal int FinalExecutionBossFrontSortingOrder => finalPhaseVfx?.BossFrontSortingOrder ?? 68;
 
-        internal void BeginFinalExecutionImpactSlowMotion()
+        internal void BeginFinalExecutionShotSlowMotion()
         {
             PlayerCombatConfig config = context.Config;
             if (config == null)
@@ -143,15 +143,15 @@ namespace Week14.Combat
             }
 
             StopFinalExecutionSlowMotion();
-            BeginFinalExecutionSlowMotion(config.FinalExecutionImpactTimeScale);
-            if (config.FinalExecutionImpactSlowSeconds <= 0f)
+            BeginFinalExecutionSlowMotion(config.FinalExecutionShotTimeScale);
+            if (config.FinalExecutionShotSlowSeconds <= 0f)
             {
                 RestoreFinalExecutionSlowMotion();
                 return;
             }
 
             finalExecutionSlowMotionRoutine = context.CoroutineHost.StartCoroutine(
-                RestoreFinalExecutionSlowMotionAfter(config.FinalExecutionImpactSlowSeconds));
+                RestoreFinalExecutionSlowMotionAfter(config.FinalExecutionShotSlowSeconds));
         }
 
         internal IEnumerator BeginFinalExecutionBlackout(BossAI boss)
@@ -196,13 +196,10 @@ namespace Week14.Combat
             try
             {
                 finalPhaseVfx.ShowWhiteOutline(config.FinalExecutionOutlineWidthPixels);
-                if (config.FinalExecutionOutlineFlashSeconds > 0f)
-                {
-                    yield return new WaitForSecondsRealtime(config.FinalExecutionOutlineFlashSeconds);
-                }
-
-                DestroyShotLineObjects(shotLineObjects);
-                finalPhaseVfx.HideWhiteOutline();
+                yield return FadeShotLinesAndOutline(
+                    shotLineObjects,
+                    config.FinalExecutionShotLineSeconds,
+                    config.FinalExecutionOutlineFlashSeconds);
                 SetExecutionDimAlpha(executionDimRenderer, 1f);
                 if (config.FinalExecutionBlackoutHoldSeconds > 0f)
                 {
@@ -225,6 +222,59 @@ namespace Week14.Combat
 
             executionDimRenderer.enabled = false;
             finalPhaseVfx.Restore();
+        }
+
+        private IEnumerator FadeShotLinesAndOutline(
+            GameObject[] shotLineObjects,
+            float lineSeconds,
+            float outlineSeconds)
+        {
+            float lineDuration = Mathf.Max(0.01f, lineSeconds);
+            float outlineDuration = Mathf.Max(0f, outlineSeconds);
+            float duration = Mathf.Max(lineDuration, outlineDuration);
+            bool outlineHidden = false;
+            for (float elapsed = 0f; elapsed < duration; elapsed += Time.unscaledDeltaTime)
+            {
+                float lineAlpha = 1f - Mathf.Clamp01(elapsed / lineDuration);
+                SetShotLineAlpha(shotLineObjects, lineAlpha);
+                if (!outlineHidden && elapsed >= outlineDuration)
+                {
+                    finalPhaseVfx.HideWhiteOutline();
+                    outlineHidden = true;
+                }
+
+                yield return null;
+            }
+
+            SetShotLineAlpha(shotLineObjects, 0f);
+            DestroyShotLineObjects(shotLineObjects);
+            finalPhaseVfx.HideWhiteOutline();
+        }
+
+        private static void SetShotLineAlpha(GameObject[] shotLineObjects, float alpha)
+        {
+            if (shotLineObjects == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < shotLineObjects.Length; i++)
+            {
+                LineRenderer line = shotLineObjects[i] != null
+                    ? shotLineObjects[i].GetComponent<LineRenderer>()
+                    : null;
+                if (line == null)
+                {
+                    continue;
+                }
+
+                Color startColor = line.startColor;
+                Color endColor = line.endColor;
+                startColor.a = Mathf.Clamp01(alpha);
+                endColor.a = Mathf.Clamp01(alpha);
+                line.startColor = startColor;
+                line.endColor = endColor;
+            }
         }
 
         private static void DestroyShotLineObjects(GameObject[] shotLineObjects)

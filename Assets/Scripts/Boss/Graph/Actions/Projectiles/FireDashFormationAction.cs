@@ -133,7 +133,8 @@ namespace Week14.Enemy
                 targetPosition,
                 alignDuration,
                 alignEase,
-                chargeSeconds + 0.5f);
+                chargeSeconds + 0.5f,
+                context.AllowsExecutionCinematicMotion);
             spawned.ConfigureChargeAnchor(anchor);
             spawned.ConfigureChargeMotion(0f, false, false);
 

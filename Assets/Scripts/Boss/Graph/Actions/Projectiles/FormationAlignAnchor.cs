@@ -12,17 +12,25 @@ namespace Week14.Enemy
         private float elapsed;
         private float lifetimeSeconds;
         private float lifetimeElapsed;
+        private bool allowExecutionCinematicMotion;
 
         public static Transform Create(
             Vector3 startPosition,
             Vector3 targetPosition,
             float duration,
             AnimationCurve ease,
-            float lifetimeSeconds)
+            float lifetimeSeconds,
+            bool allowExecutionCinematicMotion = false)
         {
             GameObject anchorObject = new("FormationAlignAnchor");
             FormationAlignAnchor anchor = anchorObject.AddComponent<FormationAlignAnchor>();
-            anchor.Initialize(startPosition, targetPosition, duration, ease, Mathf.Max(0.05f, lifetimeSeconds));
+            anchor.Initialize(
+                startPosition,
+                targetPosition,
+                duration,
+                ease,
+                Mathf.Max(0.05f, lifetimeSeconds),
+                allowExecutionCinematicMotion);
             return anchorObject.transform;
         }
 
@@ -31,7 +39,8 @@ namespace Week14.Enemy
             Vector3 nextTargetPosition,
             float nextDuration,
             AnimationCurve nextEase,
-            float nextLifetimeSeconds)
+            float nextLifetimeSeconds,
+            bool nextAllowExecutionCinematicMotion)
         {
             startPosition = nextStartPosition;
             targetPosition = nextTargetPosition;
@@ -40,12 +49,14 @@ namespace Week14.Enemy
             elapsed = 0f;
             lifetimeSeconds = nextLifetimeSeconds;
             lifetimeElapsed = 0f;
+            allowExecutionCinematicMotion = nextAllowExecutionCinematicMotion;
             transform.position = startPosition;
         }
 
         private void Update()
         {
-            if (PlayerCombatController.IsExecutionCinematicActive)
+            if (PlayerCombatController.IsExecutionCinematicActive
+                && !allowExecutionCinematicMotion)
             {
                 return;
             }

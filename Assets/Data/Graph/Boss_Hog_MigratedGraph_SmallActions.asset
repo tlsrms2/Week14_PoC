@@ -629,6 +629,195 @@ MonoBehaviour:
       rid: 6489939300151459947
     sequences: []
     editorPosition: {x: -586, y: 470}
+  - nodeId: Move Body Root17
+    nodeGuid: e636784c77a54e5cbc7717b99fd236cd
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939494093455360
+    sequences: []
+    editorPosition: {x: -159, y: 1084}
+  - nodeId: Move Body Root18
+    nodeGuid: 833c7abadbae4a4583ae18e74533c8f9
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939494093455361
+    sequences: []
+    editorPosition: {x: 35, y: 1084}
+  - nodeId: Fire Radial Emission10
+    nodeGuid: f00ff66a605e4b11bdf645ebe38d8689
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939494093455362
+    sequences: []
+    editorPosition: {x: 212, y: 1084}
+  - nodeId: Wait13
+    nodeGuid: 3f26f9dcdca6468aad8768dfed0cbfca
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939494093455363
+    sequences: []
+    editorPosition: {x: 403, y: 1078}
+  - nodeId: Move Body Root19
+    nodeGuid: 2d6b364dc186454ca57a0b2f5d46de37
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939494093455364
+    sequences: []
+    editorPosition: {x: 588, y: 1076}
+  - nodeId: Move Body Root20
+    nodeGuid: 0b851ba792c64fae8b6f36524d5e4f5f
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939494093455365
+    sequences: []
+    editorPosition: {x: 779, y: 1078}
+  - nodeId: Fire Radial Emission11
+    nodeGuid: adca6e15c80645a5a7ac73499ac9fd23
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939494093455366
+    sequences: []
+    editorPosition: {x: 953, y: 1078}
+  - nodeId: Wait14
+    nodeGuid: 49f711144c97445b943b41c125a11a07
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939494093455367
+    sequences: []
+    editorPosition: {x: 1154, y: 1076}
+  - nodeId: Move Body Root21
+    nodeGuid: 1b97691562bd4b90af203b216b63b268
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939494093455368
+    sequences: []
+    editorPosition: {x: 1341, y: 1076}
+  - nodeId: Move Body Root22
+    nodeGuid: ca3dc5c3e7ee4b99beefad7cdf2e2214
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939494093455369
+    sequences: []
+    editorPosition: {x: 1516, y: 1076}
+  - nodeId: Fire Radial Emission12
+    nodeGuid: b22f8a503e8947deb172d4d6c0625e9c
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939494093455370
+    sequences: []
+    editorPosition: {x: 1700, y: 1074}
+  - nodeId: Wait15
+    nodeGuid: ca9f6974b44f4f70aa706e06240390bb
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939494093455371
+    sequences: []
+    editorPosition: {x: 1892, y: 1074}
+  - nodeId: Move Body Root23
+    nodeGuid: 527aaa4a36b34d52a6fa4488ae215915
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939494093455372
+    sequences: []
+    editorPosition: {x: 2073, y: 1078}
+  - nodeId: Move Body Root24
+    nodeGuid: c95a0cb0ade24c07a30560f96027e741
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939494093455373
+    sequences: []
+    editorPosition: {x: 2256, y: 1084}
+  - nodeId: Fire Radial Emission13
+    nodeGuid: e32919f4892f4a7092866fc2a97388b9
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939494093455374
+    sequences: []
+    editorPosition: {x: 2443, y: 1084}
+  - nodeId: Wait16
+    nodeGuid: 7e21551b0ee440249cb0fe5335fc4abd
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939494093455375
+    sequences: []
+    editorPosition: {x: 2626, y: 1084}
+  - nodeId: Move Body Root25
+    nodeGuid: ddc99f256c1a43ceb10e048f7e887e1a
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939494093455376
+    sequences: []
+    editorPosition: {x: 2815, y: 1078}
+  - nodeId: Move Body Root26
+    nodeGuid: a750ebda2ef64bb095794d6fc8230995
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939494093455377
+    sequences: []
+    editorPosition: {x: 2998, y: 1078}
+  - nodeId: Fire Radial Emission14
+    nodeGuid: c2c580541dc14573a75b870be588cff9
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939494093455378
+    sequences: []
+    editorPosition: {x: 3191, y: 1082}
+  - nodeId: Spawn Effect Prefab10
+    nodeGuid: 45ec9da9963b4959aeee3cc594da186a
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939494093455380
+    sequences: []
+    editorPosition: {x: -156, y: 1226}
+  - nodeId: Spawn Effect Prefab11
+    nodeGuid: 087297e594ef410f9339e476a278e266
+    nodeKind: 3
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939494093455381
+    sequences: []
+    editorPosition: {x: 1347, y: 1216}
   patterns:
   - patternId: Pattern1
     nodeGuids:
@@ -790,6 +979,51 @@ MonoBehaviour:
     - Fire Projectile4
     - Wait10
     - Fire Projectile5
+  - patternId: Execution
+    nodeGuids:
+    - e636784c77a54e5cbc7717b99fd236cd
+    - 833c7abadbae4a4583ae18e74533c8f9
+    - f00ff66a605e4b11bdf645ebe38d8689
+    - 3f26f9dcdca6468aad8768dfed0cbfca
+    - 2d6b364dc186454ca57a0b2f5d46de37
+    - 0b851ba792c64fae8b6f36524d5e4f5f
+    - adca6e15c80645a5a7ac73499ac9fd23
+    - 49f711144c97445b943b41c125a11a07
+    - 1b97691562bd4b90af203b216b63b268
+    - ca3dc5c3e7ee4b99beefad7cdf2e2214
+    - b22f8a503e8947deb172d4d6c0625e9c
+    - ca9f6974b44f4f70aa706e06240390bb
+    - 527aaa4a36b34d52a6fa4488ae215915
+    - c95a0cb0ade24c07a30560f96027e741
+    - e32919f4892f4a7092866fc2a97388b9
+    - 7e21551b0ee440249cb0fe5335fc4abd
+    - ddc99f256c1a43ceb10e048f7e887e1a
+    - a750ebda2ef64bb095794d6fc8230995
+    - c2c580541dc14573a75b870be588cff9
+    - 45ec9da9963b4959aeee3cc594da186a
+    - 087297e594ef410f9339e476a278e266
+    nodeIds:
+    - Move Body Root17
+    - Move Body Root18
+    - Fire Radial Emission10
+    - Wait13
+    - Move Body Root19
+    - Move Body Root20
+    - Fire Radial Emission11
+    - Wait14
+    - Move Body Root21
+    - Move Body Root22
+    - Fire Radial Emission12
+    - Wait15
+    - Move Body Root23
+    - Move Body Root24
+    - Fire Radial Emission13
+    - Wait16
+    - Move Body Root25
+    - Move Body Root26
+    - Fire Radial Emission14
+    - Spawn Effect Prefab10
+    - Spawn Effect Prefab11
   defaultPatternIds: []
   phases:
   - phaseIndex: 0
@@ -1290,6 +1524,150 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
+  - fromNodeGuid: e636784c77a54e5cbc7717b99fd236cd
+    toNodeGuid: 833c7abadbae4a4583ae18e74533c8f9
+    fromNodeId: Move Body Root17
+    toNodeId: Move Body Root18
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 833c7abadbae4a4583ae18e74533c8f9
+    toNodeGuid: f00ff66a605e4b11bdf645ebe38d8689
+    fromNodeId: Move Body Root18
+    toNodeId: Fire Radial Emission10
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 3f26f9dcdca6468aad8768dfed0cbfca
+    toNodeGuid: 2d6b364dc186454ca57a0b2f5d46de37
+    fromNodeId: Wait13
+    toNodeId: Move Body Root19
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 2d6b364dc186454ca57a0b2f5d46de37
+    toNodeGuid: 0b851ba792c64fae8b6f36524d5e4f5f
+    fromNodeId: Move Body Root19
+    toNodeId: Move Body Root20
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 0b851ba792c64fae8b6f36524d5e4f5f
+    toNodeGuid: adca6e15c80645a5a7ac73499ac9fd23
+    fromNodeId: Move Body Root20
+    toNodeId: Fire Radial Emission11
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 49f711144c97445b943b41c125a11a07
+    toNodeGuid: 1b97691562bd4b90af203b216b63b268
+    fromNodeId: Wait14
+    toNodeId: Move Body Root21
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 1b97691562bd4b90af203b216b63b268
+    toNodeGuid: ca3dc5c3e7ee4b99beefad7cdf2e2214
+    fromNodeId: Move Body Root21
+    toNodeId: Move Body Root22
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: ca3dc5c3e7ee4b99beefad7cdf2e2214
+    toNodeGuid: b22f8a503e8947deb172d4d6c0625e9c
+    fromNodeId: Move Body Root22
+    toNodeId: Fire Radial Emission12
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: ca9f6974b44f4f70aa706e06240390bb
+    toNodeGuid: 527aaa4a36b34d52a6fa4488ae215915
+    fromNodeId: Wait15
+    toNodeId: Move Body Root23
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 527aaa4a36b34d52a6fa4488ae215915
+    toNodeGuid: c95a0cb0ade24c07a30560f96027e741
+    fromNodeId: Move Body Root23
+    toNodeId: Move Body Root24
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: c95a0cb0ade24c07a30560f96027e741
+    toNodeGuid: e32919f4892f4a7092866fc2a97388b9
+    fromNodeId: Move Body Root24
+    toNodeId: Fire Radial Emission13
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: 7e21551b0ee440249cb0fe5335fc4abd
+    toNodeGuid: ddc99f256c1a43ceb10e048f7e887e1a
+    fromNodeId: Wait16
+    toNodeId: Move Body Root25
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: ddc99f256c1a43ceb10e048f7e887e1a
+    toNodeGuid: a750ebda2ef64bb095794d6fc8230995
+    fromNodeId: Move Body Root25
+    toNodeId: Move Body Root26
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: a750ebda2ef64bb095794d6fc8230995
+    toNodeGuid: c2c580541dc14573a75b870be588cff9
+    fromNodeId: Move Body Root26
+    toNodeId: Fire Radial Emission14
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: f00ff66a605e4b11bdf645ebe38d8689
+    toNodeGuid: 3f26f9dcdca6468aad8768dfed0cbfca
+    fromNodeId: Fire Radial Emission10
+    toNodeId: Wait13
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: adca6e15c80645a5a7ac73499ac9fd23
+    toNodeGuid: 49f711144c97445b943b41c125a11a07
+    fromNodeId: Fire Radial Emission11
+    toNodeId: Wait14
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: b22f8a503e8947deb172d4d6c0625e9c
+    toNodeGuid: ca9f6974b44f4f70aa706e06240390bb
+    fromNodeId: Fire Radial Emission12
+    toNodeId: Wait15
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: e32919f4892f4a7092866fc2a97388b9
+    toNodeGuid: 7e21551b0ee440249cb0fe5335fc4abd
+    fromNodeId: Fire Radial Emission13
+    toNodeId: Wait16
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
   parallelEdges:
   - fromNodeGuid: a4ba62b19fcb47859e32d9982ee907cc
     toNodeGuid: faa9f3db13d94965a30c67ee6434e0f0
@@ -1337,6 +1715,18 @@ MonoBehaviour:
     toNodeGuid: 632212625b664b38b7d57c9920eeec3a
     fromNodeId: Move Body Root11
     toNodeId: Spawn Effect Prefab8
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: e636784c77a54e5cbc7717b99fd236cd
+    toNodeGuid: 45ec9da9963b4959aeee3cc594da186a
+    fromNodeId: Move Body Root17
+    toNodeId: Spawn Effect Prefab10
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: 1b97691562bd4b90af203b216b63b268
+    toNodeGuid: 087297e594ef410f9339e476a278e266
+    fromNodeId: Move Body Root21
+    toNodeId: Spawn Effect Prefab11
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 0
@@ -2847,6 +3237,407 @@ MonoBehaviour:
       type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         seconds: 0.8
+    - rid: 6489939494093455360
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetPosition: {x: 0, y: 0, z: 0}
+        duration: 0.01
+        stopWhenFinished: 0
+        completeSfxId: 
+    - rid: 6489939494093455361
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetPosition: {x: 0, y: 0, z: 0}
+        duration: 0.01
+        stopWhenFinished: 0
+        completeSfxId: Smash
+    - rid: 6489939494093455362
+      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+          bulletDamage: 1
+          chargeSeconds: 0
+          chargeDriftSpeed: 0
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.01
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0
+        aim:
+          mode: 1
+          angleDegrees: 0
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 1
+            seconds: 0.16
+            distance: 0.25
+            frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 30
+          arcDegrees: 360
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0.25
+          fireInterval: 0
+          restSeconds: 0
+    - rid: 6489939494093455363
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.1
+    - rid: 6489939494093455364
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetPosition: {x: 0, y: 0, z: 0}
+        duration: 0.01
+        stopWhenFinished: 0
+        completeSfxId: 
+    - rid: 6489939494093455365
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetPosition: {x: 0, y: 0, z: 0}
+        duration: 0.01
+        stopWhenFinished: 0
+        completeSfxId: Smash
+    - rid: 6489939494093455366
+      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+          bulletDamage: 1
+          chargeSeconds: 0
+          chargeDriftSpeed: 0
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.01
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0
+        aim:
+          mode: 1
+          angleDegrees: 6
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 1
+            seconds: 0.16
+            distance: 0.25
+            frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 30
+          arcDegrees: 360
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0.25
+          fireInterval: 0
+          restSeconds: 0
+    - rid: 6489939494093455367
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.1
+    - rid: 6489939494093455368
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetPosition: {x: 0, y: 0, z: 0}
+        duration: 0.01
+        stopWhenFinished: 0
+        completeSfxId: 
+    - rid: 6489939494093455369
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetPosition: {x: 0, y: 0, z: 0}
+        duration: 0.01
+        stopWhenFinished: 0
+        completeSfxId: Smash
+    - rid: 6489939494093455370
+      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+          bulletDamage: 1
+          chargeSeconds: 0
+          chargeDriftSpeed: 0
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.01
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 1
+          angleDegrees: 0
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 1
+            seconds: 0.16
+            distance: 0.25
+            frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 30
+          arcDegrees: 360
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0.25
+          fireInterval: 0
+          restSeconds: 0
+    - rid: 6489939494093455371
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.1
+    - rid: 6489939494093455372
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetPosition: {x: 0, y: 0, z: 0}
+        duration: 0.01
+        stopWhenFinished: 0
+        completeSfxId: 
+    - rid: 6489939494093455373
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetPosition: {x: 0, y: 0, z: 0}
+        duration: 0.01
+        stopWhenFinished: 0
+        completeSfxId: 
+    - rid: 6489939494093455374
+      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+          bulletDamage: 1
+          chargeSeconds: 0
+          chargeDriftSpeed: 0
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.01
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 1
+          angleDegrees: 6
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 1
+            seconds: 0.16
+            distance: 0.25
+            frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 30
+          arcDegrees: 360
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0.25
+          fireInterval: 0
+          restSeconds: 0
+    - rid: 6489939494093455375
+      type: {class: WaitAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        seconds: 0.1
+    - rid: 6489939494093455376
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetPosition: {x: 0, y: 0, z: 0}
+        duration: 0.01
+        stopWhenFinished: 0
+        completeSfxId: 
+    - rid: 6489939494093455377
+      type: {class: MoveBodyRootLocalAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        targetPosition: {x: 0, y: 0, z: 0}
+        duration: 0.01
+        stopWhenFinished: 0
+        completeSfxId: 
+    - rid: 6489939494093455378
+      type: {class: FireRadialEmissionAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 5897565683229663206, guid: 5a02996153306974b9198a9e6095e00a, type: 3}
+          bulletDamage: 1
+          chargeSeconds: 0
+          chargeDriftSpeed: 0
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.01
+          trailWidthMultiplier: 3
+        origin:
+          mode: 0
+          bossChildPath: 
+          bossChildPaths: []
+          firstBossChildPath: 
+          secondBossChildPath: 
+          fallbackSpacing: 0.18
+        aim:
+          mode: 1
+          angleDegrees: 0
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 1
+            seconds: 0.16
+            distance: 0.25
+            frequency: 0.12
+        legacyBulletCount: 0
+        legacyArcDegrees: -1
+        legacyStartAngleOffset: 0
+        legacyRandomizeStartAngle: 0
+        legacySpawnRadius: -1
+        legacyFireInterval: -1
+        volleys:
+        - bulletCount: 30
+          arcDegrees: 360
+          startAngleOffset: 0
+          randomizeStartAngle: 0
+          spawnRadius: 0.25
+          fireInterval: 0
+          restSeconds: 0
+    - rid: 6489939494093455380
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 845528975078294498, guid: f46101aaf495fa5479a44eb021812385, type: 3}
+        spawnPointPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_5
+        positionOffset: {x: 0, y: 0}
+        delaySeconds: 0
+        scale: 3
+        followMode: 0
+        followRotation: 1
+    - rid: 6489939494093455381
+      type: {class: SpawnEffectPrefabAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        effectPrefab: {fileID: 845528975078294498, guid: f46101aaf495fa5479a44eb021812385, type: 3}
+        spawnPointPath: Boss-Dealer Visual/Boss Chair_0/ProjectileOrigin_5
+        positionOffset: {x: 0, y: 0}
+        delaySeconds: 0
+        scale: 3
+        followMode: 0
+        followRotation: 1
 --- !u!114 &7712345678901234567
 MonoBehaviour:
   m_ObjectHideFlags: 0

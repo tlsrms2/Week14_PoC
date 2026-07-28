@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Combat;
 
 namespace Week14.Enemy
 {
@@ -32,13 +34,19 @@ namespace Week14.Enemy
         private float pendingGroggySeconds;
         private float groggyRemainingSeconds;
         private bool isDebugPatternControlActive;
+        private bool isCinematicPatternControlActive;
         private bool isQaBehaviorPaused;
 
         protected override BossGraphAsset GraphAsset => bossGraph;
         protected BossGraphAsset BossGraph => bossGraph;
         protected BossActionContext GraphContext => graphContext;
         public override bool IsDashing => graphContext != null && graphContext.IsDashing;
+        internal override bool AllowsCinematicMovementForState =>
+            isCinematicPatternControlActive;
         protected IReadOnlyList<BossGraphProjectileEntry> GraphProjectiles => graphProjectiles;
+        protected override bool CanSpawnEnemyProjectileDuringCinematic =>
+            isCinematicPatternControlActive;
+        public BossGraphAsset ConfiguredGraphAsset => GraphAsset;
         public bool IsGroggy => isGroggy;
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -57,6 +65,7 @@ namespace Week14.Enemy
         {
             if (isQaBehaviorPaused
                 || isDebugPatternControlActive
+                || isCinematicPatternControlActive
                 || patternRoutine != null
                 || GraphAsset == null
                 || !CanStartGraphPattern())
@@ -75,6 +84,7 @@ namespace Week14.Enemy
         protected override void OnBossDied()
         {
             isQaBehaviorPaused = false;
+            isCinematicPatternControlActive = false;
             graphRunner.CancelForcedPattern();
             StopGraphPattern();
         }
@@ -82,6 +92,7 @@ namespace Week14.Enemy
         protected override void OnDisable()
         {
             isQaBehaviorPaused = false;
+            isCinematicPatternControlActive = false;
             graphRunner.CancelForcedPattern();
             StopGraphPattern();
             base.OnDisable();
@@ -129,6 +140,11 @@ namespace Week14.Enemy
 
         private void TickGroggy()
         {
+            if (isCinematicPatternControlActive)
+            {
+                return;
+            }
+
             if (isGroggy)
             {
                 groggyRemainingSeconds -= EnemyTimeScale.DeltaTime;
@@ -239,14 +255,63 @@ namespace Week14.Enemy
 
         protected virtual BossActionContext CreateGraphContext(
             BossGraphAsset graphAsset = null,
-            bool skipApproachMovement = false)
+            bool skipApproachMovement = false,
+            Func<bool> executionPausedOverride = null,
+            Action<EnemyProjectile> projectileFired = null,
+            bool allowExecutionCinematicMotion = false)
         {
             return new BossActionContext(
                 this,
                 Stop,
-                () => IsExecutionPaused || isQaBehaviorPaused,
+                executionPausedOverride ?? (() => IsExecutionPaused || isQaBehaviorPaused),
                 graphAsset != null ? graphAsset : GraphAsset,
-                skipApproachMovement);
+                skipApproachMovement,
+                projectileFired,
+                allowExecutionCinematicMotion);
+        }
+
+        public bool HasConfiguredGraphPattern(string patternId)
+        {
+            BossGraphPattern pattern = GraphAsset != null ? GraphAsset.GetPattern(patternId) : null;
+            return pattern != null && pattern.NodeKeys != null && pattern.NodeKeys.Count > 0;
+        }
+
+        internal bool TryRunCinematicPatternOnce(
+            string patternId,
+            Action<EnemyProjectile> projectileFired)
+        {
+            BossGraphAsset graph = GraphAsset;
+            if (!gameObject.activeInHierarchy || !HasConfiguredGraphPattern(patternId))
+            {
+                Debug.LogWarning(
+                    $"{name}: Boss Graph에서 처형용 패턴 '{patternId}'을 실행할 수 없습니다.",
+                    this);
+                return false;
+            }
+
+            isCinematicPatternControlActive = true;
+            StopGraphPattern();
+            BossGraphPattern pattern = graph.GetPattern(patternId);
+            graphRunner.RestartAfterInterruption();
+            graphContext = CreateGraphContext(
+                graph,
+                skipApproachMovement: true,
+                executionPausedOverride: () => isQaBehaviorPaused,
+                projectileFired: projectileFired,
+                allowExecutionCinematicMotion: true);
+            patternRoutine = StartCoroutine(RunCinematicPatternOnce(graph, pattern, graphContext));
+            return true;
+        }
+
+        internal void StopCinematicPattern()
+        {
+            if (!isCinematicPatternControlActive)
+            {
+                return;
+            }
+
+            StopGraphPattern();
+            isCinematicPatternControlActive = false;
         }
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -376,6 +441,7 @@ namespace Week14.Enemy
 
             // StopCoroutine이 액션 내부 finally를 보장하지 않으므로 대시 도중 중단돼도
             // 플레이어 충돌 무시 상태가 남지 않게 컨텍스트 폐기 전에 직접 복구한다.
+            graphContext?.ClearAnimationBools();
             graphContext?.SetDashing(false);
             graphContext?.ClearPatternScopedBossChildAims();
             graphContext?.ResetBodyRootLocalOffset();
@@ -411,6 +477,27 @@ namespace Week14.Enemy
         }
 
         private IEnumerator RunDebugPatternOnce(
+            BossGraphAsset graph,
+            BossGraphPattern pattern,
+            BossActionContext context)
+        {
+            try
+            {
+                yield return graphRunner.RunPatternOnce(graph, pattern, context);
+            }
+            finally
+            {
+                Stop();
+                if (graphContext == context)
+                {
+                    graphContext = null;
+                }
+
+                patternRoutine = null;
+            }
+        }
+
+        private IEnumerator RunCinematicPatternOnce(
             BossGraphAsset graph,
             BossGraphPattern pattern,
             BossActionContext context)

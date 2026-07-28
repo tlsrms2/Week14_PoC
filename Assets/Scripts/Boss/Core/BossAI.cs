@@ -815,6 +815,7 @@ namespace Week14.Enemy
 
         internal bool IsDeadForState => health != null && health.IsDead;
         internal bool IsExecutionLockedForState => isExecutionLocked;
+        internal virtual bool AllowsCinematicMovementForState => false;
         internal bool IsPhaseTransitionWaitingForState => PhaseController.IsPhaseTransitionWaiting;
         internal bool IsCombatStartedForState => PhaseController.IsCombatStarted;
         internal static bool IsExecutionPausedForState => IsExecutionPaused;
@@ -1052,7 +1053,17 @@ namespace Week14.Enemy
 
         public bool CanSpawnEnemyProjectile()
         {
-            return !IsExecutionPaused && hpGauge != null && !hpGauge.IsEmpty;
+            if (hpGauge == null)
+            {
+                return false;
+            }
+
+            if (!IsExecutionPaused && !hpGauge.IsEmpty)
+            {
+                return true;
+            }
+
+            return CanSpawnEnemyProjectileDuringCinematic;
         }
 
         public void RegisterActiveProjectile(EnemyProjectile projectile)
@@ -1103,6 +1114,7 @@ namespace Week14.Enemy
         protected virtual bool TryHandlePlayerHitBeforeDamage(int bulletDamage, bool strongHit, Vector3 hitPosition, Vector2 hitDirection, Color hitColor) => false;
         protected virtual void OnPlayerHitAfterDamage(int bulletDamage, bool strongHit, Vector3 hitPosition, Vector2 hitDirection, Color hitColor) { }
         protected virtual bool RotatesBodyToPlayer => true;
+        protected virtual bool CanSpawnEnemyProjectileDuringCinematic => false;
         protected static bool IsExecutionPaused => PlayerCombatController.IsExecutionCinematicActive;
 
         protected EnemyProjectile SpawnBossProjectile(

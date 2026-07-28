@@ -14,6 +14,7 @@ namespace Week14.Enemy
 
         private readonly Action stop;
         private readonly Func<bool> isExecutionPaused;
+        private readonly Action<EnemyProjectile> projectileFired;
         private Animator[] animators;
         private BossAnimationEventBridge animationEventBridge;
         private bool hasBodyRootLocalBase;
@@ -28,9 +29,11 @@ namespace Week14.Enemy
         private readonly Dictionary<string, BossChildAimState> bossChildAimStates = new();
         private readonly Dictionary<string, string> bossChildAimStartNodePaths = new();
         private readonly Dictionary<string, EnemyProjectile> projectileHandles = new();
+        private readonly HashSet<string> projectileConfigurationWarnings = new();
         private readonly List<GameObject> transientVisuals = new();
         private readonly HashSet<object> facingLockOwners = new();
         private readonly HashSet<object> playerCollisionIgnoreOwners = new();
+        private readonly HashSet<string> activeAnimationBools = new();
         private string currentNodeId;
         private int activeNodeExecutionCount;
         private int nodeExecutionVersion;
@@ -47,18 +50,23 @@ namespace Week14.Enemy
             Action stop,
             Func<bool> isExecutionPaused,
             BossGraphAsset graphAsset = null,
-            bool skipApproachMovement = false)
+            bool skipApproachMovement = false,
+            Action<EnemyProjectile> projectileFired = null,
+            bool allowExecutionCinematicMotion = false)
         {
             Boss = boss;
             this.stop = stop;
             this.isExecutionPaused = isExecutionPaused;
+            this.projectileFired = projectileFired;
             GraphAsset = graphAsset;
             SkipApproachMovement = skipApproachMovement;
+            AllowsExecutionCinematicMotion = allowExecutionCinematicMotion;
         }
 
         public BossAI Boss { get; }
         public BossGraphAsset GraphAsset { get; }
         public bool SkipApproachMovement { get; }
+        public bool AllowsExecutionCinematicMotion { get; }
         public string CurrentNodeId => currentNodeId;
         public bool IsNodeActionExecuting => activeNodeExecutionCount > 0;
         public int NodeExecutionVersion => nodeExecutionVersion;
@@ -355,11 +363,41 @@ namespace Week14.Enemy
                 return;
             }
 
+            if (value)
+            {
+                activeAnimationBools.Add(parameterName);
+            }
+            else
+            {
+                activeAnimationBools.Remove(parameterName);
+            }
+
             Animator[] targetAnimators = GetAnimators();
             for (int i = 0; i < targetAnimators.Length; i++)
             {
                 targetAnimators[i].SetBool(parameterName, value);
             }
+        }
+
+        public void ClearAnimationBools()
+        {
+            if (activeAnimationBools.Count == 0)
+            {
+                activeSnipingTelegraphCount = 0;
+                return;
+            }
+
+            Animator[] targetAnimators = GetAnimators();
+            foreach (string parameterName in activeAnimationBools)
+            {
+                for (int i = 0; i < targetAnimators.Length; i++)
+                {
+                    targetAnimators[i].SetBool(parameterName, false);
+                }
+            }
+
+            activeAnimationBools.Clear();
+            activeSnipingTelegraphCount = 0;
         }
 
         public IEnumerator WaitForAnimationEvent(string eventId, float timeoutSeconds)
@@ -927,16 +965,46 @@ namespace Week14.Enemy
                 : !string.IsNullOrWhiteSpace(projectileName)
                     ? ResolveGraphProjectileSettings(projectileName)
                     : ResolveGraphProjectileSettings(null) ?? projectileSettings;
-            if (Boss == null || resolvedSettings == null || direction.sqrMagnitude <= 0.0001f)
+            if (Boss == null || direction.sqrMagnitude <= 0.0001f)
             {
+                return null;
+            }
+
+            if (resolvedSettings == null)
+            {
+                WarnProjectileConfigurationOnce(
+                    $"missing:{projectileName}",
+                    $"Projectile Name '{projectileName}'을 보스의 Graph Projectiles 목록에서 찾을 수 없습니다.");
+                return null;
+            }
+
+            if (resolvedSettings.Prefab == null)
+            {
+                WarnProjectileConfigurationOnce(
+                    $"prefab:{projectileName}",
+                    $"Projectile Name '{projectileName}'의 Prefab이 비어 있습니다.");
                 return null;
             }
 
             // 홀로그램은 본체와 겹친 위치에서 발사할 수 있다. 자체 소유 탄환으로 만들면
             // 본체와 충돌해 즉시 파괴되므로, 처음부터 본체 소유자로 생성한다.
+            EnemyProjectile firedProjectile;
             if (Boss is HackerHologramBoss hologram)
             {
-                return hologram.FireReplayProjectile(
+                firedProjectile = hologram.FireReplayProjectile(
+                    resolvedSettings,
+                    origin,
+                    direction.normalized,
+                    muzzleFlashScale,
+                    aimAtPlayerWhileChargingOverride,
+                    aimAtPlayerOnLaunchOverride,
+                    chargeSecondsOverride,
+                    radiusOverride,
+                    suppressHoming);
+            }
+            else
+            {
+                firedProjectile = Boss.FireGraphProjectile(
                     resolvedSettings,
                     origin,
                     direction.normalized,
@@ -948,16 +1016,25 @@ namespace Week14.Enemy
                     suppressHoming);
             }
 
-            return Boss.FireGraphProjectile(
-                resolvedSettings,
-                origin,
-                direction.normalized,
-                muzzleFlashScale,
-                aimAtPlayerWhileChargingOverride,
-                aimAtPlayerOnLaunchOverride,
-                chargeSecondsOverride,
-                radiusOverride,
-                suppressHoming);
+            if (firedProjectile != null)
+            {
+                projectileFired?.Invoke(firedProjectile);
+            }
+
+            return firedProjectile;
+        }
+
+        private void WarnProjectileConfigurationOnce(string key, string message)
+        {
+            if (!projectileConfigurationWarnings.Add(key))
+            {
+                return;
+            }
+
+            Debug.LogWarning(
+                $"[Boss Graph] {Boss.name}: {message} " +
+                $"Pattern Node='{CurrentNodeId ?? "-"}'",
+                Boss);
         }
 
         public BossProjectileSettings ResolveGraphProjectileSettings(string projectileName)

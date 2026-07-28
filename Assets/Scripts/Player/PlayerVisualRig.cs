@@ -85,6 +85,7 @@ namespace Week14.Combat
         private bool sideRightArmWasHolstering;
         private bool backRightArmWasHolstering;
         private Coroutine rollSpinRoutine;
+        private Quaternion rollSpinStartRotation;
         private bool cinematicMovementActive;
         private bool executionVisualActive;
         private VisualFacing facingBeforeExecution;
@@ -302,6 +303,45 @@ namespace Week14.Combat
 
         public void BeginExecutionVisual(Vector2 facingDirection)
         {
+            BeginExecutionVisual(facingDirection, 1f);
+        }
+
+        public void BeginExecutionAimVisual(Vector2 facingDirection)
+        {
+            BeginExecutionVisual(facingDirection, 0f);
+        }
+
+        public void UpdateExecutionAimVisual(Vector2 facingDirection)
+        {
+            if (!executionVisualActive)
+            {
+                BeginExecutionAimVisual(facingDirection);
+                return;
+            }
+
+            if (facingDirection.sqrMagnitude <= 0.0001f)
+            {
+                return;
+            }
+
+            VisualFacing nextFacing =
+                GetFacingFromDirection(facingDirection, executionFacing);
+            if (nextFacing != executionFacing)
+            {
+                EndExecutionVisual();
+                BeginExecutionAimVisual(facingDirection);
+                return;
+            }
+
+            UpdateVisualRootFlip(facingDirection.x);
+            hasAppliedFacing = false;
+            ApplyFacing(executionFacing);
+        }
+
+        private void BeginExecutionVisual(
+            Vector2 facingDirection,
+            float rightArmHolsteringNormalizedTime)
+        {
             if (!executionVisualActive)
             {
                 facingBeforeExecution = currentFacing;
@@ -330,7 +370,7 @@ namespace Week14.Combat
 
             hasAppliedFacing = false;
             ApplyFacing(executionFacing);
-            SampleExecutionRightArmHolstering(1f);
+            SampleExecutionRightArmHolstering(rightArmHolsteringNormalizedTime);
         }
 
         public IEnumerator PlayExecutionRightArmHolstering(float duration, bool reverse)
@@ -384,22 +424,35 @@ namespace Week14.Combat
 
         public void PlayRoll(float duration)
         {
-            SetTriggerIfExists(frontBodyAnimator, DoRollParameter);
-            SetTriggerIfExists(sideBodyAnimator, DoRollParameter);
-            SetTriggerIfExists(backBodyAnimator, DoRollParameter);
+            PlayRollInternal(duration, false);
+        }
+
+        public void PlayCinematicRoll(float duration)
+        {
+            PlayRollInternal(duration, true);
+        }
+
+        private void PlayRollInternal(float duration, bool useUnscaledTime)
+        {
+            RestartTriggerIfExists(frontBodyAnimator, DoRollParameter);
+            RestartTriggerIfExists(sideBodyAnimator, DoRollParameter);
+            RestartTriggerIfExists(backBodyAnimator, DoRollParameter);
 
             if (visualRoot != null && duration > 0f)
             {
                 if (rollSpinRoutine != null)
                 {
                     StopCoroutine(rollSpinRoutine);
+                    visualRoot.localRotation = rollSpinStartRotation;
                 }
 
-                rollSpinRoutine = StartCoroutine(RollSpinRoutine(duration));
+                rollSpinStartRotation = visualRoot.localRotation;
+                rollSpinRoutine =
+                    StartCoroutine(RollSpinRoutine(duration, useUnscaledTime));
             }
         }
 
-        private IEnumerator RollSpinRoutine(float duration)
+        private IEnumerator RollSpinRoutine(float duration, bool useUnscaledTime)
         {
             // visualRoot의 localScale.x 부호로 좌우 반전을 표현하므로, 그 부호에 맞춰 회전 방향을 정해야
             // 구르는 방향과 반대로 도는 것처럼 보이지 않는다.
@@ -409,7 +462,9 @@ namespace Week14.Combat
 
             while (elapsed < duration)
             {
-                elapsed += Time.deltaTime;
+                elapsed += useUnscaledTime
+                    ? Time.unscaledDeltaTime
+                    : Time.deltaTime;
                 float angle = spinDirection * 360f * Mathf.Clamp01(elapsed / duration);
                 visualRoot.localRotation = startRotation * Quaternion.Euler(0f, 0f, angle);
                 yield return null;
@@ -417,6 +472,23 @@ namespace Week14.Combat
 
             visualRoot.localRotation = startRotation;
             rollSpinRoutine = null;
+        }
+
+        private static void RestartTriggerIfExists(
+            Animator animator,
+            int parameterHash)
+        {
+            if (animator == null
+                || !HasParameter(
+                    animator,
+                    parameterHash,
+                    AnimatorControllerParameterType.Trigger))
+            {
+                return;
+            }
+
+            animator.ResetTrigger(parameterHash);
+            animator.SetTrigger(parameterHash);
         }
 
         private static void SetTriggerIfExists(Animator animator, int parameterHash)

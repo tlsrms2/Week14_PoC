@@ -36,6 +36,7 @@ namespace Week14.Combat
 
             MoveActor(player.transform, player.GetComponent<Rigidbody2D>(), playerStart.position);
             MoveActor(boss.transform, boss.Body, bossPosition.position);
+            Physics2D.SyncTransforms();
             return true;
         }
 
@@ -51,7 +52,6 @@ namespace Week14.Combat
                 body.linearVelocity = Vector2.zero;
                 body.angularVelocity = 0f;
                 body.position = destination;
-                return;
             }
 
             Vector3 position = actor.position;

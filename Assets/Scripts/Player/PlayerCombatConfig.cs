@@ -104,8 +104,16 @@ namespace Week14.Combat
         [SerializeField, Min(0f)] private float finalExecutionLetterboxEnterSeconds = 0.2f;
         [SerializeField, Min(0f)] private float finalExecutionBlackoutFadeInSeconds = 0.14f;
         [SerializeField, Min(0f)] private float finalExecutionBlackoutHoldSeconds = 0.45f;
-        [SerializeField, Range(0.01f, 1f)] private float finalExecutionImpactTimeScale = 0.08f;
-        [SerializeField, Min(0f)] private float finalExecutionImpactSlowSeconds = 0.55f;
+        [FormerlySerializedAs("finalExecutionImpactTimeScale")]
+        [FormerlySerializedAs("finalExecutionBlackoutTimeScale")]
+        [Tooltip("최종 사격 Line이 보스를 관통하는 순간 적용할 전역 시간 배율입니다.")]
+        [SerializeField, Range(0.01f, 1f)] private float finalExecutionShotTimeScale = 0.08f;
+        [FormerlySerializedAs("finalExecutionImpactSlowSeconds")]
+        [FormerlySerializedAs("finalExecutionBlackoutSlowSeconds")]
+        [Tooltip("최종 사격 관통 슬로우를 유지할 실제 시간입니다.")]
+        [SerializeField, Min(0f)] private float finalExecutionShotSlowSeconds = 0.22f;
+        [Tooltip("암전 중 총구에서 시작한 최종 사격 Line이 페이드아웃되는 실제 시간입니다.")]
+        [SerializeField, Min(0.01f)] private float finalExecutionShotLineSeconds = 0.16f;
         [SerializeField, Min(0f)] private float finalExecutionOutlineFlashSeconds = 0.04f;
         [SerializeField, Min(0f)] private float finalExecutionBlackoutFadeOutSeconds = 0.24f;
         [SerializeField, Min(0f)] private float finalExecutionLetterboxExitSeconds = 0.28f;
@@ -208,8 +216,9 @@ namespace Week14.Combat
         public float FinalExecutionLetterboxEnterSeconds => finalExecutionLetterboxEnterSeconds;
         public float FinalExecutionBlackoutFadeInSeconds => finalExecutionBlackoutFadeInSeconds;
         public float FinalExecutionBlackoutHoldSeconds => finalExecutionBlackoutHoldSeconds;
-        public float FinalExecutionImpactTimeScale => finalExecutionImpactTimeScale;
-        public float FinalExecutionImpactSlowSeconds => finalExecutionImpactSlowSeconds;
+        public float FinalExecutionShotTimeScale => finalExecutionShotTimeScale;
+        public float FinalExecutionShotSlowSeconds => finalExecutionShotSlowSeconds;
+        public float FinalExecutionShotLineSeconds => finalExecutionShotLineSeconds;
         public float FinalExecutionOutlineFlashSeconds => finalExecutionOutlineFlashSeconds;
         public float FinalExecutionBlackoutFadeOutSeconds => finalExecutionBlackoutFadeOutSeconds;
         public float FinalExecutionLetterboxExitSeconds => finalExecutionLetterboxExitSeconds;

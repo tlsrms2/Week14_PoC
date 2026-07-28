@@ -94,7 +94,10 @@ namespace Week14.Enemy
 
         internal override void Tick()
         {
-            Boss.Stop();
+            if (!Boss.AllowsCinematicMovementForState)
+            {
+                Boss.Stop();
+            }
         }
     }
 
@@ -106,7 +109,10 @@ namespace Week14.Enemy
 
         internal override void Tick()
         {
-            Boss.Stop();
+            if (!Boss.AllowsCinematicMovementForState)
+            {
+                Boss.Stop();
+            }
         }
     }
 

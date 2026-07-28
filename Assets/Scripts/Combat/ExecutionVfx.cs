@@ -30,6 +30,7 @@ namespace Week14.Combat
             main.startColor = color;
             main.gravityModifier = 0f;
             main.simulationSpace = ParticleSystemSimulationSpace.World;
+            main.useUnscaledTime = false;
 
             ParticleSystem.EmissionModule emission = particles.emission;
             emission.enabled = false;

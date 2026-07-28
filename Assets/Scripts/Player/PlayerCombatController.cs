@@ -139,6 +139,7 @@ namespace Week14.Combat
         public BulletGauge Bullets => Context.Bullets;
         public Transform LeftGunOrigin => Context.LeftGunOrigin;
         public Transform LeftFireOrigin => Rig.GetLeftFireOrigin();
+        public Transform RightFireOrigin => Rig.GetRightFireOrigin();
         public bool IsReticleVisible => config != null
             && !GameModalState.BlocksGameplayInput
             && !IsPlayerControlLocked
@@ -153,6 +154,12 @@ namespace Week14.Combat
         public bool IsExecuting => ExecutionController.IsExecuting;
         public PlayerCombatConfig Config => Context.Config;
         public float MoveSpeedMultiplier => moveSpeedMultiplier * weaponMoveSpeedMultiplier;
+
+        internal void PlayExecutionImageForCinematic(float secondsUntilKillMoment)
+        {
+            executionImage?.Play(Mathf.Max(0f, secondsUntilKillMoment));
+        }
+
         public bool CanMove => CanAct && !IsExternallyMovementLocked && !IsBodyContactStaggered && !IsDashing;
         public bool IsBodyContactStaggered => DamageReceiver.IsBodyContactStaggered;
         public bool IsDashing => DashController.IsDashing;

@@ -1448,6 +1448,42 @@ MonoBehaviour:
       rid: 6489939314815009050
     sequences: []
     editorPosition: {x: -83, y: 2163}
+  - nodeId: Boss Dash20
+    nodeGuid: 4c4dc71b151c475fa62a3ceeb90ac2d0
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939497712877657
+    sequences: []
+    editorPosition: {x: 481, y: -49}
+  - nodeId: Boss Dash21
+    nodeGuid: f00e6f8edc5041eea28d826dc39f3ef7
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939497712877658
+    sequences: []
+    editorPosition: {x: 616, y: -49}
+  - nodeId: Boss Dash22
+    nodeGuid: c260a7d7b8424bc9beb8c2e250eb81b3
+    nodeKind: 1
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939497712877676
+    sequences: []
+    editorPosition: {x: 757, y: -49}
+  - nodeId: Fire Dash Formation9
+    nodeGuid: 2ee97dea26154fd18ed7308d51e48e61
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939497712877677
+    sequences: []
+    editorPosition: {x: 757, y: 68}
   patterns:
   - patternId: P1
     nodeGuids:
@@ -1797,6 +1833,17 @@ MonoBehaviour:
     - Boss Area Damage5
     - Spawn Effect Prefab6
     - Spawn Effect Prefab10
+  - patternId: Execution
+    nodeGuids:
+    - 4c4dc71b151c475fa62a3ceeb90ac2d0
+    - f00e6f8edc5041eea28d826dc39f3ef7
+    - c260a7d7b8424bc9beb8c2e250eb81b3
+    - 2ee97dea26154fd18ed7308d51e48e61
+    nodeIds:
+    - Boss Dash20
+    - Boss Dash21
+    - Boss Dash22
+    - Fire Dash Formation9
   defaultPatternIds: []
   phases:
   - phaseIndex: 0
@@ -2804,6 +2851,22 @@ MonoBehaviour:
     conditionType: 0
     threshold: 0
     phaseIndex: 0
+  - fromNodeGuid: 4c4dc71b151c475fa62a3ceeb90ac2d0
+    toNodeGuid: f00e6f8edc5041eea28d826dc39f3ef7
+    fromNodeId: Boss Dash20
+    toNodeId: Boss Dash21
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
+  - fromNodeGuid: f00e6f8edc5041eea28d826dc39f3ef7
+    toNodeGuid: c260a7d7b8424bc9beb8c2e250eb81b3
+    fromNodeId: Boss Dash21
+    toNodeId: Boss Dash22
+    fromOutputPortIndex: 0
+    conditionType: 0
+    threshold: 0
+    phaseIndex: 0
   parallelEdges:
   - fromNodeGuid: 8be623fe70134e86a5718bfa00394cb7
     toNodeGuid: 1b40313f298d441c9ee0c7c00c91b3a6
@@ -3001,6 +3064,12 @@ MonoBehaviour:
     toNodeGuid: b50b4e8319e54a9fbb41e1fa571c1d4d
     fromNodeId: Spawn Effect Prefab11
     toNodeId: Wait33
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: c260a7d7b8424bc9beb8c2e250eb81b3
+    toNodeGuid: 2ee97dea26154fd18ed7308d51e48e61
+    fromNodeId: Boss Dash22
+    toNodeId: Fire Dash Formation9
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 0
@@ -7187,3 +7256,261 @@ MonoBehaviour:
         scale: 5
         followMode: 1
         followRotation: 1
+    - rid: 6489939497712877657
+      type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        windupSeconds: 0.8
+        lockSeconds: 0.7
+        trackPlayerDuringWindup: 1
+        maxTrackTurnDegreesPerSecond: 70
+        windupSfxId: 
+        windupEffects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        dashDuration: 0.2
+        dashSpeed: 30
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0.19202876
+            outSlope: 0.19202876
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.19166666
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: -3.2413533
+            outSlope: -3.2413533
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.037500024
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        dashSfxId: BossBomb
+        chargeTriggerName: Charge
+        chargeBoolName: isCharge
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 5743924627084433304, guid: 193204223266ea344a4fdbc1e3569a36, type: 3}
+        dashDustSpawnPointPath: DashDustPoint
+        dashDustEffectScale: 1
+    - rid: 6489939497712877658
+      type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        windupSeconds: 0.8
+        lockSeconds: 0.7
+        trackPlayerDuringWindup: 1
+        maxTrackTurnDegreesPerSecond: 70
+        windupSfxId: 
+        windupEffects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        dashDuration: 0.2
+        dashSpeed: 30
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0.19202876
+            outSlope: 0.19202876
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.19166666
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: -3.2413533
+            outSlope: -3.2413533
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.037500024
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        dashSfxId: BossBomb
+        chargeTriggerName: Charge
+        chargeBoolName: isCharge
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 5743924627084433304, guid: 193204223266ea344a4fdbc1e3569a36, type: 3}
+        dashDustSpawnPointPath: DashDustPoint
+        dashDustEffectScale: 1
+    - rid: 6489939497712877676
+      type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        windupSeconds: 2.5
+        lockSeconds: 0.5
+        trackPlayerDuringWindup: 1
+        maxTrackTurnDegreesPerSecond: 70
+        windupSfxId: 
+        windupEffects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        dashDuration: 0.4
+        dashSpeed: 30
+        speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0.19202876
+            outSlope: 0.19202876
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.19166666
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: -3.2413533
+            outSlope: -3.2413533
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.037500024
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        speedCurveInitialized: 1
+        dashSfxId: BossBomb
+        chargeTriggerName: Charge
+        chargeBoolName: isCharge
+        trajectoryIndicatorPrefab: {fileID: 173960, guid: 7cabe2baa5a86b247b43c021e54035b6, type: 3}
+        trajectoryTileSpacing: 0
+        trajectoryTileRotationOffset: 0
+        trajectoryReadyColor: {r: 1, g: 1, b: 1, a: 1}
+        trajectoryChargedColor: {r: 1, g: 0, b: 0, a: 1}
+        dashDustEffectPrefab: {fileID: 5743924627084433304, guid: 193204223266ea344a4fdbc1e3569a36, type: 3}
+        dashDustSpawnPointPath: DashDustPoint
+        dashDustEffectScale: 1
+    - rid: 6489939497712877677
+      type: {class: FireDashFormationAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC77C\uBC18\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        pattern: 0
+        bulletCount: 22
+        spacing: 0.8
+        centerOffset: 0
+        dashAim:
+          mode: 1
+          angleDegrees: 180
+        dashStartDelay: 0
+        alignDuration: 1
+        alignEase:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        alignEaseInitialized: 1
+        holdSeconds: 1.05
+        fireOrder: 0
+        fireInterval: 0
+        windupSeconds: 0
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 0
+            color: {r: 1, g: 1, b: 1, a: 1}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 0
+            prefab: {fileID: 0}
+            scale: 1
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12

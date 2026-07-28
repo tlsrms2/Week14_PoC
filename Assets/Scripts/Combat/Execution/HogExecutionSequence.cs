@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Playables;
 using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Enemy;
@@ -9,38 +8,61 @@ using Week14.Enemy;
 namespace Week14.Combat
 {
     [DisallowMultipleComponent]
-    [RequireComponent(typeof(PlayableDirector))]
     [AddComponentMenu("Week14/Combat/Hog Execution Sequence")]
-    public sealed class HogExecutionSequence : MonoBehaviour
+    public sealed class HogExecutionSequence : BossExecutionSequence
     {
         [Header("References")]
         [SerializeField] private BossExecutionStage stage;
-        [SerializeField] private PlayableDirector playableDirector;
         [SerializeField] private ParticleSystem aimChargeVfx;
+        [SerializeField] private ExecutionChargeGatherVfx aimChargeGatherVfx;
 
-        [Header("Projectile")]
-        [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
-        [SerializeField] private BossProjectileSettings fallbackProjectile = new();
-        [SerializeField, Min(1)] private int bulletsPerVolley = 16;
-        [SerializeField, Min(0f)] private float spawnRadius = 0.2f;
-        [SerializeField] private float volleyAngleOffsetDegrees = 7.5f;
-        [SerializeField] private bool ignoreWalls = true;
-        [SerializeField, BossGraphSfxId] private string volleySfxId;
+        [Header("Boss Graph Pattern")]
+        [SerializeField, Tooltip("패턴 목록을 가져올 MainScene의 Hog 보스입니다.")]
+        private HogBossAI patternSourceBoss;
+        [SerializeField, Tooltip("Hog Boss Graph 에디터에서 만든 처형용 Pattern ID입니다.")]
+        private string executionPatternId;
+        [SerializeField, Tooltip("연출 중 그래프 패턴 탄환이 벽에 막히지 않게 합니다.")]
+        private bool ignorePatternProjectileWalls = true;
 
         [Header("Approach And Parry")]
         [SerializeField, Min(0.1f)] private float approachDistance = 2f;
         [SerializeField, Min(0.1f)] private float approachGateTimeoutSeconds = 6f;
         [SerializeField, Min(0.05f)] private float corridorHalfWidth = 0.65f;
+        [SerializeField, Min(0.1f)] private float playerClearanceDistance = 1.15f;
         [SerializeField, Range(0f, 1f)] private float projectileSlowMultiplier = 0.08f;
         [SerializeField, Min(0.1f)] private float projectileSlowSafetySeconds = 6f;
+        [SerializeField, Min(0f)] private float preParryHoldSeconds = 0.55f;
+        [SerializeField, Range(0.1f, 1f)] private float preParryCameraZoomMultiplier = 0.38f;
+        [SerializeField, Min(0.01f)] private float preParryCameraBlendSmoothTime = 0.12f;
+        [SerializeField, Min(0.1f)] private float executionImageSeconds = 3.5f;
+        [SerializeField, BossGraphSfxId] private string preParrySfxId;
         [SerializeField, Range(0f, 1f)] private float parryCameraFocusWeight = 1f;
         [SerializeField, Range(0.1f, 1f)] private float parryCameraZoomMultiplier = 0.42f;
-        [SerializeField] private bool snapCameraOnEachParry = true;
+        [SerializeField, Min(0.01f)] private float parryCameraBlendSmoothTime = 0.08f;
+
+        [Header("Sequence Timing")]
+        [SerializeField, Min(0f)] private float patternSignalTimeSeconds = 0.15f;
+        [SerializeField, Min(0f)] private float projectileGateSignalTimeSeconds = 1f / 3f;
+        [SerializeField] private float[] parrySignalTimesSeconds =
+        {
+            0.8f,
+            0.92f,
+            1.04f,
+            1.16f,
+            1.16f,
+            1.28f,
+            1.4f,
+            1.52f
+        };
+        [SerializeField, Min(0f)] private float rollSignalTimeSeconds = 119f / 60f;
+        [SerializeField, Min(0f)] private float aimChargeSignalTimeSeconds = 2.5f;
+        [SerializeField, Min(0f)] private float finalShotSignalTimeSeconds = 4f;
 
         [Header("Roll And Camera")]
         [SerializeField, Min(0.05f)] private float rollSeconds = 0.55f;
         [SerializeField, Range(0f, 1f)] private float wideCameraFocusWeight = 1f;
         [SerializeField, Range(0.1f, 1.5f)] private float wideCameraZoomMultiplier = 0.72f;
+        [SerializeField, Min(0.01f)] private float wideCameraBlendSmoothTime = 0.22f;
         [SerializeField, BossGraphSfxId] private string aimChargeSfxId;
 
         private readonly List<EnemyProjectile> spawnedProjectiles = new();
@@ -48,36 +70,36 @@ namespace Week14.Combat
         private PlayerCombatController player;
         private HogBossAI hog;
         private CameraFollow2D cameraFollow;
-        private Coroutine approachGateRoutine;
         private Coroutine rollRoutine;
-        private int volleyIndex;
+        private bool projectileClearanceEnabled;
         private bool runtimePrepared;
-        private bool readyForFinalShot;
+        private double sequenceClockSeconds;
 
-        public bool CanPlay
+        public override bool CanPlay
         {
             get
             {
                 ResolveReferences();
                 return stage != null
                     && stage.HasRequiredAnchors
-                    && playableDirector != null
-                    && playableDirector.playableAsset != null;
+                    && !string.IsNullOrWhiteSpace(executionPatternId)
+                    && (patternSourceBoss == null
+                        || patternSourceBoss.HasConfiguredGraphPattern(executionPatternId));
             }
         }
 
-        public Transform InitialCameraFocus =>
+        public override Transform InitialCameraFocus =>
             stage != null && stage.WideCameraFocus != null
                 ? stage.WideCameraFocus
                 : hog != null ? hog.transform : transform;
 
-        public float WideCameraFocusWeight => wideCameraFocusWeight;
-        public float WideCameraZoomMultiplier => wideCameraZoomMultiplier;
-        public float ExpectedDurationSeconds =>
-            playableDirector != null && playableDirector.playableAsset != null
-                ? Mathf.Max(0f, (float)playableDirector.duration)
-                    + Mathf.Max(0f, approachGateTimeoutSeconds)
-                : 0f;
+        public override float WideCameraFocusWeight => wideCameraFocusWeight;
+        public override float WideCameraZoomMultiplier => wideCameraZoomMultiplier;
+        public override float WideCameraBlendSmoothTime => wideCameraBlendSmoothTime;
+        public override float ExpectedDurationSeconds =>
+            Mathf.Max(0f, finalShotSignalTimeSeconds)
+            + Mathf.Max(0f, approachGateTimeoutSeconds)
+            + Mathf.Max(0f, preParryHoldSeconds);
 
         private void Awake()
         {
@@ -89,53 +111,90 @@ namespace Week14.Combat
             CleanupRuntime(true);
         }
 
-        internal bool Prepare(PlayerCombatController nextPlayer, HogBossAI nextHog)
+        public override bool SupportsBoss(BossAI boss)
         {
+            return boss is HogBossAI;
+        }
+
+        internal override bool Prepare(
+            PlayerCombatController nextPlayer,
+            BossAI nextBoss)
+        {
+            if (nextBoss is not HogBossAI nextHog)
+            {
+                return false;
+            }
+
             ResolveReferences();
             CleanupRuntime(false);
-            if (!CanPlay || nextPlayer == null || nextHog == null)
+            if (nextPlayer == null || nextHog == null)
             {
                 return false;
             }
 
             player = nextPlayer;
             hog = nextHog;
+            patternSourceBoss ??= nextHog;
+            if (!CanPlay || !hog.HasConfiguredGraphPattern(executionPatternId))
+            {
+                player = null;
+                hog = null;
+                return false;
+            }
+
             cameraFollow = nextPlayer.CameraFollow;
             runtimePrepared = stage.PlaceActors(player, hog);
-            volleyIndex = 0;
-            readyForFinalShot = false;
+            projectileClearanceEnabled = true;
+            sequenceClockSeconds = 0f;
+            FaceActorsTowardEachOther();
+            player.Visual?.BeginExecutionAimVisual(
+                (Vector2)hog.transform.position - (Vector2)player.transform.position);
             return runtimePrepared;
         }
 
-        internal IEnumerator PlayPrelude()
+        internal override IEnumerator PlayPrelude()
         {
-            if (!runtimePrepared || playableDirector == null)
+            if (!runtimePrepared)
             {
                 yield break;
             }
 
-            playableDirector.timeUpdateMode = DirectorUpdateMode.UnscaledGameTime;
-            playableDirector.extrapolationMode = DirectorWrapMode.None;
-            playableDirector.time = 0d;
-            playableDirector.Evaluate();
-            playableDirector.Play();
-
             try
             {
-                double duration = playableDirector.duration;
-                while (runtimePrepared && !readyForFinalShot)
+                yield return WaitUntilSequenceTime(patternSignalTimeSeconds);
+                if (!runtimePrepared)
                 {
-                    bool reachedEnd = duration <= 0d
-                        || playableDirector.time >= duration - 0.001d;
-                    if (reachedEnd && playableDirector.state != PlayState.Playing)
-                    {
-                        break;
-                    }
-
-                    yield return null;
+                    yield break;
                 }
 
-                while (rollRoutine != null)
+                RunSelectedPattern();
+                yield return WaitUntilSequenceTime(projectileGateSignalTimeSeconds);
+                if (!runtimePrepared)
+                {
+                    yield break;
+                }
+
+                yield return WaitForProjectileApproach();
+                int executionParryCount =
+                    parrySignalTimesSeconds != null ? parrySignalTimesSeconds.Length : 0;
+                for (int i = 0; runtimePrepared && i < executionParryCount; i++)
+                {
+                    yield return WaitUntilSequenceTime(parrySignalTimesSeconds[i]);
+                    FocusAndParryNextProjectile();
+                }
+
+                yield return WaitUntilSequenceTime(rollSignalTimeSeconds);
+                if (!runtimePrepared)
+                {
+                    yield break;
+                }
+
+                BeginRollPresentation();
+                yield return WaitUntilSequenceTime(aimChargeSignalTimeSeconds);
+                StartAimCharge();
+                yield return WaitUntilSequenceTime(finalShotSignalTimeSeconds);
+                yield return null;
+                while (runtimePrepared && rollRoutine != null)
                 {
                     yield return null;
                 }
@@ -146,75 +205,32 @@ namespace Week14.Combat
             }
         }
 
-        internal void Cancel()
+        internal override void Cancel()
         {
             CleanupRuntime(true);
         }
 
-        // Timeline Signal: 방사형 탄막 한 묶음을 발사합니다.
-        public void SpawnNextVolley()
+        // Hog Boss Graph에서 선택한 처형 패턴을 한 번 실행합니다.
+        private void RunSelectedPattern()
         {
             if (!runtimePrepared || player == null || hog == null)
             {
                 return;
             }
 
-            BossProjectileSettings settings =
-                hog.ResolveGraphProjectileSettingsForActions(projectileName) ?? fallbackProjectile;
-            if (settings == null || settings.Prefab == null)
+            if (!hog.TryRunCinematicPatternOnce(
+                    executionPatternId,
+                    ConfigureSpawnedPatternProjectile))
             {
                 Debug.LogWarning(
-                    $"{nameof(HogExecutionSequence)}: '{projectileName}' 투사체 설정이 없습니다.",
+                    $"{nameof(HogExecutionSequence)}: 처형용 Boss Graph 패턴 " +
+                    $"'{executionPatternId}' 실행에 실패했습니다.",
                     this);
-                return;
-            }
-
-            Vector2 centerDirection = (Vector2)player.transform.position - (Vector2)hog.transform.position;
-            if (centerDirection.sqrMagnitude <= 0.0001f)
-            {
-                centerDirection = Vector2.left;
-            }
-
-            float baseAngle = Mathf.Atan2(centerDirection.y, centerDirection.x) * Mathf.Rad2Deg
-                + volleyIndex * volleyAngleOffsetDegrees;
-            float angleStep = 360f / Mathf.Max(1, bulletsPerVolley);
-            Vector3 center = hog.BodyRoot != null ? hog.BodyRoot.position : hog.transform.position;
-            for (int i = 0; i < bulletsPerVolley; i++)
-            {
-                Vector2 direction = BossActionContext.AngleToDirection(baseAngle + angleStep * i);
-                Vector3 origin = center + (Vector3)(direction * spawnRadius);
-                EnemyProjectile projectile = BossProjectileEmitter.Fire(
-                    SpawnCinematicProjectile,
-                    settings,
-                    origin,
-                    direction);
-                if (projectile != null)
-                {
-                    spawnedProjectiles.Add(projectile);
-                }
-            }
-
-            volleyIndex++;
-            if (!string.IsNullOrWhiteSpace(volleySfxId))
-            {
-                SoundManager.PlaySfx(volleySfxId);
             }
         }
 
-        // Timeline Signal: 탄환이 가까워질 때까지 Timeline을 멈췄다가 슬로우와 함께 재개합니다.
-        public void WaitUntilProjectilesAreClose()
-        {
-            if (!runtimePrepared || playableDirector == null || approachGateRoutine != null)
-            {
-                return;
-            }
-
-            playableDirector.Pause();
-            approachGateRoutine = StartCoroutine(WaitForProjectileApproach());
-        }
-
-        // Timeline Signal: 플레이어와 Hog 사이 통로의 다음 탄환을 패링합니다.
-        public void ParryNext()
+        // 플레이어와 Hog 사이 통로에서 가장 가까운 탄환을 패링합니다.
+        private void FocusAndParryNextProjectile()
         {
             if (!runtimePrepared || player == null)
             {
@@ -235,18 +251,15 @@ namespace Week14.Combat
                 cameraFollow?.BeginCinematicFocus(
                     focusProxy,
                     parryCameraFocusWeight,
-                    parryCameraZoomMultiplier);
-                if (snapCameraOnEachParry)
-                {
-                    cameraFollow?.SnapToCinematicFocus();
-                }
+                    parryCameraZoomMultiplier,
+                    parryCameraBlendSmoothTime);
             }
 
             player.TryParryProjectileForCinematic(projectile);
         }
 
-        // Timeline Signal: 뚫린 통로를 따라 Hog 앞으로 구릅니다.
-        public void BeginRoll()
+        // 탄환의 감속과 충돌 안전 처리를 해제한 뒤 구르기 카메라로 전환합니다.
+        private void BeginRollPresentation()
         {
             if (!runtimePrepared || player == null || stage == null || rollRoutine != null)
             {
@@ -254,11 +267,21 @@ namespace Week14.Combat
             }
 
             RestoreEnemyTimeScale();
+            ReleaseProjectileClearance();
+            if (stage.WideCameraFocus != null)
+            {
+                cameraFollow?.BeginCinematicFocus(
+                    stage.WideCameraFocus,
+                    wideCameraFocusWeight,
+                    wideCameraZoomMultiplier,
+                    wideCameraBlendSmoothTime);
+            }
+
             rollRoutine = StartCoroutine(RollPlayerToBoss());
         }
 
-        // Timeline Signal: 구르기 이후 Hog를 조준하고 충전 연출을 시작합니다.
-        public void BeginAimCharge()
+        // 구르기 이후 Hog를 조준하고 충전 연출을 시작합니다.
+        private void StartAimCharge()
         {
             if (!runtimePrepared || player == null || hog == null)
             {
@@ -271,13 +294,14 @@ namespace Week14.Combat
                 aimDirection = Vector2.right;
             }
 
-            player.Visual?.BeginExecutionVisual(aimDirection);
+            player.Visual?.BeginExecutionAimVisual(aimDirection);
             player.Visual?.SetBodyAimDirection(aimDirection);
-            player.Visual?.SetLeftArmAimDirection(aimDirection);
             if (aimChargeVfx != null)
             {
                 aimChargeVfx.Play(true);
             }
+
+            aimChargeGatherVfx?.Play(player.RightFireOrigin);
 
             if (!string.IsNullOrWhiteSpace(aimChargeSfxId))
             {
@@ -285,62 +309,60 @@ namespace Week14.Combat
             }
         }
 
-        // Timeline Signal: 여기부터 기존 최종 처형의 암전 발사 구간으로 넘어갑니다.
-        public void ReadyFinalShot()
+        private void ConfigureSpawnedPatternProjectile(EnemyProjectile projectile)
         {
-            if (!runtimePrepared)
+            if (projectile == null)
             {
                 return;
             }
 
-            readyForFinalShot = true;
-            playableDirector?.Pause();
-        }
-
-        private EnemyProjectile SpawnCinematicProjectile(
-            EnemyProjectile prefab,
-            Vector3 position,
-            Vector2 direction,
-            int projectileBulletDamage,
-            float chargeSeconds,
-            float speed,
-            float lifetime,
-            float radius,
-            Color color,
-            float trailSeconds,
-            float trailWidth,
-            bool homingEnabled,
-            float homingSeconds,
-            float homingTurnDegrees,
-            Vector3? _,
-            float __)
-        {
-            EnemyProjectile projectile = EnemyProjectile.Spawn(
-                prefab,
-                hog != null ? hog.HpGauge : null,
-                position,
-                direction,
-                0,
-                chargeSeconds,
-                speed,
-                lifetime,
-                radius,
-                color,
-                trailSeconds,
-                trailWidth,
-                homingEnabled,
-                homingSeconds,
-                homingTurnDegrees);
-            if (projectile == null)
-            {
-                return null;
-            }
-
             projectile.ConfigureExecutionPauseIgnored(true);
             projectile.ConfigurePlayerCollisionIgnored(true);
-            projectile.ConfigureIgnoresWalls(ignoreWalls);
+            if (projectileClearanceEnabled)
+            {
+                projectile.ConfigureCinematicPlayerClearance(
+                    player != null ? player.transform : null,
+                    playerClearanceDistance);
+            }
+            else
+            {
+                projectile.ReleaseCinematicPlayerClearance();
+            }
+            projectile.ConfigureIgnoresWalls(ignorePatternProjectileWalls);
             projectile.ConfigureInterceptable(true);
-            return projectile;
+            spawnedProjectiles.Add(projectile);
+        }
+
+        private void ReleaseProjectileClearance()
+        {
+            projectileClearanceEnabled = false;
+            for (int i = 0; i < spawnedProjectiles.Count; i++)
+            {
+                EnemyProjectile projectile = spawnedProjectiles[i];
+                if (projectile != null)
+                {
+                    projectile.ReleaseCinematicPlayerClearance();
+                }
+            }
+        }
+
+        private void FaceActorsTowardEachOther()
+        {
+            if (player == null || hog == null)
+            {
+                return;
+            }
+
+            Vector2 playerToHog =
+                (Vector2)hog.transform.position - (Vector2)player.transform.position;
+            if (playerToHog.sqrMagnitude <= 0.0001f)
+            {
+                playerToHog = Vector2.left;
+            }
+
+            player.Visual?.SetBodyAimDirection(playerToHog);
+            player.Visual?.SetLeftArmAimDirection(playerToHog);
+            hog.FaceTowards(player.transform.position);
         }
 
         private IEnumerator WaitForProjectileApproach()
@@ -359,24 +381,50 @@ namespace Week14.Combat
                 yield return null;
             }
 
+            if (!runtimePrepared)
+            {
+                yield break;
+            }
+
             BuildCorridorProjectileQueue();
             EnemyTimeScale.SetTemporary(projectileSlowMultiplier, projectileSlowSafetySeconds);
-            approachGateRoutine = null;
-            if (runtimePrepared && playableDirector != null)
+            if (player != null)
             {
-                playableDirector.Play();
+                cameraFollow?.BeginCinematicFocus(
+                    player.transform,
+                    1f,
+                    preParryCameraZoomMultiplier,
+                    preParryCameraBlendSmoothTime);
+                player.PlayExecutionImageForCinematic(executionImageSeconds);
+            }
+
+            if (!string.IsNullOrWhiteSpace(preParrySfxId))
+            {
+                SoundManager.PlaySfx(preParrySfxId);
+            }
+
+            if (preParryHoldSeconds > 0f)
+            {
+                yield return new WaitForSecondsRealtime(preParryHoldSeconds);
             }
         }
 
         private IEnumerator RollPlayerToBoss()
         {
+            if (!runtimePrepared || player == null || stage == null)
+            {
+                yield break;
+            }
+
             Rigidbody2D body = player.GetComponent<Rigidbody2D>();
             Vector2 start = body != null ? body.position : (Vector2)player.transform.position;
             Vector2 end = stage.PlayerRollEnd.position;
             float duration = Mathf.Max(0.05f, rollSeconds);
             player.Visual?.PlayRoll(duration);
 
-            for (float elapsed = 0f; elapsed < duration; elapsed += Time.unscaledDeltaTime)
+            for (float elapsed = 0f;
+                 runtimePrepared && player != null && elapsed < duration;
+                 elapsed += Time.unscaledDeltaTime)
             {
                 float progress = Mathf.Clamp01(elapsed / duration);
                 float eased = 1f - (1f - progress) * (1f - progress);
@@ -384,8 +432,21 @@ namespace Week14.Combat
                 yield return null;
             }
 
-            SetPlayerPosition(body, end);
+            if (runtimePrepared && player != null)
+            {
+                SetPlayerPosition(body, end);
+            }
+
             rollRoutine = null;
+        }
+
+        private IEnumerator WaitUntilSequenceTime(double targetSeconds)
+        {
+            while (runtimePrepared && sequenceClockSeconds < targetSeconds)
+            {
+                yield return null;
+                sequenceClockSeconds += Time.unscaledDeltaTime;
+            }
         }
 
         private void SetPlayerPosition(Rigidbody2D body, Vector2 position)
@@ -532,17 +593,11 @@ namespace Week14.Combat
         {
             bool hadActiveRuntime = runtimePrepared
                 || player != null
-                || approachGateRoutine != null
                 || rollRoutine != null
                 || spawnedProjectiles.Count > 0;
             runtimePrepared = false;
-            readyForFinalShot = false;
-
-            if (approachGateRoutine != null)
-            {
-                StopCoroutine(approachGateRoutine);
-                approachGateRoutine = null;
-            }
+            projectileClearanceEnabled = false;
+            sequenceClockSeconds = 0d;
 
             if (rollRoutine != null)
             {
@@ -550,10 +605,7 @@ namespace Week14.Combat
                 rollRoutine = null;
             }
 
-            if (playableDirector != null && hadActiveRuntime)
-            {
-                playableDirector.Stop();
-            }
+            hog?.StopCinematicPattern();
 
             if (hadActiveRuntime)
             {
@@ -572,8 +624,14 @@ namespace Week14.Combat
             corridorProjectiles.Clear();
             if (aimChargeVfx != null)
             {
-                aimChargeVfx.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                aimChargeVfx.Stop(
+                    true,
+                    endCameraFocus
+                        ? ParticleSystemStopBehavior.StopEmittingAndClear
+                        : ParticleSystemStopBehavior.StopEmitting);
             }
+
+            aimChargeGatherVfx?.Stop(endCameraFocus);
 
             if (endCameraFocus && stage != null && cameraFollow != null)
             {
@@ -592,8 +650,15 @@ namespace Week14.Combat
 
         private void ResolveReferences()
         {
-            playableDirector ??= GetComponent<PlayableDirector>();
             stage ??= GetComponent<BossExecutionStage>();
+            aimChargeGatherVfx ??= GetComponent<ExecutionChargeGatherVfx>();
+            if (aimChargeGatherVfx == null && Application.isPlaying)
+            {
+                aimChargeGatherVfx = gameObject.AddComponent<ExecutionChargeGatherVfx>();
+            }
+
+            patternSourceBoss ??=
+                UnityEngine.Object.FindFirstObjectByType<HogBossAI>(FindObjectsInactive.Include);
         }
     }
 }
