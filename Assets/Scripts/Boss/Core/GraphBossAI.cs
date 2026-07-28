@@ -179,14 +179,20 @@ namespace Week14.Enemy
         // 하위 클래스(예: AssassinBossAI)를 위해 공개한다. isGroggy 게임플레이 상태(패턴 억제,
         // 이동 정지 등)는 건드리지 않는다 — HP Empty 동안의 패턴/이동 정지는 BossAI의
         // BeginHpEmptyForState가 이미 별도로 처리한다.
+        // Stun/EndStun 둘 다 트리거라, 직전 사이클에서 반대쪽 트리거가 애니메이터에 소모되지
+        // 못하고 남아있을 수 있다 — 이 경우 이번에 새로 세팅한 트리거로 상태에 진입하자마자
+        // 그 묵은 트리거 조건에 바로 되튕겨 나가버린다(MuscleBossAI가 겪었던 것과 동일한 문제).
+        // 그래서 새 트리거를 세팅하기 전에 반대쪽을 먼저 ResetTrigger로 지운다.
         protected void PlayGroggyStunVisual()
         {
+            ResetGroggyAnimatorTrigger(EndStunParameter);
             SetGroggyAnimatorTrigger(StunParameter);
             SetGroggyAnimatorBool(IsStunParameter, true);
         }
 
         protected void PlayGroggyEndStunVisual()
         {
+            ResetGroggyAnimatorTrigger(StunParameter);
             SetGroggyAnimatorTrigger(EndStunParameter);
             SetGroggyAnimatorBool(IsStunParameter, false);
         }
@@ -203,6 +209,15 @@ namespace Week14.Enemy
             for (int i = 0; i < targets.Length; i++)
             {
                 targets[i].SetTrigger(parameter);
+            }
+        }
+
+        private void ResetGroggyAnimatorTrigger(int parameter)
+        {
+            Animator[] targets = GetGroggyAnimators();
+            for (int i = 0; i < targets.Length; i++)
+            {
+                targets[i].ResetTrigger(parameter);
             }
         }
 
