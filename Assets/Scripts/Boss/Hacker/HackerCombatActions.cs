@@ -175,10 +175,13 @@ namespace Week14.Enemy
             HackerAttackRangeIndicator rangeIndicator = null;
             HackerParryBait parryBait = null;
             bool isHologram = context.Boss is HackerHologramBoss;
+            HackerBossAI hackerBoss = context.Boss as HackerBossAI;
+            bool holdForExecutionShot =
+                hackerBoss?.UsesExecutionMeleeReleaseHold == true;
             Vector2 attackDirection = GetPlayerSideDirection(context);
-            if (context.Boss is HackerBossAI hacker)
+            if (hackerBoss != null)
             {
-                hacker.FaceHorizontalDirection(attackDirection.x);
+                hackerBoss.FaceHorizontalDirection(attackDirection.x);
             }
 
             using IDisposable facingLock = context.AcquireFacingLock();
@@ -200,8 +203,11 @@ namespace Week14.Enemy
                     Mathf.Max(0f, windupSeconds - parryWindowSeconds),
                     rangeIndicator);
 
-                Transform parryAnchor = context.GetBossChildTransform(parryAnchorPath) ?? context.Boss.transform;
-                if (parrySpawnEffect?.Play(parryAnchor.position) == true)
+                Transform parryAnchor =
+                    context.GetBossChildTransform(parryAnchorPath)
+                    ?? context.Boss.transform;
+                if (!holdForExecutionShot
+                    && parrySpawnEffect?.Play(parryAnchor.position) == true)
                 {
                     yield return WaitWithMeleeEllipseIndicator(
                         context,
@@ -211,15 +217,18 @@ namespace Week14.Enemy
                 }
 
                 float remainingWindup = Mathf.Min(windupSeconds, parryWindowSeconds);
-                parryBait = HackerParryBait.Spawn(
-                    context,
-                    (context.Boss as HackerBossAI)?.ParryProjectileSettings,
-                    parryAnchor.position,
-                    parryAnchor,
-                    Vector3.zero,
-                    remainingWindup,
-                    remainingWindup,
-                    countPatternReward: true);
+                if (!holdForExecutionShot)
+                {
+                    parryBait = HackerParryBait.Spawn(
+                        context,
+                        hackerBoss?.ParryProjectileSettings,
+                        parryAnchor.position,
+                        parryAnchor,
+                        Vector3.zero,
+                        remainingWindup,
+                        remainingWindup,
+                        countPatternReward: true);
+                }
 
                 float elapsed = 0f;
                 while (elapsed < remainingWindup)
@@ -235,6 +244,38 @@ namespace Week14.Enemy
                     rangeIndicator?.SetEllipse(ellipseCenter, range, ellipseMinorRadius, ellipseAngleDegrees);
                     elapsed += EnemyTimeScale.DeltaTime;
                     yield return null;
+                }
+
+                while (holdForExecutionShot
+                    && hackerBoss != null
+                    && hackerBoss.IsWaitingForExecutionMeleeRelease)
+                {
+                    if (context.IsExecutionPaused)
+                    {
+                        context.Stop();
+                        yield return null;
+                        continue;
+                    }
+
+                    GetMeleeEllipse(
+                        context,
+                        attackDirection,
+                        out ellipseCenter,
+                        out ellipseAngleDegrees);
+                    rangeIndicator?.SetEllipse(
+                        ellipseCenter,
+                        range,
+                        ellipseMinorRadius,
+                        ellipseAngleDegrees);
+                    context.Stop();
+                    yield return null;
+                }
+
+                if (holdForExecutionShot
+                    && (hackerBoss == null
+                        || !hackerBoss.UsesExecutionMeleeReleaseHold))
+                {
+                    yield break;
                 }
 
                 bool wasParried = parryBait?.WasParried == true;

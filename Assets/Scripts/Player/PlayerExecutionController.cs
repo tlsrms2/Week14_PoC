@@ -214,6 +214,7 @@ namespace Week14.Combat
         {
             PlayerCombatConfig config = context.Config;
             isExecuting = true;
+            context.Owner.BeginExecutionBodyColor();
             if (config == null || executionTarget == null || !executionTarget.BeginExecution(context.Owner))
             {
                 FinishExecution();
@@ -433,6 +434,8 @@ namespace Week14.Combat
 
             if (isFinalBossExecution)
             {
+                activeBossExecutionSequence
+                    ?.OnFinalShotPreparationStarted(executionBoss);
                 yield return presentation.BeginFinalExecutionBlackout(
                     executionBoss,
                     finalBlackoutTimeMultiplier);
@@ -444,6 +447,16 @@ namespace Week14.Combat
             commonPresentation.PrepareFinalShot(
                 rightFireOrigin.position,
                 finalImpactPosition);
+            bool beganFinalShotSlowMotionBeforeImpact =
+                isFinalBossExecution
+                && useBossExecutionSequence
+                && bossExecutionSequence
+                    .BeginFinalShotSlowMotionBeforeImpact;
+            if (beganFinalShotSlowMotionBeforeImpact)
+            {
+                presentation.BeginFinalExecutionShotSlowMotion();
+            }
+
             commonPresentation.Trigger(CommonExecutionCuePoint.PowerShot);
             activeBossExecutionSequence?.OnFinalShotImpact(executionBoss);
             if (!isFinalBossExecution)
@@ -473,8 +486,14 @@ namespace Week14.Combat
                             : Color.white,
                     presentation.FinalExecutionSortingLayerId,
                     presentation.FinalExecutionBossFrontSortingOrder,
-                    presentation.FinalExecutionBossBackSortingOrder);
-                presentation.BeginFinalExecutionShotSlowMotion();
+                    presentation.FinalExecutionBossBackSortingOrder,
+                    useBossExecutionSequence
+                        ? bossExecutionSequence.FinalShotLineWidthMultiplier
+                        : 1f);
+                if (!beganFinalShotSlowMotionBeforeImpact)
+                {
+                    presentation.BeginFinalExecutionShotSlowMotion();
+                }
             }
             else
             {
@@ -896,15 +915,17 @@ namespace Week14.Combat
             Color lineColor,
             int sortingLayerId,
             int frontSortingOrder,
-            int backSortingOrder)
+            int backSortingOrder,
+            float widthMultiplier)
         {
             Vector3 firePosition = fireOrigin.position;
+            float lineWidth = 0.06f * Mathf.Max(0.1f, widthMultiplier);
             GameObject frontLine = ProjectileVfx.PlayShotLine(
                 firePosition,
                 impactPosition,
                 lineColor,
                 config.FinalExecutionShotLineSeconds,
-                0.06f,
+                lineWidth,
                 frontSortingOrder,
                 sortingLayerId,
                 false);
@@ -913,7 +934,7 @@ namespace Week14.Combat
                 lineEndPosition,
                 lineColor,
                 config.FinalExecutionShotLineSeconds,
-                0.06f,
+                lineWidth,
                 backSortingOrder,
                 sortingLayerId,
                 false);

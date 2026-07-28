@@ -207,6 +207,24 @@ namespace Week14.Enemy
             SetGroggyAnimatorBool(IsStunParameter, false);
         }
 
+        protected void ClearGroggyVisualForCinematic()
+        {
+            Animator[] targets = GetGroggyAnimators();
+            for (int i = 0; i < targets.Length; i++)
+            {
+                Animator target = targets[i];
+                if (target == null || !target.isActiveAndEnabled)
+                {
+                    continue;
+                }
+
+                target.ResetTrigger(StunParameter);
+                target.ResetTrigger(EndStunParameter);
+                target.SetBool(IsStunParameter, false);
+                target.Update(0f);
+            }
+        }
+
         protected void SetPatternGroggyAnimator(Animator animator)
         {
             patternGroggyAnimator = animator;

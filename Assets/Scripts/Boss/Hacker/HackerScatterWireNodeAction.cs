@@ -22,6 +22,9 @@ namespace Week14.Enemy
         [SerializeField, BossGraphSfxId] private string fireSfxId = HackerSfxIds.BossNormalShot;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.25f;
 
+        [Header("Execution Cinematic")]
+        [SerializeField, Min(1f)] private float executionSpeedMultiplier = 1.75f;
+
         [Header("Node Sprite")]
         [Tooltip("노드가 벽에 완전히 붙기 전까지 사용할 스프라이트입니다. 비어 있으면 투사체 프리팹 원본을 사용합니다.")]
         [SerializeField] private Sprite flyingSprite;
@@ -69,6 +72,14 @@ namespace Week14.Enemy
 
                 Vector2 direction = BossActionContext.AngleToDirection(fireAngles[i]);
                 EnemyProjectile projectile = context.FireProjectile(settings, origin, direction, 0f, projectileName: nodeProjectileName);
+                if (projectile != null
+                    && context.Boss is HackerBossAI executionHacker
+                    && executionHacker.IsExecutionCinematicSequenceActive)
+                {
+                    projectile.ConfigureSpeedMultiplier(
+                        executionSpeedMultiplier);
+                }
+
                 if (projectile is HackerWireNodeProjectile wireNode)
                 {
                     wireNode.ConfigureWireOwner(context.Boss as HackerBossAI);

@@ -13,6 +13,8 @@ namespace Week14.Combat
         public abstract float WideCameraBlendSmoothTime { get; }
         public virtual float FinalBlackoutTimeMultiplier => 1f;
         public virtual bool UseParryColorForFinalShotLine => false;
+        public virtual bool BeginFinalShotSlowMotionBeforeImpact => false;
+        public virtual float FinalShotLineWidthMultiplier => 1f;
         public abstract float ExpectedDurationSeconds { get; }
 
         public abstract bool SupportsBoss(BossAI boss);
@@ -22,6 +24,8 @@ namespace Week14.Combat
             BossAI boss);
 
         internal abstract IEnumerator PlayPrelude();
+        internal virtual void OnFinalShotPreparationStarted(
+            BossAI boss) { }
         internal virtual void OnFinalBlackoutStarted(BossAI boss) { }
         internal virtual void OnFinalBlackoutFadeOutStarted(
             BossAI boss,

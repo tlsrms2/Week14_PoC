@@ -48,7 +48,11 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            if (context.IsMeleeAdvanceSynchronized)
+            bool releaseBeforeExecutionMelee =
+                context.Boss is HackerBossAI hackerBoss
+                && hackerBoss.UsesExecutionMeleeReleaseHold;
+            if (context.IsMeleeAdvanceSynchronized
+                && !releaseBeforeExecutionMelee)
             {
                 yield return WaitForMeleeAttackAdvanceCompletion(context);
             }

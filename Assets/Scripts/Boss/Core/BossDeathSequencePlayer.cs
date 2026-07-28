@@ -71,13 +71,19 @@ namespace Week14.Enemy
             }
 
             int triggerHash = Animator.StringToHash(triggerName);
-            Animator primary = FindPrimaryDeathAnimator(animators, triggerHash);
+            Animator primary = FindPrimaryDeathAnimator(
+                animators,
+                triggerHash,
+                triggerName);
             if (primary == null)
             {
                 yield return WaitDeathAnimationFallback(boss);
                 yield break;
             }
 
+            AnimatorStateInfo initialState =
+                primary.GetCurrentAnimatorStateInfo(0);
+            int initialStateHash = initialState.fullPathHash;
             for (int i = 0; i < animators.Length; i++)
             {
                 Animator animator = animators[i];
@@ -87,55 +93,130 @@ namespace Week14.Enemy
                 }
             }
 
-            yield return null;
-
-            float startedAt = Time.time;
             float fallbackSeconds = Mathf.Max(0.01f, boss.DeathAnimationFallbackSecondsForSequence);
-            while (primary != null
-                && primary.isActiveAndEnabled
-                && primary.IsInTransition(0)
-                && Time.time - startedAt < fallbackSeconds)
+            int deathStateHash = 0;
+            AnimatorStateInfo deathState = default;
+            if (TryResolveDeathStateHash(
+                    primary,
+                    triggerName,
+                    out deathStateHash))
             {
-                yield return null;
+                RestartDeathStatesAtBeginning(
+                    animators,
+                    triggerName,
+                    triggerHash);
+                deathState =
+                    primary.GetCurrentAnimatorStateInfo(0);
+            }
+            else
+            {
+                float stateEntryStartedAt = Time.unscaledTime;
+                float stateEntryTimeout = Mathf.Max(
+                    0.5f,
+                    fallbackSeconds);
+                while (primary != null
+                    && primary.isActiveAndEnabled
+                    && Time.unscaledTime - stateEntryStartedAt
+                        < stateEntryTimeout)
+                {
+                    if (TryGetEnteredDeathState(
+                            primary,
+                            initialStateHash,
+                            out deathState))
+                    {
+                        deathStateHash = deathState.fullPathHash;
+                        break;
+                    }
+
+                    yield return null;
+                }
             }
 
-            if (primary == null || !primary.isActiveAndEnabled)
+            if (primary == null
+                || !primary.isActiveAndEnabled
+                || deathStateHash == 0)
             {
+                yield return WaitDeathAnimationFallback(boss);
                 yield break;
             }
 
-            AnimatorStateInfo state = primary.GetCurrentAnimatorStateInfo(0);
             float animatorSpeed = Mathf.Abs(primary.speed);
-            float animationSeconds = state.length > 0f && animatorSpeed > 0.01f
-                ? state.length / animatorSpeed
+            float timeScale = primary.updateMode
+                    == AnimatorUpdateMode.UnscaledTime
+                ? 1f
+                : Mathf.Max(0.01f, Time.timeScale);
+            float animationSeconds =
+                deathState.length > 0f && animatorSpeed > 0.01f
+                ? deathState.length / (animatorSpeed * timeScale)
                 : fallbackSeconds;
-            float waitLimit = Mathf.Max(fallbackSeconds, animationSeconds);
+            float waitLimit = Mathf.Max(
+                5f,
+                fallbackSeconds * 4f,
+                animationSeconds * 2f + 0.5f);
+            float animationStartedAt = Time.unscaledTime;
+            bool observedDeathState = false;
 
-            while (Time.time - startedAt < waitLimit)
+            while (Time.unscaledTime - animationStartedAt < waitLimit)
             {
                 if (primary == null || !primary.isActiveAndEnabled)
                 {
                     yield break;
                 }
 
-                if (!primary.IsInTransition(0))
+                if (TryGetAnimatorState(
+                        primary,
+                        deathStateHash,
+                        out AnimatorStateInfo currentDeathState))
                 {
-                    state = primary.GetCurrentAnimatorStateInfo(0);
-                    if (!state.loop && state.normalizedTime >= 1f)
+                    observedDeathState = true;
+                    if (!currentDeathState.loop
+                        && currentDeathState.normalizedTime >= 1f)
                     {
-                        HoldDeathAnimationFinalFrame(animators, triggerHash);
+                        HoldDeathAnimationFinalFrame(
+                            animators,
+                            triggerHash,
+                            deathStateHash);
                         yield break;
                     }
+                }
+                else if (observedDeathState
+                    && !primary.IsInTransition(0))
+                {
+                    HoldDeathAnimationFinalFrame(
+                        animators,
+                        triggerHash,
+                        deathStateHash);
+                    yield break;
                 }
 
                 yield return null;
             }
 
-            HoldDeathAnimationFinalFrame(animators, triggerHash);
+            HoldDeathAnimationFinalFrame(
+                animators,
+                triggerHash,
+                deathStateHash);
         }
 
-        private static Animator FindPrimaryDeathAnimator(Animator[] animators, int triggerHash)
+        private static Animator FindPrimaryDeathAnimator(
+            Animator[] animators,
+            int triggerHash,
+            string stateName)
         {
+            for (int i = 0; i < animators.Length; i++)
+            {
+                Animator animator = animators[i];
+                if (animator != null
+                    && animator.isActiveAndEnabled
+                    && TryResolveDeathStateHash(
+                        animator,
+                        stateName,
+                        out _))
+                {
+                    return animator;
+                }
+            }
+
             for (int i = 0; i < animators.Length; i++)
             {
                 Animator animator = animators[i];
@@ -150,20 +231,202 @@ namespace Week14.Enemy
             return null;
         }
 
-        private static void HoldDeathAnimationFinalFrame(Animator[] animators, int triggerHash)
+        private static bool TryGetEnteredDeathState(
+            Animator animator,
+            int initialStateHash,
+            out AnimatorStateInfo state)
+        {
+            state = default;
+            if (animator == null || !animator.isActiveAndEnabled)
+            {
+                return false;
+            }
+
+            if (animator.IsInTransition(0))
+            {
+                AnimatorStateInfo next =
+                    animator.GetNextAnimatorStateInfo(0);
+                if (next.fullPathHash != 0)
+                {
+                    state = next;
+                    return true;
+                }
+            }
+
+            AnimatorStateInfo current =
+                animator.GetCurrentAnimatorStateInfo(0);
+            if (current.fullPathHash != 0
+                && current.fullPathHash != initialStateHash)
+            {
+                state = current;
+                return true;
+            }
+
+            return false;
+        }
+
+        private static void RestartDeathStatesAtBeginning(
+            Animator[] animators,
+            string stateName,
+            int triggerHash)
         {
             for (int i = 0; i < animators.Length; i++)
             {
                 Animator animator = animators[i];
                 if (animator == null
                     || !animator.isActiveAndEnabled
-                    || !HasAnimatorTrigger(animator, triggerHash))
+                    || !TryResolveDeathStateHash(
+                        animator,
+                        stateName,
+                        out int stateHash))
+                {
+                    continue;
+                }
+
+                if (HasAnimatorTrigger(animator, triggerHash))
+                {
+                    animator.ResetTrigger(triggerHash);
+                }
+
+                animator.Play(stateHash, 0, 0f);
+                animator.Update(0f);
+            }
+        }
+
+        private static bool TryResolveDeathStateHash(
+            Animator animator,
+            string configuredName,
+            out int stateHash)
+        {
+            stateHash = 0;
+            if (animator == null
+                || !animator.isActiveAndEnabled
+                || animator.layerCount <= 0)
+            {
+                return false;
+            }
+
+            string layerName = animator.GetLayerName(0);
+            if (TryResolveStateHash(
+                    animator,
+                    layerName,
+                    configuredName,
+                    out stateHash))
+            {
+                return true;
+            }
+
+            if (!string.Equals(
+                    configuredName,
+                    "Die",
+                    StringComparison.Ordinal)
+                && TryResolveStateHash(
+                    animator,
+                    layerName,
+                    "Die",
+                    out stateHash))
+            {
+                return true;
+            }
+
+            return !string.Equals(
+                    configuredName,
+                    "Death",
+                    StringComparison.Ordinal)
+                && TryResolveStateHash(
+                    animator,
+                    layerName,
+                    "Death",
+                    out stateHash);
+        }
+
+        private static bool TryResolveStateHash(
+            Animator animator,
+            string layerName,
+            string stateName,
+            out int stateHash)
+        {
+            stateHash = 0;
+            if (string.IsNullOrWhiteSpace(stateName))
+            {
+                return false;
+            }
+
+            int fullPathHash = Animator.StringToHash(
+                $"{layerName}.{stateName.Trim()}");
+            if (animator.HasState(0, fullPathHash))
+            {
+                stateHash = fullPathHash;
+                return true;
+            }
+
+            int shortNameHash = Animator.StringToHash(
+                stateName.Trim());
+            if (!animator.HasState(0, shortNameHash))
+            {
+                return false;
+            }
+
+            stateHash = shortNameHash;
+            return true;
+        }
+
+        private static bool TryGetAnimatorState(
+            Animator animator,
+            int stateHash,
+            out AnimatorStateInfo state)
+        {
+            state = default;
+            if (animator == null || !animator.isActiveAndEnabled)
+            {
+                return false;
+            }
+
+            AnimatorStateInfo current =
+                animator.GetCurrentAnimatorStateInfo(0);
+            if (current.fullPathHash == stateHash)
+            {
+                state = current;
+                return true;
+            }
+
+            if (!animator.IsInTransition(0))
+            {
+                return false;
+            }
+
+            AnimatorStateInfo next =
+                animator.GetNextAnimatorStateInfo(0);
+            if (next.fullPathHash != stateHash)
+            {
+                return false;
+            }
+
+            state = next;
+            return true;
+        }
+
+        private static void HoldDeathAnimationFinalFrame(
+            Animator[] animators,
+            int triggerHash,
+            int deathStateHash)
+        {
+            for (int i = 0; i < animators.Length; i++)
+            {
+                Animator animator = animators[i];
+                if (animator == null
+                    || !animator.isActiveAndEnabled
+                    || (!HasAnimatorTrigger(animator, triggerHash)
+                        && !animator.HasState(0, deathStateHash)))
                 {
                     continue;
                 }
 
                 AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
-                animator.Play(state.fullPathHash, 0, 1f);
+                int stateHash = animator.HasState(0, deathStateHash)
+                    ? deathStateHash
+                    : state.fullPathHash;
+                animator.Play(stateHash, 0, 1f);
                 animator.Update(0f);
                 animator.speed = 0f;
             }

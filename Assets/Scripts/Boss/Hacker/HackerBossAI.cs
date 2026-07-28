@@ -131,6 +131,10 @@ namespace Week14.Enemy
         private bool hasPreviousPlayerBlockingPosition;
         private bool isPlayerBlockingSuppressed;
         private bool isPlayerBlockingResumePending;
+        private bool executionMeleeReleaseHoldActive;
+        private bool executionMeleeReleaseRequested;
+        private bool executionWeaponSweepActive;
+        private bool executionBlackoutVisualActive;
         protected virtual bool UsesHackerPresentationUpdates => true;
         public override bool SuppressesBodyContactDamage => true;
         internal virtual HackerWireSettings WireSettings => wireSettings ??= new HackerWireSettings();
@@ -141,6 +145,17 @@ namespace Week14.Enemy
 
         internal bool IsFacingLeft => isFacingLeft;
         internal HackerFireWireResult LastFireWireResult => lastFireWireResult;
+        internal bool UsesExecutionMeleeReleaseHold =>
+            executionMeleeReleaseHoldActive;
+        internal bool IsWaitingForExecutionMeleeRelease =>
+            executionMeleeReleaseHoldActive
+            && !executionMeleeReleaseRequested;
+        internal bool IsExecutionCinematicSequenceActive =>
+            executionMeleeReleaseHoldActive;
+        internal bool IsExecutionWeaponSweepActive =>
+            executionWeaponSweepActive;
+        internal bool IsExecutionBlackoutVisualActive =>
+            executionBlackoutVisualActive;
 
         internal void SetLastFireWireResult(HackerFireWireResult result)
         {
@@ -156,7 +171,7 @@ namespace Week14.Enemy
 
         internal virtual void ApplyWireLifetimePenalty(PlayerCombatController player)
         {
-            if (player == null)
+            if (player == null || IsExecutionCinematicSequenceActive)
             {
                 return;
             }
@@ -274,6 +289,12 @@ namespace Week14.Enemy
             DestroyActiveProjectiles();
             ClearRuntimeCombatEffects();
             ClearSpawnedWeapons();
+            if (CurrentLives <= 1
+                && CurrentPhaseNumber
+                    >= Mathf.Max(1, hologramStartPhaseNumber))
+            {
+                DestroyHologram();
+            }
         }
 
         protected override void OnHpEmptyRecovered()
@@ -906,6 +927,67 @@ namespace Week14.Enemy
         protected override void ApplyExecutionFacing(Vector2 worldPosition)
         {
             ApplyHorizontalFacing(worldPosition.x - transform.position.x, true);
+        }
+
+        internal void BeginExecutionMeleeReleaseHold()
+        {
+            executionMeleeReleaseHoldActive = true;
+            executionMeleeReleaseRequested = false;
+            executionWeaponSweepActive = false;
+            executionBlackoutVisualActive = false;
+        }
+
+        internal void SetExecutionBlackoutVisual(bool active)
+        {
+            executionBlackoutVisualActive = active;
+        }
+
+        internal void PrepareExecutionCinematicAnimation()
+        {
+            ClearGroggyVisualForCinematic();
+        }
+
+        internal void ReleaseExecutionMeleeAttack()
+        {
+            if (executionMeleeReleaseHoldActive)
+            {
+                executionMeleeReleaseRequested = true;
+            }
+        }
+
+        internal void BeginExecutionWeaponSweep()
+        {
+            if (executionMeleeReleaseHoldActive)
+            {
+                executionWeaponSweepActive = true;
+            }
+        }
+
+        internal void EndExecutionWeaponSweep()
+        {
+            executionWeaponSweepActive = false;
+        }
+
+        internal void EndExecutionCinematicPattern(
+            bool playGroggyVisual = true)
+        {
+            executionMeleeReleaseHoldActive = false;
+            executionMeleeReleaseRequested = false;
+            executionWeaponSweepActive = false;
+            executionBlackoutVisualActive = false;
+            StopCinematicPattern();
+            Stop();
+            DestroyActiveProjectiles();
+            HackerWireNodeProjectile.ClearAttachedNodes(this);
+            ClearSpawnedWeapons();
+            ClearRuntimeCombatEffects();
+            ApplyWalkState(false, true);
+            if (playGroggyVisual
+                && Health != null
+                && !Health.IsDead)
+            {
+                PlayGroggyStunVisual();
+            }
         }
 
         private void ApplyHorizontalFacing(float horizontalDirection, bool ignoreFacingLock)

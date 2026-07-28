@@ -49,7 +49,14 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            context.RestartAnimationTrigger(animationTriggerName);
+            bool sharesExecutionAnimation =
+                hacker.IsExecutionCinematicSequenceActive
+                && context.IsExecutingParallelPatternGroup;
+            if (!sharesExecutionAnimation)
+            {
+                context.RestartAnimationTrigger(animationTriggerName);
+            }
+
             yield return HackerMeleeAttackAction.Wait(context, windupSeconds);
 
             Transform throwOrigin = equippedWeapon

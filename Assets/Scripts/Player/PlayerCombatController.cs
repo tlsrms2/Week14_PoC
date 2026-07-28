@@ -497,6 +497,7 @@ namespace Week14.Combat
             {
                 CancelActiveCharge();
                 StopBody();
+                DamageReceiver.UpdateBodyColor();
                 SetMouseParryReticleVisible(false);
                 SetProjectileLockOnIndicatorVisible(false);
                 SetHoveredExecutionTarget(null);
@@ -657,6 +658,11 @@ namespace Week14.Combat
             DamageReceiver.FlashBodyColor(color, seconds);
         }
 
+        internal void BeginExecutionBodyColor()
+        {
+            DamageReceiver.BeginExecutionBodyColor();
+        }
+
         public void SetHackerParryVisual(bool hacked)
         {
             Rig.ResolveMouseParryReticleReference();
@@ -789,6 +795,15 @@ namespace Week14.Combat
         internal bool TryParryProjectileForCinematic(EnemyProjectile target)
         {
             return ParryController.TryParryProjectileForCinematic(target);
+        }
+
+        internal bool TryParryProjectileForCinematic(
+            EnemyProjectile target,
+            bool playPresentation)
+        {
+            return ParryController.TryParryProjectileForCinematic(
+                target,
+                playPresentation);
         }
 
         // 다음으로 성공하는 공격 1회(무기 종류 무관: 권총 한 발, 샷건 한 발의 전체 펠릿, 스나이퍼 차지샷 1회)에만

@@ -903,8 +903,9 @@ namespace Week14.Enemy
             finalDeathSequencePlayCount = Mathf.Max(0, finalDeathSequencePlayCount + (playing ? 1 : -1));
         }
 
-        // deathAnimator를 인스펙터에서 직접 지정했다면 그것만 쓰고, 비워뒀다면 BodyRoot 밑의
-        // Animator를 전부 찾아 broadcast 대상으로 삼는다(Assassin처럼 애니메이터가 여러 개인 보스 지원).
+        // 페이즈에 따라 활성 비주얼이 교체되는 보스가 있으므로, 직접 지정한 Animator와
+        // 보스 계층의 Animator를 모두 후보로 제공한다. 실제 사망 상태를 가진 활성 Animator는
+        // BossDeathSequencePlayer가 선택한다.
         internal Animator[] DeathAnimatorsForSequence
         {
             get
@@ -914,15 +915,25 @@ namespace Week14.Enemy
                     return deathAnimators;
                 }
 
+                List<Animator> candidates = new();
                 if (deathAnimator != null)
                 {
-                    deathAnimators = new[] { deathAnimator };
-                    return deathAnimators;
+                    candidates.Add(deathAnimator);
                 }
 
-                deathAnimators = bodyRoot != null
-                    ? bodyRoot.GetComponentsInChildren<Animator>(true)
-                    : GetComponentsInChildren<Animator>(true);
+                Animator[] hierarchyAnimators =
+                    GetComponentsInChildren<Animator>(true);
+                for (int i = 0; i < hierarchyAnimators.Length; i++)
+                {
+                    Animator animator = hierarchyAnimators[i];
+                    if (animator != null
+                        && !candidates.Contains(animator))
+                    {
+                        candidates.Add(animator);
+                    }
+                }
+
+                deathAnimators = candidates.ToArray();
                 return deathAnimators;
             }
         }

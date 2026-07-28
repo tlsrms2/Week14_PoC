@@ -144,12 +144,24 @@ namespace Week14.Combat
 
         internal bool TryParryProjectileForCinematic(EnemyProjectile target)
         {
+            return TryParryProjectileForCinematic(target, true);
+        }
+
+        internal bool TryParryProjectileForCinematic(
+            EnemyProjectile target,
+            bool playPresentation)
+        {
             if (!HasValidParryConfig() || target == null || !target.CanBeIntercepted)
             {
                 return false;
             }
 
-            return ExecuteInstantParry(target, false, false);
+            return playPresentation
+                ? ExecuteInstantParry(target, false, false)
+                : TryInstantParry(
+                    target,
+                    out _,
+                    out _);
         }
 
         internal int AutoParryProjectilesNear(Vector2 center, float radius)

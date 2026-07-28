@@ -105,6 +105,15 @@ namespace Week14.Combat
             SpawnLine(startedAt);
         }
 
+        public void SetMuzzleCircleVisible(bool visible)
+        {
+            showMuzzleCircle = visible;
+            if (!visible)
+            {
+                SetMuzzleCircleActive(false);
+            }
+        }
+
         public void Stop(bool clearImmediately)
         {
             emitting = false;

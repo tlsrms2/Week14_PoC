@@ -169,6 +169,7 @@ namespace Week14.Enemy
         private Vector3 firstPosition;
         private Vector3 secondPosition;
         private float dissolveStartedAt = -1f;
+        private Color baseColor;
 
         internal static void Create(HackerWireNodeProjectile first, HackerWireNodeProjectile second)
         {
@@ -214,6 +215,13 @@ namespace Week14.Enemy
             secondPosition = second.transform.position;
 
             PlayerCombatController player = PlayerCombatController.Active;
+            if (wireOwner != null
+                && wireOwner.IsExecutionCinematicSequenceActive)
+            {
+                playerWasTouching = false;
+                return;
+            }
+
             bool isTouching = IsPlayerTouchingWire(player);
             if (isTouching && !playerWasTouching)
             {
@@ -231,6 +239,13 @@ namespace Week14.Enemy
             {
                 return;
             }
+
+            Color targetColor = wireOwner != null
+                && wireOwner.IsExecutionBlackoutVisualActive
+                    ? Color.white
+                    : baseColor;
+            line.startColor = targetColor;
+            line.endColor = targetColor;
 
             if (dissolveStartedAt >= 0f)
             {
@@ -291,6 +306,7 @@ namespace Week14.Enemy
             Color color = wireOwner != null
                 ? wireOwner.WireSettings.Color
                 : new Color(0.35f, 0.8f, 1f, 0.85f);
+            baseColor = color;
             line = gameObject.AddComponent<LineRenderer>();
             line.useWorldSpace = true;
             line.positionCount = 2;

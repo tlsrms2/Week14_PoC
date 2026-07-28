@@ -1897,7 +1897,7 @@ MonoBehaviour:
     action:
       rid: 6489939497712877878
     sequences: []
-    editorPosition: {x: -310, y: 2662}
+    editorPosition: {x: -310, y: 2663}
   - nodeId: Throw Weapon7
     nodeGuid: 16eded8a67be49ce99a6487131174cc8
     nodeKind: 0
@@ -1906,7 +1906,7 @@ MonoBehaviour:
     action:
       rid: 6489939497712877884
     sequences: []
-    editorPosition: {x: -126, y: 2663}
+    editorPosition: {x: -316, y: 2793}
   - nodeId: Weapon Wire Orbit7
     nodeGuid: ec2c72737eb04a528849f9196cc1db97
     nodeKind: 0
@@ -1915,7 +1915,7 @@ MonoBehaviour:
     action:
       rid: 6489939497712877885
     sequences: []
-    editorPosition: {x: 53, y: 2659}
+    editorPosition: {x: 80, y: 2660}
   - nodeId: Melee Attack37
     nodeGuid: 6bf485c43f3e40e99a609a67beb3bef4
     nodeKind: 0
@@ -1924,7 +1924,7 @@ MonoBehaviour:
     action:
       rid: 6489939497712877886
     sequences: []
-    editorPosition: {x: 233, y: 2656}
+    editorPosition: {x: 260, y: 2657}
   - nodeId: Fire Sequential Sweep44
     nodeGuid: 0ab84e83858a4f909a6c8adc4f4095b4
     nodeKind: 0
@@ -1933,7 +1933,25 @@ MonoBehaviour:
     action:
       rid: 6489939497712877887
     sequences: []
-    editorPosition: {x: 178, y: 2798}
+    editorPosition: {x: 279, y: 2799}
+  - nodeId: Fire Sniping Projectile29
+    nodeGuid: c3dfa5b6a3dc48bb90468f6b2b2b5d07
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939497712877917
+    sequences: []
+    editorPosition: {x: -138, y: 2664}
+  - nodeId: Fire Sniping Projectile30
+    nodeGuid: 7da827025558410d9c479c57b3105554
+    nodeKind: 0
+    phaseIndex: 0
+    selectionMode: 0
+    action:
+      rid: 6489939497712877918
+    sequences: []
+    editorPosition: {x: -136, y: 2804}
   patterns:
   - patternId: P1-1
     nodeGuids:
@@ -2459,16 +2477,20 @@ MonoBehaviour:
   - patternId: Execution
     nodeGuids:
     - b9bc42d789224b5eb7b15ac71ac7d1b3
-    - 16eded8a67be49ce99a6487131174cc8
+    - c3dfa5b6a3dc48bb90468f6b2b2b5d07
     - ec2c72737eb04a528849f9196cc1db97
     - 6bf485c43f3e40e99a609a67beb3bef4
+    - 16eded8a67be49ce99a6487131174cc8
     - 0ab84e83858a4f909a6c8adc4f4095b4
+    - 7da827025558410d9c479c57b3105554
     nodeIds:
     - Scatter Wire Node2
-    - Throw Weapon7
+    - Fire Sniping Projectile29
     - Weapon Wire Orbit7
     - Melee Attack37
+    - Throw Weapon7
     - Fire Sequential Sweep44
+    - Fire Sniping Projectile30
   defaultPatternIds: []
   phases:
   - phaseIndex: 0
@@ -3786,16 +3808,16 @@ MonoBehaviour:
     threshold: 0
     phaseIndex: 0
   - fromNodeGuid: b9bc42d789224b5eb7b15ac71ac7d1b3
-    toNodeGuid: 16eded8a67be49ce99a6487131174cc8
+    toNodeGuid: c3dfa5b6a3dc48bb90468f6b2b2b5d07
     fromNodeId: Scatter Wire Node2
-    toNodeId: Throw Weapon7
+    toNodeId: Fire Sniping Projectile29
     fromOutputPortIndex: 0
     conditionType: 0
     threshold: 0
     phaseIndex: 0
-  - fromNodeGuid: 16eded8a67be49ce99a6487131174cc8
+  - fromNodeGuid: c3dfa5b6a3dc48bb90468f6b2b2b5d07
     toNodeGuid: ec2c72737eb04a528849f9196cc1db97
-    fromNodeId: Throw Weapon7
+    fromNodeId: Fire Sniping Projectile29
     toNodeId: Weapon Wire Orbit7
     fromOutputPortIndex: 0
     conditionType: 0
@@ -4052,6 +4074,18 @@ MonoBehaviour:
     toNodeGuid: 0ab84e83858a4f909a6c8adc4f4095b4
     fromNodeId: Melee Attack37
     toNodeId: Fire Sequential Sweep44
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: c3dfa5b6a3dc48bb90468f6b2b2b5d07
+    toNodeGuid: 7da827025558410d9c479c57b3105554
+    fromNodeId: Fire Sniping Projectile29
+    toNodeId: Fire Sniping Projectile30
+    laneIndex: 0
+    targetLaneIndex: 0
+  - fromNodeGuid: b9bc42d789224b5eb7b15ac71ac7d1b3
+    toNodeGuid: 16eded8a67be49ce99a6487131174cc8
+    fromNodeId: Scatter Wire Node2
+    toNodeId: Throw Weapon7
     laneIndex: 0
     targetLaneIndex: 0
   debugForceSinglePattern: 0
@@ -4429,6 +4463,7 @@ MonoBehaviour:
         fireInterval: 0.08
         fireSfxId: BossNormalShot
         recoverySeconds: 0.25
+        executionSpeedMultiplier: 1.75
         flyingSprite: {fileID: -7263751535809043743, guid: 20152adbaac57f440a99906ebede87d0, type: 3}
         attachedSprite: {fileID: 299151475, guid: 5c417a1355187d84cbad5851c5137f02, type: 3}
     - rid: 6489939136707035227
@@ -10535,6 +10570,8 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         recoverySeconds: 0.2
+        waitForChargeBeforeNextAction: 1
+        executionChargeWaitTimeoutSeconds: 4
     - rid: 6489939186800656690
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -10799,6 +10836,8 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         recoverySeconds: 0.2
+        waitForChargeBeforeNextAction: 1
+        executionChargeWaitTimeoutSeconds: 4
     - rid: 6489939186800656695
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -15159,6 +15198,8 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         recoverySeconds: 0.2
+        waitForChargeBeforeNextAction: 1
+        executionChargeWaitTimeoutSeconds: 4
     - rid: 6489939200651559040
       type: {class: HackerFireGlitchProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -15208,6 +15249,8 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         recoverySeconds: 0.2
+        waitForChargeBeforeNextAction: 1
+        executionChargeWaitTimeoutSeconds: 4
     - rid: 6489939200651559042
       type: {class: HackerFireWireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -16820,6 +16863,8 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         recoverySeconds: 0.2
+        waitForChargeBeforeNextAction: 1
+        executionChargeWaitTimeoutSeconds: 4
     - rid: 6489939200651559098
       type: {class: HackerFireGlitchProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -16869,6 +16914,8 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         recoverySeconds: 0.2
+        waitForChargeBeforeNextAction: 1
+        executionChargeWaitTimeoutSeconds: 4
     - rid: 6489939200651559099
       type: {class: HackerFireGlitchProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -16918,6 +16965,8 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         recoverySeconds: 0.2
+        waitForChargeBeforeNextAction: 1
+        executionChargeWaitTimeoutSeconds: 4
     - rid: 6489939200651559100
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -17182,6 +17231,8 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         recoverySeconds: 0.2
+        waitForChargeBeforeNextAction: 1
+        executionChargeWaitTimeoutSeconds: 4
     - rid: 6489939200651559103
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -19589,7 +19640,7 @@ MonoBehaviour:
           trailWidthMultiplier: 3
         launchOriginPath: 
         animationTriggerName: Throw
-        windupSeconds: 0.35
+        windupSeconds: 0
         nodeCount: 6
         startAngleOffset: 0
         randomizeStartAngle: 1
@@ -19597,6 +19648,7 @@ MonoBehaviour:
         fireInterval: 0.08
         fireSfxId: BossNormalShot
         recoverySeconds: 0.25
+        executionSpeedMultiplier: 1.75
         flyingSprite: {fileID: -7263751535809043743, guid: 20152adbaac57f440a99906ebede87d0, type: 3}
         attachedSprite: {fileID: 299151475, guid: 5c417a1355187d84cbad5851c5137f02, type: 3}
     - rid: 6489939497712877884
@@ -19606,7 +19658,7 @@ MonoBehaviour:
         equippedThrowingWeaponPath: Hand/RightHand
         throwOriginPath: Hand/RightHand
         animationTriggerName: Throw
-        windupSeconds: 0.5
+        windupSeconds: 0
         flightSpeed: 6
         recoverySeconds: 0
         landingDistance: 5
@@ -19650,7 +19702,7 @@ MonoBehaviour:
         readyTriggerName: WeaponWireOrbitReady
         orbitTriggerName: WeaponWireOrbit
         recallTriggerName: RecallWeapon
-        readySeconds: 0.5
+        readySeconds: 0.3
         recoverySeconds: 0
         weaponPositioningSeconds: 0.5
         orbitSeconds: 0.5
@@ -19880,7 +19932,7 @@ MonoBehaviour:
     - rid: 6489939497712877887
       type: {class: HackerSequentialSweepFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        projectileName: "\uD328\uB9C1\uBD88\uAC00\uD0C4_\uB300\uAE30"
+        projectileName: "\uC77C\uBC18\uD0C4_\uB300\uAE30"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -19920,3 +19972,207 @@ MonoBehaviour:
         trackPlayerPerShot: 0
         fireInterval: 0.02
         recoverySeconds: 0
+    - rid: 6489939497712877917
+      type: {class: HackerSnipingFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uC800\uACA9\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        firePointPath: MuzzlePoints/SnipingPoint
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
+        enableSlightHoming: 1
+        homingSeconds: 0.8
+        homingTurnDegreesPerSecond: 40
+        knockbackSpeed: 9
+        knockbackStaggerSeconds: 0.16
+        initialZeroSpeedSeconds: 0.065
+        flightSpeedCurveSeconds: 1
+        flightSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 2
+            outSlope: 2
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.109347686
+            value: 0.9910231
+            inSlope: 0.06760777
+            outSlope: 0.06760777
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.21364245
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        preChargeFacingSeconds: 0.1
+        postFireFacingSeconds: 0.3
+        windupSeconds: 0.4
+        chargeSfxId: GunCharge
+        chargeStartRadius: 0.7
+        chargeEndRadius: 0.08
+        chargeLineWidth: 0.05
+        chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
+        chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 8
+        chargeConvergenceLineWidth: 0.05
+        chargeConvergenceMaxLengthRatio: 0.55
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.3
+        chargeConvergenceMaxRepeatDelaySeconds: 0.22
+        aimIndicatorLength: 20
+        aimIndicatorDashWidth: 0.035
+        aimIndicatorDashLength: 0.22
+        aimIndicatorDashGap: 0.16
+        aimIndicatorColor: {r: 1, g: 0.25, b: 0.08, a: 0.58}
+        aimIndicatorSortingOrder: 17
+    - rid: 6489939497712877918
+      type: {class: HackerSnipingFireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
+      data:
+        projectileName: "\uCD08\uC800\uACA9\uD0C4"
+        projectile:
+          prefab: {fileID: 0}
+          bulletDamage: 1
+          chargeSeconds: 0.15
+          chargeDriftSpeed: 0.25
+          aimAtPlayerWhileCharging: 1
+          aimAtPlayerOnLaunch: 0
+          speed: 7
+          lifetime: 3
+          radius: 0.12
+          trailSeconds: 0.1
+          trailWidthMultiplier: 3
+        firePointPath: MuzzlePoints/SnipingPoint
+        chargeSecondsOverride: -1
+        fireSfxId: 
+        launchSfxId: 
+        effects:
+          smoke:
+            enabled: 1
+            color: {r: 0, g: 0, b: 0, a: 0.5882353}
+            scale: 1
+            count: 12
+          smokeInterval: 0.12
+          muzzleFlash:
+            enabled: 1
+            prefab: {fileID: 47081197872886987, guid: c8e1a05588868d247bfbdbdea436bbff, type: 3}
+            scale: 2
+          cameraShake:
+            enabled: 0
+            seconds: 0.14
+            distance: 0.22
+            frequency: 0.12
+        muzzleFlashPrefabFacesLeft: 1
+        enableSlightHoming: 1
+        homingSeconds: 0.8
+        homingTurnDegreesPerSecond: 40
+        knockbackSpeed: 9
+        knockbackStaggerSeconds: 0.16
+        initialZeroSpeedSeconds: 0.065
+        flightSpeedCurveSeconds: 1
+        flightSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 2
+            outSlope: 2
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.109347686
+            value: 0.9910231
+            inSlope: 0.06760777
+            outSlope: 0.06760777
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0.21364245
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        preChargeFacingSeconds: 0.1
+        postFireFacingSeconds: 0.3
+        windupSeconds: 0.7
+        chargeSfxId: GunCharge
+        chargeStartRadius: 0.7
+        chargeEndRadius: 0.08
+        chargeLineWidth: 0.05
+        chargeColor: {r: 1, g: 0.4136189, b: 0, a: 0.4509804}
+        chargeStartAlphaMultiplier: 0.15
+        chargeEndAlphaMultiplier: 1
+        chargeSortingOrder: 20
+        enableChargeConvergenceLines: 1
+        chargeStartLineCount: 4
+        chargeEndLineCount: 8
+        chargeConvergenceLineWidth: 0.05
+        chargeConvergenceMaxLengthRatio: 0.55
+        chargeConvergenceMinCycleSeconds: 0.12
+        chargeConvergenceMaxCycleSeconds: 0.3
+        chargeConvergenceMaxRepeatDelaySeconds: 0.22
+        aimIndicatorLength: 20
+        aimIndicatorDashWidth: 0.035
+        aimIndicatorDashLength: 0.22
+        aimIndicatorDashGap: 0.16
+        aimIndicatorColor: {r: 1, g: 0.25, b: 0.08, a: 0.58}
+        aimIndicatorSortingOrder: 17
