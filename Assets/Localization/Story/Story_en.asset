@@ -55,8 +55,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333520318465
-    m_Localized: Code name <color=#73f3ff>Ion</color>, Class K26, No mission in
-      progress.
+    m_Localized: Code name <color=#73f3ff>Ion</color>, Class K26, No mission in progress.
     m_Metadata:
       m_Items: []
   - m_Id: 5333520318466
@@ -234,9 +233,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512804
-    m_Localized: Code name <color=#73f3ff>Ion</color>, after investigating the
-      Syndicate's data, I have finished analyzing the individuals who appear to
-      be connected to the incident.
+    m_Localized: Code name <color=#73f3ff>Ion</color>, after investigating the Syndicate's
+      data, I have finished analyzing the individuals who appear to be connected
+      to the incident.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512805
@@ -492,9 +491,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512857
-    m_Localized: Normally, the location of such a high-ranking executive would
-      not be easy to pinpoint, but <color=#ddbd78>Canon</color> has a large public
-      information footprint, so we were able to identify their location easily.
+    m_Localized: Normally, the location of such a high-ranking executive would not
+      be easy to pinpoint, but <color=#ddbd78>Canon</color> has a large public information
+      footprint, so we were able to identify their location easily.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512858
@@ -604,9 +603,8 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5333524512879
     m_Localized: The location of the <color=#ddbd78>Syndicate headquarters</color>
-      has been <color=#73f3ff>registered on the panel</color>. Before Code name
-      <color=#ddbd78>Echo</color> arrives, I recommend that you <color=#FF4C5C>visit</color>
-      it first.
+      has been <color=#73f3ff>registered on the panel</color>. Before Code name <color=#ddbd78>Echo</color>
+      arrives, I recommend that you <color=#FF4C5C>visit</color> it first.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512880
@@ -645,8 +643,8 @@ MonoBehaviour:
   - m_Id: 5333524512886
     m_Localized: Since the <color=#73f3ff>collected data chips</color> are subsequently
       used for <color=#73f3ff>module expansion that improves equipment performance</color>,
-      it is recommended to <color=#73f3ff>prioritize securing data chips if the
-      battle is challenging</color>.
+      it is recommended to <color=#73f3ff>prioritize securing data chips if the battle
+      is challenging</color>.
     m_Metadata:
       m_Items: []
   - m_Id: 5333524512887
@@ -763,7 +761,7 @@ MonoBehaviour:
     m_Localized: 'When hit by an enemy attack, <color=#73f3ff>a bullet-type energy
       core is consumed first to absorb the damage.</color>
 
-      
+
 
       <color=#FF4C5C>If
       you take damage while possessing zero cores, it will result in death.</color>'
@@ -799,12 +797,10 @@ MonoBehaviour:
       projectiles with the ARGUS eye, allowing your prosthetic arm to automatically
       intercept them.</color>
 
-      
 
-      <color=#73f3ff>A successful intercept
-      neutralizes the attack and automatically absorbs its energy into the core.</color>
+      <color=#73f3ff>A successful intercept neutralizes
+      the attack and automatically absorbs its energy into the core.</color>
 
-      
 
       <color=#FF4C5C>Failing
       multiple intercepts in a short time</color> strains the ARGUS eye, <color=#FF4C5C>gradually
@@ -830,10 +826,10 @@ MonoBehaviour:
     m_Localized: 'Bullet-type energy cores will <color=#73f3ff>overload and be automatically
       discharged if held for too long.</color>
 
-      
 
-      The ammo icon in
-      the magazine indicates the time remaining until overload.'
+
+      The ammo icon in the magazine
+      indicates the time remaining until overload.'
     m_Metadata:
       m_Items: []
   - m_Id: 5333532901405
@@ -850,12 +846,12 @@ MonoBehaviour:
     m_Localized: 'Press the <sprite name="icon_space"> to <color=#73f3ff>use a active
       skill.</color>
 
-      
+
 
       <color=#73f3ff>Active Skills have a cooldown</color>
       and can be used again after a certain time.
 
-      
+
 
       The <color=#73f3ff>skill
       gauge around the magazine</color> indicates when the skill is ready to use.'
@@ -959,10 +955,10 @@ MonoBehaviour:
       the <color=#73f3ff>ARGUS tactical prosthetic eye detects a vulnerable blue
       energy core</color>.
 
-      
 
-      When you <color=#73f3ff>intercept that core</color>, <color=#73f3ff>the enemy
-      is stunned and extra energy is generated nearby</color>.'
+
+      When you <color=#73f3ff>intercept that core</color>,
+      <color=#73f3ff>the enemy is stunned and extra energy is generated nearby</color>.'
     m_Metadata:
       m_Items: []
   - m_Id: 2147990514270208
