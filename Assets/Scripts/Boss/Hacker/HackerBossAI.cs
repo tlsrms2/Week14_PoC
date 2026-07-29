@@ -47,6 +47,12 @@ namespace Week14.Enemy
             : null;
         protected override bool RotatesBodyToPlayer => false;
 
+        // "Die" 트리거의 실제 도착 스테이트 이름. Anim-Hacker-1w.controller에만 존재하고
+        // 이름이 "Die"가 아니라 "1w-die"라서, 트리거 이름으로 스테이트를 찾는 기본 로직으로는
+        // 못 찾는다. 이 값을 지정해 BossDeathSequencePlayer가 처형 컷신 막바지에 남아있는
+        // 다른 트리거(Release/Cancel 등)의 전이를 사망 스테이트로 오인하는 걸 막는다.
+        protected override string DeathStateNameOverride => "1w-die";
+
         [Header("Wire Bullet Lifetime Penalty")]
         [SerializeField, Min(0f)] private float wireLifetimeReductionSeconds = 2.5f;
         [SerializeField, Min(0f)] private float wireMinimumRemainingSeconds = 1f;

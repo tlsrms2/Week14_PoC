@@ -70,11 +70,17 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            // 트리거 이름과 실제 스테이트 이름이 다른 보스(예: Hacker "Die" -> "1w-die")를 위해
+            // BossAI.DeathStateNameOverride가 있으면 그걸 스테이트 검색에 우선 사용한다.
+            string stateName = !string.IsNullOrWhiteSpace(boss.DeathStateNameForSequence)
+                ? boss.DeathStateNameForSequence
+                : triggerName;
+
             int triggerHash = Animator.StringToHash(triggerName);
             Animator primary = FindPrimaryDeathAnimator(
                 animators,
                 triggerHash,
-                triggerName);
+                stateName);
             if (primary == null)
             {
                 yield return WaitDeathAnimationFallback(boss);
@@ -98,18 +104,22 @@ namespace Week14.Enemy
             AnimatorStateInfo deathState = default;
             if (TryResolveDeathStateHash(
                     primary,
-                    triggerName,
+                    stateName,
                     out deathStateHash))
             {
                 RestartDeathStatesAtBeginning(
                     animators,
-                    triggerName,
+                    stateName,
                     triggerHash);
                 deathState =
                     primary.GetCurrentAnimatorStateInfo(0);
             }
             else
             {
+                // 이름으로 못 찾았을 때만 쓰는 폴백: 트리거 세팅 직후 진입하는 아무 스테이트나
+                // 사망 스테이트로 추정한다. 처형 컷신 막바지에 아직 소모되지 않은 다른 트리거의
+                // 전이를 잘못 붙잡을 수 있으니, 이름을 아는 보스는 DeathStateNameOverride를 반드시
+                // 지정해 이 분기를 타지 않게 하는 게 안전하다.
                 float stateEntryStartedAt = Time.unscaledTime;
                 float stateEntryTimeout = Mathf.Max(
                     0.5f,

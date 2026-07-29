@@ -939,6 +939,15 @@ namespace Week14.Enemy
         }
 
         internal string DeathTriggerNameForSequence => deathTriggerName;
+
+        // 트리거 이름과 실제 사망 스테이트 이름이 다른 보스(예: Hacker의 "Die" 트리거 -> "1w-die"
+        // 스테이트)를 위한 오버라이드. null/빈 문자열이면 BossDeathSequencePlayer가 트리거 이름으로
+        // 스테이트를 찾아보고, 그마저 실패하면 트리거를 세팅한 직후 진입하는 아무 스테이트나
+        // 사망 스테이트로 추정하는 동적 감지로 넘어간다 — 이 동적 감지는 처형 컷신 막바지에 아직
+        // 소모되지 않은 다른 트리거(Release/Cancel 등)의 전이를 사망 스테이트로 잘못 붙잡을 수 있으므로,
+        // 실제 스테이트 이름을 아는 보스는 반드시 이 값을 지정해야 한다.
+        protected virtual string DeathStateNameOverride => null;
+        internal string DeathStateNameForSequence => DeathStateNameOverride;
         internal float FinalDeathExplosionSecondsForSequence => finalDeathExplosionSeconds;
         internal int FinalDeathExplosionCountForSequence => finalDeathExplosionCount;
         internal GameObject FinalDeathExplosionPrefabForSequence => finalDeathExplosionPrefab;

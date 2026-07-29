@@ -596,6 +596,11 @@ namespace Week14.Combat
                             if (isFinalBossExecution)
                             {
                                 finalDeathCamera = presentation.BeginFinalDeathCameraFocus(boss);
+                                // 레터박스가 죽는 애니메이션이 다 끝난 뒤에 걷히면, 플레이어 입장에서는
+                                // "컷신이 끝난 순간 이미 보스가 죽어있는" 것처럼 보인다. 처형 연출이
+                                // 끝났다는 시각적 신호(레터박스 해제)가 먼저 오고, 그 다음에 Die
+                                // 애니메이션이 재생을 시작해야 자연스럽다.
+                                yield return presentation.HideFinalExecutionLetterbox();
                             }
                             else
                             {
@@ -609,7 +614,6 @@ namespace Week14.Combat
                             bossExecutionSequence?.OnFinalDeathSequenceComplete(boss);
                             if (isFinalBossExecution)
                             {
-                                yield return presentation.HideFinalExecutionLetterbox();
                                 activeCamera?.EndCinematicFocus();
                             }
 
