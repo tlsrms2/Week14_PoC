@@ -1,3 +1,7 @@
+#if !(UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX || STEAMWORKS_WIN || STEAMWORKS_LIN_OSX)
+#define DISABLESTEAMWORKS
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -5,6 +9,9 @@ using UnityEngine;
 using Week14.Skills;
 using Week14.UI;
 using Week14.Weapons;
+#if !DISABLESTEAMWORKS
+using Steamworks;
+#endif
 
 namespace Week14.Save
 {
@@ -75,10 +82,62 @@ namespace Week14.Save
                 File.Delete(tempPath);
             }
 
+            TryDeleteCloudSlot(slot);
+
             if (slot == currentSlot)
             {
                 data = null;
             }
+        }
+
+#if !DISABLESTEAMWORKS
+        // Auto-Cloud가 로컬 파일 삭제를 클라우드 삭제로 취급하지 않으므로(오히려 다음 실행 시 클라우드에서
+        // 복원될 수 있음), 로컬 삭제와 별개로 명시적으로 클라우드 파일도 지워야 한다.
+        private static void TryDeleteCloudSlot(int slot)
+        {
+            if (!SteamManager.Initialized)
+            {
+                return;
+            }
+
+            string cloudFileName = GetCloudFileName(slot);
+            if (SteamRemoteStorage.FileExists(cloudFileName))
+            {
+                SteamRemoteStorage.FileDelete(cloudFileName);
+            }
+        }
+
+        // Auto-Cloud Root 설정 기준 상대 경로로 추정한 이름입니다. LogCloudFileList()로 실제 등록된
+        // 파일명과 일치하는지 반드시 확인하세요 — 이름이 다르면 FileDelete가 조용히 아무 일도 안 합니다.
+        private static string GetCloudFileName(int slot)
+        {
+            return $"{SaveFolderName}/game_data_{slot}.json";
+        }
+#else
+        private static void TryDeleteCloudSlot(int slot) { }
+#endif
+
+        // 디버그용: Steam Cloud에 실제로 등록된 파일 목록을 출력합니다. GetCloudFileName()이 만드는
+        // 이름이 실제 클라우드 파일명과 일치하는지 확인할 때 사용하세요.
+        public static void LogCloudFileList()
+        {
+#if !DISABLESTEAMWORKS
+            if (!SteamManager.Initialized)
+            {
+                Debug.LogWarning("[GameSaveManager] SteamManager가 초기화되지 않았습니다.");
+                return;
+            }
+
+            int fileCount = SteamRemoteStorage.GetFileCount();
+            Debug.Log($"[GameSaveManager] Steam Cloud 파일 {fileCount}개:");
+            for (int i = 0; i < fileCount; i++)
+            {
+                string fileName = SteamRemoteStorage.GetFileNameAndSize(i, out int fileSize);
+                Debug.Log($"  - {fileName} ({fileSize} bytes)");
+            }
+#else
+            Debug.LogWarning("[GameSaveManager] Steamworks가 비활성화된 빌드입니다.");
+#endif
         }
 
         // Data/Load()를 거치지 않고 파일에서 완료한 챌린지 개수만 직접 읽습니다(슬롯 진행도 미리보기용).

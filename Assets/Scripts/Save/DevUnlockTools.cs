@@ -43,6 +43,8 @@ namespace Week14.Save
         [SerializeField] private bool enableSetBossHpToOneHotkey = true;
         [Tooltip("플레이 중 이 키를 누르면 총알 무한 + 탄 유통기한 없음 + 스킬 쿨타임 없음 모드를 켜고 끕니다.")]
         [SerializeField] private bool enableGodModeToggleHotkey = true;
+        [Tooltip("플레이 중 이 키를 누르면 Steam 업적을 전부 미달성 상태로 초기화합니다.")]
+        [SerializeField] private bool enableClearAchievementsHotkey = true;
 #if ENABLE_INPUT_SYSTEM
         [SerializeField] private Key resetEverythingHotkey = Key.F1;
         [SerializeField] private Key unlockAllHotkey = Key.F2;
@@ -51,6 +53,7 @@ namespace Week14.Save
         [SerializeField] private Key grantChallengePointsHotkey = Key.F5;
         [SerializeField] private Key setBossHpToOneHotkey = Key.F6;
         [SerializeField] private Key godModeToggleHotkey = Key.F7;
+        [SerializeField] private Key clearAchievementsHotkey = Key.F8;
 #else
         [SerializeField] private KeyCode resetEverythingHotkey = KeyCode.F1;
         [SerializeField] private KeyCode unlockAllHotkey = KeyCode.F2;
@@ -59,6 +62,7 @@ namespace Week14.Save
         [SerializeField] private KeyCode grantChallengePointsHotkey = KeyCode.F5;
         [SerializeField] private KeyCode setBossHpToOneHotkey = KeyCode.F6;
         [SerializeField] private KeyCode godModeToggleHotkey = KeyCode.F7;
+        [SerializeField] private KeyCode clearAchievementsHotkey = KeyCode.F8;
 #endif
 
         [Header("개별 대상 (선택 스킬/보스/총기/챌린지 기능이 사용)")]
@@ -151,6 +155,11 @@ namespace Week14.Save
             if (enableGodModeToggleHotkey && WasHotkeyPressed(godModeToggleHotkey))
             {
                 ToggleGodMode();
+            }
+
+            if (enableClearAchievementsHotkey && WasHotkeyPressed(clearAchievementsHotkey))
+            {
+                ClearSteamAchievements();
             }
 
             if (godModeActive)
@@ -775,6 +784,31 @@ namespace Week14.Save
             }
 
             SkillLoadoutManager.Instance?.ResetActiveCooldown();
+        }
+
+        // ---------------------------------------------------------------
+        // Steam 업적 (세이브와 무관, Steam 클라이언트에만 적용)
+        // ---------------------------------------------------------------
+
+        [ContextMenu("Steam 업적 전체 초기화")]
+        public void ClearSteamAchievements()
+        {
+            if (SteamAchievementManager.Instance == null)
+            {
+                Debug.LogWarning("[DevUnlockTools] SteamAchievementManager 인스턴스를 찾지 못했습니다.");
+                return;
+            }
+
+            SteamAchievementManager.Instance.ClearAllAchievements();
+            Debug.Log("[DevUnlockTools] Steam 업적을 전부 초기화했습니다.");
+        }
+
+        // GameSaveManager.GetCloudFileName()이 추정하는 이름이 실제 Auto-Cloud 등록 이름과 일치하는지
+        // 확인용. 세이브를 한 번 업로드시킨 뒤(플레이 후 종료) 이 메뉴로 실제 파일명을 확인하세요.
+        [ContextMenu("Steam 클라우드 파일 목록 출력 (디버그)")]
+        public void LogSteamCloudFiles()
+        {
+            GameSaveManager.LogCloudFileList();
         }
 
         // ---------------------------------------------------------------
