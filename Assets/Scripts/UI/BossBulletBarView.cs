@@ -38,6 +38,7 @@ namespace Week14.UI
         private bool executionWindowActive;
         private int displayedBulletCount = -1;
         private Coroutine ratioTransitionRoutine;
+        private float executionWindowBlinkElapsed;
 
         private void OnEnable()
         {
@@ -70,6 +71,11 @@ namespace Week14.UI
 
         public void SetExecutionWindow(bool active, float remainingRatio)
         {
+            if (active && !executionWindowActive)
+            {
+                executionWindowBlinkElapsed = 0f;
+            }
+
             executionWindowActive = active;
             if (!active)
             {
@@ -94,6 +100,7 @@ namespace Week14.UI
             }
 
             executionWindowActive = false;
+            executionWindowBlinkElapsed = 0f;
             displayedBulletCount = -1;
 
             if (foregroundImage != null)
@@ -135,6 +142,12 @@ namespace Week14.UI
 
             while (elapsed < duration)
             {
+                if (IsGamePaused())
+                {
+                    yield return null;
+                    continue;
+                }
+
                 elapsed += Time.unscaledDeltaTime;
                 float ratio = Mathf.Lerp(from, to, Mathf.Clamp01(elapsed / duration));
                 ApplyRatio(ratio, blinkWhileAnimating);
@@ -239,10 +252,16 @@ namespace Week14.UI
 
         private void TickEffects()
         {
+            if (IsGamePaused())
+            {
+                return;
+            }
+
             float deltaTime = Time.unscaledDeltaTime;
 
             if (executionWindowActive)
             {
+                executionWindowBlinkElapsed += deltaTime;
                 TickExecutionWindowBlink();
                 return;
             }
@@ -267,7 +286,13 @@ namespace Week14.UI
                 return;
             }
 
-            float blink = 0.5f + 0.5f * Mathf.Sin(Time.unscaledTime * executionWindowBlinkSpeed * Mathf.PI * 2f);
+            float blink = 0.5f
+                + 0.5f
+                * Mathf.Sin(
+                    executionWindowBlinkElapsed
+                    * executionWindowBlinkSpeed
+                    * Mathf.PI
+                    * 2f);
             float alpha = Mathf.Lerp(executionWindowBlinkMinAlpha, 1f, blink);
             Color color = executionWindowColor;
             color.a *= alpha;
@@ -275,6 +300,12 @@ namespace Week14.UI
 
             SetFillAmount(fastGhostImage, currentRatio);
             SetFillAmount(slowGhostImage, currentRatio);
+        }
+
+        private static bool IsGamePaused()
+        {
+            return GameModalState.BlocksGameplayInput
+                && Mathf.Approximately(Time.timeScale, 0f);
         }
 
         private static void SetFillAmount(Image image, float ratio)

@@ -48,13 +48,53 @@ namespace Week14.Enemy
             Vector2 direction,
             bool playMuzzleFlash)
         {
-            if (!minionPatternEnabled || IsExecutionPaused || settings == null || settings.Prefab == null)
+            return FireMinionProjectileInternal(
+                source,
+                settings,
+                origin,
+                direction,
+                playMuzzleFlash,
+                false);
+        }
+
+        public virtual EnemyProjectile FireMinionProjectileForCinematic(
+            Minion source,
+            BossProjectileSettings settings,
+            Vector3 origin,
+            Vector2 direction,
+            bool playMuzzleFlash)
+        {
+            return FireMinionProjectileInternal(
+                source,
+                settings,
+                origin,
+                direction,
+                playMuzzleFlash,
+                true);
+        }
+
+        private EnemyProjectile FireMinionProjectileInternal(
+            Minion source,
+            BossProjectileSettings settings,
+            Vector3 origin,
+            Vector2 direction,
+            bool playMuzzleFlash,
+            bool allowExecutionCinematic)
+        {
+            if (!minionPatternEnabled
+                || (!allowExecutionCinematic && IsExecutionPaused)
+                || settings == null
+                || settings.Prefab == null)
             {
                 return null;
             }
 
             BulletGauge ownerBullets = source != null ? source.Bullets : Bullets;
-            bool canSpawn = source != null ? source.CanSpawnEnemyProjectile() : CanSpawnEnemyProjectile();
+            bool canSpawn = source != null
+                ? allowExecutionCinematic
+                    ? source.CanSpawnEnemyProjectileForCinematic()
+                    : source.CanSpawnEnemyProjectile()
+                : CanSpawnEnemyProjectile();
             if (!canSpawn)
             {
                 return null;

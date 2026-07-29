@@ -21,6 +21,13 @@ namespace Week14.Combat
 
         public static PlayerCombatController Active { get; private set; }
         public static bool IsExecutionCinematicActive => Active != null && Active.IsExecuting;
+
+        // IsExecutionCinematicActive는 처형 컷신 재생 구간만 커버하고, 마지막 목숨을 끊는 처형은
+        // 최종 샷이 꽂힌 뒤(IsExecuting이 이미 false로 꺼진 뒤) 사망 애니메이션 재생~결과 패널 표시
+        // 직전까지 IsWaitingForVictoryPanel 구간이 이어진다. ESC 일시정지처럼 "처형 연출이 끝나기
+        // 전에는 절대 끼어들면 안 되는" 용도는 이 둘을 합쳐서 봐야 한다.
+        public static bool IsAnyExecutionInProgress =>
+            Active != null && (Active.IsExecuting || Active.IsWaitingForVictoryPanel);
         private static int externalCombatPermissionCount;
         private static int leftAttackSuppressionCount;
         private static int parrySuppressionCount;
@@ -139,6 +146,7 @@ namespace Week14.Combat
         public BulletGauge Bullets => Context.Bullets;
         public Transform LeftGunOrigin => Context.LeftGunOrigin;
         public Transform LeftFireOrigin => Rig.GetLeftFireOrigin();
+        public Transform RightFireOrigin => Rig.GetRightFireOrigin();
         public bool IsReticleVisible => config != null
             && !GameModalState.BlocksGameplayInput
             && !IsPlayerControlLocked
@@ -153,6 +161,12 @@ namespace Week14.Combat
         public bool IsExecuting => ExecutionController.IsExecuting;
         public PlayerCombatConfig Config => Context.Config;
         public float MoveSpeedMultiplier => moveSpeedMultiplier * weaponMoveSpeedMultiplier;
+
+        internal void PlayExecutionImageForCinematic(float secondsUntilKillMoment)
+        {
+            executionImage?.Play(Mathf.Max(0f, secondsUntilKillMoment));
+        }
+
         public bool CanMove => CanAct && !IsExternallyMovementLocked && !IsBodyContactStaggered && !IsDashing;
         public bool IsBodyContactStaggered => DamageReceiver.IsBodyContactStaggered;
         public bool IsDashing => DashController.IsDashing;
@@ -490,6 +504,7 @@ namespace Week14.Combat
             {
                 CancelActiveCharge();
                 StopBody();
+                DamageReceiver.UpdateBodyColor();
                 SetMouseParryReticleVisible(false);
                 SetProjectileLockOnIndicatorVisible(false);
                 SetHoveredExecutionTarget(null);
@@ -650,6 +665,11 @@ namespace Week14.Combat
             DamageReceiver.FlashBodyColor(color, seconds);
         }
 
+        internal void BeginExecutionBodyColor()
+        {
+            DamageReceiver.BeginExecutionBodyColor();
+        }
+
         public void SetHackerParryVisual(bool hacked)
         {
             Rig.ResolveMouseParryReticleReference();
@@ -777,6 +797,20 @@ namespace Week14.Combat
         internal bool TryParryProjectileForMelee(EnemyProjectile target)
         {
             return ParryController.TryParryProjectileForMelee(target);
+        }
+
+        internal bool TryParryProjectileForCinematic(EnemyProjectile target)
+        {
+            return ParryController.TryParryProjectileForCinematic(target);
+        }
+
+        internal bool TryParryProjectileForCinematic(
+            EnemyProjectile target,
+            bool playPresentation)
+        {
+            return ParryController.TryParryProjectileForCinematic(
+                target,
+                playPresentation);
         }
 
         // 다음으로 성공하는 공격 1회(무기 종류 무관: 권총 한 발, 샷건 한 발의 전체 펠릿, 스나이퍼 차지샷 1회)에만

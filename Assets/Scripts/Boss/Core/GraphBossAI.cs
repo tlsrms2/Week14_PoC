@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Combat;
 
 namespace Week14.Enemy
 {
@@ -32,13 +34,19 @@ namespace Week14.Enemy
         private float pendingGroggySeconds;
         private float groggyRemainingSeconds;
         private bool isDebugPatternControlActive;
+        private bool isCinematicPatternControlActive;
         private bool isQaBehaviorPaused;
 
         protected override BossGraphAsset GraphAsset => bossGraph;
         protected BossGraphAsset BossGraph => bossGraph;
         protected BossActionContext GraphContext => graphContext;
         public override bool IsDashing => graphContext != null && graphContext.IsDashing;
+        internal override bool AllowsCinematicMovementForState =>
+            isCinematicPatternControlActive;
         protected IReadOnlyList<BossGraphProjectileEntry> GraphProjectiles => graphProjectiles;
+        protected override bool CanSpawnEnemyProjectileDuringCinematic =>
+            isCinematicPatternControlActive;
+        public BossGraphAsset ConfiguredGraphAsset => GraphAsset;
         public bool IsGroggy => isGroggy;
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -57,6 +65,7 @@ namespace Week14.Enemy
         {
             if (isQaBehaviorPaused
                 || isDebugPatternControlActive
+                || isCinematicPatternControlActive
                 || patternRoutine != null
                 || GraphAsset == null
                 || !CanStartGraphPattern())
@@ -75,6 +84,7 @@ namespace Week14.Enemy
         protected override void OnBossDied()
         {
             isQaBehaviorPaused = false;
+            isCinematicPatternControlActive = false;
             graphRunner.CancelForcedPattern();
             StopGraphPattern();
         }
@@ -82,6 +92,7 @@ namespace Week14.Enemy
         protected override void OnDisable()
         {
             isQaBehaviorPaused = false;
+            isCinematicPatternControlActive = false;
             graphRunner.CancelForcedPattern();
             StopGraphPattern();
             base.OnDisable();
@@ -129,6 +140,11 @@ namespace Week14.Enemy
 
         private void TickGroggy()
         {
+            if (isCinematicPatternControlActive)
+            {
+                return;
+            }
+
             if (isGroggy)
             {
                 groggyRemainingSeconds -= EnemyTimeScale.DeltaTime;
@@ -179,16 +195,52 @@ namespace Week14.Enemy
         // 하위 클래스(예: AssassinBossAI)를 위해 공개한다. isGroggy 게임플레이 상태(패턴 억제,
         // 이동 정지 등)는 건드리지 않는다 — HP Empty 동안의 패턴/이동 정지는 BossAI의
         // BeginHpEmptyForState가 이미 별도로 처리한다.
+        // Stun/EndStun 둘 다 트리거라, 직전 사이클에서 반대쪽 트리거가 애니메이터에 소모되지
+        // 못하고 남아있을 수 있다 — 이 경우 이번에 새로 세팅한 트리거로 상태에 진입하자마자
+        // 그 묵은 트리거 조건에 바로 되튕겨 나가버린다(MuscleBossAI가 겪었던 것과 동일한 문제).
+        // 그래서 새 트리거를 세팅하기 전에 반대쪽을 먼저 ResetTrigger로 지운다.
         protected void PlayGroggyStunVisual()
         {
+            ResetGroggyAnimatorTrigger(EndStunParameter);
             SetGroggyAnimatorTrigger(StunParameter);
             SetGroggyAnimatorBool(IsStunParameter, true);
         }
 
         protected void PlayGroggyEndStunVisual()
         {
+            ResetGroggyAnimatorTrigger(StunParameter);
             SetGroggyAnimatorTrigger(EndStunParameter);
             SetGroggyAnimatorBool(IsStunParameter, false);
+        }
+
+        protected void ClearGroggyVisualForCinematic()
+        {
+            Animator[] targets = GetGroggyAnimators();
+            for (int i = 0; i < targets.Length; i++)
+            {
+                Animator target = targets[i];
+                if (target == null || !target.isActiveAndEnabled)
+                {
+                    continue;
+                }
+
+                if (HasAnimatorParameter(target, StunParameter, AnimatorControllerParameterType.Trigger))
+                {
+                    target.ResetTrigger(StunParameter);
+                }
+
+                if (HasAnimatorParameter(target, EndStunParameter, AnimatorControllerParameterType.Trigger))
+                {
+                    target.ResetTrigger(EndStunParameter);
+                }
+
+                if (HasAnimatorParameter(target, IsStunParameter, AnimatorControllerParameterType.Bool))
+                {
+                    target.SetBool(IsStunParameter, false);
+                }
+
+                target.Update(0f);
+            }
         }
 
         protected void SetPatternGroggyAnimator(Animator animator)
@@ -202,7 +254,24 @@ namespace Week14.Enemy
             Animator[] targets = GetGroggyAnimators();
             for (int i = 0; i < targets.Length; i++)
             {
-                targets[i].SetTrigger(parameter);
+                Animator target = targets[i];
+                if (target != null && HasAnimatorParameter(target, parameter, AnimatorControllerParameterType.Trigger))
+                {
+                    target.SetTrigger(parameter);
+                }
+            }
+        }
+
+        private void ResetGroggyAnimatorTrigger(int parameter)
+        {
+            Animator[] targets = GetGroggyAnimators();
+            for (int i = 0; i < targets.Length; i++)
+            {
+                Animator target = targets[i];
+                if (target != null && HasAnimatorParameter(target, parameter, AnimatorControllerParameterType.Trigger))
+                {
+                    target.ResetTrigger(parameter);
+                }
             }
         }
 
@@ -211,8 +280,31 @@ namespace Week14.Enemy
             Animator[] targets = GetGroggyAnimators();
             for (int i = 0; i < targets.Length; i++)
             {
-                targets[i].SetBool(parameter, value);
+                Animator target = targets[i];
+                if (target != null && HasAnimatorParameter(target, parameter, AnimatorControllerParameterType.Bool))
+                {
+                    target.SetBool(parameter, value);
+                }
             }
+        }
+
+        // GetGroggyAnimators()가 BodyRoot 밑의 Animator를 전부 broadcast 대상으로 잡다 보니, 그중
+        // Stun/EndStun/isStun 파라미터가 아예 없는 Animator(예: 이펙트/그림자 전용 Animator)가 섞여
+        // 있으면 SetTrigger/SetBool이 "Parameter 'Hash ...' does not exist" 콘솔 에러를 던진다.
+        // 실제로 그 파라미터를 갖고 있는 Animator에만 보내도록 미리 걸러낸다.
+        private static bool HasAnimatorParameter(Animator animator, int parameterHash, AnimatorControllerParameterType type)
+        {
+            AnimatorControllerParameter[] parameters = animator.parameters;
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                AnimatorControllerParameter parameter = parameters[i];
+                if (parameter.nameHash == parameterHash && parameter.type == type)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         // patternGroggyAnimator를 인스펙터에서 직접 지정했다면 그것만 쓰고(기존 동작 그대로 유지),
@@ -239,14 +331,63 @@ namespace Week14.Enemy
 
         protected virtual BossActionContext CreateGraphContext(
             BossGraphAsset graphAsset = null,
-            bool skipApproachMovement = false)
+            bool skipApproachMovement = false,
+            Func<bool> executionPausedOverride = null,
+            Action<EnemyProjectile> projectileFired = null,
+            bool allowExecutionCinematicMotion = false)
         {
             return new BossActionContext(
                 this,
                 Stop,
-                () => IsExecutionPaused || isQaBehaviorPaused,
+                executionPausedOverride ?? (() => IsExecutionPaused || isQaBehaviorPaused),
                 graphAsset != null ? graphAsset : GraphAsset,
-                skipApproachMovement);
+                skipApproachMovement,
+                projectileFired,
+                allowExecutionCinematicMotion);
+        }
+
+        public bool HasConfiguredGraphPattern(string patternId)
+        {
+            BossGraphPattern pattern = GraphAsset != null ? GraphAsset.GetPattern(patternId) : null;
+            return pattern != null && pattern.NodeKeys != null && pattern.NodeKeys.Count > 0;
+        }
+
+        internal bool TryRunCinematicPatternOnce(
+            string patternId,
+            Action<EnemyProjectile> projectileFired)
+        {
+            BossGraphAsset graph = GraphAsset;
+            if (!gameObject.activeInHierarchy || !HasConfiguredGraphPattern(patternId))
+            {
+                Debug.LogWarning(
+                    $"{name}: Boss Graph에서 처형용 패턴 '{patternId}'을 실행할 수 없습니다.",
+                    this);
+                return false;
+            }
+
+            isCinematicPatternControlActive = true;
+            StopGraphPattern();
+            BossGraphPattern pattern = graph.GetPattern(patternId);
+            graphRunner.RestartAfterInterruption();
+            graphContext = CreateGraphContext(
+                graph,
+                skipApproachMovement: true,
+                executionPausedOverride: () => isQaBehaviorPaused,
+                projectileFired: projectileFired,
+                allowExecutionCinematicMotion: true);
+            patternRoutine = StartCoroutine(RunCinematicPatternOnce(graph, pattern, graphContext));
+            return true;
+        }
+
+        internal void StopCinematicPattern()
+        {
+            if (!isCinematicPatternControlActive)
+            {
+                return;
+            }
+
+            StopGraphPattern();
+            isCinematicPatternControlActive = false;
         }
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -376,6 +517,7 @@ namespace Week14.Enemy
 
             // StopCoroutine이 액션 내부 finally를 보장하지 않으므로 대시 도중 중단돼도
             // 플레이어 충돌 무시 상태가 남지 않게 컨텍스트 폐기 전에 직접 복구한다.
+            graphContext?.ClearAnimationBools();
             graphContext?.SetDashing(false);
             graphContext?.ClearPatternScopedBossChildAims();
             graphContext?.ResetBodyRootLocalOffset();
@@ -411,6 +553,27 @@ namespace Week14.Enemy
         }
 
         private IEnumerator RunDebugPatternOnce(
+            BossGraphAsset graph,
+            BossGraphPattern pattern,
+            BossActionContext context)
+        {
+            try
+            {
+                yield return graphRunner.RunPatternOnce(graph, pattern, context);
+            }
+            finally
+            {
+                Stop();
+                if (graphContext == context)
+                {
+                    graphContext = null;
+                }
+
+                patternRoutine = null;
+            }
+        }
+
+        private IEnumerator RunCinematicPatternOnce(
             BossGraphAsset graph,
             BossGraphPattern pattern,
             BossActionContext context)

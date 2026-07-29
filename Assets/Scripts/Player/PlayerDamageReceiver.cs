@@ -139,11 +139,17 @@ namespace Week14.Combat
             }
 
             BulletGauge bullets = context.Bullets;
+            bool executionActive = context.IsExecuting;
             bool temporaryColorActive = Time.time < temporaryBodyColorEndsAt;
-            bool hitColorActive = !temporaryColorActive && Time.time < bodyHitColorEndsAt;
+            bool hitColorActive = !executionActive
+                && !temporaryColorActive
+                && Time.time < bodyHitColorEndsAt;
             Color? overrideColor = temporaryColorActive
                 ? temporaryBodyColor
-                : !hitColorActive && bullets != null && bullets.IsEmpty
+                : !executionActive
+                    && !hitColorActive
+                    && bullets != null
+                    && bullets.IsEmpty
                     ? config.PlayerBodyBulletEmptyColor
                     : null;
             float flashAmount = hitColorActive ? 1f : 0f;
@@ -170,6 +176,13 @@ namespace Week14.Combat
                 bodyFlashPropertyBlock.SetFloat(FlashAmountId, flashAmount);
                 renderer.SetPropertyBlock(bodyFlashPropertyBlock);
             }
+        }
+
+        internal void BeginExecutionBodyColor()
+        {
+            bodyHitColorEndsAt = float.NegativeInfinity;
+            temporaryBodyColorEndsAt = float.NegativeInfinity;
+            UpdateBodyColor(true);
         }
 
         internal void FlashBodyColor(Color color, float seconds)

@@ -93,6 +93,8 @@ namespace Week14.Combat
         [SerializeField, Min(0)] private int executionFlourishShotCount = 3;
         [Tooltip("처형 사격 전 총 발사 애니메이션 반복 사이의 간격입니다.")]
         [SerializeField, Min(0.01f)] private float executionFlourishShotInterval = 0.08f;
+        [Tooltip("최종 생명이 아닌 보스 처형에서 추가로 재생할 공통 사운드, 슬로우, 카메라 Cue 설정입니다.")]
+        [SerializeField] private CommonExecutionPresentationProfile commonExecutionPresentationProfile;
 
         [Header("Final Execution Presentation")]
         [Tooltip("비워두면 모든 씬에서 보스 사망 폭발 연출을 재생합니다. 씬 이름을 등록하면 해당 씬에서만 재생합니다.")]
@@ -102,8 +104,16 @@ namespace Week14.Combat
         [SerializeField, Min(0f)] private float finalExecutionLetterboxEnterSeconds = 0.2f;
         [SerializeField, Min(0f)] private float finalExecutionBlackoutFadeInSeconds = 0.14f;
         [SerializeField, Min(0f)] private float finalExecutionBlackoutHoldSeconds = 0.45f;
-        [SerializeField, Range(0.01f, 1f)] private float finalExecutionImpactTimeScale = 0.08f;
-        [SerializeField, Min(0f)] private float finalExecutionImpactSlowSeconds = 0.55f;
+        [FormerlySerializedAs("finalExecutionImpactTimeScale")]
+        [FormerlySerializedAs("finalExecutionBlackoutTimeScale")]
+        [Tooltip("최종 사격 Line이 보스를 관통하는 순간 적용할 전역 시간 배율입니다.")]
+        [SerializeField, Range(0.01f, 1f)] private float finalExecutionShotTimeScale = 0.08f;
+        [FormerlySerializedAs("finalExecutionImpactSlowSeconds")]
+        [FormerlySerializedAs("finalExecutionBlackoutSlowSeconds")]
+        [Tooltip("최종 사격 관통 슬로우를 유지할 실제 시간입니다.")]
+        [SerializeField, Min(0f)] private float finalExecutionShotSlowSeconds = 0.22f;
+        [Tooltip("암전 중 총구에서 시작한 최종 사격 Line이 페이드아웃되는 실제 시간입니다.")]
+        [SerializeField, Min(0.01f)] private float finalExecutionShotLineSeconds = 0.16f;
         [SerializeField, Min(0f)] private float finalExecutionOutlineFlashSeconds = 0.04f;
         [SerializeField, Min(0f)] private float finalExecutionBlackoutFadeOutSeconds = 0.24f;
         [SerializeField, Min(0f)] private float finalExecutionLetterboxExitSeconds = 0.28f;
@@ -174,6 +184,8 @@ namespace Week14.Combat
         public float ExecutionFlourishDelaySeconds => executionFlourishDelaySeconds;
         public int ExecutionFlourishShotCount => executionFlourishShotCount;
         public float ExecutionFlourishShotInterval => executionFlourishShotInterval;
+        public CommonExecutionPresentationProfile CommonExecutionPresentationProfile =>
+            commonExecutionPresentationProfile;
         public float FinalExecutionResultPanelDelaySeconds => finalExecutionResultPanelDelaySeconds;
 
         public bool ShouldPlayFinalDeathExplosionsInScene(string sceneName)
@@ -204,8 +216,9 @@ namespace Week14.Combat
         public float FinalExecutionLetterboxEnterSeconds => finalExecutionLetterboxEnterSeconds;
         public float FinalExecutionBlackoutFadeInSeconds => finalExecutionBlackoutFadeInSeconds;
         public float FinalExecutionBlackoutHoldSeconds => finalExecutionBlackoutHoldSeconds;
-        public float FinalExecutionImpactTimeScale => finalExecutionImpactTimeScale;
-        public float FinalExecutionImpactSlowSeconds => finalExecutionImpactSlowSeconds;
+        public float FinalExecutionShotTimeScale => finalExecutionShotTimeScale;
+        public float FinalExecutionShotSlowSeconds => finalExecutionShotSlowSeconds;
+        public float FinalExecutionShotLineSeconds => finalExecutionShotLineSeconds;
         public float FinalExecutionOutlineFlashSeconds => finalExecutionOutlineFlashSeconds;
         public float FinalExecutionBlackoutFadeOutSeconds => finalExecutionBlackoutFadeOutSeconds;
         public float FinalExecutionLetterboxExitSeconds => finalExecutionLetterboxExitSeconds;

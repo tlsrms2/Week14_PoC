@@ -155,6 +155,11 @@ namespace Week14.Enemy
         public Vector3 SpawnPosition { get; private set; }
         public bool IsHpEmpty => hpGauge != null && hpGauge.IsEmpty;
         public bool IsBulletEmpty => IsHpEmpty;
+
+        // 은신/텔레포트로 맵에서 "사라지는" 보스(예: AssassinBossAI)가 콜라이더만 끄고 Transform은
+        // 그대로 남겨두는 경우, 반사탄 같은 호밍 로직이 사라진 위치를 계속 겨냥하는 걸 막기 위한
+        // 훅이다. 기본은 항상 타겟 가능(true)이고, 하위 클래스가 자신의 은신 상태에 맞게 오버라이드한다.
+        internal virtual bool IsPlayerTargetable => true;
         public bool IsExecutionLocked => isExecutionLocked;
         public bool IsFinalDeathSequencePlaying => isFinalDeathSequencePlaying;
         public virtual bool IsDashing => false;
@@ -815,6 +820,7 @@ namespace Week14.Enemy
 
         internal bool IsDeadForState => health != null && health.IsDead;
         internal bool IsExecutionLockedForState => isExecutionLocked;
+        internal virtual bool AllowsCinematicMovementForState => false;
         internal bool IsPhaseTransitionWaitingForState => PhaseController.IsPhaseTransitionWaiting;
         internal bool IsCombatStartedForState => PhaseController.IsCombatStarted;
         internal static bool IsExecutionPausedForState => IsExecutionPaused;
@@ -902,8 +908,9 @@ namespace Week14.Enemy
             finalDeathSequencePlayCount = Mathf.Max(0, finalDeathSequencePlayCount + (playing ? 1 : -1));
         }
 
-        // deathAnimator를 인스펙터에서 직접 지정했다면 그것만 쓰고, 비워뒀다면 BodyRoot 밑의
-        // Animator를 전부 찾아 broadcast 대상으로 삼는다(Assassin처럼 애니메이터가 여러 개인 보스 지원).
+        // 페이즈에 따라 활성 비주얼이 교체되는 보스가 있으므로, 직접 지정한 Animator와
+        // 보스 계층의 Animator를 모두 후보로 제공한다. 실제 사망 상태를 가진 활성 Animator는
+        // BossDeathSequencePlayer가 선택한다.
         internal Animator[] DeathAnimatorsForSequence
         {
             get
@@ -913,20 +920,39 @@ namespace Week14.Enemy
                     return deathAnimators;
                 }
 
+                List<Animator> candidates = new();
                 if (deathAnimator != null)
                 {
-                    deathAnimators = new[] { deathAnimator };
-                    return deathAnimators;
+                    candidates.Add(deathAnimator);
                 }
 
-                deathAnimators = bodyRoot != null
-                    ? bodyRoot.GetComponentsInChildren<Animator>(true)
-                    : GetComponentsInChildren<Animator>(true);
+                Animator[] hierarchyAnimators =
+                    GetComponentsInChildren<Animator>(true);
+                for (int i = 0; i < hierarchyAnimators.Length; i++)
+                {
+                    Animator animator = hierarchyAnimators[i];
+                    if (animator != null
+                        && !candidates.Contains(animator))
+                    {
+                        candidates.Add(animator);
+                    }
+                }
+
+                deathAnimators = candidates.ToArray();
                 return deathAnimators;
             }
         }
 
         internal string DeathTriggerNameForSequence => deathTriggerName;
+
+        // 트리거 이름과 실제 사망 스테이트 이름이 다른 보스(예: Hacker의 "Die" 트리거 -> "1w-die"
+        // 스테이트)를 위한 오버라이드. null/빈 문자열이면 BossDeathSequencePlayer가 트리거 이름으로
+        // 스테이트를 찾아보고, 그마저 실패하면 트리거를 세팅한 직후 진입하는 아무 스테이트나
+        // 사망 스테이트로 추정하는 동적 감지로 넘어간다 — 이 동적 감지는 처형 컷신 막바지에 아직
+        // 소모되지 않은 다른 트리거(Release/Cancel 등)의 전이를 사망 스테이트로 잘못 붙잡을 수 있으므로,
+        // 실제 스테이트 이름을 아는 보스는 반드시 이 값을 지정해야 한다.
+        protected virtual string DeathStateNameOverride => null;
+        internal string DeathStateNameForSequence => DeathStateNameOverride;
         internal float FinalDeathExplosionSecondsForSequence => finalDeathExplosionSeconds;
         internal int FinalDeathExplosionCountForSequence => finalDeathExplosionCount;
         internal GameObject FinalDeathExplosionPrefabForSequence => finalDeathExplosionPrefab;
@@ -1052,7 +1078,17 @@ namespace Week14.Enemy
 
         public bool CanSpawnEnemyProjectile()
         {
-            return !IsExecutionPaused && hpGauge != null && !hpGauge.IsEmpty;
+            if (hpGauge == null)
+            {
+                return false;
+            }
+
+            if (!IsExecutionPaused && !hpGauge.IsEmpty)
+            {
+                return true;
+            }
+
+            return CanSpawnEnemyProjectileDuringCinematic;
         }
 
         public void RegisterActiveProjectile(EnemyProjectile projectile)
@@ -1103,6 +1139,7 @@ namespace Week14.Enemy
         protected virtual bool TryHandlePlayerHitBeforeDamage(int bulletDamage, bool strongHit, Vector3 hitPosition, Vector2 hitDirection, Color hitColor) => false;
         protected virtual void OnPlayerHitAfterDamage(int bulletDamage, bool strongHit, Vector3 hitPosition, Vector2 hitDirection, Color hitColor) { }
         protected virtual bool RotatesBodyToPlayer => true;
+        protected virtual bool CanSpawnEnemyProjectileDuringCinematic => false;
         protected static bool IsExecutionPaused => PlayerCombatController.IsExecutionCinematicActive;
 
         protected EnemyProjectile SpawnBossProjectile(

@@ -258,9 +258,51 @@ MonoBehaviour:
   fallbackProfileSprite: {fileID: 0}
   speakerProfiles:
   - speaker: "\uC774\uC628"
+    expressionId: 
     profileSprite: {fileID: 21300000, guid: ec058bb051ca4964f8bc764e642e1f32, type: 3}
   - speaker: ERIS
+    expressionId: 
     profileSprite: {fileID: 21300000, guid: 35e076604abb97148965a2314065aa0e, type: 3}
+  useVisualNovelPortraits: 0
+  leftPortrait:
+    image: {fileID: 0}
+    rectTransform: {fileID: 0}
+  rightPortrait:
+    image: {fileID: 0}
+    rectTransform: {fileID: 0}
+  portraitTransitionSeconds: 0.2
+  portraitTransitionCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  activePortraitOffset: {x: 0, y: 0}
+  inactivePortraitOffset: {x: 0, y: -35}
+  hiddenPortraitOffset: {x: 0, y: -80}
+  leftHiddenPortraitSlideOffset: {x: -120, y: 0}
+  rightHiddenPortraitSlideOffset: {x: 120, y: 0}
+  activePortraitScale: 1
+  inactivePortraitScale: 0.92
+  inactivePortraitBrightness: 0.45
   hiddenOffset: {x: 0, y: -800}
   showSeconds: 0.5
   showCurve:
@@ -611,7 +653,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 8
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0

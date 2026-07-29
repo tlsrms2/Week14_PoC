@@ -1,5 +1,6 @@
 using UnityEngine;
 using Week14.Audio;
+using Week14.Combat;
 using Week14.Enemy;
 using Week14.GameFlow;
 
@@ -56,7 +57,10 @@ namespace Week14.UI
                 return;
             }
 
-            if (!isPaused && GameModalState.BlocksGameplayInput)
+            if (!isPaused
+                && (GameModalState.BlocksGameplayInput
+                    || PlayerCombatController.IsAnyExecutionInProgress
+                    || BossAI.IsAnyFinalDeathSequencePlaying))
             {
                 return;
             }
@@ -68,7 +72,11 @@ namespace Week14.UI
         // 컷신 등 다른 모달이 떠 있는 중에는(GameModalState.BlocksGameplayInput) 끼어들지 않는다.
         public void PauseForFocusLoss()
         {
-            if (isPaused || isClosing || GameModalState.BlocksGameplayInput)
+            if (isPaused
+                || isClosing
+                || GameModalState.BlocksGameplayInput
+                || PlayerCombatController.IsAnyExecutionInProgress
+                || BossAI.IsAnyFinalDeathSequencePlaying)
             {
                 return;
             }

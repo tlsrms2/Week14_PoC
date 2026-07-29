@@ -162,6 +162,7 @@ namespace Week14.UI
         [Tooltip("보스 확대가 풀리고 플레이어·보스 전투 구도로 돌아오기를 기다리는 최대 시간입니다.")]
         [SerializeField, Min(0f)] private float combatViewReturnTimeoutSeconds = 1.5f;
         [SerializeField, Min(0f)] private float letterboxExitOffset = 360f;
+        [Tooltip("보스 인트로와 처형 연출에서 보스 체력바가 아래로 이동하는 거리입니다.")]
         [SerializeField, Min(0f)] private float bossCombatUiEnterOffset = 260f;
         [SerializeField, Min(0f)] private float combatUiRevealSeconds = 0.38f;
         [SerializeField] private AnimationCurve combatUiRevealCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
@@ -749,9 +750,7 @@ namespace Week14.UI
 
         private float ResolveExecutionCombatUiOffset()
         {
-            return topLetterboxPanel != null
-                ? Mathf.Max(0f, topLetterboxPanel.rect.height)
-                : 0f;
+            return Mathf.Max(0f, bossCombatUiEnterOffset);
         }
 
         private IEnumerator AnimateLocationObjects(

@@ -126,6 +126,9 @@ namespace Week14.Enemy
             float initialAngle = Mathf.Atan2(initialDirection.y, initialDirection.x) * Mathf.Rad2Deg;
             float positioningSeconds = GetWeaponPositioningSeconds();
             bool orbitCompleted = false;
+            bool stayInPlace =
+                hacker.IsExecutionCinematicSequenceActive;
+            bool executionSweepStarted = false;
 
             hacker.FaceHorizontalDirection(initialDirection.x);
             using IDisposable facingLock = context.AcquireFacingLock();
@@ -153,6 +156,13 @@ namespace Week14.Enemy
                 context.PlayAnimationTrigger(readyTriggerName);
                 yield return HackerMeleeAttackAction.Wait(context, readySeconds);
 
+                if (stayInPlace)
+                {
+                    hacker.BeginExecutionWeaponSweep();
+                    executionSweepStarted = true;
+                    yield return null;
+                }
+
                 context.PlayAnimationTrigger(orbitTriggerName);
                 context.PlaySfx(HackerSfxIds.Resolve(orbitSfxId, HackerSfxIds.OrbitSweep));
                 attackEffect?.Play(context);
@@ -173,7 +183,11 @@ namespace Week14.Enemy
                     float progress = Mathf.Clamp01(elapsed / orbitSeconds);
                     float angle = initialAngle + directionMultiplier * rotationDegrees * GetCurveProgress(rotationSpeedCurve, progress);
                     float advanceMultiplier = EvaluateSpeedCurve(advanceSpeedCurve, progress);
-                    hacker.SetMovementVelocity(advanceDirection * (advanceSpeed * advanceMultiplier));
+                    hacker.SetMovementVelocity(
+                        stayInPlace
+                            ? Vector2.zero
+                            : advanceDirection
+                                * (advanceSpeed * advanceMultiplier));
                     SetWeaponOrbitPose(
                         weapon,
                         bossWireAnchor.position,
@@ -212,6 +226,11 @@ namespace Week14.Enemy
             }
             finally
             {
+                if (executionSweepStarted)
+                {
+                    hacker.EndExecutionWeaponSweep();
+                }
+
                 if (wireVisual != null)
                 {
                     UnityEngine.Object.Destroy(wireVisual.gameObject);

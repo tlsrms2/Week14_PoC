@@ -61,7 +61,7 @@ namespace Week14.Combat
         private IEnumerator DashRoutine(Vector2 direction, float averageSpeed, float duration)
         {
             IsDashing = true;
-            context.Visual?.PlayRoll(duration);
+            context.Visual?.PlayRoll(duration, direction);
 
             int playerLayer = context.PlayerGameObject.layer;
             int enemyLayer = LayerMask.NameToLayer(EnemyLayerName);

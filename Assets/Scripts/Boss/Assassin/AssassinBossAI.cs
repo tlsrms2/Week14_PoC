@@ -61,6 +61,7 @@ namespace Week14.Enemy
         private float stealthEntryDelayRemaining;
         private bool teleportVisibilityOverrideActive;
         private bool stealthVisibilityOverrideActive;
+        private bool executionStealthHiddenOverrideActive;
         private bool isHiddenFromMap;
         private Collider2D[] hiddenFromMapColliders;
         private bool[] hiddenFromMapColliderPreviousEnabled;
@@ -93,16 +94,19 @@ namespace Week14.Enemy
 
         internal bool IsStealthed => isStealthed;
         internal bool HasEnoughDaggersForRecallPattern => spawnedDaggers.Count >= daggerCountForRecallPattern;
+        public BossGraphAsset ConfiguredStealthGraphAsset => stealthGraph;
 
         // AssassinTeleportAroundPlayerAction의 hiddenSeconds 구간처럼 "맵에서 완전히 사라진" 상태일 때
-        // false가 되어, 락온/피격 판정에서 이 보스를 완전히 제외시키는 데 쓰인다.
-        internal bool IsPlayerTargetable => !isHiddenFromMap;
+        // false가 되어, 락온/피격 판정 및 반사탄 호밍(EnemyProjectile.RefreshReflectedDirection)에서
+        // 이 보스를 완전히 제외시키는 데 쓰인다.
+        internal override bool IsPlayerTargetable => !isHiddenFromMap;
 
         // 페이즈가 넘어가면(처형 성공으로 목숨 소모) 은신 중이었더라도 강제로 해제하고, 바닥에 남아있던
         // 단검과 아직 발사 대기열에 남아있는 분신도 전부 정리한다 — 다음 페이즈를 은신 상태/단검/분신이
         // 남아있는 채로 시작하지 않도록 하기 위함. OnBossDied/OnDisable이 하는 정리와 동일한 묶음이다.
         protected override void OnBossPhaseChanged(int phaseIndex, int phaseNumber)
         {
+            executionStealthHiddenOverrideActive = false;
             RequestStealth(false);
             ClearAssassinDaggers();
             ClearActiveClones();
@@ -136,6 +140,7 @@ namespace Week14.Enemy
             pendingStealthChange = false;
             teleportVisibilityOverrideActive = false;
             stealthVisibilityOverrideActive = false;
+            executionStealthHiddenOverrideActive = false;
             SetHiddenFromMap(false);
 
             if (!isStealthed)
@@ -169,6 +174,8 @@ namespace Week14.Enemy
 
         protected override void OnBossDied()
         {
+            executionStealthHiddenOverrideActive = false;
+            SnapStealthAlphaToVisible();
             ClearAssassinDaggers();
             ClearActiveClones();
             ApplyWalkState(false, true);
@@ -178,6 +185,8 @@ namespace Week14.Enemy
 
         protected override void OnDisable()
         {
+            executionStealthHiddenOverrideActive = false;
+            SnapStealthAlphaToVisible();
             ClearAssassinDaggers();
             ClearActiveClones();
             ApplyWalkState(false, true);
@@ -271,6 +280,62 @@ namespace Week14.Enemy
         internal void SetStealthVisibilityOverride(bool visible)
         {
             stealthVisibilityOverrideActive = visible;
+        }
+
+        internal bool HasConfiguredStealthGraphPattern(string patternId)
+        {
+            BossGraphPattern pattern = stealthGraph != null
+                ? stealthGraph.GetPattern(patternId)
+                : null;
+            return pattern != null
+                && pattern.NodeKeys != null
+                && pattern.NodeKeys.Count > 0;
+        }
+
+        internal bool BeginExecutionStealthPattern(string patternId)
+        {
+            if (!HasConfiguredStealthGraphPattern(patternId))
+            {
+                return false;
+            }
+
+            pendingStealthChange = false;
+            StopGraphPattern(true);
+            isStealthed = true;
+            stealthEntryDelayRemaining = 0f;
+            teleportVisibilityOverrideActive = false;
+            stealthVisibilityOverrideActive = true;
+            executionStealthHiddenOverrideActive = false;
+            SetHiddenFromMap(false);
+            SnapStealthAlphaToVisible();
+            return true;
+        }
+
+        internal void SetExecutionStealthHidden(bool hidden)
+        {
+            executionStealthHiddenOverrideActive = hidden;
+            if (hidden)
+            {
+                SetAlphaImmediate(stealthVisualTargetA, 0f);
+                SetAlphaImmediate(stealthVisualTargetB, 0f);
+                SetAlphaImmediate(stealthVisualTargetShadow, 0f);
+                return;
+            }
+
+            SnapStealthAlphaToVisible();
+        }
+
+        internal void EndExecutionStealthPatternAndReveal()
+        {
+            StopCinematicPattern();
+            pendingStealthChange = false;
+            isStealthed = false;
+            stealthEntryDelayRemaining = 0f;
+            teleportVisibilityOverrideActive = false;
+            stealthVisibilityOverrideActive = false;
+            executionStealthHiddenOverrideActive = false;
+            SetHiddenFromMap(false);
+            SnapStealthAlphaToVisible();
         }
 
         internal AssassinDagger CreateDagger(Vector3 position)
@@ -707,6 +772,14 @@ namespace Week14.Enemy
 
         private void ApplyStealthAlpha()
         {
+            if (executionStealthHiddenOverrideActive)
+            {
+                SetAlphaImmediate(stealthVisualTargetA, 0f);
+                SetAlphaImmediate(stealthVisualTargetB, 0f);
+                SetAlphaImmediate(stealthVisualTargetShadow, 0f);
+                return;
+            }
+
             bool forceVisible = stealthVisibilityOverrideActive && !teleportVisibilityOverrideActive;
             float targetAlphaA = teleportVisibilityOverrideActive ? 0f : forceVisible || !isStealthed ? 1f : stealthAlphaA / 255f;
             float targetAlphaB = teleportVisibilityOverrideActive ? 0f : forceVisible || !isStealthed ? 1f : stealthAlphaB / 255f;

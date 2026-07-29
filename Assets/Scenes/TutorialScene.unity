@@ -7351,10 +7351,10 @@ MonoBehaviour:
   speakerProfiles:
   - speaker: "\uC774\uC628"
     expressionId: 
-    profileSprite: {fileID: 21300000, guid: e60263b013020ac4090fc736277287d9, type: 3}
+    profileSprite: {fileID: 21300000, guid: ed4114721ec1bae41994986b20b7d8d7, type: 3}
   - speaker: ERIS
     expressionId: 
-    profileSprite: {fileID: 21300000, guid: 334800754973dac4b8a18f9483d18c62, type: 3}
+    profileSprite: {fileID: 21300000, guid: 4eb3537444c1b2745bf04d7c76a3ef1b, type: 3}
   useVisualNovelPortraits: 1
   leftPortrait:
     image: {fileID: 6969838647734733153}
@@ -7762,7 +7762,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e60263b013020ac4090fc736277287d9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ed4114721ec1bae41994986b20b7d8d7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8143,7 +8143,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 8
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0

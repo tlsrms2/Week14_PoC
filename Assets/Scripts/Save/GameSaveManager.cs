@@ -21,6 +21,12 @@ namespace Week14.Save
 
         public static int CurrentSlot => currentSlot;
 
+        // 슬롯이 실제로 바뀔 때만 발생합니다. WeaponLoadoutManager/SkillLoadoutManager처럼 세이브를
+        // 앱 생애주기 중 한 번만 읽고 DontDestroyOnLoad로 메모리에 캐시해두는 매니저들이, 슬롯 전환
+        // 시 이전 슬롯의 장비/스킬을 그대로 들고 새 슬롯(새 게임 튜토리얼 포함)에 넘겨버리는 문제를
+        // 막기 위한 훅입니다 — 구독자는 이 이벤트를 받으면 세이브에서 다시 로드해야 합니다.
+        public static event Action SlotChanged;
+
         private static string GetSlotPath(int slot)
         {
             return Path.Combine(Application.persistentDataPath, SaveFolderName, $"game_data_{slot}.json");
@@ -38,6 +44,7 @@ namespace Week14.Save
 
             currentSlot = slot;
             data = null;
+            SlotChanged?.Invoke();
         }
 
         // Data/Load()를 거치지 않고 파일 존재 여부만 확인합니다.

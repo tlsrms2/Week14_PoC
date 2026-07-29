@@ -52,6 +52,7 @@ MonoBehaviour:
   executionFlourishDelaySeconds: 0.5
   executionFlourishShotCount: 3
   executionFlourishShotInterval: 0.1
+  commonExecutionPresentationProfile: {fileID: 11400000, guid: 345a3987a44b78a458f84facddf0d7a1, type: 2}
   finalDeathExplosionSceneNames:
   - MainScene
   - Boss_Muscle
@@ -59,8 +60,9 @@ MonoBehaviour:
   finalExecutionLetterboxEnterSeconds: 0.2
   finalExecutionBlackoutFadeInSeconds: 0.14
   finalExecutionBlackoutHoldSeconds: 0.8
-  finalExecutionImpactTimeScale: 0.5
-  finalExecutionImpactSlowSeconds: 0.4
+  finalExecutionShotTimeScale: 0.18
+  finalExecutionShotSlowSeconds: 0.4
+  finalExecutionShotLineSeconds: 0.16
   finalExecutionOutlineFlashSeconds: 0.04
   finalExecutionBlackoutFadeOutSeconds: 0.24
   finalExecutionLetterboxExitSeconds: 0.28

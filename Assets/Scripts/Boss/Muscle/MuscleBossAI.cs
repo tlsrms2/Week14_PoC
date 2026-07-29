@@ -10,6 +10,20 @@ namespace Week14.Enemy
 
         [SerializeField] private Animator walkAnimator;
         [SerializeField, Min(0f)] private float walkVelocityThreshold = 0.01f;
+        [SerializeField, Header("Death Shadow")] private Transform deathShadow;
+        [SerializeField] private SpriteRenderer deathShadowFrameSource;
+        [SerializeField] private Animator deathShadowAnimator;
+        [SerializeField] private string deathShadowAnimationStateName = "Anim-Security-Die";
+        [SerializeField] private string deathShadowFramePrefix = "Security-Die_";
+        [SerializeField] private string deathShadowStageOneFrameName = "Security-Die_3";
+        [SerializeField, Min(0f)] private float deathShadowStageOneAnimationTime = 0.2f;
+        [SerializeField] private float deathShadowStageOneLocalX = -0.05f;
+        [SerializeField, Min(0f)] private float deathShadowStageOneScaleX = 0.55f;
+        [SerializeField] private string deathShadowStageTwoFrameName = "Security-Die_5";
+        [SerializeField, Min(0f)] private float deathShadowStageTwoAnimationTime = 0.5f;
+        [SerializeField] private float deathShadowStageTwoLocalX = -0.19f;
+        [SerializeField, Min(0f)] private float deathShadowStageTwoScaleX = 0.69f;
+        [SerializeField] private bool mirrorDeathShadowLocalXByFacing = true;
 
         private bool hasAppliedWalkState;
         private bool lastIsWalking;
@@ -17,6 +31,10 @@ namespace Week14.Enemy
         private Transform[] facingMirrorChildren;
         private Vector3[] facingMirrorBaseLocalPositions;
         private bool facingMirrorChildrenCached;
+        private Vector3 deathShadowBaseLocalPosition;
+        private Vector3 deathShadowBaseLocalScale;
+        private bool deathShadowBaseCached;
+        private int deathShadowStage;
 
         protected override GameObject BossMuzzleFlashVfxPrefab => EffectData != null
             ? EffectData.MuscleMuzzleFlashVfxPrefab
@@ -25,16 +43,30 @@ namespace Week14.Enemy
 
         protected override void OnHpEmptyBegan()
         {
-            // 이전 사이클에서 EndStun이 Stun 스테이트 진입 전에 소모되지 못하고 남아있으면,
-            // 이번에 Stun 스테이트에 들어가자마자 그 묵은 트리거에 바로 되튕겨 나가버린다.
-            ResetAnimatorTrigger(EndStunParameter);
-            SetAnimatorTrigger(StunParameter);
+            PlayStunVisual();
         }
 
         protected override void OnHpEmptyRecovered()
         {
             ResetAnimatorTrigger(StunParameter);
             SetAnimatorTrigger(EndStunParameter);
+        }
+
+        // MuscleExecutionSequence의 Execution 그래프 패턴(Boss Dash)이 대시할 때마다 Charge
+        // 트리거(Any State)를 쏘기 때문에, 처형 대기 중 세팅해둔 Stun 포즈가 그 사이에 깨져버린다.
+        // 마지막 처형 샷이 꽂힌 직후(isCharge를 다시 꺼주는 시점) 여기서 Stun을 재적용해,
+        // Die 트리거가 오기 전까지 다시 스턴 포즈로 돌아가 있도록 한다.
+        public void ReplayStunVisualForExecution()
+        {
+            PlayStunVisual();
+        }
+
+        private void PlayStunVisual()
+        {
+            // 이전 사이클에서 EndStun이 Stun 스테이트 진입 전에 소모되지 못하고 남아있으면,
+            // 이번에 Stun 스테이트에 들어가자마자 그 묵은 트리거에 바로 되튕겨 나가버린다.
+            ResetAnimatorTrigger(EndStunParameter);
+            SetAnimatorTrigger(StunParameter);
         }
 
         protected override void OnBossDied()
@@ -46,6 +78,7 @@ namespace Week14.Enemy
         protected override void OnDisable()
         {
             ApplyWalkState(false, true);
+            ResetDeathShadow();
             base.OnDisable();
         }
 
@@ -53,6 +86,7 @@ namespace Week14.Enemy
         {
             UpdateFacingSprite();
             UpdateWalkState();
+            UpdateDeathShadow();
         }
 
         private void UpdateFacingSprite()
@@ -126,6 +160,241 @@ namespace Week14.Enemy
             Animator animator = ResolveWalkAnimator();
             facingSpriteRenderer = animator != null ? animator.GetComponent<SpriteRenderer>() : null;
             return facingSpriteRenderer;
+        }
+
+        private void UpdateDeathShadow()
+        {
+            Transform targetShadow = ResolveDeathShadow();
+            if (targetShadow == null)
+            {
+                return;
+            }
+
+            CacheDeathShadowBase(targetShadow);
+
+            SpriteRenderer frameSource = ResolveDeathShadowFrameSource();
+            Sprite currentSprite = frameSource != null ? frameSource.sprite : null;
+            string currentFrameName = currentSprite != null ? currentSprite.name : null;
+            bool isDeathAnimationPlaying = IsDeathShadowAnimationPlaying(out float deathAnimationTime);
+            int detectedStage = Mathf.Max(
+                GetDeathShadowFrameStage(currentFrameName),
+                GetDeathShadowAnimationStage(deathAnimationTime, isDeathAnimationPlaying));
+            if (detectedStage > deathShadowStage)
+            {
+                deathShadowStage = detectedStage;
+            }
+
+            bool isDeathFrame = IsDeathShadowFrame(currentFrameName);
+            if (deathShadowStage > 0 && (isDeathFrame || isDeathAnimationPlaying))
+            {
+                ApplyDeathShadowStage(targetShadow, deathShadowStage);
+                return;
+            }
+
+            if (!isDeathFrame && !isDeathAnimationPlaying)
+            {
+                ResetDeathShadow(targetShadow);
+            }
+        }
+
+        private Transform ResolveDeathShadow()
+        {
+            if (deathShadow != null)
+            {
+                return deathShadow;
+            }
+
+            Transform visualRoot = BodyRoot != null ? BodyRoot : transform.Find("Boss-Muscle Visual");
+            if (visualRoot == null)
+            {
+                return null;
+            }
+
+            deathShadow = visualRoot.Find("Shadow");
+            return deathShadow;
+        }
+
+        private SpriteRenderer ResolveDeathShadowFrameSource()
+        {
+            if (deathShadowFrameSource != null)
+            {
+                return deathShadowFrameSource;
+            }
+
+            deathShadowFrameSource = ResolveFacingSpriteRenderer();
+            return deathShadowFrameSource;
+        }
+
+        private Animator ResolveDeathShadowAnimator()
+        {
+            if (deathShadowAnimator != null)
+            {
+                return deathShadowAnimator;
+            }
+
+            if (deathShadowFrameSource != null)
+            {
+                deathShadowAnimator = deathShadowFrameSource.GetComponent<Animator>();
+                if (deathShadowAnimator == null)
+                {
+                    deathShadowAnimator = deathShadowFrameSource.GetComponentInParent<Animator>();
+                }
+            }
+
+            if (deathShadowAnimator == null)
+            {
+                deathShadowAnimator = ResolveWalkAnimator();
+            }
+
+            return deathShadowAnimator;
+        }
+
+        private void CacheDeathShadowBase(Transform targetShadow)
+        {
+            if (deathShadowBaseCached)
+            {
+                return;
+            }
+
+            deathShadowBaseLocalPosition = targetShadow.localPosition;
+            deathShadowBaseLocalScale = targetShadow.localScale;
+            deathShadowBaseCached = true;
+        }
+
+        private int GetDeathShadowFrameStage(string frameName)
+        {
+            if (string.IsNullOrEmpty(frameName))
+            {
+                return 0;
+            }
+
+            if (!string.IsNullOrEmpty(deathShadowStageTwoFrameName) && frameName == deathShadowStageTwoFrameName)
+            {
+                return 2;
+            }
+
+            if (!string.IsNullOrEmpty(deathShadowStageOneFrameName) && frameName == deathShadowStageOneFrameName)
+            {
+                return 1;
+            }
+
+            return 0;
+        }
+
+        private bool IsDeathShadowFrame(string frameName)
+        {
+            return !string.IsNullOrEmpty(frameName)
+                && !string.IsNullOrEmpty(deathShadowFramePrefix)
+                && frameName.StartsWith(deathShadowFramePrefix);
+        }
+
+        private bool IsDeathShadowAnimationPlaying(out float animationTime)
+        {
+            animationTime = 0f;
+
+            Animator animator = ResolveDeathShadowAnimator();
+            if (animator == null || !animator.isActiveAndEnabled)
+            {
+                return false;
+            }
+
+            if (animator.IsInTransition(0))
+            {
+                AnimatorStateInfo nextState = animator.GetNextAnimatorStateInfo(0);
+                if (IsDeathShadowAnimationState(nextState))
+                {
+                    animationTime = GetDeathShadowAnimationTime(nextState);
+                    return true;
+                }
+            }
+
+            AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
+            if (!IsDeathShadowAnimationState(currentState))
+            {
+                return false;
+            }
+
+            animationTime = GetDeathShadowAnimationTime(currentState);
+            return true;
+        }
+
+        private bool IsDeathShadowAnimationState(AnimatorStateInfo state)
+        {
+            return !string.IsNullOrEmpty(deathShadowAnimationStateName)
+                && (state.shortNameHash == Animator.StringToHash(deathShadowAnimationStateName)
+                    || state.IsName(deathShadowAnimationStateName));
+        }
+
+        private static float GetDeathShadowAnimationTime(AnimatorStateInfo state)
+        {
+            float normalizedTime = state.loop
+                ? Mathf.Repeat(state.normalizedTime, 1f)
+                : Mathf.Clamp01(state.normalizedTime);
+            return Mathf.Max(0f, state.length) * normalizedTime;
+        }
+
+        private int GetDeathShadowAnimationStage(float animationTime, bool isDeathAnimationPlaying)
+        {
+            if (!isDeathAnimationPlaying)
+            {
+                return 0;
+            }
+
+            if (animationTime >= deathShadowStageTwoAnimationTime)
+            {
+                return 2;
+            }
+
+            if (animationTime >= deathShadowStageOneAnimationTime)
+            {
+                return 1;
+            }
+
+            return 0;
+        }
+
+        private void ApplyDeathShadowStage(Transform targetShadow, int stage)
+        {
+            float targetLocalX = stage >= 2
+                ? deathShadowStageTwoLocalX
+                : deathShadowStageOneLocalX;
+            SpriteRenderer facingSource = ResolveFacingSpriteRenderer();
+            if (mirrorDeathShadowLocalXByFacing && facingSource != null && facingSource.flipX)
+            {
+                targetLocalX = -targetLocalX;
+            }
+
+            float targetScaleX = stage >= 2
+                ? deathShadowStageTwoScaleX
+                : deathShadowStageOneScaleX;
+
+            Vector3 nextPosition = deathShadowBaseLocalPosition;
+            nextPosition.x = targetLocalX;
+            targetShadow.localPosition = nextPosition;
+
+            Vector3 nextScale = deathShadowBaseLocalScale;
+            nextScale.x = targetScaleX;
+            targetShadow.localScale = nextScale;
+        }
+
+        private void ResetDeathShadow()
+        {
+            Transform targetShadow = ResolveDeathShadow();
+            if (targetShadow != null)
+            {
+                ResetDeathShadow(targetShadow);
+            }
+        }
+
+        private void ResetDeathShadow(Transform targetShadow)
+        {
+            if (deathShadowBaseCached)
+            {
+                targetShadow.localPosition = deathShadowBaseLocalPosition;
+                targetShadow.localScale = deathShadowBaseLocalScale;
+            }
+
+            deathShadowStage = 0;
         }
 
         private void UpdateWalkState()

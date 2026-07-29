@@ -707,9 +707,21 @@ namespace Week14.Cutscene
 
         private void SetCurrentStep(CutsceneStep step)
         {
+            bool wasSkippable = CanSkipCurrentCutscene();
+            bool preserveSkipHold = wasSkippable && SkipHeld();
+
             isCurrentStepSkippable = step != null && step.Skippable;
-            skipHoldElapsed = 0f;
-            SetSkipHoldProgress(0f);
+
+            if (!CanSkipCurrentCutscene() || !preserveSkipHold)
+            {
+                skipHoldElapsed = 0f;
+                SetSkipHoldProgress(0f);
+            }
+            else
+            {
+                SetSkipHoldProgress(skipHoldElapsed / skipHoldSeconds);
+            }
+
             RefreshSkipHoldVisible();
         }
 

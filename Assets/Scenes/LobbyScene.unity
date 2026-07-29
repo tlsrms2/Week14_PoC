@@ -18198,10 +18198,18 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4882780777044939412, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: weapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 390dc9bd7ce1b204cacc8d2fbb4e4dc7, type: 2}
     - target: {fileID: 5118969939631333529, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5242437321410677469, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: weapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 283322a59bb47804ab028c04e80be6cf, type: 2}
     - target: {fileID: 5253829847233581878, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

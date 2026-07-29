@@ -391,6 +391,13 @@ namespace Week14.Enemy
             return true;
         }
 
+        public bool CanSpawnEnemyProjectileForCinematic()
+        {
+            return !isSummoning
+                && health != null
+                && !health.IsDead;
+        }
+
         public void RegisterActiveProjectile(EnemyProjectile projectile)
         {
             PruneInactiveProjectiles();
@@ -552,6 +559,31 @@ namespace Week14.Enemy
 
         public EnemyProjectile FireOnce(BossProjectileSettings projectile, MinionGraphProjectileFireSpec fireSpec, int shotIndex)
         {
+            return FireOnceInternal(
+                projectile,
+                fireSpec,
+                shotIndex,
+                false);
+        }
+
+        public EnemyProjectile FireOnceForCinematic(
+            BossProjectileSettings projectile,
+            MinionGraphProjectileFireSpec fireSpec,
+            int shotIndex)
+        {
+            return FireOnceInternal(
+                projectile,
+                fireSpec,
+                shotIndex,
+                true);
+        }
+
+        private EnemyProjectile FireOnceInternal(
+            BossProjectileSettings projectile,
+            MinionGraphProjectileFireSpec fireSpec,
+            int shotIndex,
+            bool allowExecutionCinematic)
+        {
             if (Owner == null || projectile == null)
             {
                 return null;
@@ -562,7 +594,14 @@ namespace Week14.Enemy
             Vector3 spawnOrigin = fireSpec.GetSpawnOrigin(this, shotIndex, direction);
             Vector2 finalDirection = fireSpec.GetDirection(this, spawnOrigin);
             FaceClosestMinionAim(fireSpec, finalDirection);
-            return FireCommandProjectile(projectile, spawnOrigin, finalDirection, !fireSpec.HasEffects, fireSpec, shotIndex);
+            return FireCommandProjectile(
+                projectile,
+                spawnOrigin,
+                finalDirection,
+                !fireSpec.HasEffects,
+                fireSpec,
+                shotIndex,
+                allowExecutionCinematic);
         }
 
         public void FaceGraphDirection(Vector2 direction)
@@ -2420,15 +2459,29 @@ namespace Week14.Enemy
             Vector2 direction,
             bool playMuzzleFlash,
             MinionGraphProjectileFireSpec fireSpec,
-            int shotIndex)
+            int shotIndex,
+            bool allowExecutionCinematic = false)
         {
             IMinionOwner currentOwner = Owner;
-            if (IsExecutionPaused || currentOwner == null)
+            if ((!allowExecutionCinematic && IsExecutionPaused)
+                || currentOwner == null)
             {
                 return null;
             }
 
-            EnemyProjectile firedProjectile = currentOwner.FireMinionProjectile(this, projectile, origin, direction, playMuzzleFlash);
+            EnemyProjectile firedProjectile = allowExecutionCinematic
+                ? currentOwner.FireMinionProjectileForCinematic(
+                    this,
+                    projectile,
+                    origin,
+                    direction,
+                    playMuzzleFlash)
+                : currentOwner.FireMinionProjectile(
+                    this,
+                    projectile,
+                    origin,
+                    direction,
+                    playMuzzleFlash);
             if (firedProjectile != null)
             {
                 if (fireSpec.KeepsFixedDirectionWhileCharging)
