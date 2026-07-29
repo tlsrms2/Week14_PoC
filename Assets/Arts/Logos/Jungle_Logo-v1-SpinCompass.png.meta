@@ -1,0 +1,589 @@
+fileFormatVersion: 2
+guid: e48bc6805058dc845a62fff96c544573
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1258979109115851707
+    second: Jungle_Logo-v1-SpinCompass 1_0
+  - first:
+      213: -5598565622810436850
+    second: Jungle_Logo-v1-SpinCompass 1_1
+  - first:
+      213: -4343358895932623524
+    second: Jungle_Logo-v1-SpinCompass 1_2
+  - first:
+      213: -2843572350574427676
+    second: Jungle_Logo-v1-SpinCompass 1_3
+  - first:
+      213: 2543195386214450990
+    second: Jungle_Logo-v1-SpinCompass 1_4
+  - first:
+      213: 7645802814835854426
+    second: Jungle_Logo-v1-SpinCompass 1_5
+  - first:
+      213: 2313262008700158790
+    second: Jungle_Logo-v1-SpinCompass 1_6
+  - first:
+      213: 6236925057551062330
+    second: Jungle_Logo-v1-SpinCompass 1_7
+  - first:
+      213: -4621419010983830713
+    second: Jungle_Logo-v1-SpinCompass 1_8
+  - first:
+      213: 6689409899455782282
+    second: Jungle_Logo-v1-SpinCompass 1_9
+  - first:
+      213: 5531035899990219523
+    second: Jungle_Logo-v1-SpinCompass 1_10
+  - first:
+      213: -730389516587681797
+    second: Jungle_Logo-v1-SpinCompass 1_11
+  - first:
+      213: -5855862030939816557
+    second: Jungle_Logo-v1-SpinCompass 1_12
+  - first:
+      213: 9127097719683975437
+    second: Jungle_Logo-v1-SpinCompass 1_13
+  - first:
+      213: -880559073911685643
+    second: Jungle_Logo-v1-SpinCompass 1_14
+  - first:
+      213: 6239377944297641442
+    second: Jungle_Logo-v1-SpinCompass 1_15
+  - first:
+      213: -410615420483802291
+    second: Jungle_Logo-v1-SpinCompass 1_16
+  - first:
+      213: -195025126771362205
+    second: Jungle_Logo-v1-SpinCompass 1_17
+  - first:
+      213: -7811208982689778873
+    second: Jungle_Logo-v1-SpinCompass 1_18
+  - first:
+      213: 4138084164330175212
+    second: Jungle_Logo-v1-SpinCompass 1_19
+  - first:
+      213: -1841576220819325589
+    second: Jungle_Logo-v1-SpinCompass 1_20
+  - first:
+      213: 658448361828004798
+    second: Jungle_Logo-v1-SpinCompass 1_21
+  - first:
+      213: 9000641035103140919
+    second: Jungle_Logo-v1-SpinCompass 1_22
+  - first:
+      213: -4015893974009531285
+    second: Jungle_Logo-v1-SpinCompass 1_23
+  - first:
+      213: -7447357542129562461
+    second: Jungle_Logo-v1-SpinCompass 1_24
+  - first:
+      213: 7599802103530696273
+    second: Jungle_Logo-v1-SpinCompass 1_25
+  - first:
+      213: 2546994745045826363
+    second: Jungle_Logo-v1-SpinCompass 1_26
+  - first:
+      213: -8150611246548187492
+    second: Jungle_Logo-v1-SpinCompass 1_27
+  - first:
+      213: 3655397752674309920
+    second: Jungle_Logo-v1-SpinCompass 1_28
+  - first:
+      213: 7864188636046433372
+    second: Jungle_Logo-v1-SpinCompass 1_29
+  - first:
+      213: 7804036096582141515
+    second: Jungle_Logo-v1-SpinCompass 1_30
+  - first:
+      213: 185210363127621864
+    second: Jungle_Logo-v1-SpinCompass 1_31
+  - first:
+      213: 9204493924070854875
+    second: Jungle_Logo-v1-SpinCompass 1_32
+  - first:
+      213: -2907514991662237255
+    second: Jungle_Logo-v1-SpinCompass 1_33
+  - first:
+      213: -7398431569052276029
+    second: Jungle_Logo-v1-SpinCompass 1_34
+  - first:
+      213: 1162692414415012704
+    second: Jungle_Logo-v1-SpinCompass 1_35
+  - first:
+      213: -3684548907032710942
+    second: Jungle_Logo-v1-SpinCompass 1_36
+  - first:
+      213: -6058774486993997771
+    second: Jungle_Logo-v1-SpinCompass 1_37
+  - first:
+      213: -8280782208482092989
+    second: Jungle_Logo-v1-SpinCompass 1_38
+  - first:
+      213: -3945476404092563235
+    second: Jungle_Logo-v1-SpinCompass 1_39
+  - first:
+      213: -2234068395484181202
+    second: Jungle_Logo-v1-SpinCompass 1_40
+  - first:
+      213: -598920110472401024
+    second: Jungle_Logo-v1-SpinCompass 1_41
+  - first:
+      213: 507456283368199237
+    second: Jungle_Logo-v1-SpinCompass 1_42
+  - first:
+      213: 1342931047814736219
+    second: Jungle_Logo-v1-SpinCompass 1_43
+  - first:
+      213: -8245028998738739842
+    second: Jungle_Logo-v1-SpinCompass 1_44
+  - first:
+      213: 9107575717604990517
+    second: Jungle_Logo-v1-SpinCompass 1_45
+  - first:
+      213: -1003677942058449314
+    second: Jungle_Logo-v1-SpinCompass 1_46
+  - first:
+      213: 29036907955572753
+    second: Jungle_Logo-v1-SpinCompass 1_47
+  - first:
+      213: -7870824294933794369
+    second: Jungle_Logo-v1-SpinCompass 1_48
+  - first:
+      213: 8148135416782498707
+    second: Jungle_Logo-v1-SpinCompass 1_49
+  - first:
+      213: 1354884180884224479
+    second: Jungle_Logo-v1-SpinCompass 1_50
+  - first:
+      213: 1903792242990644244
+    second: Jungle_Logo-v1-SpinCompass 1_51
+  - first:
+      213: -7985784779663159012
+    second: Jungle_Logo-v1-SpinCompass 1_52
+  - first:
+      213: 1282395212081971078
+    second: Jungle_Logo-v1-SpinCompass 1_53
+  - first:
+      213: -8390942914828937118
+    second: Jungle_Logo-v1-SpinCompass 1_54
+  - first:
+      213: -3912436368477468868
+    second: Jungle_Logo-v1-SpinCompass 1_55
+  - first:
+      213: 2492309787447801688
+    second: Jungle_Logo-v1-SpinCompass 1_56
+  - first:
+      213: 2487570284807127662
+    second: Jungle_Logo-v1-SpinCompass 1_57
+  - first:
+      213: -1606152488471337408
+    second: Jungle_Logo-v1-SpinCompass 1_58
+  - first:
+      213: -6324099741424235351
+    second: Jungle_Logo-v1-SpinCompass 1_59
+  - first:
+      213: -3508664626071187003
+    second: Jungle_Logo-v1-SpinCompass 1_60
+  - first:
+      213: 5527428676858502772
+    second: Jungle_Logo-v1-SpinCompass 1_61
+  - first:
+      213: -6498848771956996252
+    second: Jungle_Logo-v1-SpinCompass 1_62
+  - first:
+      213: 4889698878624721071
+    second: Jungle_Logo-v1-SpinCompass 1_63
+  - first:
+      213: -7673163540891398332
+    second: Jungle_Logo-v1-SpinCompass 1_64
+  - first:
+      213: 7857974105910040552
+    second: Jungle_Logo-v1-SpinCompass 1_65
+  - first:
+      213: 1609208595442562139
+    second: Jungle_Logo-v1-SpinCompass 1_66
+  - first:
+      213: -4281992217539025533
+    second: Jungle_Logo-v1-SpinCompass 1_67
+  - first:
+      213: 1168724229057568497
+    second: Jungle_Logo-v1-SpinCompass 1_68
+  - first:
+      213: 6113597419151633365
+    second: Jungle_Logo-v1-SpinCompass 1_69
+  - first:
+      213: 222885082797884295
+    second: Jungle_Logo-v1-SpinCompass 1_70
+  - first:
+      213: 2705000588541809717
+    second: Jungle_Logo-v1-SpinCompass 1_71
+  - first:
+      213: 7241122661130273951
+    second: Jungle_Logo-v1-SpinCompass 1_72
+  - first:
+      213: -7439429094216235749
+    second: Jungle_Logo-v1-SpinCompass 1_73
+  - first:
+      213: -6126937872319577263
+    second: Jungle_Logo-v1-SpinCompass 1_74
+  - first:
+      213: -7340082902214990327
+    second: Jungle_Logo-v1-SpinCompass 1_75
+  - first:
+      213: 233767494334742665
+    second: Jungle_Logo-v1-SpinCompass 1_76
+  - first:
+      213: -6718488064111913624
+    second: Jungle_Logo-v1-SpinCompass 1_77
+  - first:
+      213: 7556369960665504110
+    second: Jungle_Logo-v1-SpinCompass 1_78
+  - first:
+      213: 2765323798630527339
+    second: Jungle_Logo-v1-SpinCompass 1_79
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Jungle_Logo-v1-SpinCompass_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 222
+        width: 225
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 05dea9b09d1cc9a4cb1e017dc67dcaa6
+      internalID: 861444249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle_Logo-v1-SpinCompass_1
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 222
+        width: 225
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 71a95f59479cc6843828ab4fa3fb93ce
+      internalID: -1714419670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle_Logo-v1-SpinCompass_2
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 222
+        width: 225
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b7a848d57b5ed4a4590d1fa3223b602e
+      internalID: -1098837381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle_Logo-v1-SpinCompass_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 148
+        width: 225
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d7d64aa305e10b7419b05451f7588556
+      internalID: -1196892693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle_Logo-v1-SpinCompass_4
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 148
+        width: 225
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dcd5dfefe853c8845946f668d38bfb92
+      internalID: 742160747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle_Logo-v1-SpinCompass_5
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 148
+        width: 225
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cffbe7fe469e45a4787b587ae426eacd
+      internalID: -1125139443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle_Logo-v1-SpinCompass_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 74
+        width: 225
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4086681b36fca9d4c99f327e9f095c6f
+      internalID: -1196258702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle_Logo-v1-SpinCompass_7
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 74
+        width: 225
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8d20eb83d924ac41b2c4ff5079faac8
+      internalID: -799253161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle_Logo-v1-SpinCompass_8
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 74
+        width: 225
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ec84c7f72347e04fbf673cfb60b55cc
+      internalID: -2140530730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle_Logo-v1-SpinCompass_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 225
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 283f52b0b8e205447b78f701df83da9e
+      internalID: 1951853855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 3ab9a0024e67974458449e3e6754f254
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":225.0,"y":74.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      Jungle_Logo-v1-SpinCompass_0: 861444249
+      Jungle_Logo-v1-SpinCompass_1: -1714419670
+      Jungle_Logo-v1-SpinCompass_2: -1098837381
+      Jungle_Logo-v1-SpinCompass_3: -1196892693
+      Jungle_Logo-v1-SpinCompass_4: 742160747
+      Jungle_Logo-v1-SpinCompass_5: -1125139443
+      Jungle_Logo-v1-SpinCompass_6: -1196258702
+      Jungle_Logo-v1-SpinCompass_7: -799253161
+      Jungle_Logo-v1-SpinCompass_8: -2140530730
+      Jungle_Logo-v1-SpinCompass_9: 1951853855
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

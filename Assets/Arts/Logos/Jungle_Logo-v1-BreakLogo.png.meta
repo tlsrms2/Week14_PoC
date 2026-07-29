@@ -1,0 +1,684 @@
+fileFormatVersion: 2
+guid: bc7bc06d87051b04db4441d1f25b430a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1018403144742869219
+    second: Jungle_Logo-v1-BreakLogo_0
+  - first:
+      213: -3244064605791940387
+    second: Jungle_Logo-v1-BreakLogo_1
+  - first:
+      213: 5251226913410364642
+    second: Jungle_Logo-v1-BreakLogo_2
+  - first:
+      213: 5196929407780054105
+    second: Jungle_Logo-v1-BreakLogo_3
+  - first:
+      213: 7641773581834100719
+    second: Jungle_Logo-v1-BreakLogo_4
+  - first:
+      213: 3362585619212308353
+    second: Jungle_Logo-v1-BreakLogo_5
+  - first:
+      213: -5749151491375147098
+    second: Jungle_Logo-v1-BreakLogo_6
+  - first:
+      213: -6172328092639569016
+    second: Jungle_Logo-v1-BreakLogo_7
+  - first:
+      213: 4798968920543244201
+    second: Jungle_Logo-v1-BreakLogo_8
+  - first:
+      213: -846563802016837929
+    second: Jungle_Logo-v1-BreakLogo_9
+  - first:
+      213: 6021647437993255916
+    second: Jungle_Logo-v1-BreakLogo_10
+  - first:
+      213: -1661468751072071938
+    second: Jungle_Logo-v1-BreakLogo_11
+  - first:
+      213: 2697365733353905353
+    second: Jungle_Logo-v1-BreakLogo_12
+  - first:
+      213: -8138529867655821352
+    second: Jungle_Logo-v1-BreakLogo_13
+  - first:
+      213: -5299515013071888773
+    second: Jungle_Logo-v1-BreakLogo_14
+  - first:
+      213: -3652462760163516448
+    second: Jungle_Logo-v1-BreakLogo_15
+  - first:
+      213: -2300861971060910083
+    second: Jungle_Logo-v1-BreakLogo_16
+  - first:
+      213: 7280657139035629136
+    second: Jungle_Logo-v1-BreakLogo_17
+  - first:
+      213: 7591785365974299727
+    second: Jungle_Logo-v1-BreakLogo_18
+  - first:
+      213: 1539545058450375436
+    second: Jungle_Logo-v1-BreakLogo_19
+  - first:
+      213: 1011351825233807975
+    second: Jungle_Logo-v1-BreakLogo_20
+  - first:
+      213: -7103716092329440569
+    second: Jungle_Logo-v1-BreakLogo_21
+  - first:
+      213: 6790115004579964466
+    second: Jungle_Logo-v1-BreakLogo_22
+  - first:
+      213: 2468577333397807143
+    second: Jungle_Logo-v1-BreakLogo_23
+  - first:
+      213: -5317010293821394842
+    second: Jungle_Logo-v1-BreakLogo_24
+  - first:
+      213: -4289481495418034183
+    second: Jungle_Logo-v1-BreakLogo_25
+  - first:
+      213: -6493913707963465897
+    second: Jungle_Logo-v1-BreakLogo_26
+  - first:
+      213: 1705935277470505062
+    second: Jungle_Logo-v1-BreakLogo_27
+  - first:
+      213: -1071478960806789751
+    second: Jungle_Logo-v1-BreakLogo_28
+  - first:
+      213: -2010602768230236524
+    second: Jungle_Logo-v1-BreakLogo_29
+  - first:
+      213: 298352715499492127
+    second: Jungle_Logo-v1-BreakLogo_30
+  - first:
+      213: 6112445909663070042
+    second: Jungle_Logo-v1-BreakLogo_31
+  - first:
+      213: 3885639449716396258
+    second: Jungle_Logo-v1-BreakLogo_32
+  - first:
+      213: -4231296586392980579
+    second: Jungle_Logo-v1-BreakLogo_33
+  - first:
+      213: -6246566089320913766
+    second: Jungle_Logo-v1-BreakLogo_34
+  - first:
+      213: 8293657488665627410
+    second: Jungle_Logo-v1-BreakLogo_35
+  - first:
+      213: 66594281741808572
+    second: Jungle_Logo-v1-BreakLogo_36
+  - first:
+      213: 2626923010204176599
+    second: Jungle_Logo-v1-BreakLogo_37
+  - first:
+      213: 4876918964151486923
+    second: Jungle_Logo-v1-BreakLogo_38
+  - first:
+      213: 2192461310369400168
+    second: Jungle_Logo-v1-BreakLogo_39
+  - first:
+      213: 8652485548687715
+    second: Jungle_Logo-v1-BreakLogo_40
+  - first:
+      213: -5325447920463452869
+    second: Jungle_Logo-v1-BreakLogo_41
+  - first:
+      213: 7431138319462915055
+    second: Jungle_Logo-v1-BreakLogo_42
+  - first:
+      213: 23603186050353953
+    second: Jungle_Logo-v1-BreakLogo_43
+  - first:
+      213: -4255455580353821620
+    second: Jungle_Logo-v1-BreakLogo_44
+  - first:
+      213: -4393175688222230892
+    second: Jungle_Logo-v1-BreakLogo_45
+  - first:
+      213: -1755656247391970423
+    second: Jungle_Logo-v1-BreakLogo_46
+  - first:
+      213: 3341403759033572033
+    second: Jungle_Logo-v1-BreakLogo_47
+  - first:
+      213: 149563192868185179
+    second: Jungle_Logo-v1-BreakLogo_48
+  - first:
+      213: -6699571694534264600
+    second: Jungle_Logo-v1-BreakLogo_49
+  - first:
+      213: 1021941076541141117
+    second: Jungle_Logo-v1-BreakLogo_50
+  - first:
+      213: -1420651026074909521
+    second: Jungle_Logo-v1-BreakLogo_51
+  - first:
+      213: 5505318363470058728
+    second: Jungle_Logo-v1-BreakLogo_52
+  - first:
+      213: 1475051108129600877
+    second: Jungle_Logo-v1-BreakLogo_53
+  - first:
+      213: 5807262821364671350
+    second: Jungle_Logo-v1-BreakLogo_54
+  - first:
+      213: -1255493011878578696
+    second: Jungle_Logo-v1-BreakLogo_55
+  - first:
+      213: -5677157910499024470
+    second: Jungle_Logo-v1-BreakLogo_56
+  - first:
+      213: 1147090790452623608
+    second: Jungle_Logo-v1-BreakLogo_57
+  - first:
+      213: -8911911321990428852
+    second: Jungle_Logo-v1-BreakLogo_58
+  - first:
+      213: -907328627486466257
+    second: Jungle_Logo-v1-BreakLogo_59
+  - first:
+      213: -886110053702563434
+    second: Jungle_Logo-v1-BreakLogo_60
+  - first:
+      213: 6038304744108146114
+    second: Jungle_Logo-v1-BreakLogo_61
+  - first:
+      213: 8228239007842291719
+    second: Jungle_Logo-v1-BreakLogo_62
+  - first:
+      213: 1481487970995812759
+    second: Jungle_Logo-v1-BreakLogo_63
+  - first:
+      213: -6966794001919841839
+    second: Jungle_Logo-v1-BreakLogo_64
+  - first:
+      213: -8181327448265972393
+    second: Jungle_Logo-v1-BreakLogo_65
+  - first:
+      213: 1996538129711078567
+    second: Jungle_Logo-v1-BreakLogo_66
+  - first:
+      213: 915286066671450955
+    second: Jungle_Logo-v1-BreakLogo_67
+  - first:
+      213: 3137478614076110360
+    second: Jungle_Logo-v1-BreakLogo_68
+  - first:
+      213: 6751963850257527810
+    second: Jungle_Logo-v1-BreakLogo_69
+  - first:
+      213: -5259778628985038761
+    second: Jungle_Logo-v1-BreakLogo_70
+  - first:
+      213: -1007607906137082073
+    second: Jungle_Logo-v1-BreakLogo_71
+  - first:
+      213: -7079086830297473096
+    second: Jungle_Logo-v1-BreakLogo_72
+  - first:
+      213: -2157565476135450134
+    second: Jungle_Logo-v1-BreakLogo_73
+  - first:
+      213: 425347305251490946
+    second: Jungle_Logo-v1-BreakLogo_74
+  - first:
+      213: -4348732177120773573
+    second: Jungle_Logo-v1-BreakLogo_75
+  - first:
+      213: -5965445165015356568
+    second: Jungle_Logo-v1-BreakLogo_76
+  - first:
+      213: -53085220062134937
+    second: Jungle_Logo-v1-BreakLogo_77
+  - first:
+      213: -5524638051776226560
+    second: Jungle_Logo-v1-BreakLogo_78
+  - first:
+      213: 2602395384394261085
+    second: Jungle_Logo-v1-BreakLogo_79
+  - first:
+      213: -1229467308753730491
+    second: Jungle_Logo-v1-BreakLogo_80
+  - first:
+      213: -2189987114780685964
+    second: Jungle_Logo-v1-BreakLogo_81
+  - first:
+      213: 5954089249922944169
+    second: Jungle_Logo-v1-BreakLogo_82
+  - first:
+      213: -6440161913234856102
+    second: Jungle_Logo-v1-BreakLogo_83
+  - first:
+      213: 3686210043775317488
+    second: Jungle_Logo-v1-BreakLogo_84
+  - first:
+      213: -4711742631258644998
+    second: Jungle_Logo-v1-BreakLogo_85
+  - first:
+      213: -5157083848978433629
+    second: Jungle_Logo-v1-BreakLogo_86
+  - first:
+      213: -6476657248038821922
+    second: Jungle_Logo-v1-BreakLogo_87
+  - first:
+      213: -702693197876500422
+    second: Jungle_Logo-v1-BreakLogo_88
+  - first:
+      213: -120376720987560126
+    second: Jungle_Logo-v1-BreakLogo_89
+  - first:
+      213: -4816186855860500546
+    second: Jungle_Logo-v1-BreakLogo_90
+  - first:
+      213: -1429372105495599997
+    second: Jungle_Logo-v1-BreakLogo_91
+  - first:
+      213: -2219241678285219376
+    second: Jungle_Logo-v1-BreakLogo_92
+  - first:
+      213: 7527494896209667605
+    second: Jungle_Logo-v1-BreakLogo_93
+  - first:
+      213: 8814032641203687376
+    second: Jungle_Logo-v1-BreakLogo_94
+  - first:
+      213: -4194548443890890307
+    second: Jungle_Logo-v1-BreakLogo_95
+  - first:
+      213: 6186271020119355368
+    second: Jungle_Logo-v1-BreakLogo_96
+  - first:
+      213: 7456071817680522516
+    second: Jungle_Logo-v1-BreakLogo_97
+  - first:
+      213: -2078912978522721727
+    second: Jungle_Logo-v1-BreakLogo_98
+  - first:
+      213: 3931844243967069677
+    second: Jungle_Logo-v1-BreakLogo_99
+  - first:
+      213: 6932502394472399663
+    second: Jungle_Logo-v1-BreakLogo_100
+  - first:
+      213: 671988269877316694
+    second: Jungle_Logo-v1-BreakLogo_101
+  - first:
+      213: 52478759593446057
+    second: Jungle_Logo-v1-BreakLogo_102
+  - first:
+      213: -1731676692033598662
+    second: Jungle_Logo-v1-BreakLogo_103
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Jungle_Logo-v1-BreakLogo_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 222
+        width: 180
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d17e57f4cb7edd1f0800000000000000
+      internalID: -1018403144742869219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle_Logo-v1-BreakLogo_1
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 222
+        width: 180
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd09a57cd64caf2d0800000000000000
+      internalID: -3244064605791940387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle_Logo-v1-BreakLogo_2
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 222
+        width: 180
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e4bbc83e0b10e840800000000000000
+      internalID: 5251226913410364642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle_Logo-v1-BreakLogo_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 148
+        width: 180
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 954e28903c33f1840800000000000000
+      internalID: 5196929407780054105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle_Logo-v1-BreakLogo_4
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 148
+        width: 180
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fef9f27b5980d0a60800000000000000
+      internalID: 7641773581834100719
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle_Logo-v1-BreakLogo_5
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 148
+        width: 180
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18f8cff0ecd4aae20800000000000000
+      internalID: 3362585619212308353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle_Logo-v1-BreakLogo_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 74
+        width: 180
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a75daccd29e630b0800000000000000
+      internalID: -5749151491375147098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle_Logo-v1-BreakLogo_7
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 74
+        width: 180
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88bdd095d4c775aa0800000000000000
+      internalID: -6172328092639569016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle_Logo-v1-BreakLogo_8
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 74
+        width: 180
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9afae15aecc599240800000000000000
+      internalID: 4798968920543244201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle_Logo-v1-BreakLogo_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 180
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7de051515b66044f0800000000000000
+      internalID: -846563802016837929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Jungle_Logo-v1-BreakLogo_10
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 0
+        width: 180
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce3aa38d070319350800000000000000
+      internalID: 6021647437993255916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":180.0,"y":74.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      Jungle_Logo-v1-BreakLogo_0: -1018403144742869219
+      Jungle_Logo-v1-BreakLogo_1: -3244064605791940387
+      Jungle_Logo-v1-BreakLogo_10: 6021647437993255916
+      Jungle_Logo-v1-BreakLogo_2: 5251226913410364642
+      Jungle_Logo-v1-BreakLogo_3: 5196929407780054105
+      Jungle_Logo-v1-BreakLogo_4: 7641773581834100719
+      Jungle_Logo-v1-BreakLogo_5: 3362585619212308353
+      Jungle_Logo-v1-BreakLogo_6: -5749151491375147098
+      Jungle_Logo-v1-BreakLogo_7: -6172328092639569016
+      Jungle_Logo-v1-BreakLogo_8: 4798968920543244201
+      Jungle_Logo-v1-BreakLogo_9: -846563802016837929
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
