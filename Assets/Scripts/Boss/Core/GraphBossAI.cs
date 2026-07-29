@@ -224,9 +224,21 @@ namespace Week14.Enemy
                     continue;
                 }
 
-                target.ResetTrigger(StunParameter);
-                target.ResetTrigger(EndStunParameter);
-                target.SetBool(IsStunParameter, false);
+                if (HasAnimatorParameter(target, StunParameter, AnimatorControllerParameterType.Trigger))
+                {
+                    target.ResetTrigger(StunParameter);
+                }
+
+                if (HasAnimatorParameter(target, EndStunParameter, AnimatorControllerParameterType.Trigger))
+                {
+                    target.ResetTrigger(EndStunParameter);
+                }
+
+                if (HasAnimatorParameter(target, IsStunParameter, AnimatorControllerParameterType.Bool))
+                {
+                    target.SetBool(IsStunParameter, false);
+                }
+
                 target.Update(0f);
             }
         }
@@ -242,7 +254,11 @@ namespace Week14.Enemy
             Animator[] targets = GetGroggyAnimators();
             for (int i = 0; i < targets.Length; i++)
             {
-                targets[i].SetTrigger(parameter);
+                Animator target = targets[i];
+                if (target != null && HasAnimatorParameter(target, parameter, AnimatorControllerParameterType.Trigger))
+                {
+                    target.SetTrigger(parameter);
+                }
             }
         }
 
@@ -251,7 +267,11 @@ namespace Week14.Enemy
             Animator[] targets = GetGroggyAnimators();
             for (int i = 0; i < targets.Length; i++)
             {
-                targets[i].ResetTrigger(parameter);
+                Animator target = targets[i];
+                if (target != null && HasAnimatorParameter(target, parameter, AnimatorControllerParameterType.Trigger))
+                {
+                    target.ResetTrigger(parameter);
+                }
             }
         }
 
@@ -260,8 +280,31 @@ namespace Week14.Enemy
             Animator[] targets = GetGroggyAnimators();
             for (int i = 0; i < targets.Length; i++)
             {
-                targets[i].SetBool(parameter, value);
+                Animator target = targets[i];
+                if (target != null && HasAnimatorParameter(target, parameter, AnimatorControllerParameterType.Bool))
+                {
+                    target.SetBool(parameter, value);
+                }
             }
+        }
+
+        // GetGroggyAnimators()가 BodyRoot 밑의 Animator를 전부 broadcast 대상으로 잡다 보니, 그중
+        // Stun/EndStun/isStun 파라미터가 아예 없는 Animator(예: 이펙트/그림자 전용 Animator)가 섞여
+        // 있으면 SetTrigger/SetBool이 "Parameter 'Hash ...' does not exist" 콘솔 에러를 던진다.
+        // 실제로 그 파라미터를 갖고 있는 Animator에만 보내도록 미리 걸러낸다.
+        private static bool HasAnimatorParameter(Animator animator, int parameterHash, AnimatorControllerParameterType type)
+        {
+            AnimatorControllerParameter[] parameters = animator.parameters;
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                AnimatorControllerParameter parameter = parameters[i];
+                if (parameter.nameHash == parameterHash && parameter.type == type)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         // patternGroggyAnimator를 인스펙터에서 직접 지정했다면 그것만 쓰고(기존 동작 그대로 유지),
