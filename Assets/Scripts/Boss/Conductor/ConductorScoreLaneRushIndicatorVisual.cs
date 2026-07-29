@@ -50,7 +50,7 @@ namespace Week14.Enemy
 
         private void LateUpdate()
         {
-            if (clearOnExecutionCinematic && PlayerCombatController.IsExecutionCinematicActive)
+            if (clearOnExecutionCinematic && PlayerCombatController.IsAnyExecutionInProgress)
             {
                 ClearAndDestroy();
             }
