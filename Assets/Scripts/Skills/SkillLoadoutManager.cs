@@ -85,11 +85,13 @@ namespace Week14.Skills
         private void OnEnable()
         {
             SceneManager.sceneLoaded += HandleSceneLoaded;
+            GameSaveManager.SlotChanged += ReloadFromSave;
         }
 
         private void OnDisable()
         {
             SceneManager.sceneLoaded -= HandleSceneLoaded;
+            GameSaveManager.SlotChanged -= ReloadFromSave;
             UnsubscribeEffectEnd();
         }
 
