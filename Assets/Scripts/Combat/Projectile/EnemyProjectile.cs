@@ -115,6 +115,7 @@ namespace Week14.Combat
         private bool reflectedByPlayer;
         private int reflectedDamage;
         private Transform reflectedTarget;
+        private BossAI reflectedTargetBoss;
         private bool runtimeHomingActive;
         private float runtimeHomingEndsAt;
         private float runtimeHomingTurnDegreesPerSecond;
@@ -612,6 +613,7 @@ namespace Week14.Combat
             reflectedByPlayer = true;
             reflectedDamage = Mathf.Max(0, damage);
             reflectedTarget = targetBoss.transform;
+            reflectedTargetBoss = targetBoss;
             projectileSpeed = Mathf.Max(0.01f, speed);
             launched = true;
             resolved = false;
@@ -657,6 +659,27 @@ namespace Week14.Combat
         private void RefreshReflectedDirection()
         {
             if (!reflectedByPlayer || reflectedTarget == null)
+            {
+                return;
+            }
+
+            if (reflectedTargetBoss != null
+                && reflectedTargetBoss.Health != null
+                && reflectedTargetBoss.Health.IsDead)
+            {
+                // 죽은 보스는 다시 나타날 일이 없으니 추적을 완전히 종료한다.
+                reflectedByPlayer = false;
+                reflectedTarget = null;
+                reflectedTargetBoss = null;
+                return;
+            }
+
+            // 어쌔신 은신처럼 보스가 콜라이더만 끄고 맵에서 일시적으로 "사라진" 채로 Transform은
+            // 그대로 살아있는 경우가 있다 - 이때 reflectedTarget은 계속 non-null이라 위 체크만으로는
+            // 걸러지지 않고, 투사체가 사라진 지점을 계속 겨냥하며 그 자리에서 왔다갔다하게 된다.
+            // 참조는 유지한 채 이번 프레임 방향 갱신만 건너뛰어 직전 방향으로 직진하게 두고,
+            // 보스가 다시 나타나면(IsPlayerTargetable == true) 아래 코드가 자동으로 재추적을 재개한다.
+            if (reflectedTargetBoss != null && !reflectedTargetBoss.IsPlayerTargetable)
             {
                 return;
             }

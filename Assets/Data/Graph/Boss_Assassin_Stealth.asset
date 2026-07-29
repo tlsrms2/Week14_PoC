@@ -1330,7 +1330,7 @@ MonoBehaviour:
     action:
       rid: 4705778240567902393
     sequences: []
-    editorPosition: {x: -652, y: 1472}
+    editorPosition: {x: -652, y: 1471}
   - nodeId: Fire Next Clone Shooter (Atk2)1
     nodeGuid: 4e896e0920e14496b505c49a6e9b6832
     nodeKind: 0

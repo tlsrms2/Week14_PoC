@@ -155,6 +155,11 @@ namespace Week14.Enemy
         public Vector3 SpawnPosition { get; private set; }
         public bool IsHpEmpty => hpGauge != null && hpGauge.IsEmpty;
         public bool IsBulletEmpty => IsHpEmpty;
+
+        // 은신/텔레포트로 맵에서 "사라지는" 보스(예: AssassinBossAI)가 콜라이더만 끄고 Transform은
+        // 그대로 남겨두는 경우, 반사탄 같은 호밍 로직이 사라진 위치를 계속 겨냥하는 걸 막기 위한
+        // 훅이다. 기본은 항상 타겟 가능(true)이고, 하위 클래스가 자신의 은신 상태에 맞게 오버라이드한다.
+        internal virtual bool IsPlayerTargetable => true;
         public bool IsExecutionLocked => isExecutionLocked;
         public bool IsFinalDeathSequencePlaying => isFinalDeathSequencePlaying;
         public virtual bool IsDashing => false;

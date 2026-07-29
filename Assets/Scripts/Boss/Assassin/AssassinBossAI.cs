@@ -97,8 +97,9 @@ namespace Week14.Enemy
         public BossGraphAsset ConfiguredStealthGraphAsset => stealthGraph;
 
         // AssassinTeleportAroundPlayerAction의 hiddenSeconds 구간처럼 "맵에서 완전히 사라진" 상태일 때
-        // false가 되어, 락온/피격 판정에서 이 보스를 완전히 제외시키는 데 쓰인다.
-        internal bool IsPlayerTargetable => !isHiddenFromMap;
+        // false가 되어, 락온/피격 판정 및 반사탄 호밍(EnemyProjectile.RefreshReflectedDirection)에서
+        // 이 보스를 완전히 제외시키는 데 쓰인다.
+        internal override bool IsPlayerTargetable => !isHiddenFromMap;
 
         // 페이즈가 넘어가면(처형 성공으로 목숨 소모) 은신 중이었더라도 강제로 해제하고, 바닥에 남아있던
         // 단검과 아직 발사 대기열에 남아있는 분신도 전부 정리한다 — 다음 페이즈를 은신 상태/단검/분신이
