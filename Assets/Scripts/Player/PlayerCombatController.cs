@@ -21,6 +21,13 @@ namespace Week14.Combat
 
         public static PlayerCombatController Active { get; private set; }
         public static bool IsExecutionCinematicActive => Active != null && Active.IsExecuting;
+
+        // IsExecutionCinematicActive는 처형 컷신 재생 구간만 커버하고, 마지막 목숨을 끊는 처형은
+        // 최종 샷이 꽂힌 뒤(IsExecuting이 이미 false로 꺼진 뒤) 사망 애니메이션 재생~결과 패널 표시
+        // 직전까지 IsWaitingForVictoryPanel 구간이 이어진다. ESC 일시정지처럼 "처형 연출이 끝나기
+        // 전에는 절대 끼어들면 안 되는" 용도는 이 둘을 합쳐서 봐야 한다.
+        public static bool IsAnyExecutionInProgress =>
+            Active != null && (Active.IsExecuting || Active.IsWaitingForVictoryPanel);
         private static int externalCombatPermissionCount;
         private static int leftAttackSuppressionCount;
         private static int parrySuppressionCount;
