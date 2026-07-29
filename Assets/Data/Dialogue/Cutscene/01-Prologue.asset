@@ -15,9 +15,35 @@ MonoBehaviour:
   skippable: 1
   steps:
   - backgroundImage: {fileID: 21300000, guid: 4f1ba92e9adff1f41ba10fe732e211cf, type: 3}
+    dialogues: []
+    skippable: 0
+    bgmId: CutSceneBGM
+    bgmFadeSeconds: 0
+    transitionMode: 0
+    fadeInSeconds: 1
+    fadeOutSeconds: 2
+    darkHoldSeconds: 0
+    noDialogueHoldSeconds: 1
+    motionSeconds: 0
+    startOffset: {x: 0, y: 0}
+    endOffset: {x: 0, y: 0}
+    startZoom: 1
+    endZoom: 1
+    glitchFrames: []
+    glitchHoldMinSeconds: 0.2
+    glitchHoldMaxSeconds: 0.6
+    glitchBurstMinFrames: 2
+    glitchBurstMaxFrames: 5
+    glitchFrameMinSeconds: 0.025
+    glitchFrameMaxSeconds: 0.075
+    legacySpeakerName: 
+    legacyDialogueText: 
+    legacyWaitForInput: 0
+  - backgroundImage: {fileID: 21300000, guid: 3d1aa6a2d9ef7ce438830aafaa350051, type: 3}
     dialogues:
     - name: ERIS
-      text: 
+      text: "\uCF54\uB4DC\uBA85 \uC774\uC628, \uB4F1\uAE09 K26, \uC218\uD589 \uC911\uC778
+        \uC784\uBB34 \uC5C6\uC74C."
       sfxId: 
       localizedName:
         m_TableReference:
@@ -37,31 +63,6 @@ MonoBehaviour:
         m_FallbackState: 0
         m_WaitForCompletion: 0
         m_LocalVariables: []
-    skippable: 0
-    bgmId: CutSceneBGM
-    bgmFadeSeconds: 0
-    transitionMode: 0
-    fadeInSeconds: 1
-    fadeOutSeconds: 0.5
-    darkHoldSeconds: 0
-    noDialogueHoldSeconds: 0
-    motionSeconds: 0
-    startOffset: {x: 0, y: 0}
-    endOffset: {x: 0, y: 0}
-    startZoom: 1
-    endZoom: 1
-    glitchFrames: []
-    glitchHoldMinSeconds: 0.2
-    glitchHoldMaxSeconds: 0.6
-    glitchBurstMinFrames: 2
-    glitchBurstMaxFrames: 5
-    glitchFrameMinSeconds: 0.025
-    glitchFrameMaxSeconds: 0.075
-    legacySpeakerName: 
-    legacyDialogueText: 
-    legacyWaitForInput: 0
-  - backgroundImage: {fileID: 21300000, guid: 3d1aa6a2d9ef7ce438830aafaa350051, type: 3}
-    dialogues:
     - name: ERIS
       text: "\uCF54\uB4DC\uBA85 \uC774\uC628, \uB4F1\uAE09 K26, \uC218\uD589 \uC911\uC778
         \uC784\uBB34 \uC5C6\uC74C."
@@ -108,9 +109,9 @@ MonoBehaviour:
     skippable: 1
     bgmId: 
     bgmFadeSeconds: 0
-    transitionMode: 0
+    transitionMode: 1
     fadeInSeconds: 1
-    fadeOutSeconds: 0.5
+    fadeOutSeconds: 1
     darkHoldSeconds: 0
     noDialogueHoldSeconds: 0
     motionSeconds: 0
@@ -221,9 +222,9 @@ MonoBehaviour:
     skippable: 1
     bgmId: 
     bgmFadeSeconds: 0
-    transitionMode: 0
+    transitionMode: 1
     fadeInSeconds: 1
-    fadeOutSeconds: 0.5
+    fadeOutSeconds: 1
     darkHoldSeconds: 0
     noDialogueHoldSeconds: 0
     motionSeconds: 0
