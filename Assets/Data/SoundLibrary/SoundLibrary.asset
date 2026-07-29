@@ -206,7 +206,7 @@ MonoBehaviour:
     pitch: 1
   - category: player
     id: BaseballBatCharging
-    clip: {fileID: 8300000, guid: 1751e9ea660039a4aae449b599ca3d60, type: 3}
+    clip: {fileID: 8300000, guid: c24cbe78025079f4cba5e21fed85ae5b, type: 3}
     volume: 1.1
     pitch: 1
   - category: player
