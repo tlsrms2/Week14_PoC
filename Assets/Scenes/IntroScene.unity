@@ -527,7 +527,7 @@ MonoBehaviour:
     fromFrameIndex: 9
   jungleSyncStartX: -570
   jungleSyncEndX: -55
-  postGameLabHoldSeconds: 1.5
+  postGameLabHoldSeconds: 1
   jungleShakeTarget: {fileID: 1213379654}
   checkpointShakeDistance: 2
   checkpointShakeSeconds: 0.05
@@ -597,7 +597,7 @@ MonoBehaviour:
   jungleLogoFadeInSeconds: 0.5
   logoSwitchFadeSeconds: 1
   blankBetweenLogosSeconds: 0.15
-  teamHoldSeconds: 2.5
+  teamHoldSeconds: 2
   teamLogoFadeOutSeconds: 0.5
   postTeamFadeLoadDelaySeconds: 0
   ensureReferenceFrameMask: 1
@@ -723,7 +723,7 @@ GameObject:
   - component: {fileID: 1139501303}
   - component: {fileID: 1139501302}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: IntroCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
