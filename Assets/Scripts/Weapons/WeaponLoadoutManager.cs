@@ -46,11 +46,13 @@ namespace Week14.Weapons
         private void OnEnable()
         {
             SceneManager.sceneLoaded += HandleSceneLoaded;
+            GameSaveManager.SlotChanged += ReloadFromSave;
         }
 
         private void OnDisable()
         {
             SceneManager.sceneLoaded -= HandleSceneLoaded;
+            GameSaveManager.SlotChanged -= ReloadFromSave;
         }
 
         public bool EquipWeapon(string weaponId)
