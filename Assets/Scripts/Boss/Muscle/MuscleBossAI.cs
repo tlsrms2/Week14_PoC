@@ -43,16 +43,30 @@ namespace Week14.Enemy
 
         protected override void OnHpEmptyBegan()
         {
-            // 이전 사이클에서 EndStun이 Stun 스테이트 진입 전에 소모되지 못하고 남아있으면,
-            // 이번에 Stun 스테이트에 들어가자마자 그 묵은 트리거에 바로 되튕겨 나가버린다.
-            ResetAnimatorTrigger(EndStunParameter);
-            SetAnimatorTrigger(StunParameter);
+            PlayStunVisual();
         }
 
         protected override void OnHpEmptyRecovered()
         {
             ResetAnimatorTrigger(StunParameter);
             SetAnimatorTrigger(EndStunParameter);
+        }
+
+        // MuscleExecutionSequence의 Execution 그래프 패턴(Boss Dash)이 대시할 때마다 Charge
+        // 트리거(Any State)를 쏘기 때문에, 처형 대기 중 세팅해둔 Stun 포즈가 그 사이에 깨져버린다.
+        // 마지막 처형 샷이 꽂힌 직후(isCharge를 다시 꺼주는 시점) 여기서 Stun을 재적용해,
+        // Die 트리거가 오기 전까지 다시 스턴 포즈로 돌아가 있도록 한다.
+        public void ReplayStunVisualForExecution()
+        {
+            PlayStunVisual();
+        }
+
+        private void PlayStunVisual()
+        {
+            // 이전 사이클에서 EndStun이 Stun 스테이트 진입 전에 소모되지 못하고 남아있으면,
+            // 이번에 Stun 스테이트에 들어가자마자 그 묵은 트리거에 바로 되튕겨 나가버린다.
+            ResetAnimatorTrigger(EndStunParameter);
+            SetAnimatorTrigger(StunParameter);
         }
 
         protected override void OnBossDied()

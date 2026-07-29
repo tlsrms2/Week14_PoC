@@ -328,6 +328,7 @@ namespace Week14.Combat
                 ?? muscle;
             CleanupRuntime(false);
             SetFinalDashAnimationHeld(target, false);
+            target?.ReplayStunVisualForExecution();
         }
 
         internal override void OnFinalDeathSequenceComplete(BossAI boss)
