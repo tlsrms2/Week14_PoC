@@ -75,7 +75,7 @@ MonoBehaviour:
   attackCooldownSeconds: 0.5
   minAttackRange: 1.5
   maxAttackRange: 3
-  maxChargeSeconds: 2
+  maxChargeSeconds: 1.2
   reflectedDamage: 3
   reflectedProjectileSpeed: 16
   vfxSettings:
@@ -89,7 +89,7 @@ MonoBehaviour:
     scaleWithAttackRange: 1
     referenceAttackRange: 3
     sortingOrder: 69
-    playbackSpeed: 2
+    playbackSpeed: 1.2
     attackHitDelaySeconds: 0.0165
     attackActiveSeconds: 0.0366
     rangeIndicatorSeconds: 0.0165

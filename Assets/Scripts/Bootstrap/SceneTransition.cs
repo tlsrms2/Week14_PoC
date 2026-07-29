@@ -23,6 +23,7 @@ namespace Week14.Bootstrap
         [SerializeField] private Color blockColor = Color.black;
         [SerializeField] private int sortingOrder = 32760;
         [SerializeField, Min(0f)] private float blockOverlapPixels = 2f;
+        [SerializeField] private bool prewarmOverlayOnAwake;
         [Header("Audio")]
         [Tooltip("화면 전환 효과가 시작될 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
         [SerializeField, BossGraphSfxId] private string transitionSfxId = "Title_Button";
@@ -110,6 +111,12 @@ namespace Week14.Bootstrap
             instance = this;
             transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
+
+            if (prewarmOverlayOnAwake)
+            {
+                EnsureOverlay();
+                SetOverlayVisible(false);
+            }
         }
 
         private void OnDestroy()

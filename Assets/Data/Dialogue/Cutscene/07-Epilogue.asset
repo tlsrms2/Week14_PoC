@@ -212,7 +212,7 @@ MonoBehaviour:
         m_WaitForCompletion: 0
         m_LocalVariables: []
     skippable: 0
-    bgmId: 
+    bgmId: EndingBGM
     bgmFadeSeconds: 0
     transitionMode: 0
     fadeInSeconds: 1

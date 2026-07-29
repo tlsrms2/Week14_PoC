@@ -309,6 +309,7 @@ namespace Week14.Enemy
                 : new Color(lineIndicatorColor.r, lineIndicatorColor.g, lineIndicatorColor.b, 0f);
             visual.Configure(color, lineIndicatorWidth, lineIndicatorSortingOrder);
             visual.ConfigurePlayerBlocking(true);
+            visual.ConfigureClearOnExecutionCinematic(true);
 
             for (int i = 0; i < DroneCount * 2; i++)
             {
