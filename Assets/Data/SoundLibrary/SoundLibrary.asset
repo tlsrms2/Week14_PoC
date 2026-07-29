@@ -58,6 +58,11 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: e50d48e9a74c6414c91feff5e2db68cb, type: 3}
     volume: 0.4
     pitch: 1
+  - category: 
+    id: EndingBGM
+    clip: {fileID: 8300000, guid: 839915b617d65eb46ae412291b5d108d, type: 3}
+    volume: 0.7
+    pitch: 1
   sfxEntries:
   - category: player
     id: PlayerShot
