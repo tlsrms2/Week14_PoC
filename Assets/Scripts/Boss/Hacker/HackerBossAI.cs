@@ -78,7 +78,6 @@ namespace Week14.Enemy
         [Header("Hologram")]
         [SerializeField] private HackerHologramBoss hologramPrefab;
         [SerializeField, Min(1)] private int hologramStartPhaseNumber = 3;
-        [SerializeField, BossGraphSfxId] private string hologramSfxId = HackerSfxIds.Hologram;
         [SerializeField, Min(0f)] private float hologramSfxDelaySeconds = 1f;
 
         [Header("Facing")]
@@ -142,6 +141,7 @@ namespace Week14.Enemy
         private bool isFacingLeft = true;
         private bool hasAppliedWalkState;
         private bool lastIsWalking;
+        private SoundManager.SfxPlaybackHandle walkSfxHandle;
         private float lastSlamAt = float.NegativeInfinity;
         private bool gunWalkCounterParryArmed;
         private bool gunWalkCounterParryTriggered;
@@ -1330,6 +1330,19 @@ namespace Week14.Enemy
             }
 
             GraphContext?.SetAnimationBool(IsWalkAnimationParameter, isWalking);
+            if (isWalking)
+            {
+                if (walkSfxHandle?.IsPlaying != true)
+                {
+                    walkSfxHandle = SoundManager.PlayLoopingSfx(SoundEvent.Hacker_Walk);
+                }
+            }
+            else
+            {
+                SoundManager.StopSfx(walkSfxHandle);
+                walkSfxHandle = null;
+            }
+
             lastIsWalking = isWalking;
             hasAppliedWalkState = true;
         }
@@ -1545,23 +1558,17 @@ namespace Week14.Enemy
         {
             CancelHologramSfx();
 
-            string sfxId = HackerSfxIds.Resolve(hologramSfxId, HackerSfxIds.Hologram);
-            if (string.IsNullOrWhiteSpace(sfxId))
-            {
-                return;
-            }
-
             float delaySeconds = Mathf.Max(0f, hologramSfxDelaySeconds);
             if (delaySeconds <= 0f)
             {
-                SoundManager.PlaySfx(sfxId);
+                SoundManager.PlaySfx(SoundEvent.Hacker_Hologram);
                 return;
             }
 
-            hologramSfxRoutine = StartCoroutine(PlayHologramSfxAfterDelay(sfxId, delaySeconds));
+            hologramSfxRoutine = StartCoroutine(PlayHologramSfxAfterDelay(delaySeconds));
         }
 
-        private IEnumerator PlayHologramSfxAfterDelay(string sfxId, float delaySeconds)
+        private IEnumerator PlayHologramSfxAfterDelay(float delaySeconds)
         {
             for (float elapsed = 0f; elapsed < delaySeconds; elapsed += Time.unscaledDeltaTime)
             {
@@ -1574,7 +1581,7 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            SoundManager.PlaySfx(sfxId);
+            SoundManager.PlaySfx(SoundEvent.Hacker_Hologram);
         }
 
         private void CancelHologramSfx()

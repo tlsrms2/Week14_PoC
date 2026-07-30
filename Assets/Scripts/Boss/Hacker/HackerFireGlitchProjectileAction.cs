@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -28,8 +29,6 @@ namespace Week14.Enemy
         [Header("Wall Avoidance")]
         [SerializeField, Min(0f)] private float initialWallClearance = 3f;
         [SerializeField, Min(1)] private int launchDirectionSamples = 8;
-        [SerializeField, BossGraphSfxId] private string fireSfxId = HackerSfxIds.BossNormalShot;
-        [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
         [SerializeField, Min(0f)] private float recoverySeconds = 0.2f;
 
@@ -90,8 +89,8 @@ namespace Week14.Enemy
                 glitchProjectile.ConfigureTimedChargeApproach(
                     useTimedChargeApproach ? chargeApproachArrivalSeconds : -1f);
             }
-            context.PlaySfx(HackerSfxIds.Resolve(fireSfxId, HackerSfxIds.BossNormalShot));
-            context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
+            context.PlaySfx(SoundEvent.Hacker_Fire);
+            context.PlaySfxOnLaunch(firedProjectile, SoundEvent.Hacker_Launch);
             context.PlayOriginBurst(effects, spawnOrigin);
             context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, direction);
             context.PlayCameraShakeIfEnabled(effects, direction);

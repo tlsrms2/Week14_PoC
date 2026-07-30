@@ -16,10 +16,6 @@ namespace Week14.Skills
         [Tooltip("느려진 상태가 유지되는 시간(초)입니다.")]
         [SerializeField, Min(0f)] private float durationSeconds = 5f;
 
-        [Header("Audio")]
-        [Tooltip("스킬 발동 시 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
-        [SerializeField, BossGraphSfxId] private string sfxId;
-
         [Header("VFX")]
         [Tooltip("효과가 지속되는 동안 잔상이 생성되는 간격(초)입니다.")]
         [SerializeField, Min(0.01f)] private float afterimageInterval = 0.06f;
@@ -70,10 +66,7 @@ namespace Week14.Skills
             EnemyTimeScale.SetTemporary(slowMultiplier, durationSeconds);
             TimeSlowScreenFx.Show(durationSeconds, screenTintFadeIn, screenTintFadeOut, screenTintColor);
 
-            if (!string.IsNullOrEmpty(sfxId))
-            {
-                SoundManager.PlaySfx(sfxId);
-            }
+            SoundManager.PlaySfx(SoundEvent.Skill_TimeSlow);
 
             PlayerCombatController controller = ResolvePlayerController(user);
             if (controller != null && afterimageDuration > 0f)

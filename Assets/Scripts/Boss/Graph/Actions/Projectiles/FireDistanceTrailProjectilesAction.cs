@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -34,8 +35,6 @@ namespace Week14.Enemy
         [SerializeField, Range(0f, 180f)] private float aimSpreadDegrees;
         [Tooltip("켜면 충전 중(발사 전)에는 예상 경로/호밍 조준 인디케이터를 숨기고 실제 발사 순간부터 보이게 합니다. 끄면 다른 발사 액션처럼 충전 중에도 인디케이터가 보입니다(유도탄 등 충전 중 예고가 필요한 경우 끄세요).")]
         [SerializeField] private bool delayPathIndicatorUntilLaunch = true;
-        [SerializeField, BossGraphSfxId] private string fireSfxId;
-        [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
         public override IEnumerator Execute(BossActionContext context)
@@ -99,8 +98,8 @@ namespace Week14.Enemy
             // (delayPathIndicatorUntilLaunch가 꺼져 있으면 다른 발사 액션과 동일하게 충전 중에도 보인다.)
             spawned.ConfigurePathIndicatorDelayedUntilLaunch(delayPathIndicatorUntilLaunch);
 
-            context.PlaySfx(fireSfxId);
-            context.PlaySfxOnLaunch(spawned, launchSfxId);
+            context.PlaySfx(SoundEvent.Boss_ProjectileFire);
+            context.PlaySfxOnLaunch(spawned, SoundEvent.Boss_ProjectileLaunch);
             context.PlayOriginBurst(effects, spawnOrigin);
         }
 

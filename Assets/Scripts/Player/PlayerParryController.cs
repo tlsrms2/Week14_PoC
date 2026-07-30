@@ -91,7 +91,9 @@ namespace Week14.Combat
 
             int currentBullets = context.Bullets != null ? context.Bullets.CurrentBullets : 0;
             int maxBullets = context.Bullets != null ? context.Bullets.MaxBullets : currentBullets;
-            SoundManager.PlaySfx("Parry2", PlayerBulletAudio.GetBulletCountPitch(currentBullets, maxBullets, 1.3f));
+            SoundManager.PlaySfx(
+                SoundEvent.Player_Parry,
+                PlayerBulletAudio.GetBulletCountPitch(currentBullets, maxBullets, 1.3f));
 
             if (notifyListeners)
             {

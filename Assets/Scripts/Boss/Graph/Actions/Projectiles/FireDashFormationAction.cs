@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -51,8 +52,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float fireInterval = 0.05f;
         [SerializeField, Min(0f)] private float windupSeconds;
 
-        [SerializeField, BossGraphSfxId] private string fireSfxId;
-        [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
         public void OnBeforeSerialize() => EnsureAlignEase();
@@ -71,6 +70,11 @@ namespace Week14.Enemy
             }
 
             EnsureAlignEase();
+
+            if (context.Boss is MuscleBossAI)
+            {
+                context.PlaySfx(SoundEvent.Muscle_LineFire);
+            }
 
             if (pattern == BossGraphDashFormationPattern.ParallelLane)
             {
@@ -138,8 +142,11 @@ namespace Week14.Enemy
             spawned.ConfigureChargeAnchor(anchor);
             spawned.ConfigureChargeMotion(0f, false, false);
 
-            context.PlaySfx(fireSfxId);
-            context.PlaySfxOnLaunch(spawned, launchSfxId);
+            if (context.Boss is not MuscleBossAI)
+            {
+                context.PlaySfx(SoundEvent.Boss_ProjectileFire);
+            }
+            context.PlaySfxOnLaunch(spawned, SoundEvent.Boss_ProjectileLaunch);
             context.PlayOriginBurst(effects, originPosition);
             context.PlayMuzzleFlashIfEnabled(effects, spawned, dashDirection);
         }
@@ -229,8 +236,11 @@ namespace Week14.Enemy
 
                 spawned.ConfigureChargeMotion(0f, false, false);
 
-                context.PlaySfx(fireSfxId);
-                context.PlaySfxOnLaunch(spawned, launchSfxId);
+                if (context.Boss is not MuscleBossAI)
+                {
+                    context.PlaySfx(SoundEvent.Boss_ProjectileFire);
+                }
+                context.PlaySfxOnLaunch(spawned, SoundEvent.Boss_ProjectileLaunch);
                 context.PlayMuzzleFlashIfEnabled(effects, spawned, launchDirection);
             }
 

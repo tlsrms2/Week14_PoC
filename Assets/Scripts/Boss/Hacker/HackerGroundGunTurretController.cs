@@ -1,4 +1,5 @@
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -18,7 +19,6 @@ namespace Week14.Enemy
         private GameObject fireEffectPrefab;
         private float fireEffectRotationOffsetDegrees;
         private float fireEffectScale;
-        private string fireSfxId;
         private float elapsed;
         private float nextFireAt;
         private int shotCount;
@@ -35,8 +35,7 @@ namespace Week14.Enemy
             int nextMaxShotCount,
             GameObject nextFireEffectPrefab,
             float nextFireEffectRotationOffsetDegrees,
-            float nextFireEffectScale,
-            string nextFireSfxId)
+            float nextFireEffectScale)
         {
             context = nextContext;
             weapon = GetComponent<HackerThrownWeapon>();
@@ -51,7 +50,6 @@ namespace Week14.Enemy
             fireEffectPrefab = nextFireEffectPrefab;
             fireEffectRotationOffsetDegrees = nextFireEffectRotationOffsetDegrees;
             fireEffectScale = Mathf.Max(0.01f, nextFireEffectScale);
-            fireSfxId = HackerSfxIds.Resolve(nextFireSfxId, HackerSfxIds.BossNormalShot);
             elapsed = 0f;
             nextFireAt = 0f;
             shotCount = 0;
@@ -126,7 +124,7 @@ namespace Week14.Enemy
                     fireEffectScale,
                     false);
                 IgnoreWeaponCollisions(firedProjectile);
-                context.PlaySfx(fireSfxId);
+                context.PlaySfx(SoundEvent.Hacker_Fire);
             }
         }
 

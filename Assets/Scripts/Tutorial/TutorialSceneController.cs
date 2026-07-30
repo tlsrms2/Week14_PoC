@@ -95,11 +95,6 @@ namespace Week14.Tutorial
         [Tooltip("튜토리얼 진입 및 사망 후 재시작 시 재생할 BGM입니다.")]
         [SerializeField, BossGraphBgmId] private string tutorialBgmId = "CutSceneBGM";
         [SerializeField, Min(0f)] private float tutorialBgmFadeSeconds = 0.5f;
-        [Tooltip("각 튜토리얼 목표 완료 연출이 시작될 때 재생할 SFX입니다.")]
-        [SerializeField, BossGraphSfxId] private string objectiveCompleteSfxId;
-        [Tooltip("훈련용 더미가 바닥에서 올라오기 시작할 때 재생할 SFX입니다.")]
-        [SerializeField, BossGraphSfxId] private string trainingEnemyRaiseSfxId;
-
         [Header("Goals")]
         [SerializeField, Min(1)] private int attackHitGoal = 3;
         [SerializeField, Min(1)] private int hitGoal = 1;
@@ -654,7 +649,7 @@ namespace Week14.Tutorial
 
         private IEnumerator CompleteObjectivePanel(TutorialStepId step, int goal)
         {
-            PlaySfx(objectiveCompleteSfxId);
+            SoundManager.PlaySfx(SoundEvent.Tutorial_ObjectiveComplete);
 
             if (objectiveDialoguePanel != null)
             {
@@ -714,7 +709,7 @@ namespace Week14.Tutorial
             string text = ResolveDialogueText(line);
             bool revealRequested = false;
             bool canAcceptAdvance = false;
-            PlaySfx(line.SfxId);
+            SoundManager.PlaySfx(SoundEvent.Tutorial_Dialogue);
             textDialoguePanel.ShowLine(
                 speaker,
                 text,
@@ -1148,14 +1143,6 @@ namespace Week14.Tutorial
             }
         }
 
-        private static void PlaySfx(string sfxId)
-        {
-            if (!string.IsNullOrWhiteSpace(sfxId))
-            {
-                SoundManager.PlaySfx(sfxId);
-            }
-        }
-
         private IEnumerator RefillAttackAmmo()
         {
             attackRefillRequested = false;
@@ -1221,7 +1208,7 @@ namespace Week14.Tutorial
 
         private IEnumerator AnimateUnderfloorRaising()
         {
-            PlaySfx(trainingEnemyRaiseSfxId);
+            SoundManager.PlaySfx(SoundEvent.Tutorial_TrainingEnemyRaise);
 
             float duration = Mathf.Max(0f, underfloorRaiseSeconds);
             if (duration <= 0f)

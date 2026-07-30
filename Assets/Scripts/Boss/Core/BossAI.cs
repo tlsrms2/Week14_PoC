@@ -1004,15 +1004,41 @@ namespace Week14.Enemy
 
         private void PlayBossDeathSfx()
         {
-            if (bossDeathSfxPlayed
-                || bossData == null
-                || string.IsNullOrWhiteSpace(bossData.DeathSfxId))
+            if (bossDeathSfxPlayed)
             {
                 return;
             }
 
             bossDeathSfxPlayed = true;
-            SoundManager.PlaySfx(bossData.DeathSfxId);
+            if (TryGetDeathSoundEvent(out SoundEvent soundEvent))
+            {
+                SoundManager.PlaySfx(soundEvent);
+            }
+        }
+
+        private bool TryGetDeathSoundEvent(out SoundEvent soundEvent)
+        {
+            switch (this)
+            {
+                case HogBossAI:
+                    soundEvent = SoundEvent.Hog_Death;
+                    return true;
+                case MuscleBossAI:
+                    soundEvent = SoundEvent.Muscle_Death;
+                    return true;
+                case Conductor:
+                    soundEvent = SoundEvent.Conductor_Death;
+                    return true;
+                case AssassinBossAI:
+                    soundEvent = SoundEvent.Assassin_Death;
+                    return true;
+                case HackerBossAI:
+                    soundEvent = SoundEvent.Hacker_Death;
+                    return true;
+                default:
+                    soundEvent = default;
+                    return false;
+            }
         }
 
         internal void OnBossPhaseChangedForController(int phaseIndex, int phaseNumber)

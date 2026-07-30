@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -45,8 +46,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float arcFireInterval = 0.05f;
         [Tooltip("Fire Mode가 Burst일 때 쓰는 볼리 목록입니다.")]
         [SerializeField] private List<Volley> volleys = new() { new Volley() };
-        [SerializeField, BossGraphSfxId] private string fireSfxId;
-        [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
         // Anim-Assassin-char(.glow).controller의 Atk2 파라미터 이름과 정확히 일치해야 한다.
@@ -199,8 +198,8 @@ namespace Week14.Enemy
                 return;
             }
 
-            context.PlaySfx(fireSfxId);
-            context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
+            context.PlaySfx(SoundEvent.Assassin_Fire);
+            context.PlaySfxOnLaunch(firedProjectile, SoundEvent.Assassin_Launch);
             context.PlayOriginBurst(effects, origin);
             context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, direction);
             context.PlayCameraShakeIfEnabled(effects, direction);

@@ -13,6 +13,7 @@ namespace Week14.Audio
         public sealed class SoundEntry
         {
             [SerializeField, HideInInspector] private string category;
+            [SerializeField, HideInInspector] private List<SoundEvent> usages = new();
             [Tooltip("SoundManager.PlaySfx/PlayBgm 호출 시 사용하는 식별자입니다.")]
             [SerializeField] private string id;
             [SerializeField] private AudioClip clip;
@@ -20,6 +21,7 @@ namespace Week14.Audio
             [SerializeField, Range(0.5f, 2f)] private float pitch = 1f;
 
             public string Category => NormalizeSfxCategory(category);
+            public IReadOnlyList<SoundEvent> Usages => usages;
             public string Id => id;
             public AudioClip Clip => clip;
             public float Volume => volume;
@@ -34,6 +36,7 @@ namespace Week14.Audio
 
         private Dictionary<string, SoundEntry> bgmById;
         private Dictionary<string, SoundEntry> sfxById;
+        private Dictionary<SoundEvent, SoundEntry> sfxByEvent;
 
         public IReadOnlyList<string> BgmIds => GetIds(bgmEntries);
         public IReadOnlyList<string> SfxIds => GetIds(sfxEntries);
@@ -58,6 +61,19 @@ namespace Week14.Audio
             return Find(sfxById, id);
         }
 
+        public SoundEntry FindSfx(SoundId id)
+        {
+            return FindSfx(id.ToLibraryId());
+        }
+
+        public SoundEntry FindSfx(SoundEvent soundEvent)
+        {
+            sfxByEvent ??= BuildEventLookup(sfxEntries);
+            return sfxByEvent.TryGetValue(soundEvent, out SoundEntry entry)
+                ? entry
+                : null;
+        }
+
         private void OnEnable()
         {
             InvalidateLookups();
@@ -72,6 +88,7 @@ namespace Week14.Audio
         {
             bgmById = null;
             sfxById = null;
+            sfxByEvent = null;
         }
 
         private static SoundEntry Find(Dictionary<string, SoundEntry> lookup, string id)
@@ -107,6 +124,27 @@ namespace Week14.Audio
                 if (entry != null && !string.IsNullOrEmpty(entry.Id))
                 {
                     lookup[entry.Id] = entry;
+                }
+            }
+
+            return lookup;
+        }
+
+        private static Dictionary<SoundEvent, SoundEntry> BuildEventLookup(
+            List<SoundEntry> entries)
+        {
+            Dictionary<SoundEvent, SoundEntry> lookup = new();
+            for (int i = 0; i < entries.Count; i++)
+            {
+                SoundEntry entry = entries[i];
+                if (entry?.Usages == null)
+                {
+                    continue;
+                }
+
+                for (int usageIndex = 0; usageIndex < entry.Usages.Count; usageIndex++)
+                {
+                    lookup[entry.Usages[usageIndex]] = entry;
                 }
             }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -24,8 +25,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float motionDurationSeconds;
         [SerializeField] private bool destroyOnMotionEnd;
         [SerializeField, Min(0f)] private float windupSeconds;
-        [SerializeField, BossGraphSfxId] private string fireSfxId;
-        [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
         public override IEnumerator Execute(BossActionContext context)
@@ -88,8 +87,8 @@ namespace Week14.Enemy
                             ringStartRadius,
                             motionDurationSeconds,
                             destroyOnMotionEnd);
-                        context.PlaySfx(fireSfxId);
-                        context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
+                        context.PlaySfx(SoundEvent.Boss_ProjectileFire);
+                        context.PlaySfxOnLaunch(firedProjectile, SoundEvent.Boss_ProjectileLaunch);
                         context.PlayOriginBurst(effects, spawnPosition);
                         context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, spawnDirection);
                         context.PlayCameraShakeIfEnabled(effects, spawnDirection);

@@ -29,6 +29,14 @@ public sealed class SoundLibraryEditor : Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("m_Script"));
         }
 
+        if (GUILayout.Button("전용 SFX 관리 창 열기", GUILayout.Height(26f)))
+        {
+            Selection.activeObject = target;
+            EditorApplication.ExecuteMenuItem(
+                "Tools/Week14/Audio/Sound Library Manager");
+        }
+
+        EditorGUILayout.Space();
         EditorGUILayout.PropertyField(bgmEntries, new GUIContent("Background Music"), true);
         EditorGUILayout.Space();
         DrawSfxInspector();
@@ -111,6 +119,7 @@ public sealed class SoundLibraryEditor : Editor
                 $"중복 SFX ID: {string.Join(", ", duplicates)}",
                 MessageType.Error);
         }
+
     }
 
     private Dictionary<string, List<int>> BuildCategoryGroups()
@@ -324,6 +333,7 @@ public sealed class SoundLibraryEditor : Editor
         entry.FindPropertyRelative("clip").objectReferenceValue = null;
         entry.FindPropertyRelative("volume").floatValue = 1f;
         entry.FindPropertyRelative("pitch").floatValue = 1f;
+        entry.FindPropertyRelative("usages").ClearArray();
         entry.isExpanded = true;
 
         serializedObject.ApplyModifiedProperties();

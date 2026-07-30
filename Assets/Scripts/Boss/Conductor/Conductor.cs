@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -38,6 +39,7 @@ namespace Week14.Enemy
         private bool hasAppliedWalkState;
         private bool lastIsWalking;
         private SpriteRenderer facingSpriteRenderer;
+        private SoundManager.SfxPlaybackHandle droneIdleSfxHandle;
         private static Material movementPathIndicatorMaterial;
 
         protected override GameObject BossMuzzleFlashVfxPrefab => EffectData != null
@@ -211,6 +213,7 @@ namespace Week14.Enemy
                         continue;
                     }
 
+                    context?.PlaySfx(SoundEvent.Conductor_Draw);
                     yield return DrawConductingStroke(context, visual, i, stroke, settings, shouldCancel);
                     if (ShouldCancelConductingPattern(shouldCancel))
                     {
@@ -223,6 +226,7 @@ namespace Week14.Enemy
                     }
                 }
 
+                context?.PlaySfx(SoundEvent.Conductor_DrawComplete);
                 PlayConductingCueCompleteEffect(anchor, settings);
 
                 if (settings.CompletedFlashSeconds > 0f)
@@ -365,6 +369,7 @@ namespace Week14.Enemy
         {
             ClearConductingAnimation();
             ApplyWalkState(false, true);
+            StopDroneIdleSfx();
             UntrackAllSpawnedMinions();
             base.OnBossDied();
         }
@@ -383,6 +388,7 @@ namespace Week14.Enemy
         {
             ClearConductingAnimation();
             ApplyWalkState(false, true);
+            StopDroneIdleSfx();
             UntrackAllSpawnedMinions();
             base.OnDisable();
         }
@@ -391,6 +397,7 @@ namespace Week14.Enemy
         {
             UpdateFacingSprite();
             UpdateWalkState();
+            UpdateDroneIdleSfx();
 
             foreach (KeyValuePair<Minion, Transform> entry in spawnedMinionOutlines)
             {
@@ -454,6 +461,37 @@ namespace Week14.Enemy
             targetAnimator.SetBool(IsWalkParameter, isWalking);
             lastIsWalking = isWalking;
             hasAppliedWalkState = true;
+        }
+
+        private void UpdateDroneIdleSfx()
+        {
+            bool hasIdleDrone = false;
+            foreach (Minion minion in spawnedMinionsByHealth.Values)
+            {
+                if (minion != null && !minion.IsCommanded)
+                {
+                    hasIdleDrone = true;
+                    break;
+                }
+            }
+
+            if (hasIdleDrone)
+            {
+                if (droneIdleSfxHandle == null || !droneIdleSfxHandle.IsPlaying)
+                {
+                    droneIdleSfxHandle = SoundManager.PlayLoopingSfx(SoundEvent.Conductor_DroneIdle);
+                }
+
+                return;
+            }
+
+            StopDroneIdleSfx();
+        }
+
+        private void StopDroneIdleSfx()
+        {
+            SoundManager.StopSfx(droneIdleSfxHandle);
+            droneIdleSfxHandle = null;
         }
 
         private void SetAnimatorTrigger(int parameter)

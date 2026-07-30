@@ -30,8 +30,6 @@ namespace Week14.UI
         [SerializeField, BossGraphBgmId] private string bgmId;
         [Tooltip("보스 BGM이 전환되는 시간입니다.")]
         [SerializeField, Min(0f)] private float bgmFadeSeconds = 3f;
-        [Tooltip("보스의 최종 사망 연출이 시작될 때 한 번 재생할 SFX입니다.")]
-        [SerializeField, BossGraphSfxId] private string deathSfxId = "BossCollapse";
 
         [Header("보스전 진입 연출")]
         [Tooltip("플레이어가 걷기 시작할 월드 좌표입니다.")]
@@ -77,7 +75,6 @@ namespace Week14.UI
         public string SceneName => sceneName;
         public string BgmId => bgmId;
         public float BgmFadeSeconds => Mathf.Max(0f, bgmFadeSeconds);
-        public string DeathSfxId => deathSfxId;
         public Vector2 IntroWalkStartPosition => introWalkStartPosition;
         public Vector2 IntroWalkEndPosition => introWalkEndPosition;
         public IReadOnlyList<string> UnlocksBossIds => unlocksBossIds;

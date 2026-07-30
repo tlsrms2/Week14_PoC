@@ -79,11 +79,6 @@ public sealed class BaseballBatWeaponSOEditor : Editor
             "reflectedProjectileSpeed",
             "moveSpeedMultiplier");
 
-        EditorGUILayout.Space(6f);
-        EditorGUILayout.LabelField("효과음", EditorStyles.boldLabel);
-        DrawProperties(
-            "chargingSfxId",
-            "reflectionSuccessSfxId");
     }
 
     private void DrawVfxTab()

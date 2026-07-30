@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -57,8 +58,6 @@ namespace Week14.Enemy
         [SerializeField] private BossGraphProjectileOriginSpec origin = new();
         [SerializeField] private BossGraphProjectileAimSpec aim = new();
         [SerializeField, Min(0f)] private float windupSeconds;
-        [SerializeField, BossGraphSfxId] private string fireSfxId;
-        [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
         [FormerlySerializedAs("bulletCount")]
         [SerializeField, HideInInspector] private int legacyBulletCount;
@@ -207,8 +206,8 @@ namespace Week14.Enemy
                 return;
             }
 
-            context.PlaySfx(fireSfxId);
-            context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
+            context.PlaySfx(SoundEvent.Boss_ProjectileFire);
+            context.PlaySfxOnLaunch(firedProjectile, SoundEvent.Boss_ProjectileLaunch);
             context.PlayOriginBurst(effects, spawnOrigin);
             context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, direction);
             context.PlayCameraShakeIfEnabled(effects, direction);

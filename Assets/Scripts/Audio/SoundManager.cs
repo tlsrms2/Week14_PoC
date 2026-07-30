@@ -39,6 +39,7 @@ namespace Week14.Audio
         private readonly List<AudioSource> sfxSources = new();
         private readonly Dictionary<AudioSource, int> sfxPlaybackIds = new();
         private int nextSfxPlaybackId;
+        private int lastButtonClickSfxFrame = -1;
         private Coroutine bgmRoutine;
         private string currentBgmId;
         private float currentBgmEntryVolume = 1f;
@@ -146,6 +147,38 @@ namespace Week14.Audio
             instance.PlaySfxInternal(entry.Clip, entry.Volume, entry.Pitch);
         }
 
+        public static void PlaySfx(SoundId id)
+        {
+            PlaySfx(id.ToLibraryId());
+        }
+
+        public static void PlaySfx(SoundEvent soundEvent)
+        {
+            if (instance == null || instance.library == null)
+            {
+                return;
+            }
+
+            SoundLibrary.SoundEntry entry = instance.library.FindSfx(soundEvent);
+            if (entry == null || entry.Clip == null)
+            {
+                return;
+            }
+
+            instance.PlaySfxInternal(entry.Clip, entry.Volume, entry.Pitch);
+        }
+
+        public static void PlayButtonClickSfx()
+        {
+            if (instance == null || instance.lastButtonClickSfxFrame == Time.frameCount)
+            {
+                return;
+            }
+
+            instance.lastButtonClickSfxFrame = Time.frameCount;
+            PlaySfx(SoundEvent.UI_ButtonClick);
+        }
+
         public static void PlaySfx(string id, float pitch)
         {
             if (instance == null || instance.library == null)
@@ -157,6 +190,27 @@ namespace Week14.Audio
             if (entry == null || entry.Clip == null)
             {
                 Debug.LogWarning($"{nameof(SoundManager)}: SFX id '{id}' not found.");
+                return;
+            }
+
+            instance.PlaySfxInternal(entry.Clip, entry.Volume, pitch);
+        }
+
+        public static void PlaySfx(SoundId id, float pitch)
+        {
+            PlaySfx(id.ToLibraryId(), pitch);
+        }
+
+        public static void PlaySfx(SoundEvent soundEvent, float pitch)
+        {
+            if (instance == null || instance.library == null)
+            {
+                return;
+            }
+
+            SoundLibrary.SoundEntry entry = instance.library.FindSfx(soundEvent);
+            if (entry == null || entry.Clip == null)
+            {
                 return;
             }
 
@@ -178,9 +232,42 @@ namespace Week14.Audio
             return PlaySfxWithHandle(id, true);
         }
 
+        public static SfxPlaybackHandle PlayLoopingSfx(SoundId id)
+        {
+            return PlayLoopingSfx(id.ToLibraryId());
+        }
+
+        public static SfxPlaybackHandle PlayLoopingSfx(SoundEvent soundEvent)
+        {
+            return PlaySfxWithHandle(soundEvent, true);
+        }
+
         public static SfxPlaybackHandle PlayTrackedSfx(string id)
         {
             return PlaySfxWithHandle(id, false);
+        }
+
+        public static SfxPlaybackHandle PlayTrackedSfx(SoundId id)
+        {
+            return PlayTrackedSfx(id.ToLibraryId());
+        }
+
+        public static SfxPlaybackHandle PlayTrackedSfx(SoundEvent soundEvent)
+        {
+            return PlaySfxWithHandle(soundEvent, false);
+        }
+
+        private static SfxPlaybackHandle PlaySfxWithHandle(
+            SoundEvent soundEvent,
+            bool loop)
+        {
+            if (instance == null || instance.library == null)
+            {
+                return null;
+            }
+
+            SoundLibrary.SoundEntry entry = instance.library.FindSfx(soundEvent);
+            return PlaySfxWithHandle(entry, loop);
         }
 
         private static SfxPlaybackHandle PlaySfxWithHandle(string id, bool loop)
@@ -197,7 +284,23 @@ namespace Week14.Audio
                 return null;
             }
 
-            AudioSource source = instance.PlaySfxInternal(entry.Clip, entry.Volume, entry.Pitch, loop);
+            return PlaySfxWithHandle(entry, loop);
+        }
+
+        private static SfxPlaybackHandle PlaySfxWithHandle(
+            SoundLibrary.SoundEntry entry,
+            bool loop)
+        {
+            if (instance == null || entry == null || entry.Clip == null)
+            {
+                return null;
+            }
+
+            AudioSource source = instance.PlaySfxInternal(
+                entry.Clip,
+                entry.Volume,
+                entry.Pitch,
+                loop);
             if (source == null
                 || !instance.sfxPlaybackIds.TryGetValue(source, out int playbackId))
             {
@@ -265,6 +368,30 @@ namespace Week14.Audio
             }
 
             AudioSource.PlayClipAtPoint(entry.Clip, position, entry.Volume * instance.sfxVolume);
+        }
+
+        public static void PlaySfxAtPoint(SoundId id, Vector3 position)
+        {
+            PlaySfxAtPoint(id.ToLibraryId(), position);
+        }
+
+        public static void PlaySfxAtPoint(SoundEvent soundEvent, Vector3 position)
+        {
+            if (instance == null || instance.library == null)
+            {
+                return;
+            }
+
+            SoundLibrary.SoundEntry entry = instance.library.FindSfx(soundEvent);
+            if (entry == null || entry.Clip == null || instance.sfxMuted)
+            {
+                return;
+            }
+
+            AudioSource.PlayClipAtPoint(
+                entry.Clip,
+                position,
+                entry.Volume * instance.sfxVolume);
         }
 
         public static void SetBgmVolume(float volume)

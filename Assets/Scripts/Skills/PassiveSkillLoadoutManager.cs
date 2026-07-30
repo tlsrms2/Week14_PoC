@@ -23,6 +23,7 @@ namespace Week14.Skills
         public static PassiveSkillLoadoutManager Instance => instance;
 
         public event Action<PassiveSkillSlot, BasePassiveSkillSO> SkillEquipped;
+        public event Action<PassiveSkillSlot, BasePassiveSkillSO> SkillEquippedByUser;
 
         private void Awake()
         {
@@ -99,6 +100,7 @@ namespace Week14.Skills
 
             GameSaveManager.SetEquippedPassiveSkillId((int)slot, skillId);
             SkillEquipped?.Invoke(slot, skill);
+            SkillEquippedByUser?.Invoke(slot, skill);
             return true;
         }
 

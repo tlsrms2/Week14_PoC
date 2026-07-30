@@ -482,7 +482,7 @@ internal static class BossGraphActionEditorUtility
 
         if (actionType == typeof(PlaySfxAction))
         {
-            return "지정한 SFX를 즉시 재생합니다.";
+            return "Sound Library의 Boss / CustomCue에 연결된 SFX를 즉시 재생합니다.";
         }
 
         if (actionType == typeof(ConductorConductingCueAction))
@@ -1237,7 +1237,7 @@ internal sealed class BossGraphEffectSettingsDrawer : PropertyDrawer
 
         EditorGUI.indentLevel++;
         lineRect.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-        BossGraphDrawerDescriptionGui.DrawDescription(ref lineRect, "액션과 함께 재생할 공통 이펙트 묶음입니다. SFX는 각 액션 필드에 그대로 둡니다.");
+        BossGraphDrawerDescriptionGui.DrawDescription(ref lineRect, "액션과 함께 재생할 공통 시각 이펙트 묶음입니다. SFX는 Sound Library에서 중앙 연결합니다.");
         DrawSmokeProperty(ref lineRect, property);
         DrawDefaultProperty(ref lineRect, property.FindPropertyRelative(MuzzleFlashProperty));
         DrawDefaultProperty(ref lineRect, property.FindPropertyRelative(CameraShakeProperty));

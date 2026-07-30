@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -19,7 +20,6 @@ namespace Week14.Enemy
         [SerializeField] private bool randomizeStartAngle;
         [SerializeField, Min(0f)] private float minAngleDistanceDegrees = 25f;
         [SerializeField, Min(0f)] private float fireInterval = 0.08f;
-        [SerializeField, BossGraphSfxId] private string fireSfxId = HackerSfxIds.BossNormalShot;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.25f;
 
         [Header("Execution Cinematic")]
@@ -88,7 +88,7 @@ namespace Week14.Enemy
 
                 if (projectile != null)
                 {
-                    context.PlaySfx(HackerSfxIds.Resolve(fireSfxId, HackerSfxIds.BossNormalShot));
+                    context.PlaySfx(SoundEvent.Hacker_Fire);
                 }
 
                 if (i < count - 1)

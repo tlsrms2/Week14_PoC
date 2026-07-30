@@ -15,10 +15,6 @@ namespace Week14.Skills
         [SerializeField, Range(0f, 1f)] private float damageMultiplier = 0.5f;
         [Tooltip("분신 비주얼 색상입니다. 알파로 투명도를 조절합니다.")]
         [SerializeField] private Color cloneTint = new Color(0.45f, 0.9f, 1f, 0.55f);
-        [Tooltip("스킬 발동 시 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
-        [BossGraphSfxId]
-        [SerializeField] private string activateSfxId;
-
         private event Action effectEnd;
 
         public override bool HasDelayedCooldownStart => true;
@@ -43,10 +39,7 @@ namespace Week14.Skills
 
             echo.Activate(controller, durationSeconds, damageMultiplier, cloneTint, NotifyCloneEnded);
 
-            if (!string.IsNullOrEmpty(activateSfxId))
-            {
-                SoundManager.PlaySfx(activateSfxId);
-            }
+            SoundManager.PlaySfx(SoundEvent.Skill_CloneAttack);
         }
 
         private void NotifyCloneEnded()

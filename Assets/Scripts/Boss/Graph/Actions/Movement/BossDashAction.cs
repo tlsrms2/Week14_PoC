@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -18,7 +19,6 @@ namespace Week14.Enemy
         [Tooltip("추적 중 방향을 초당 최대 몇 도까지 회전시킬지 제한합니다. 0이면 제한 없이 즉시 플레이어 방향으로 스냅합니다. " +
             "EnemyTimeScale이 적용되어, 시간 슬로우 스킬로 보스 이동/투사체가 느려질 때 이 회전 속도도 똑같이 느려집니다.")]
         [SerializeField, Min(0f)] private float maxTrackTurnDegreesPerSecond = 0f;
-        [SerializeField, BossGraphSfxId] private string windupSfxId;
         [SerializeField] private BossGraphEffectSettings windupEffects = new();
 
         [Header("Dash")]
@@ -26,8 +26,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float dashSpeed = 15f;
         [SerializeField] private AnimationCurve speedCurve;
         [SerializeField, HideInInspector] private bool speedCurveInitialized;
-        [SerializeField, BossGraphSfxId] private string dashSfxId;
-
         [Header("Animation")]
         [Tooltip("Execute 시작 시 발동할 애니메이터 트리거 이름입니다. 비워두면 호출하지 않습니다.")]
         [SerializeField] private string chargeTriggerName = "Charge";
@@ -62,7 +60,7 @@ namespace Week14.Enemy
             }
 
             EnsureSpeedCurve();
-            context.PlaySfx(windupSfxId);
+            context.PlaySfx(SoundEvent.Boss_BeforeDash);
             context.PlayAnimationTrigger(chargeTriggerName);
 
             float trackDuration = Mathf.Max(0f, windupSeconds - lockSeconds);
@@ -134,7 +132,7 @@ namespace Week14.Enemy
             context.SetAnimationBool(chargeBoolName, true);
             context.SetDashing(true);
             context.SetAutomaticDashContactDamageSuppressed(attackArea.IsValid);
-            context.PlaySfx(dashSfxId);
+            context.PlaySfx(SoundEvent.Boss_Step);
             PlayDashDustEffect(context, dashDirection);
             Vector2 attackOrigin = context.OriginPosition;
             float previousAttackDistance = 0f;

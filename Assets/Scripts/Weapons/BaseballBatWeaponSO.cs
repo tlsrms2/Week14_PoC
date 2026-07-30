@@ -185,15 +185,8 @@ namespace Week14.Weapons
         [SerializeField] private BaseballBatVfxSettings vfxSettings = new BaseballBatVfxSettings();
 
         [Header("Sound")]
-        [Tooltip("야구 배트 차지를 시작할 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
-        [BossGraphSfxId]
-        [SerializeField] private string chargingSfxId = "BaseballBatCharging";
         [Tooltip("차징 SFX를 한 번 재생하기까지 필요한 홀드 시간(초)입니다.")]
         [SerializeField, Min(0f)] private float chargingSfxStartSeconds = 0.5f;
-        [Tooltip("야구 배트로 투사체를 반사할 때 투사체마다 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
-        [BossGraphSfxId]
-        [FormerlySerializedAs("swingSfxId")]
-        [SerializeField] private string reflectionSuccessSfxId = "BaseballBatSwing";
 
         [Tooltip("야구 배트를 장착했을 때 적용할 이동 속도 배율입니다. 1.5 = 50% 증가.")]
         [SerializeField, Min(0f)] private float moveSpeedMultiplier = 1.5f;
@@ -228,7 +221,7 @@ namespace Week14.Weapons
             float charge01 = GetCharge01(chargeTime);
             if (chargeTime >= chargingSfxStartSeconds)
             {
-                shooter.PlayBaseballBatChargingSfxOnce(chargingSfxId);
+                shooter.PlayBaseballBatChargingSfxOnce();
             }
 
             shooter.PreviewBaseballBatRange(GetAttackRange(charge01), VfxSettings.PreviewRangeColor);
@@ -247,8 +240,7 @@ namespace Week14.Weapons
                     attackRange,
                     reflectedProjectileSpeed,
                     VfxSettings,
-                    charge01,
-                    reflectionSuccessSfxId);
+                    charge01);
                 shooter.StartBaseballBatSwingThrough(
                     VfxSettings,
                     VfxSettings.AttackHitDelaySeconds + VfxSettings.AttackActiveSeconds);

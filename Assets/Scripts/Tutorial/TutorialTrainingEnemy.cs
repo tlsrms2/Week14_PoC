@@ -53,12 +53,6 @@ namespace Week14.Tutorial
         [SerializeField, Min(1)] private int duelMainBurstShotCount = 4;
         [SerializeField, Min(0.01f)] private float duelSingleShotSpeedMultiplier = 1.5f;
 
-        [Header("Audio")]
-        [Tooltip("플레이어 방향으로 일반 공격을 발사할 때 재생할 SFX입니다.")]
-        [SerializeField, BossGraphSfxId] private string normalAttackSfxId;
-        [Tooltip("전방위 방사형 공격을 발사할 때 재생할 SFX입니다.")]
-        [SerializeField, BossGraphSfxId] private string radialAttackSfxId;
-
         [Header("Projectile Settings")]
         [SerializeField] private BossProjectileSettings projectile = new();
         [SerializeField] private BossProjectileSettings dodgeProjectile = new();
@@ -541,7 +535,7 @@ namespace Week14.Tutorial
 
             if (SpawnProjectile(settings, origin, direction.normalized, true) != null)
             {
-                PlaySfx(normalAttackSfxId);
+                SoundManager.PlaySfx(SoundEvent.Tutorial_TrainingEnemyNormalAttack);
             }
         }
 
@@ -730,15 +724,7 @@ namespace Week14.Tutorial
 
             if (firedAny)
             {
-                PlaySfx(radialAttackSfxId);
-            }
-        }
-
-        private static void PlaySfx(string sfxId)
-        {
-            if (!string.IsNullOrWhiteSpace(sfxId))
-            {
-                SoundManager.PlaySfx(sfxId);
+                SoundManager.PlaySfx(SoundEvent.Tutorial_TrainingEnemyRadialAttack);
             }
         }
 

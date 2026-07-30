@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -595,8 +596,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float circleMotionDurationSeconds = 3f;
         [SerializeField] private bool destroyCircleProjectileOnEnd = true;
         [SerializeField] private bool waitForCircleMotionEnd = true;
-        [SerializeField, BossGraphSfxId] private string circleFireSfxId;
-        [SerializeField, BossGraphSfxId] private string circleLaunchSfxId;
         [SerializeField] private BossGraphEffectSettings circleEffects = new();
 
         [Header("Boss Orbit")]
@@ -611,8 +610,6 @@ namespace Week14.Enemy
         [Header("Attack While Moving")]
         [SerializeField, Min(0f)] private float attackStartDelaySeconds;
         [SerializeField] private bool loopAttackVolleys;
-        [SerializeField, BossGraphSfxId] private string attackFireSfxId;
-        [SerializeField, BossGraphSfxId] private string attackLaunchSfxId;
         [SerializeField] private BossGraphEffectSettings attackEffects = new();
         [SerializeField] private List<AttackVolley> attackVolleys = new() { new AttackVolley() };
 
@@ -682,8 +679,8 @@ namespace Week14.Enemy
                         circleAngularSpeedDegrees,
                         circleMotionDurationSeconds,
                         destroyCircleProjectileOnEnd);
-                    context.PlaySfx(circleFireSfxId);
-                    context.PlaySfxOnLaunch(firedProjectile, circleLaunchSfxId);
+                    context.PlaySfx(SoundEvent.Arsonist_CircleFire);
+                    context.PlaySfxOnLaunch(firedProjectile, SoundEvent.Arsonist_CircleLaunch);
                     context.PlayOriginBurst(circleEffects, spawnPosition);
                     context.PlayMuzzleFlashIfEnabled(circleEffects, firedProjectile, tangentDirection);
                     context.PlayCameraShakeIfEnabled(circleEffects, tangentDirection);
@@ -889,8 +886,8 @@ namespace Week14.Enemy
                 return;
             }
 
-            context.PlaySfx(attackFireSfxId);
-            context.PlaySfxOnLaunch(firedProjectile, attackLaunchSfxId);
+            context.PlaySfx(SoundEvent.Arsonist_AttackFire);
+            context.PlaySfxOnLaunch(firedProjectile, SoundEvent.Arsonist_AttackLaunch);
             context.PlayOriginBurst(attackEffects, spawnPosition);
             context.PlayMuzzleFlashIfEnabled(attackEffects, firedProjectile, finalDirection);
             context.PlayCameraShakeIfEnabled(attackEffects, finalDirection);
@@ -941,8 +938,6 @@ namespace Week14.Enemy
             [SerializeField] private bool destroyOnMotionEnd = true;
             [SerializeField] private bool waitForMotionEnd;
             [SerializeField, Min(0f)] private float windupSeconds;
-            [SerializeField, BossGraphSfxId] private string fireSfxId;
-            [SerializeField, BossGraphSfxId] private string launchSfxId;
             [SerializeField] private BossGraphEffectSettings effects = new();
 
             public string ProjectileName => projectileName;
@@ -957,8 +952,6 @@ namespace Week14.Enemy
             public bool DestroyOnMotionEnd => destroyOnMotionEnd;
             public bool WaitForMotionEnd => waitForMotionEnd;
             public float WindupSeconds => Mathf.Max(0f, windupSeconds);
-            public string FireSfxId => fireSfxId;
-            public string LaunchSfxId => launchSfxId;
             public BossGraphEffectSettings Effects => effects;
         }
 
@@ -982,8 +975,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float strokeInterval = 0.12f;
         [SerializeField] private float rotationOffsetDegrees;
         [SerializeField] private bool destroyOnStrokeEnd = true;
-        [SerializeField, BossGraphSfxId] private string fireSfxId;
-        [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
         public override IEnumerator Execute(BossActionContext context)
@@ -1060,8 +1051,8 @@ namespace Week14.Enemy
                             worldPoints,
                             strokeDuration,
                             destroyOnStrokeEnd);
-                        context.PlaySfx(fireSfxId);
-                        context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
+                        context.PlaySfx(SoundEvent.Arsonist_AttackFire);
+                        context.PlaySfxOnLaunch(firedProjectile, SoundEvent.Arsonist_AttackLaunch);
                         context.PlayOriginBurst(effects, worldPoints[0]);
                         context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, direction);
                         context.PlayCameraShakeIfEnabled(effects, direction);
@@ -1176,8 +1167,8 @@ namespace Week14.Enemy
                         settings.AngularSpeedDegrees,
                         settings.MotionDurationSeconds,
                         settings.DestroyOnMotionEnd);
-                    context.PlaySfx(settings.FireSfxId);
-                    context.PlaySfxOnLaunch(firedProjectile, settings.LaunchSfxId);
+                    context.PlaySfx(SoundEvent.Arsonist_CircleFire);
+                    context.PlaySfxOnLaunch(firedProjectile, SoundEvent.Arsonist_CircleLaunch);
                     context.PlayOriginBurst(settings.Effects, spawnPosition);
                     context.PlayMuzzleFlashIfEnabled(settings.Effects, firedProjectile, tangentDirection);
                     context.PlayCameraShakeIfEnabled(settings.Effects, tangentDirection);

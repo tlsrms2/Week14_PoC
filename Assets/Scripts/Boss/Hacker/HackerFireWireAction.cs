@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -36,11 +37,6 @@ namespace Week14.Enemy
         [Tooltip("다음 와이어는 이전 와이어가 실제 생성된 시점으로부터 이 시간 이상 지난 뒤 발사됩니다.")]
         [SerializeField, Min(0f)] private float repeatIntervalSeconds = 0.15f;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.2f;
-
-        [Header("SFX")]
-        [SerializeField, BossGraphSfxId] private string fireSfxId = HackerSfxIds.FireWire;
-        [SerializeField, BossGraphSfxId] private string flightSfxId = HackerSfxIds.WireFlight;
-        [SerializeField, BossGraphSfxId] private string grabSfxId = HackerSfxIds.Wire;
 
         [Header("Fire Effect")]
         [Tooltip("와이어를 발사할 때 한 번 생성할 이펙트 프리팹입니다. 프리팹의 오른쪽(+X)을 발사 방향으로 사용합니다.")]
@@ -96,7 +92,7 @@ namespace Week14.Enemy
                         break;
                     }
 
-                    context.PlaySfx(HackerSfxIds.Resolve(fireSfxId, HackerSfxIds.FireWire));
+                    context.PlaySfx(SoundEvent.Hacker_FireWire);
 
                     ShotIntervalTimer intervalTimer = null;
                     Coroutine intervalCoroutine = null;
@@ -145,7 +141,7 @@ namespace Week14.Enemy
                             }
                             else if (resolution == HackerWireResolution.PlayerGrabbed)
                             {
-                                context.PlaySfx(HackerSfxIds.Resolve(grabSfxId, HackerSfxIds.Wire));
+                                context.PlaySfx(SoundEvent.Hacker_WireConnect);
                                 playerGrabbed = true;
                                 context.SetAnimationBool(IsWireShotActiveAnimationParameter, false);
                                 context.SetAnimationBool(IsWireGrabbingAnimationParameter, true);
@@ -380,7 +376,7 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            context.PlaySfx(HackerSfxIds.Resolve(flightSfxId, HackerSfxIds.WireFlight));
+            context.PlaySfx(SoundEvent.Hacker_WireFlight);
             using IDisposable playerCollisionIgnore = context.AcquirePlayerCollisionIgnore();
             context.SetFacingLocked(true);
             context.SetDashing(true);

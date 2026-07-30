@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -15,8 +16,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float spawnForwardOffset;
         [SerializeField, Min(0f)] private float windupSeconds;
         [SerializeField, Tooltip("0 이상이면 Projectile Settings의 Charge Seconds 대신 이 값을 사용합니다. 음수(-1)면 오버라이드하지 않습니다.")] private float chargeSecondsOverride = -1f;
-        [SerializeField, BossGraphSfxId] private string fireSfxId;
-        [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
         public override IEnumerator Execute(BossActionContext context)
@@ -54,8 +53,8 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            context.PlaySfx(fireSfxId);
-            context.PlaySfxOnLaunch(daggerProjectile, launchSfxId);
+            context.PlaySfx(SoundEvent.Assassin_Fire);
+            context.PlaySfxOnLaunch(daggerProjectile, SoundEvent.Assassin_Launch);
             context.PlayOriginBurst(effects, spawnOrigin);
 
             if (context.Boss is not AssassinBossAI assassin)

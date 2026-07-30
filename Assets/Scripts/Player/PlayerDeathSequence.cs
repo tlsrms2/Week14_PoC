@@ -17,10 +17,7 @@ namespace Week14.Combat
             player ??= PlayerCombatController.Active;
             CameraFollow2D playerCamera = player?.CameraFollow;
             PlayerCombatConfig config = player?.Config;
-            if (!string.IsNullOrWhiteSpace(config?.DeathSequenceSfxId))
-            {
-                SoundManager.PlaySfx(config.DeathSequenceSfxId);
-            }
+            SoundManager.PlaySfx(SoundEvent.Player_DeathSequence);
 
             Transform deathFocusTarget = player != null
                 ? (player.BodyRoot != null ? player.BodyRoot : player.transform)

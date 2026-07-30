@@ -64,7 +64,6 @@ namespace Week14.Combat
         [SerializeField, Range(0f, 1f)] private float bossAnimationSlowMultiplier = 0.25f;
         [SerializeField, Min(0.1f)] private float slamSlowSafetySeconds = 10f;
         [SerializeField, Min(0.1f)] private float executionImageSeconds = 2.4f;
-        [SerializeField, BossGraphSfxId] private string executionImageSfxId;
 
         [Header("Final Parry Camera")]
         [SerializeField, Range(0f, 1f)] private float parryBossCameraFocusWeight = 0.85f;
@@ -79,7 +78,6 @@ namespace Week14.Combat
         [SerializeField, Min(0f)] private float chargeCameraShakeAmplitude = 0.025f;
         [SerializeField, Min(0.05f)] private float chargeCameraShakeInterval = 0.16f;
         [SerializeField, Min(0.05f)] private float chargeCameraShakeSeconds = 0.12f;
-        [SerializeField, BossGraphSfxId] private string aimChargeSfxId;
 
         [Header("Wide Camera")]
         [SerializeField, Range(0f, 1f)] private float wideCameraFocusWeight = 1f;
@@ -461,7 +459,7 @@ namespace Week14.Combat
                 0.12f,
                 0.16f,
                 0f);
-            SoundManager.PlaySfx("PlayerShot");
+            SoundManager.PlaySfx(SoundEvent.Player_NormalShot);
             bool parried = player.TryParryProjectileForCinematic(
                 projectile,
                 false);
@@ -474,7 +472,7 @@ namespace Week14.Combat
                 impactPosition,
                 parryDirection,
                 false);
-            SoundManager.PlaySfx("Parry2");
+            SoundManager.PlaySfx(SoundEvent.Player_Parry);
         }
 
         private IEnumerator RollPlayerNearBoss()
@@ -611,10 +609,7 @@ namespace Week14.Combat
             ApplyBossAnimatorSlow();
             player?.PlayExecutionImageForCinematic(
                 executionImageSeconds);
-            if (!string.IsNullOrWhiteSpace(executionImageSfxId))
-            {
-                SoundManager.PlaySfx(executionImageSfxId);
-            }
+            SoundManager.PlaySfx(SoundEvent.Hacker_ExecutionImage);
 
             cameraFollow?.BeginCinematicFocus(
                 hacker != null ? hacker.transform : null,
@@ -668,7 +663,7 @@ namespace Week14.Combat
                     averagePosition,
                     direction,
                     false);
-                SoundManager.PlaySfx("Parry2");
+                SoundManager.PlaySfx(SoundEvent.Player_Parry);
             }
         }
 
@@ -694,10 +689,7 @@ namespace Week14.Combat
                 player.RightFireOrigin,
                 aimChargeSeconds,
                 parryColor);
-            if (!string.IsNullOrWhiteSpace(aimChargeSfxId))
-            {
-                SoundManager.PlaySfx(aimChargeSfxId);
-            }
+            SoundManager.PlaySfx(SoundEvent.Execution_HackerAimCharge);
         }
 
         private IEnumerator PlayAimChargeCamera()

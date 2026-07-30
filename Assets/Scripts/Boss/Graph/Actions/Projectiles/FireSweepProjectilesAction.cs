@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -18,8 +19,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float sweepStepDegrees = 5f;
         [SerializeField, Min(0f)] private float maxSweepAngle = 35f;
         [SerializeField, Min(0f)] private float windupSeconds;
-        [SerializeField, BossGraphSfxId] private string fireSfxId;
-        [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
         public override IEnumerator Execute(BossActionContext context)
@@ -69,8 +68,8 @@ namespace Week14.Enemy
                 {
                     context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, finalDirection);
                     context.PlayCameraShakeIfEnabled(effects, finalDirection);
-                    context.PlaySfx(fireSfxId);
-                    context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
+                    context.PlaySfx(SoundEvent.Boss_ProjectileFire);
+                    context.PlaySfxOnLaunch(firedProjectile, SoundEvent.Boss_ProjectileLaunch);
                 }
 
                 currentSweepOffset += sweepStepDegrees * sweepDirection;

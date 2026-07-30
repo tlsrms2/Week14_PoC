@@ -23,7 +23,6 @@ namespace Week14.Combat
         [Tooltip("터질 때 사방으로 흩어지는 총알 개수입니다.")]
         [SerializeField, Min(1)] private int burstBulletCount = 12;
         [SerializeField] private float burstStartAngleOffset;
-        [SerializeField, BossGraphSfxId] private string burstSfxId;
         [SerializeField] private BossGraphEffectSettings burstEffects = new();
 
         private static readonly int FillAmountId = Shader.PropertyToID("_FillAmount");
@@ -67,10 +66,7 @@ namespace Week14.Combat
                     continue;
                 }
 
-                if (!string.IsNullOrWhiteSpace(burstSfxId))
-                {
-                    SoundManager.PlaySfx(burstSfxId);
-                }
+                SoundManager.PlaySfx(SoundEvent.Projectile_ParryTimedBurst);
 
                 PlayBurstOriginEffects(burstOrigin);
                 PlayBurstMuzzleFlash(burstOrigin, shotDirection);

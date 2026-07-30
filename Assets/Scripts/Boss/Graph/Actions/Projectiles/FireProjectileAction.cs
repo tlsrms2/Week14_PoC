@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -158,8 +159,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float spawnForwardOffset;
         [SerializeField, Min(0f)] private float windupSeconds;
         [SerializeField, Tooltip("0 이상이면 Projectile Settings의 Charge Seconds 대신 이 값을 사용합니다. 음수(-1)면 오버라이드하지 않습니다.")] private float chargeSecondsOverride = -1f;
-        [SerializeField, BossGraphSfxId] private string fireSfxId;
-        [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
         public override IEnumerator Execute(BossActionContext context)
@@ -187,8 +186,8 @@ namespace Week14.Enemy
                 projectileName: projectileName);
             if (firedProjectile != null)
             {
-                context.PlaySfx(fireSfxId);
-                context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
+                context.PlaySfx(SoundEvent.Boss_ProjectileFire);
+                context.PlaySfxOnLaunch(firedProjectile, SoundEvent.Boss_ProjectileLaunch);
                 context.PlayOriginBurst(effects, spawnOrigin);
                 context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, finalDirection);
                 context.PlayCameraShakeIfEnabled(effects, finalDirection);
@@ -238,8 +237,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float spawnForwardOffset;
         [FormerlySerializedAs("startDelaySeconds")]
         [SerializeField, Min(0f)] private float windupSeconds;
-        [SerializeField, BossGraphSfxId] private string fireSfxId;
-        [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
         [SerializeField] private List<Volley> volleys = new() { new Volley() };
 
@@ -308,8 +305,8 @@ namespace Week14.Enemy
                 return;
             }
 
-            context.PlaySfx(fireSfxId);
-            context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
+            context.PlaySfx(SoundEvent.Boss_ProjectileFire);
+            context.PlaySfxOnLaunch(firedProjectile, SoundEvent.Boss_ProjectileLaunch);
             context.PlayOriginBurst(effects, spawnOrigin);
             context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, finalDirection);
             context.PlayCameraShakeIfEnabled(effects, finalDirection);
@@ -349,8 +346,6 @@ namespace Week14.Enemy
         [FormerlySerializedAs("startDelaySeconds")]
         [SerializeField, Min(0f)] private float windupSeconds;
         [SerializeField] private float chargeSecondsOverride = -1f;
-        [SerializeField, BossGraphSfxId] private string fireSfxId;
-        [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
         public override IEnumerator Execute(BossActionContext context)
@@ -416,8 +411,8 @@ namespace Week14.Enemy
                 return;
             }
 
-            context.PlaySfx(fireSfxId);
-            context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
+            context.PlaySfx(SoundEvent.Boss_ProjectileFire);
+            context.PlaySfxOnLaunch(firedProjectile, SoundEvent.Boss_ProjectileLaunch);
             context.PlayOriginBurst(effects, spawnOrigin);
             context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, finalDirection);
             context.PlayCameraShakeIfEnabled(effects, finalDirection);
@@ -466,8 +461,6 @@ namespace Week14.Enemy
         [SerializeField, Range(2, 24)] private int arcSegments = 8;
         [SerializeField] private bool destroyOnSweepEnd = true;
         [SerializeField] private bool waitForSweepEnd = true;
-        [SerializeField, BossGraphSfxId] private string setupSfxId;
-        [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
         public override IEnumerator Execute(BossActionContext context)
@@ -560,12 +553,12 @@ namespace Week14.Enemy
                     sweepDurationSeconds,
                     destroyOnSweepEnd);
                 spawnedAny = true;
-                context.PlaySfx(setupSfxId);
+                context.PlaySfx(SoundEvent.Boss_ProjectileFire);
             }
 
             if (spawnedAny)
             {
-                context.PlaySfx(launchSfxId);
+                context.PlaySfx(SoundEvent.Boss_ProjectileLaunch);
                 context.PlayOriginBurst(effects, bossPosition);
                 context.PlayCameraShakeIfEnabled(effects, toPlayer);
             }

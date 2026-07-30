@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -13,8 +14,6 @@ namespace Week14.Enemy
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
         [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
         [SerializeField] private float chargeSecondsOverride = -1f;
-        [SerializeField, BossGraphSfxId] private string fireSfxId;
-        [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
         [Header("Projectile Windup")]
@@ -114,8 +113,8 @@ namespace Week14.Enemy
                 return;
             }
 
-            context.PlaySfx(fireSfxId);
-            context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
+            context.PlaySfx(SoundEvent.Hacker_Fire);
+            context.PlaySfxOnLaunch(firedProjectile, SoundEvent.Hacker_Launch);
             context.PlayOriginBurst(effects, origin);
             context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, direction);
             context.PlayCameraShakeIfEnabled(effects, direction);

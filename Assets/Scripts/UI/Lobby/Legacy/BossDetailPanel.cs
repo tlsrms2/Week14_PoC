@@ -13,12 +13,6 @@ namespace Week14.UI
     public sealed class BossDetailPanel : MonoBehaviour
     {
         [SerializeField] private RectTransform panelRect;
-        [Tooltip("패널이 펼쳐질 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
-        [BossGraphSfxId]
-        [SerializeField] private string showSfxId;
-        [Tooltip("패널이 닫힐 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
-        [BossGraphSfxId]
-        [SerializeField] private string hideSfxId;
         [Tooltip("같은 SFX가 이 시간(초) 안에 다시 재생되려 하면 막습니다. 마우스 잔떨림 등으로 Show/Hide가 짧은 간격에 반복될 때 중복 재생을 막는 용도입니다.")]
         [SerializeField, Min(0f)] private float sfxDebounceSeconds = 0.1f;
         [SerializeField] private TMP_Text nameText;
@@ -92,14 +86,11 @@ namespace Week14.UI
 
         private void PlayShow()
         {
-            if (!string.IsNullOrEmpty(showSfxId))
+            float now = Time.unscaledTime;
+            if (now - lastShowSfxTime >= sfxDebounceSeconds)
             {
-                float now = Time.unscaledTime;
-                if (now - lastShowSfxTime >= sfxDebounceSeconds)
-                {
-                    lastShowSfxTime = now;
-                    SoundManager.PlaySfx(showSfxId);
-                }
+                lastShowSfxTime = now;
+                SoundManager.PlaySfx(SoundEvent.UI_LobbyPanelShow);
             }
 
             SetRevealTargetsActive(false);
@@ -112,14 +103,11 @@ namespace Week14.UI
         {
             UnbindLocalizedBossData();
 
-            if (!string.IsNullOrEmpty(hideSfxId))
+            float now = Time.unscaledTime;
+            if (now - lastHideSfxTime >= sfxDebounceSeconds)
             {
-                float now = Time.unscaledTime;
-                if (now - lastHideSfxTime >= sfxDebounceSeconds)
-                {
-                    lastHideSfxTime = now;
-                    SoundManager.PlaySfx(hideSfxId);
-                }
+                lastHideSfxTime = now;
+                SoundManager.PlaySfx(SoundEvent.UI_LobbyPanelHide);
             }
 
             StopShowRoutine();

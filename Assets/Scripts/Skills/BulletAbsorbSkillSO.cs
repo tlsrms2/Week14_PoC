@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine;
 using Week14.Audio;
 using Week14.Combat;
-using Week14.Enemy;
 
 namespace Week14.Skills
 {
@@ -18,10 +17,6 @@ namespace Week14.Skills
         [SerializeField, Min(0f)] private float absorbRadius = 3f;
         [Tooltip("투사체 하나를 흡수할 때마다 회복시킬 탄환 수입니다.")]
         [SerializeField, Min(0)] private int ammoPerAbsorbedProjectile = 1;
-        [Tooltip("스킬 발동 시 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
-        [BossGraphSfxId]
-        [SerializeField] private string activateSfxId;
-
         [Header("VFX")]
         [Tooltip("스킬 지속시간 동안 플레이어 중심에 표시할 흡수 이펙트 프리팹입니다. 비워두면 표시하지 않습니다.")]
         [SerializeField] private GameObject bulletAbsorbVfxPrefab;
@@ -55,10 +50,7 @@ namespace Week14.Skills
                 ClearActiveBulletAbsorbVfx();
             }
 
-            if (!string.IsNullOrEmpty(activateSfxId))
-            {
-                SoundManager.PlaySfx(activateSfxId);
-            }
+            SoundManager.PlaySfx(SoundEvent.Skill_Magnet);
 
             activeRoutine = controller.StartCoroutine(AbsorbRoutine(controller));
         }

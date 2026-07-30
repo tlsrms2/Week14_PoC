@@ -59,7 +59,11 @@ namespace Week14.Cutscene
             }
         }
 
-        public IEnumerator PlayTypewriter(string text, Func<bool> revealRequested = null, Func<bool> cancelRequested = null)
+        public IEnumerator PlayTypewriter(
+            string text,
+            Func<bool> revealRequested = null,
+            Func<bool> cancelRequested = null,
+            Action characterRevealed = null)
         {
             if (dialogueText == null)
             {
@@ -75,6 +79,7 @@ namespace Week14.Cutscene
             int totalCharacters = dialogueText.textInfo.characterCount;
             float visibleCharacters = 0f;
             float speed = Mathf.Max(1f, charactersPerSecond);
+            int previousVisibleCount = 0;
             bool canceled = false;
             while (visibleCharacters < totalCharacters)
             {
@@ -90,16 +95,43 @@ namespace Week14.Cutscene
                 }
 
                 visibleCharacters += Time.unscaledDeltaTime * speed;
-                dialogueText.maxVisibleCharacters = Mathf.Clamp(
+                int visibleCount = Mathf.Clamp(
                     Mathf.CeilToInt(visibleCharacters),
                     0,
                     totalCharacters);
+                dialogueText.maxVisibleCharacters = visibleCount;
+                NotifyCharactersRevealed(
+                    dialogueText.textInfo,
+                    previousVisibleCount,
+                    visibleCount,
+                    characterRevealed);
+                previousVisibleCount = visibleCount;
                 yield return null;
             }
 
             RevealAll();
             IsTyping = false;
             SetAdvancePromptBlinking(!canceled);
+        }
+
+        private static void NotifyCharactersRevealed(
+            TMP_TextInfo textInfo,
+            int fromIndex,
+            int toIndex,
+            Action characterRevealed)
+        {
+            if (characterRevealed == null || textInfo == null)
+            {
+                return;
+            }
+
+            for (int i = fromIndex; i < toIndex && i < textInfo.characterCount; i++)
+            {
+                if (!char.IsWhiteSpace(textInfo.characterInfo[i].character))
+                {
+                    characterRevealed.Invoke();
+                }
+            }
         }
 
         public void RevealAll()

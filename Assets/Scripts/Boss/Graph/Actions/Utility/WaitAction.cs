@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Week14.Audio;
 
 namespace Week14.Enemy
 {
@@ -44,24 +45,35 @@ namespace Week14.Enemy
             BossGraphProjectileOriginSpec originSpec = effectOrigin ?? new BossGraphProjectileOriginSpec();
             float elapsed = 0f;
             float nextSmokeAt = Time.time;
-            while (elapsed < seconds)
+            SoundManager.SfxPlaybackHandle chargeSfxHandle =
+                context.Boss is HogBossAI && effects?.Smoke?.Enabled == true
+                    ? SoundManager.PlayLoopingSfx(SoundEvent.Hog_MachinegunCharge)
+                    : null;
+            try
             {
-                if (context.IsExecutionPaused)
+                while (elapsed < seconds)
                 {
-                    context.Stop();
+                    if (context.IsExecutionPaused)
+                    {
+                        context.Stop();
+                        yield return null;
+                        continue;
+                    }
+
+                    if (stopMovement)
+                    {
+                        context.Stop();
+                    }
+
+                    Vector3 origin = originSpec.GetAimOrigin(context, 0);
+                    context.PlaySmokeIfDue(ref nextSmokeAt, effects, origin);
+                    elapsed += EnemyTimeScale.DeltaTime;
                     yield return null;
-                    continue;
                 }
-
-                if (stopMovement)
-                {
-                    context.Stop();
-                }
-
-                Vector3 origin = originSpec.GetAimOrigin(context, 0);
-                context.PlaySmokeIfDue(ref nextSmokeAt, effects, origin);
-                elapsed += EnemyTimeScale.DeltaTime;
-                yield return null;
+            }
+            finally
+            {
+                SoundManager.StopSfx(chargeSfxHandle);
             }
         }
 

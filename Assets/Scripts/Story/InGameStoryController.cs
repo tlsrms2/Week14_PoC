@@ -385,10 +385,12 @@ namespace Week14.Story
         {
             bool revealRequested = false;
             bool canAcceptAdvance = false;
-            PlayDialogueSfx(line.SfxId);
 
             string speaker = line.HasLocalizedSpeaker ? line.LocalizedSpeaker.GetLocalizedString() : line.Speaker;
             string text = line.HasLocalizedText ? line.LocalizedText.GetLocalizedString() : line.Text;
+            System.Action characterRevealed = SoundIdExtensions.TryGetTalkSoundEvent(line.Speaker, out SoundEvent talkSoundEvent)
+                ? () => SoundManager.PlaySfx(talkSoundEvent)
+                : null;
             dialoguePanel.ShowLine(
                 speaker,
                 text,
@@ -400,7 +402,8 @@ namespace Week14.Story
             IEnumerator typing = dialoguePanel.PlayTypewriter(
                 text,
                 () => revealRequested || skipRequested,
-                () => skipRequested);
+                () => skipRequested,
+                characterRevealed);
 
             while (typing.MoveNext())
             {
@@ -424,14 +427,6 @@ namespace Week14.Story
             {
                 TickSkip(skippable);
                 yield return null;
-            }
-        }
-
-        private static void PlayDialogueSfx(string sfxId)
-        {
-            if (!string.IsNullOrWhiteSpace(sfxId))
-            {
-                SoundManager.PlaySfx(sfxId);
             }
         }
 

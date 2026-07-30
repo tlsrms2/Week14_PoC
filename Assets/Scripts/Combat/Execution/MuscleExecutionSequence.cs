@@ -57,7 +57,6 @@ namespace Week14.Combat
         [SerializeField, Range(0.1f, 1f)] private float preParryCameraZoomMultiplier = 0.38f;
         [SerializeField, Min(0.01f)] private float preParryCameraBlendSmoothTime = 0.12f;
         [SerializeField, Min(0.1f)] private float executionImageSeconds = 3.5f;
-        [SerializeField, BossGraphSfxId] private string preParrySfxId;
 
         [Header("Parry")]
         [SerializeField, Min(1)] private int parryProjectileCount = 6;
@@ -68,7 +67,6 @@ namespace Week14.Combat
 
         [Header("Aim Charge")]
         [SerializeField, Min(0f)] private float aimChargeSeconds = 1.5f;
-        [SerializeField, BossGraphSfxId] private string aimChargeSfxId;
         [SerializeField] private string finalDashAnimationBoolName = "isCharge";
 
         [Header("Wide Camera")]
@@ -560,10 +558,7 @@ namespace Week14.Combat
                 preParryCameraZoomMultiplier,
                 preParryCameraBlendSmoothTime);
             player?.PlayExecutionImageForCinematic(executionImageSeconds);
-            if (!string.IsNullOrWhiteSpace(preParrySfxId))
-            {
-                SoundManager.PlaySfx(preParrySfxId);
-            }
+            SoundManager.PlaySfx(SoundEvent.Execution_MusclePreParry);
         }
 
         private void MaintainFinalApproachSlow()
@@ -642,10 +637,7 @@ namespace Week14.Combat
             }
 
             aimChargeGatherVfx?.Play(player.RightFireOrigin);
-            if (!string.IsNullOrWhiteSpace(aimChargeSfxId))
-            {
-                SoundManager.PlaySfx(aimChargeSfxId);
-            }
+            SoundManager.PlaySfx(SoundEvent.Execution_MuscleAimCharge);
         }
 
         private void ConfigureSpawnedPatternProjectile(EnemyProjectile projectile)

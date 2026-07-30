@@ -40,6 +40,7 @@ namespace Week14.Skills
 
         public event Action<float, float> CooldownChanged;
         public event Action<SkillSlot, BaseSkillSO> SkillEquipped;
+        public event Action<SkillSlot, BaseSkillSO> SkillEquippedByUser;
         public event Action<SkillSlot, BaseSkillSO> SkillUsed;
 
         public float CooldownRemaining => cooldownRemaining;
@@ -141,6 +142,7 @@ namespace Week14.Skills
 
             GameSaveManager.SetEquippedSkillId((int)slot, skillId);
             SkillEquipped?.Invoke(slot, skill);
+            SkillEquippedByUser?.Invoke(slot, skill);
             return true;
         }
 

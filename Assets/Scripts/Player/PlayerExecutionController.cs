@@ -332,7 +332,7 @@ namespace Week14.Combat
             }
 
             commonPresentation.Trigger(CommonExecutionCuePoint.AfterLetterbox);
-            SoundManager.PlaySfx("Execute");
+            SoundManager.PlaySfx(SoundEvent.Player_ExecutionStart);
             if (!useBossExecutionSequence)
             {
                 context.ExecutionImage?.Play(
@@ -443,7 +443,7 @@ namespace Week14.Combat
                     executionBoss);
             }
 
-            SoundManager.PlaySfx("PlayerPowerShot");
+            SoundManager.PlaySfx(SoundEvent.Player_PowerShot);
             commonPresentation.PrepareFinalShot(
                 rightFireOrigin.position,
                 finalImpactPosition);
@@ -876,7 +876,7 @@ namespace Week14.Combat
                     yield return new WaitForSeconds(interval);
                 }
 
-                SoundManager.PlaySfx("PlayerShot");
+                SoundManager.PlaySfx(SoundEvent.Player_NormalShot);
                 FireExecutionFlourishShot(executionTarget, aimDirection);
                 commonPresentation.Trigger(CommonExecutionCuePoint.FlourishShot, i);
             }

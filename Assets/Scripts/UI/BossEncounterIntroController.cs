@@ -77,13 +77,6 @@ namespace Week14.UI
         [SerializeField, Min(0f)] private float startDelaySeconds = 0.15f;
         [SerializeField, Min(0f)] private float playerWalkSpeed = 3.5f;
 
-        [Header("Sound")]
-        [Tooltip("플레이어가 인트로 위치로 걸어가는 동안 반복 재생할 SoundLibrary SFX ID입니다.")]
-        [BossGraphSfxId]
-        [SerializeField] private string playerWalkSfxId = "Walk";
-        [Tooltip("머그샷 배경이 등장할 때 재생할 SoundLibrary SFX ID입니다.")]
-        [BossGraphSfxId]
-        [SerializeField] private string mugShotBackgroundSfxId = "Whip";
         [Tooltip("머그샷 조명과 셔터 SFX가 재생된 뒤 보스 BGM 페이드인을 시작하기까지의 시간입니다.")]
         [SerializeField, Min(0f)] private float mugShotToBossBgmDelaySeconds = 3f;
 
@@ -139,10 +132,6 @@ namespace Week14.UI
         [Tooltip("배경 진입 후 머그샷 타이밍 구간에 켜둘 전용 Light2D입니다. 밝기는 Light2D의 Intensity에서 설정합니다.")]
         [FormerlySerializedAs("shutterLight")]
         [SerializeField] private Light2D mugShotLight;
-        [Tooltip("머그샷 조명·그림자가 켜지는 순간 재생할 SoundLibrary SFX ID입니다. 비워두면 재생하지 않습니다.")]
-        [BossGraphSfxId]
-        [SerializeField] private string mugShotLightingSfxId;
-
         [Header("머그샷 타이밍")]
         [Tooltip("배경 진입이 끝난 뒤 Info가 올라오기까지의 텀입니다.")]
         [FormerlySerializedAs("backgroundToLightDelaySeconds")]
@@ -460,10 +449,7 @@ namespace Week14.UI
         private void StartPlayerWalkSfx()
         {
             StopPlayerWalkSfx();
-            if (!string.IsNullOrEmpty(playerWalkSfxId))
-            {
-                playerWalkSfxHandle = SoundManager.PlayLoopingSfx(playerWalkSfxId);
-            }
+            playerWalkSfxHandle = SoundManager.PlayLoopingSfx(SoundEvent.UI_IntroPlayerWalk);
         }
 
         private void StopPlayerWalkSfx()
@@ -481,6 +467,7 @@ namespace Week14.UI
                     bossFocusTarget,
                     bossFocusWeight,
                     CalculateBossZoomMultiplier(bossFocusTarget));
+                SoundManager.PlaySfx(SoundEvent.Intro_ZoomIn);
                 cinematicFocusActive = true;
                 yield return WaitUnscaled(bossFocusSeconds);
 
@@ -493,10 +480,7 @@ namespace Week14.UI
             }
 
             SetMugShotStageVisible(true);
-            if (!string.IsNullOrEmpty(mugShotBackgroundSfxId))
-            {
-                SoundManager.PlaySfx(mugShotBackgroundSfxId);
-            }
+            SoundManager.PlaySfx(SoundEvent.Intro_Set);
 
             FitMugShotBackgroundToCameraViewport();
             yield return AnimateMugShotBackground(
@@ -512,10 +496,7 @@ namespace Week14.UI
                 bossInfoEnterCurve);
             yield return WaitUnscaled(infoToLightDelaySeconds);
             SetMugShotLighting(true);
-            if (!string.IsNullOrEmpty(mugShotLightingSfxId))
-            {
-                SoundManager.PlaySfx(mugShotLightingSfxId);
-            }
+            SoundManager.PlaySfx(SoundEvent.Intro_Shutter);
             ScheduleBossBgmAfterMugShot();
             SetBossAnimationFrozen(true);
             yield return WaitUnscaled(infoHoldSeconds);

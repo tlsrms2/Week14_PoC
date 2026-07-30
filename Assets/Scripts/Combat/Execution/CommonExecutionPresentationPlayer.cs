@@ -125,10 +125,7 @@ namespace Week14.Combat
 
         private static void PlaySound(CommonExecutionPresentationCue cue)
         {
-            if (!string.IsNullOrWhiteSpace(cue.SfxId))
-            {
-                SoundManager.PlaySfx(cue.SfxId);
-            }
+            SoundManager.PlaySfx(cue.SoundEvent);
         }
 
         private void PlaySlowMotion(CommonExecutionPresentationCue cue)

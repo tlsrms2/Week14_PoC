@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -24,8 +25,6 @@ namespace Week14.Enemy
             [SerializeField, Min(0.01f)] private float nextRadius = 1.5f;
             [SerializeField, Min(0f)] private float firePauseBeforeShrinkSeconds = 0.25f;
             [SerializeField, Min(0.01f)] private float shrinkMoveSeconds = 0.15f;
-            [SerializeField, BossGraphSfxId] private string fireSfxId;
-            [SerializeField, BossGraphSfxId] private string launchSfxId;
 
             public VolleyStage()
             {
@@ -43,8 +42,6 @@ namespace Week14.Enemy
             public float NextRadius => Mathf.Max(0.01f, nextRadius);
             public float FirePauseBeforeShrinkSeconds => Mathf.Max(0f, firePauseBeforeShrinkSeconds);
             public float ShrinkMoveSeconds => Mathf.Max(0.01f, shrinkMoveSeconds);
-            public string FireSfxId => fireSfxId;
-            public string LaunchSfxId => launchSfxId;
         }
 
         [Header("Formation")]
@@ -82,9 +79,6 @@ namespace Week14.Enemy
         [Header("Final Center Shot")]
         [SerializeField, BossGraphProjectileName] private string finalProjectileName = "Default";
         [SerializeField, Min(0f)] private float finalShotDelaySeconds = 0.15f;
-        [SerializeField, BossGraphSfxId] private string finalFireSfxId;
-        [SerializeField, BossGraphSfxId] private string finalLaunchSfxId;
-
         [Header("Boss Reposition")]
         [SerializeField] private bool repositionBossAtPatternStart;
         [SerializeField] private Vector2 bossTargetPosition;
@@ -630,7 +624,7 @@ namespace Week14.Enemy
 
             if (stage.FireSeconds <= 0f || stage.FireInterval <= 0f)
             {
-                FireDiamondVolley(context, host, drones, projectile, stage.FireSfxId, stage.LaunchSfxId);
+                FireDiamondVolley(context, host, drones, projectile);
                 yield break;
             }
 
@@ -646,7 +640,7 @@ namespace Week14.Enemy
 
                 while (elapsed >= nextFireSeconds && nextFireSeconds < stage.FireSeconds)
                 {
-                    FireDiamondVolley(context, host, drones, projectile, stage.FireSfxId, stage.LaunchSfxId);
+                    FireDiamondVolley(context, host, drones, projectile);
                     nextFireSeconds += stage.FireInterval;
                 }
 
@@ -659,9 +653,7 @@ namespace Week14.Enemy
             BossActionContext context,
             IMinionPatternHost host,
             IReadOnlyList<Minion> drones,
-            BossProjectileSettings projectile,
-            string fireSfxId,
-            string launchSfxId)
+            BossProjectileSettings projectile)
         {
             bool firedAny = false;
             EnemyProjectile launchSfxTarget = null;
@@ -684,7 +676,12 @@ namespace Week14.Enemy
                 }
             }
 
-            PlayVolleySfx(context, firedAny, launchSfxTarget, fireSfxId, launchSfxId);
+            PlayVolleySfx(
+                context,
+                firedAny,
+                launchSfxTarget,
+                SoundEvent.Conductor_Fire,
+                SoundEvent.Conductor_Launch);
         }
 
         private void FireCenterVolley(
@@ -718,25 +715,30 @@ namespace Week14.Enemy
                 }
             }
 
-            PlayVolleySfx(context, firedAny, launchSfxTarget, finalFireSfxId, finalLaunchSfxId);
+            PlayVolleySfx(
+                context,
+                firedAny,
+                launchSfxTarget,
+                SoundEvent.Conductor_FinalFire,
+                SoundEvent.Conductor_FinalLaunch);
         }
 
         // 한 틱에 4마리가 동시에 쐈어도 사운드는 볼리당 한 번만 재생한다.
-        // launchSfxId는 대표 투사체 1개의 실제 Launched 이벤트에 걸어서, 그 사이 패링/파괴되면 소리가 안 나게 한다.
+        // 발사음은 대표 투사체 1개의 실제 Launched 이벤트에 걸어서, 그 사이 패링/파괴되면 소리가 안 나게 한다.
         private void PlayVolleySfx(
             BossActionContext context,
             bool firedAny,
             EnemyProjectile launchSfxTarget,
-            string fireSfxId,
-            string launchSfxId)
+            SoundEvent fireSoundEvent,
+            SoundEvent launchSoundEvent)
         {
             if (!firedAny)
             {
                 return;
             }
 
-            context.PlaySfx(fireSfxId);
-            context.PlaySfxOnLaunch(launchSfxTarget, launchSfxId);
+            context.PlaySfx(fireSoundEvent);
+            context.PlaySfxOnLaunch(launchSfxTarget, launchSoundEvent);
         }
 
         private void CommandDronesToCardinalSlots(

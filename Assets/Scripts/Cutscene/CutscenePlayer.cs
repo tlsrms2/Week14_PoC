@@ -422,12 +422,18 @@ namespace Week14.Cutscene
             advanceRequested = false;
             revealRequested = false;
             isTyping = true;
-            PlayDialogueSfx(dialogue.SfxId);
 
             string speakerName = dialogue.HasLocalizedName ? dialogue.LocalizedName.GetLocalizedString() : dialogue.Name;
             string dialogueText = dialogue.HasLocalizedText ? dialogue.LocalizedText.GetLocalizedString() : dialogue.Text;
+            System.Action characterRevealed = SoundIdExtensions.TryGetTalkSoundEvent(dialogue.Name, out SoundEvent talkSoundEvent)
+                ? () => SoundManager.PlaySfx(talkSoundEvent)
+                : null;
             dialoguePanelView?.ShowLine(speakerName, dialogueText);
-            yield return dialoguePanelView?.PlayTypewriter(dialogueText, () => revealRequested || skipRequested || skipSectionRequested, () => skipRequested || skipSectionRequested);
+            yield return dialoguePanelView?.PlayTypewriter(
+                dialogueText,
+                () => revealRequested || skipRequested || skipSectionRequested,
+                () => skipRequested || skipSectionRequested,
+                characterRevealed);
             isTyping = false;
             revealRequested = false;
             advanceRequested = false;
@@ -438,14 +444,6 @@ namespace Week14.Cutscene
             }
 
             advanceRequested = false;
-        }
-
-        private static void PlayDialogueSfx(string sfxId)
-        {
-            if (!string.IsNullOrWhiteSpace(sfxId))
-            {
-                SoundManager.PlaySfx(sfxId);
-            }
         }
 
         private IEnumerator WaitDialogueStartDelay()

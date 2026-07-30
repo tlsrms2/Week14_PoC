@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -15,8 +16,6 @@ namespace Week14.Enemy
         [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
         [SerializeField, Tooltip("0 이상이면 Projectile Settings의 Charge Seconds 대신 이 값을 사용합니다. 음수(-1)면 오버라이드하지 않습니다.")]
         private float chargeSecondsOverride = -1f;
-        [SerializeField, BossGraphSfxId] private string fireSfxId = HackerSfxIds.BossNormalShot;
-        [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
         [Header("Sweep")]
@@ -114,8 +113,8 @@ namespace Week14.Enemy
                     projectileName: resolvedProjectileName);
                 if (firedProjectile != null)
                 {
-                    context.PlaySfx(HackerSfxIds.Resolve(fireSfxId, HackerSfxIds.BossNormalShot));
-                    context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
+                    context.PlaySfx(SoundEvent.Hacker_Fire);
+                    context.PlaySfxOnLaunch(firedProjectile, SoundEvent.Hacker_Launch);
                     context.PlayOriginBurst(effects, origin);
                     context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, spawnDirection);
                     context.PlayCameraShakeIfEnabled(effects, spawnDirection);

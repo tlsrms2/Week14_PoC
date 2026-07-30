@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -39,9 +40,6 @@ namespace Week14.Enemy
         [SerializeField] private MinionGraphSideFireOriginMode originMode = MinionGraphSideFireOriginMode.BodySides;
         [SerializeField, Min(0f)] private float bodySideSpacing = 0.35f;
         [SerializeField] private bool waitForSideFireDuration = true;
-        [SerializeField, BossGraphSfxId] private string fireSfxId;
-        [SerializeField, BossGraphSfxId] private string launchSfxId;
-
         [Header("Precast Grid Indicator")]
         [SerializeField] private bool drawPrecastGridIndicator = true;
         [SerializeField] private Color gridIndicatorColor = new(0.62f, 0.92f, 1f, 0.66f);
@@ -131,10 +129,7 @@ namespace Week14.Enemy
 
             MinionGraphProjectileFireSpec fireSpec = new MinionGraphProjectileFireSpec(minionOrigin, aim, effects, context)
                 .WithProjectilePathIndicatorSuppressed();
-            if (!string.IsNullOrWhiteSpace(fireSfxId) || !string.IsNullOrWhiteSpace(launchSfxId))
-            {
-                fireSpec = fireSpec.WithOnFired(CreateShotSfxHandler(context, GetSideFireShotCount()));
-            }
+            fireSpec = fireSpec.WithOnFired(CreateShotSfxHandler(context, GetSideFireShotCount()));
 
             MinionGraphCommandRequest fireRequest = MinionGraphCommandRequest.SideFire(
                 projectile,
@@ -345,7 +340,7 @@ namespace Week14.Enemy
 
         // SideFire는 미니언마다 독립 코루틴(Minion.RunSideFire)이 같은 fireInterval 박자로 좌우 2발씩 쏘기 때문에,
         // 같은 shotIndex에서 처음 실제로 발사에 성공한 투사체 하나만 대표로 삼아 틱당 사운드가 한 번만 나게 한다.
-        // launchSfxId는 그 투사체의 실제 Launched 이벤트에 걸리므로, 차징 중 패링/파괴되면 소리가 나지 않는다.
+        // 발사음은 그 투사체의 실제 Launched 이벤트에 걸리므로, 차징 중 패링/파괴되면 소리가 나지 않는다.
         private Action<int, EnemyProjectile> CreateShotSfxHandler(BossActionContext context, int shotCount)
         {
             bool[] handledShots = new bool[Mathf.Max(1, shotCount)];
@@ -357,8 +352,8 @@ namespace Week14.Enemy
                 }
 
                 handledShots[shotIndex] = true;
-                context.PlaySfx(fireSfxId);
-                context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
+                context.PlaySfx(SoundEvent.Conductor_Fire);
+                context.PlaySfxOnLaunch(firedProjectile, SoundEvent.Conductor_Launch);
             };
         }
 

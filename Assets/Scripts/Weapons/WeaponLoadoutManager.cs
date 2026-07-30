@@ -24,6 +24,7 @@ namespace Week14.Weapons
         public static WeaponLoadoutManager Instance => instance;
 
         public event Action<BaseWeaponSO> WeaponChanged;
+        public event Action<BaseWeaponSO> WeaponEquippedByUser;
 
         public BaseWeaponSO CurrentWeapon => currentWeapon;
 
@@ -74,6 +75,7 @@ namespace Week14.Weapons
             GameSaveManager.SetEquippedWeaponId(weaponId);
             ApplyAmmoConfig(currentWeapon);
             WeaponChanged?.Invoke(currentWeapon);
+            WeaponEquippedByUser?.Invoke(currentWeapon);
             return true;
         }
 

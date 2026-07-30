@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -39,10 +40,6 @@ namespace Week14.Enemy
         [SerializeField] private string impactEventId = "SlamImpact";
         [SerializeField, Min(0f)] private float impactEventTimeoutSeconds = 2f;
 
-        [Header("사운드")]
-        [SerializeField, BossGraphSfxId] private string windupSfxId;
-        [SerializeField, BossGraphSfxId] private string explosionSfxId;
-
         [Header("폭발 이펙트")]
         [Tooltip("범위 피해가 발동하는 순간 폭발 중심에 생성할 일회성 프리팹입니다.")]
         [SerializeField] private GameObject explosionEffectPrefab;
@@ -65,7 +62,7 @@ namespace Week14.Enemy
                 context.RegisterTransientVisual(indicator.gameObject);
             }
 
-            context.PlaySfx(windupSfxId);
+            context.PlaySfx(SoundEvent.Boss_AreaWindup);
 
             float elapsed = 0f;
             while (elapsed < windupSeconds)
@@ -97,7 +94,7 @@ namespace Week14.Enemy
                 UnityEngine.Object.Destroy(indicator.gameObject);
             }
 
-            context.PlaySfx(explosionSfxId);
+            context.PlaySfx(SoundEvent.Boss_AreaExplosion);
             PlayExplosionEffect(explosionCenter);
 
             if (explosionDamage <= 0)

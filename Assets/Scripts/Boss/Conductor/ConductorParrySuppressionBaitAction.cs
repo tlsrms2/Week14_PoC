@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -42,9 +43,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0.01f)] private float fireInterval = 0.18f;
         [SerializeField] private MinionGraphProjectileOriginSpec minionOrigin = new();
         [SerializeField] private BossGraphEffectSettings projectileEffects = new();
-        [SerializeField, BossGraphSfxId] private string fireSfxId;
-        [SerializeField, BossGraphSfxId] private string launchSfxId;
-
         [Header("Parry Bait")]
         [SerializeField, BossGraphProjectileName] private string baitProjectileName = "Default";
         [SerializeField, HideInInspector] private BossProjectileSettings baitProjectile = new();
@@ -62,7 +60,6 @@ namespace Week14.Enemy
         [SerializeField, Min(1)] private int rewardBulletCount = 8;
         [SerializeField, Min(0.01f)] private float rewardCircleRadius = 1.5f;
         [SerializeField, Min(0.01f)] private float rewardLifetimeSeconds = 2f;
-        [SerializeField, BossGraphSfxId] private string baitSpawnSfxId;
         [SerializeField] private BossGraphEffectSettings baitEffects = new();
 
         [Header("Completion")]
@@ -271,7 +268,7 @@ namespace Week14.Enemy
             bait.ConfigureBaitDuration(baitDurationSeconds);
             bait.ConfigureRewardOverrides(rewardBulletCount, rewardCircleRadius, rewardLifetimeSeconds);
             bait.ConfigureExternalMotionDriven(true);
-            context.PlaySfx(baitSpawnSfxId);
+            context.PlaySfx(SoundEvent.Boss_CreateParrySuppressionBait);
             context.PlayOriginBurst(baitEffects, spawnOrigin);
             return bait;
         }
@@ -359,11 +356,11 @@ namespace Week14.Enemy
             }
 
             // 이 틱에 드론이 몇 마리 쐈든 사운드는 한 번만 재생한다.
-            // launchSfxId는 대표 투사체 1개의 실제 Launched 이벤트에 걸어서, 그 사이 파괴되면 소리가 안 나게 한다.
+            // 발사음은 대표 투사체 1개의 실제 Launched 이벤트에 걸어서, 그 사이 파괴되면 소리가 안 나게 한다.
             if (firedAny)
             {
-                context.PlaySfx(fireSfxId);
-                context.PlaySfxOnLaunch(launchSfxTarget, launchSfxId);
+                context.PlaySfx(SoundEvent.Conductor_Fire);
+                context.PlaySfxOnLaunch(launchSfxTarget, SoundEvent.Conductor_Launch);
             }
         }
 

@@ -19,13 +19,11 @@ namespace Week14.Cutscene
     {
         [SerializeField] private string name;
         [SerializeField, TextArea(4, 14)] private string text;
-        [SerializeField] private string sfxId;
         [SerializeField] private LocalizedString localizedName;
         [SerializeField] private LocalizedString localizedText;
 
         public string Name => name;
         public string Text => text;
-        public string SfxId => sfxId;
         public LocalizedString LocalizedName => localizedName;
         public LocalizedString LocalizedText => localizedText;
         public bool HasLocalizedName => HasLocalizedString(localizedName);

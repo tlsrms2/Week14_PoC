@@ -11,10 +11,6 @@ namespace Week14.Weapons
         [SerializeField, Min(0.01f)] private float chargeThresholdSeconds = 1f;
         [Tooltip("차지 공격 시 데미지 배율입니다. 예: 3이면 3배.")]
         [SerializeField, Min(1f)] private float chargeDamageMultiplier = 3f;
-        [Tooltip("차지를 시작하는 순간(딱 한 번) 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
-        [BossGraphSfxId]
-        [SerializeField] private string chargeStartSfxId = "SniperCharge";
-
         [Header("Charge Laser Visual")]
         [Tooltip("차지를 시작한 뒤 이 시간(초) 이상 눌러야 레이저 연출이 나타납니다(짧게 클릭만 하는 일반 사격에는 안 뜨게 하기 위함).")]
         [SerializeField, Min(0f)] private float laserFirstAppearDelaySeconds = 0.15f;
@@ -30,7 +26,7 @@ namespace Week14.Weapons
                 return;
             }
 
-            shooter.PlaySniperChargeSfx(chargeStartSfxId);
+            shooter.PlaySniperChargeSfx();
         }
 
         public override void HoldAttack(PlayerShooter shooter, float chargeTime)

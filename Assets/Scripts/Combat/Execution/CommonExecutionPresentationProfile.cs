@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Enemy;
 
 namespace Week14.Combat
@@ -55,8 +56,6 @@ namespace Week14.Combat
         [SerializeField, Min(0f)] private float delaySeconds;
         [SerializeField, Min(-1)] private int flourishShotIndex = -1;
 
-        [SerializeField, BossGraphSfxId] private string sfxId;
-
         [SerializeField, Range(0.01f, 1f)] private float slowTimeScale = 0.15f;
         [SerializeField, Min(0f)] private float slowDurationSeconds = 0.25f;
 
@@ -74,7 +73,17 @@ namespace Week14.Combat
         public CommonExecutionCuePoint CuePoint => cuePoint;
         public CommonExecutionCueType CueType => cueType;
         public float DelaySeconds => Mathf.Max(0f, delaySeconds);
-        public string SfxId => sfxId;
+        public SoundEvent SoundEvent => cuePoint switch
+        {
+            CommonExecutionCuePoint.AfterLetterbox => SoundEvent.Execution_CueAfterLetterbox,
+            CommonExecutionCuePoint.FlourishStart => SoundEvent.Execution_CueFlourishStart,
+            CommonExecutionCuePoint.FlourishShot => SoundEvent.Execution_CueFlourishShot,
+            CommonExecutionCuePoint.BeforePowerShot => SoundEvent.Execution_CueBeforePowerShot,
+            CommonExecutionCuePoint.PowerShot => SoundEvent.Execution_CuePowerShot,
+            CommonExecutionCuePoint.AfterImpact => SoundEvent.Execution_CueAfterImpact,
+            CommonExecutionCuePoint.SequenceEnd => SoundEvent.Execution_CueSequenceEnd,
+            _ => SoundEvent.Execution_CommonCue
+        };
         public float SlowTimeScale => Mathf.Clamp(slowTimeScale, 0.01f, 1f);
         public float SlowDurationSeconds => Mathf.Max(0f, slowDurationSeconds);
         public CommonExecutionFocusTarget FocusTarget => focusTarget;

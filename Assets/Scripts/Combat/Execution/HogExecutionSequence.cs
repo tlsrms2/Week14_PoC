@@ -35,7 +35,6 @@ namespace Week14.Combat
         [SerializeField, Range(0.1f, 1f)] private float preParryCameraZoomMultiplier = 0.38f;
         [SerializeField, Min(0.01f)] private float preParryCameraBlendSmoothTime = 0.12f;
         [SerializeField, Min(0.1f)] private float executionImageSeconds = 3.5f;
-        [SerializeField, BossGraphSfxId] private string preParrySfxId;
         [SerializeField, Range(0f, 1f)] private float parryCameraFocusWeight = 1f;
         [SerializeField, Range(0.1f, 1f)] private float parryCameraZoomMultiplier = 0.42f;
         [SerializeField, Min(0.01f)] private float parryCameraBlendSmoothTime = 0.08f;
@@ -63,7 +62,6 @@ namespace Week14.Combat
         [SerializeField, Range(0f, 1f)] private float wideCameraFocusWeight = 1f;
         [SerializeField, Range(0.1f, 1.5f)] private float wideCameraZoomMultiplier = 0.72f;
         [SerializeField, Min(0.01f)] private float wideCameraBlendSmoothTime = 0.22f;
-        [SerializeField, BossGraphSfxId] private string aimChargeSfxId;
 
         private readonly List<EnemyProjectile> spawnedProjectiles = new();
         private readonly Queue<EnemyProjectile> corridorProjectiles = new();
@@ -303,10 +301,7 @@ namespace Week14.Combat
 
             aimChargeGatherVfx?.Play(player.RightFireOrigin);
 
-            if (!string.IsNullOrWhiteSpace(aimChargeSfxId))
-            {
-                SoundManager.PlaySfx(aimChargeSfxId);
-            }
+            SoundManager.PlaySfx(SoundEvent.Execution_HogAimCharge);
         }
 
         private void ConfigureSpawnedPatternProjectile(EnemyProjectile projectile)
@@ -398,10 +393,7 @@ namespace Week14.Combat
                 player.PlayExecutionImageForCinematic(executionImageSeconds);
             }
 
-            if (!string.IsNullOrWhiteSpace(preParrySfxId))
-            {
-                SoundManager.PlaySfx(preParrySfxId);
-            }
+            SoundManager.PlaySfx(SoundEvent.Execution_HogPreParry);
 
             if (preParryHoldSeconds > 0f)
             {

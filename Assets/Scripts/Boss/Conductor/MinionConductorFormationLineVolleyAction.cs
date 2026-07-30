@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -154,6 +155,7 @@ namespace Week14.Enemy
                     minions,
                     northSouthStaffHoldSeconds + northSouthStaffShrinkSeconds);
                 staffIndicator = CreateStaffIndicators();
+                context.PlaySfx(SoundEvent.Conductor_PlaceStaff);
                 yield return WaitSeconds(context, northSouthStaffHoldSeconds);
                 yield return ShrinkNorthSouthStaff(context, staffIndicator);
 
@@ -166,6 +168,7 @@ namespace Week14.Enemy
                     minions,
                     westStaffHoldSeconds + westStaffShrinkSeconds);
                 AddWestStaff(staffIndicator);
+                context.PlaySfx(SoundEvent.Conductor_PlaceStaff);
                 yield return WaitSeconds(context, westStaffHoldSeconds);
                 yield return ShrinkWestStaff(context, staffIndicator);
 

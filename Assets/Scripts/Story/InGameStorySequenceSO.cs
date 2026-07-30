@@ -29,7 +29,6 @@ namespace Week14.Story
     {
         [SerializeField] private string speaker;
         [SerializeField, TextArea(4, 14)] private string text;
-        [SerializeField] private string sfxId;
         [SerializeField] private string expressionId;
         [SerializeField] private InGameDialoguePortraitSlot portraitSlot = InGameDialoguePortraitSlot.Auto;
         [SerializeField] private bool clearPortraitsBeforeLine;
@@ -45,7 +44,6 @@ namespace Week14.Story
 
         public string Speaker => speaker;
         public string Text => text;
-        public string SfxId => sfxId;
         public string ExpressionId => expressionId;
         public InGameDialoguePortraitSlot PortraitSlot => portraitSlot;
         public bool ClearPortraitsBeforeLine => clearPortraitsBeforeLine;

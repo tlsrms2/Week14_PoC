@@ -17,10 +17,6 @@ namespace Week14.Weapons
         [SerializeField] private Color rangeFlashColor = new Color(1f, 1f, 1f, 0.6f);
         [Tooltip("범위 플래시가 사라지는 데 걸리는 시간(초)입니다.")]
         [SerializeField, Min(0.01f)] private float rangeFlashSeconds = 0.15f;
-        [Tooltip("휘두를 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
-        [BossGraphSfxId]
-        [SerializeField] private string slashSfxId = string.Empty;
-
         public float AttackRange => attackRange;
         public Color RangeFlashColor => rangeFlashColor;
         public float RangeFlashSeconds => rangeFlashSeconds;
@@ -29,7 +25,7 @@ namespace Week14.Weapons
         {
             if (shooter.TryConsumeBayonetCooldown(attackCooldownSeconds))
             {
-                shooter.SwingBayonet(slashDamage, attackRange, rangeFlashColor, rangeFlashSeconds, slashSfxId);
+                shooter.SwingBayonet(slashDamage, attackRange, rangeFlashColor, rangeFlashSeconds);
             }
 
             shooter.EndCharge();

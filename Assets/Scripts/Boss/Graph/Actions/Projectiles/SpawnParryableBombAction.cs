@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -14,7 +15,6 @@ namespace Week14.Enemy
         [SerializeField] private BossGraphProjectileAimSpec aim = new();
         [SerializeField, Min(0f)] private float spawnForwardOffset;
         [SerializeField, Min(0f)] private float chargeSeconds = 1.5f;
-        [SerializeField, BossGraphSfxId] private string spawnSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
         [Tooltip("폭탄이 패링당하지 않고 그대로 터졌을 때 켤 Animator Bool 이름입니다.")]
         [SerializeField] private string slamSuccessBoolName = "isSlam";
@@ -64,7 +64,7 @@ namespace Week14.Enemy
                 bomb.ConfigureChargeMotion(0f, false, false);
             }
 
-            context.PlaySfx(spawnSfxId);
+            context.PlaySfx(SoundEvent.Boss_ParryBombSpawn);
             context.PlayOriginBurst(effects, spawnOrigin);
 
             bool wasParried = false;

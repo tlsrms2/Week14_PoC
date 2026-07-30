@@ -48,11 +48,9 @@ namespace Week14.Combat
         [SerializeField, Min(1f)] private float parryShotLineLength = 22f;
         [SerializeField, Min(0f)] private float parryShotLineEndPadding = 1f;
         [SerializeField, Range(1f, 1.5f)] private float staffLineViewportEnd = 1.1f;
-        [SerializeField, BossGraphSfxId] private string preParrySfxId;
 
         [Header("Phase 3 — Aim Charge & Final Line")]
         [SerializeField, Min(0f)] private float aimChargeSeconds = 1.5f;
-        [SerializeField, BossGraphSfxId] private string aimChargeSfxId;
         [SerializeField, Min(0.05f)] private float finalPositionMoveSeconds = 0.25f;
 
         [Header("Camera")]
@@ -527,10 +525,7 @@ namespace Week14.Combat
 
             player?.PlayExecutionImageForCinematic(executionImageSeconds);
 
-            if (!string.IsNullOrWhiteSpace(preParrySfxId))
-            {
-                SoundManager.PlaySfx(preParrySfxId);
-            }
+            SoundManager.PlaySfx(SoundEvent.Execution_ConductorPreParry);
         }
 
         private IEnumerator RunParryShotsPhase()
@@ -589,7 +584,7 @@ namespace Week14.Combat
                 }
 
                 // Play shot sound
-                SoundManager.PlaySfx("PlayerShot");
+                SoundManager.PlaySfx(SoundEvent.Player_NormalShot);
 
                 // Draw persistent staff line using lockedStaffStartX so all lines start at exact same X
                 Vector3 firePosition = new(lockedStaffStartX, targetY, 0f);
@@ -685,10 +680,7 @@ namespace Week14.Combat
 
             aimChargeGatherVfx?.Play(player.RightFireOrigin);
 
-            if (!string.IsNullOrWhiteSpace(aimChargeSfxId))
-            {
-                SoundManager.PlaySfx(aimChargeSfxId);
-            }
+            SoundManager.PlaySfx(SoundEvent.Execution_ConductorAimCharge);
         }
 
         // ─── Helper Calculations ─────────────────────────────────────────

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -29,7 +30,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float groggySeconds = 3f;
         [Tooltip("패링 성공으로 분신을 정리할 때, 보스 위치로 모여들며 사라지는 데 걸리는 시간(초)입니다.")]
         [SerializeField, Min(0.01f)] private float cloneGatherDespawnSeconds = 0.35f;
-        [SerializeField, BossGraphSfxId] private string spawnSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
         public override IEnumerator Execute(BossActionContext context)
@@ -59,7 +59,7 @@ namespace Week14.Enemy
             bait.ConfigureBaitDuration(baitDurationSeconds);
             bait.ConfigureRewardOverrides(rewardBulletCount, rewardCircleRadius, groggySeconds);
 
-            context.PlaySfx(spawnSfxId);
+            context.PlaySfx(SoundEvent.Boss_CreateParrySuppressionBait);
             context.PlayOriginBurst(effects, spawnOrigin);
 
             bool parried = false;

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -113,6 +114,7 @@ namespace Week14.Enemy
                     && other.WireOwner == node.WireOwner)
                 {
                     HackerWireNodeLinkVisual.Create(other, node);
+                    SoundManager.PlaySfx(SoundEvent.Hacker_WireNode);
                 }
             }
 

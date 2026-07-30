@@ -128,9 +128,9 @@ public sealed class CommonExecutionPresentationProfileEditor : Editor
         switch (cueType)
         {
             case CommonExecutionCueType.Sound:
-                EditorGUILayout.PropertyField(
-                    cue.FindPropertyRelative("sfxId"),
-                    new GUIContent("SFX ID"));
+                EditorGUILayout.HelpBox(
+                    "Cue Point에 해당하는 사운드는 Sound Library의 사용 위치 연결에서 지정합니다.",
+                    MessageType.Info);
                 break;
 
             case CommonExecutionCueType.SlowMotion:
@@ -199,7 +199,6 @@ public sealed class CommonExecutionPresentationProfileEditor : Editor
         cue.FindPropertyRelative("cueType").enumValueIndex = (int)cueType;
         cue.FindPropertyRelative("delaySeconds").floatValue = 0f;
         cue.FindPropertyRelative("flourishShotIndex").intValue = -1;
-        cue.FindPropertyRelative("sfxId").stringValue = string.Empty;
         cue.FindPropertyRelative("slowTimeScale").floatValue = 0.15f;
         cue.FindPropertyRelative("slowDurationSeconds").floatValue = 0.25f;
         cue.FindPropertyRelative("focusTarget").enumValueIndex =

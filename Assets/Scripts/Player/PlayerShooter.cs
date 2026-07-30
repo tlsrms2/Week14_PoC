@@ -100,13 +100,10 @@ namespace Week14.Combat
             context.SniperChargeLaserEffect?.SetProgress(progress);
         }
 
-        public void PlaySniperChargeSfx(string sfxId)
+        public void PlaySniperChargeSfx()
         {
             StopSniperChargeSfx();
-            if (!string.IsNullOrWhiteSpace(sfxId))
-            {
-                sniperChargeSfxHandle = SoundManager.PlayTrackedSfx(sfxId);
-            }
+            sniperChargeSfxHandle = SoundManager.PlayTrackedSfx(SoundEvent.Player_SniperCharge);
         }
 
         private void StopSniperChargeSfx()
@@ -128,15 +125,15 @@ namespace Week14.Combat
             hasPlayedBaseballBatChargingSfx = false;
         }
 
-        public void PlayBaseballBatChargingSfxOnce(string sfxId)
+        public void PlayBaseballBatChargingSfxOnce()
         {
-            if (hasPlayedBaseballBatChargingSfx || string.IsNullOrEmpty(sfxId))
+            if (hasPlayedBaseballBatChargingSfx)
             {
                 return;
             }
 
             hasPlayedBaseballBatChargingSfx = true;
-            baseballBatChargingSfxHandle = SoundManager.PlayTrackedSfx(sfxId);
+            baseballBatChargingSfxHandle = SoundManager.PlayLoopingSfx(SoundEvent.Player_BaseballBatCharge);
         }
 
         private void StopBaseballBatChargingSfx()
@@ -253,6 +250,7 @@ namespace Week14.Combat
             baseballBatSwingStartDegrees = baseballBatCurrentRotationDegrees;
             baseballBatSwingStartScale = baseballBatCurrentScale;
             baseballBatSwingColor = baseballBatCurrentColor;
+            SoundManager.PlaySfx(SoundEvent.Player_BaseballBatSwing);
         }
 
         // 매 프레임(차징 여부와 무관하게) 호출됩니다. 차징 중일 때는 UpdateBaseballBatCharging이 이미
@@ -399,7 +397,7 @@ namespace Week14.Combat
             float beamWidth,
             Color beamColor,
             RailgunVfxSettings vfxSettings,
-            string fireSfxId)
+            SoundEvent fireSoundEvent)
         {
             PlayerCombatConfig config = context.Config;
             if (config == null) return;
@@ -459,11 +457,8 @@ namespace Week14.Combat
                 fireOrigin,
                 muzzleFlashScale);
             context.Visual?.PlayShot();
-            if (!string.IsNullOrEmpty(fireSfxId))
-            {
-                SoundManager.PlaySfx(fireSfxId);
-            }
-            SoundManager.PlaySfx("BulletLoss");
+            SoundManager.PlaySfx(fireSoundEvent);
+            SoundManager.PlaySfx(SoundEvent.Player_BulletLoss);
         }
 
         private void DamageEnemiesAlongLine(Vector2 origin, Vector2 direction, float length, float beamRadius, int damage)
@@ -543,7 +538,7 @@ namespace Week14.Combat
         // 근접 반원 공격(총검): 조준 방향(락온 중이면 GetAimDirection이 알아서 보스 방향을 반환) 기준
         // 앞쪽 반원(반지름 range) 안의 적탄을 즉시 제거하고, 같은 범위 안의 보스/미니언에게 damage를 적용합니다.
         // 탄환은 전혀 소모하지 않습니다.
-        public void SwingBayonet(int damage, float range, Color rangeFlashColor, float rangeFlashSeconds, string slashSfxId)
+        public void SwingBayonet(int damage, float range, Color rangeFlashColor, float rangeFlashSeconds)
         {
             if (range <= 0f)
             {
@@ -558,10 +553,7 @@ namespace Week14.Combat
             context.Owner.NotifyPlayerAttackPerformed(damage, range);
             ProjectileVfx.PlaySemicircleFlash(origin, direction, range, rangeFlashColor, rangeFlashSeconds);
 
-            if (!string.IsNullOrEmpty(slashSfxId))
-            {
-                SoundManager.PlaySfx(slashSfxId);
-            }
+            SoundManager.PlaySfx(SoundEvent.Player_BayonetSlash);
         }
 
         public void SwingBaseballBat(
@@ -569,8 +561,7 @@ namespace Week14.Combat
             float range,
             float reflectedSpeed,
             BaseballBatVfxSettings vfxSettings,
-            float charge01,
-            string reflectionSuccessSfxId)
+            float charge01)
         {
             if (range <= 0f)
             {
@@ -613,8 +604,7 @@ namespace Week14.Combat
                     direction,
                     range,
                     reflectedDamage,
-                    reflectedSpeed,
-                    reflectionSuccessSfxId));
+                    reflectedSpeed));
         }
 
         private IEnumerator ResolveBaseballBatHitsDuringWindow(
@@ -623,8 +613,7 @@ namespace Week14.Combat
             Vector2 direction,
             float range,
             int reflectedDamage,
-            float reflectedSpeed,
-            string reflectionSuccessSfxId)
+            float reflectedSpeed)
         {
             if (delaySeconds > 0f)
             {
@@ -643,10 +632,9 @@ namespace Week14.Combat
                     reflectedDamage,
                     reflectedSpeed);
                 if (newlyReflectedCount > 0
-                    && !playedReflectionSfx
-                    && !string.IsNullOrEmpty(reflectionSuccessSfxId))
+                    && !playedReflectionSfx)
                 {
-                    SoundManager.PlaySfx(reflectionSuccessSfxId);
+                    SoundManager.PlaySfx(SoundEvent.Player_BaseballBatHit);
                     playedReflectionSfx = true;
                 }
 
@@ -953,8 +941,8 @@ namespace Week14.Combat
 
             ProjectileVfx.PlayPrefab(config.PlayerMuzzleFlashVfxPrefab, fireOrigin.position, direction, fireOrigin, 0.9f);
             context.Visual?.PlayShot();
-            SoundManager.PlaySfx("SniperFire");
-            SoundManager.PlaySfx("BulletLoss");
+            SoundManager.PlaySfx(SoundEvent.Player_SniperFire);
+            SoundManager.PlaySfx(SoundEvent.Player_BulletLoss);
             context.Owner.NotifyPlayerAttackPerformed(damage);
         }
 
@@ -1000,8 +988,10 @@ namespace Week14.Combat
 
             ProjectileVfx.PlayPrefab(config.PlayerMuzzleFlashVfxPrefab, fireOrigin.position, baseDirection, fireOrigin, 0.9f);
             context.Visual?.PlayShot();
-            SoundManager.PlaySfx(pelletCount >= 2 ? "ShotgunFire" : "PlayerShot");
-            SoundManager.PlaySfx("BulletLoss");
+            SoundManager.PlaySfx(pelletCount >= 2
+                ? SoundEvent.Player_ShotgunFire
+                : SoundEvent.Player_NormalShot);
+            SoundManager.PlaySfx(SoundEvent.Player_BulletLoss);
             context.Owner.NotifyPlayerAttackPerformed(pelletDamage);
         }
 
@@ -1063,8 +1053,10 @@ namespace Week14.Combat
 
             ProjectileVfx.PlayPrefab(config.PlayerMuzzleFlashVfxPrefab, fireOrigin.position, direction, fireOrigin, 0.9f);
             context.Visual?.PlayShot();
-            SoundManager.PlaySfx(firedBulletNumber >= 2 ? "PlayerShot" : "PlayerPowerShot");
-            SoundManager.PlaySfx("BulletLoss");
+            SoundManager.PlaySfx(firedBulletNumber >= 2
+                ? SoundEvent.Player_NormalShot
+                : SoundEvent.Player_PowerShot);
+            SoundManager.PlaySfx(SoundEvent.Player_BulletLoss);
             context.Owner.NotifyPlayerAttackPerformed(dynamicDamage);
             return true;
         }
@@ -1111,7 +1103,7 @@ namespace Week14.Combat
 
             ProjectileVfx.PlayPrefab(config.PlayerMuzzleFlashVfxPrefab, fireOrigin.position, direction, fireOrigin, 0.9f);
             context.Visual?.PlayShot();
-            SoundManager.PlaySfx("PlayerPowerShot");
+            SoundManager.PlaySfx(SoundEvent.Player_PowerShot);
             return true;
         }
 
@@ -1157,7 +1149,7 @@ namespace Week14.Combat
 
         internal static void PlayBulletRestoreSfx(int currentBullets, int maxBullets)
         {
-            SoundManager.PlaySfx("BulletRestore2", GetBulletCountPitch(currentBullets, maxBullets));
+            SoundManager.PlaySfx(SoundEvent.Player_BulletRestore, GetBulletCountPitch(currentBullets, maxBullets));
         }
     }
 }

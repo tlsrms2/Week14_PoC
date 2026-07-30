@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -22,8 +23,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float durationSeconds = 2f;
         [SerializeField] private bool destroyOnMotionEnd = true;
         [SerializeField, Min(0f)] private float windupSeconds;
-        [SerializeField, BossGraphSfxId] private string fireSfxId;
-        [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
         public override IEnumerator Execute(BossActionContext context)
@@ -95,7 +94,7 @@ namespace Week14.Enemy
                         destroyOnMotionEnd);
                 }
 
-                context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
+                context.PlaySfxOnLaunch(firedProjectile, SoundEvent.Boss_ProjectileLaunch);
             }
 
             if (!firedAny)
@@ -103,7 +102,7 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            context.PlaySfx(fireSfxId);
+            context.PlaySfx(SoundEvent.Boss_ProjectileFire);
             context.PlayOriginBurst(effects, anchor.position);
             yield return context.WaitSeconds(durationSeconds);
         }
@@ -150,8 +149,6 @@ namespace Week14.Enemy
 
         [FormerlySerializedAs("startDelaySeconds")]
         [SerializeField, Min(0f)] private float windupSeconds;
-        [SerializeField, BossGraphSfxId] private string fireSfxId;
-        [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
         [SerializeField] private List<Volley> volleys = new() { new Volley() };
 
@@ -225,8 +222,8 @@ namespace Week14.Enemy
                 return;
             }
 
-            context.PlaySfx(fireSfxId);
-            context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
+            context.PlaySfx(SoundEvent.Boss_ProjectileFire);
+            context.PlaySfxOnLaunch(firedProjectile, SoundEvent.Boss_ProjectileLaunch);
             context.PlayOriginBurst(effects, spawnPosition);
             context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, finalDirection);
             context.PlayCameraShakeIfEnabled(effects, finalDirection);
@@ -258,8 +255,6 @@ namespace Week14.Enemy
         [SerializeField] private bool destroyOnMotionEnd = true;
         [SerializeField] private bool waitForMotionEnd;
         [SerializeField, Min(0f)] private float windupSeconds;
-        [SerializeField, BossGraphSfxId] private string fireSfxId;
-        [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
         public override IEnumerator Execute(BossActionContext context)
@@ -311,8 +306,8 @@ namespace Week14.Enemy
                         angularSpeedDegrees,
                         motionDurationSeconds,
                         destroyOnMotionEnd);
-                    context.PlaySfx(fireSfxId);
-                    context.PlaySfxOnLaunch(firedProjectile, launchSfxId);
+                    context.PlaySfx(SoundEvent.Boss_ProjectileFire);
+                    context.PlaySfxOnLaunch(firedProjectile, SoundEvent.Boss_ProjectileLaunch);
                     context.PlayOriginBurst(effects, spawnPosition);
                     context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, tangentDirection);
                     context.PlayCameraShakeIfEnabled(effects, tangentDirection);

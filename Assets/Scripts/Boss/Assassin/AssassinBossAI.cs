@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Audio;
 
 namespace Week14.Enemy
 {
@@ -214,6 +215,7 @@ namespace Week14.Enemy
             isStealthed = pendingStealthValue;
             if (isStealthed)
             {
+                SoundManager.PlaySfx(SoundEvent.Assassin_Stealth);
                 stealthEntryDelayRemaining = stealthEntryPatternDelaySeconds;
                 // 새 은신 세션은 항상 반투명 상태로 시작한다 — 이전 세션에서 켜뒀던
                 // 알파 노출(Reveal)은 여기서 초기화된다.

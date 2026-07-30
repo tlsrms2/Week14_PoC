@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -39,8 +40,6 @@ namespace Week14.Enemy
             [SerializeField, Min(0f)] private float fireSeconds;
             [SerializeField, Min(1)] private int parryOrder = 1;
             [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
-            [SerializeField, BossGraphSfxId] private string fireSfxId;
-            [SerializeField, BossGraphSfxId] private string launchSfxId;
 
             public FireTiming()
             {
@@ -57,16 +56,12 @@ namespace Week14.Enemy
                 fireSeconds = source.FireSeconds;
                 parryOrder = source.ParryOrder;
                 projectileName = source.ProjectileName;
-                fireSfxId = source.FireSfxId;
-                launchSfxId = source.LaunchSfxId;
             }
 
             public int MinionNumber => Mathf.Max(1, minionNumber);
             public float FireSeconds => Mathf.Max(0f, fireSeconds);
             public int ParryOrder => Mathf.Max(1, parryOrder);
             public string ProjectileName => projectileName?.Trim();
-            public string FireSfxId => fireSfxId;
-            public string LaunchSfxId => launchSfxId;
         }
 
         [Serializable]
@@ -177,10 +172,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float windupSeconds;
         [SerializeField, InspectorName("Pattern Center")] private Vector2 patternCenter;
         [SerializeField, InspectorName("Use Two Sides")] private bool useTwoSides;
-        [Header("Common Sound")]
-        [Tooltip("Fire Timing에 개별 사운드가 지정되어 있지 않을 때 대신 재생할 공통 사운드입니다.")]
-        [SerializeField, BossGraphSfxId] private string defaultFireSfxId;
-        [SerializeField, BossGraphSfxId] private string defaultLaunchSfxId;
         [Header("Common Rush Settings")]
         [SerializeField, Min(0.1f)] private float lineDistanceFromPlayer = 3f;
         [SerializeField, Min(0f)] private float lineSpacing = 0.7f;
@@ -1197,8 +1188,8 @@ namespace Week14.Enemy
                 spawned?.ConfigurePathIndicatorDelayedUntilLaunch(true);
                 if (spawned != null)
                 {
-                    context.PlaySfx(ResolveFireSfxId(timing));
-                    context.PlaySfxOnLaunch(spawned, ResolveLaunchSfxId(timing));
+                    context.PlaySfx(SoundEvent.Conductor_Fire);
+                    context.PlaySfxOnLaunch(spawned, SoundEvent.Conductor_Launch);
                 }
 
                 parrySequence.Register(timing, spawned);
@@ -1290,16 +1281,6 @@ namespace Week14.Enemy
             }
 
             return 0f;
-        }
-
-        private string ResolveFireSfxId(FireTiming timing)
-        {
-            return !string.IsNullOrWhiteSpace(timing.FireSfxId) ? timing.FireSfxId : defaultFireSfxId;
-        }
-
-        private string ResolveLaunchSfxId(FireTiming timing)
-        {
-            return !string.IsNullOrWhiteSpace(timing.LaunchSfxId) ? timing.LaunchSfxId : defaultLaunchSfxId;
         }
 
         private static float GetMaxFireSeconds(ExecutionVolley volley)

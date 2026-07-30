@@ -27,11 +27,6 @@ namespace Week14.UI
         [Tooltip("페이드 아웃에 걸리는 시간(초, 언스케일드)입니다.")]
         [SerializeField, Min(0f)] private float fadeOutSeconds = 0.35f;
 
-        [Header("Sound")]
-        [Tooltip("획득 포인트 팝업이 표시될 때 재생할 SoundLibrary SFX ID입니다.")]
-        [BossGraphSfxId]
-        [SerializeField] private string getPointSfxId = "GetPoint";
-
         [Header("닫기 입력")]
         [Tooltip("누르면(holdSeconds가 지난 뒤부터) 팝업이 페이드아웃되며 닫히는 버튼입니다.")]
         [SerializeField] private Button closeButton;
@@ -133,10 +128,7 @@ namespace Week14.UI
             StopPlayRoutine();
             closeRequested = false;
             root.SetActive(true);
-            if (!string.IsNullOrEmpty(getPointSfxId))
-            {
-                SoundManager.PlaySfx(getPointSfxId);
-            }
+            SoundManager.PlaySfx(SoundEvent.UI_ChallengeRewardPoint);
 
             playRoutine = StartCoroutine(PlayRoutine());
         }

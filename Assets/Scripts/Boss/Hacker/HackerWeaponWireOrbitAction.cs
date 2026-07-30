@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -40,7 +41,6 @@ namespace Week14.Enemy
 
         [Header("Orbit")]
         [SerializeField, Min(0.05f)] private float orbitSeconds = 2f;
-        [SerializeField, BossGraphSfxId] private string orbitSfxId = HackerSfxIds.OrbitSweep;
         [FormerlySerializedAs("endWireLength")]
         [SerializeField, Min(0.05f)] private float orbitRadius = 4.5f;
         [FormerlySerializedAs("wireLengthCurve")]
@@ -65,7 +65,6 @@ namespace Week14.Enemy
         [Header("Recall")]
         [SerializeField, Min(0.05f)] private float recallSeconds = 0.55f;
         [SerializeField] private float recallRotationDegrees = 360f;
-        [SerializeField, BossGraphSfxId] private string wireSfxId = HackerSfxIds.Wire;
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -107,7 +106,6 @@ namespace Week14.Enemy
             Transform bossWireAnchor = context.GetBossChildTransform(bossWireAnchorPath) ?? hacker.transform;
             Transform weaponWireAnchor = weapon.GetChildTransform(weaponWireAnchorPath) ?? weapon.transform;
             HackerWireSettings wireSettings = hacker.WireSettings;
-            context.PlaySfx(HackerSfxIds.Resolve(wireSfxId, HackerSfxIds.Wire));
             HackerRecallWireVisual wireVisual = HackerRecallWireVisual.Create(
                 bossWireAnchor,
                 weaponWireAnchor,
@@ -164,7 +162,7 @@ namespace Week14.Enemy
                 }
 
                 context.PlayAnimationTrigger(orbitTriggerName);
-                context.PlaySfx(HackerSfxIds.Resolve(orbitSfxId, HackerSfxIds.OrbitSweep));
+                context.PlaySfx(SoundEvent.Hacker_OrbitSweep);
                 attackEffect?.Play(context);
 
                 Vector2 advanceDirection = context.GetDirectionToPlayer(hacker.transform.position);
@@ -258,7 +256,6 @@ namespace Week14.Enemy
                 weaponWireAnchor = weapon.GetChildTransform(weaponWireAnchorPath) ?? weapon.transform;
                 if (weapon.BeginRecall(returnAnchor, weaponWireAnchor, recallSeconds, recallRotationDegrees))
                 {
-                    context.PlaySfx(HackerSfxIds.Resolve(wireSfxId, HackerSfxIds.Wire));
                     HackerRecallWireVisual.Create(returnAnchor, weaponWireAnchor, wireSettings.Color, wireSettings.Width);
                     yield return HackerMeleeAttackAction.Wait(context, recallSeconds);
                 }

@@ -7,7 +7,7 @@ using Week14.Weapons;
 [CanEditMultipleObjects]
 public sealed class RailgunWeaponSOEditor : Editor
 {
-    private static readonly string[] TabLabels = { "기본", "공격", "이펙트", "사운드" };
+    private static readonly string[] TabLabels = { "기본", "공격", "이펙트" };
 
     private int selectedTab;
 
@@ -34,11 +34,6 @@ public sealed class RailgunWeaponSOEditor : Editor
                 break;
             case 2:
                 DrawVfxTab();
-                break;
-            case 3:
-                DrawProperties(
-                    "oneToFourAmmoFireSfxId",
-                    "fiveAmmoFireSfxId");
                 break;
         }
 

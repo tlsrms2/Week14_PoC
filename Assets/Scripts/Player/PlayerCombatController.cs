@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Enemy;
 using Week14.Input;
@@ -763,6 +764,7 @@ namespace Week14.Combat
             }
 
             deathPreventionChargesRemaining--;
+            SoundManager.PlaySfx(SoundEvent.Skill_Emergency);
 
             if (deathPreventionClearRadius > 0f)
             {

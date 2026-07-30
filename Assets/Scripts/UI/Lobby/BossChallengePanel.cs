@@ -25,9 +25,6 @@ namespace Week14.UI
         [SerializeField, Min(0f)] private float initialDelaySeconds = 0.3f;
         [Tooltip("슬롯 연출 사이사이의 대기 시간(초, 언스케일드)입니다. 첫 슬롯 전에는 적용되지 않습니다.")]
         [SerializeField, Min(0f)] private float betweenSlotsDelaySeconds = 0.15f;
-        [Tooltip("결과 화면에서 챌린지 한 항목의 공개 연출이 시작될 때 재생할 SoundLibrary SFX ID입니다.")]
-        [BossGraphSfxId]
-        [SerializeField] private string challengeResultSfxId = "ChallengeResult";
         [Tooltip("스윕이 도달하기 전, 판정 대기 중인 슬롯에 표시할 기본 텍스트 색상입니다.")]
         [SerializeField] private Color defaultTextColor = Color.white;
         [Tooltip("챌린지를 클리어했을 때의 텍스트 색상입니다. Show()(로비 호버)에서도 사용됩니다.")]
@@ -245,10 +242,7 @@ namespace Week14.UI
 
                     isFirstSlot = false;
 
-                    if (!string.IsNullOrEmpty(challengeResultSfxId))
-                    {
-                        SoundManager.PlaySfx(challengeResultSfxId);
-                    }
+                    SoundManager.PlaySfx(SoundEvent.UI_LobbyChallengeResult);
 
                     yield return slot.PlayRevealCoroutine(
                         definition, bossId, completedSprite, incompleteSprite,

@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.Serialization;
+using Week14.Audio;
 using Week14.Combat;
 using Week14.Enemy;
 
@@ -89,13 +89,6 @@ namespace Week14.Weapons
         [SerializeField] private Color beamColor = new Color(0.5f, 0.9f, 1f, 1f);
         [SerializeField] private RailgunVfxSettings vfxSettings = new RailgunVfxSettings();
 
-        [Header("Audio")]
-        [Tooltip("탄환 1~4발을 소비해 발사할 때 재생할 SFX입니다.")]
-        [FormerlySerializedAs("fireSfxId")]
-        [SerializeField, BossGraphSfxId] private string oneToFourAmmoFireSfxId = string.Empty;
-        [Tooltip("탄환 5발을 소비해 발사할 때 재생할 SFX입니다. 비워두면 1~4발용 SFX를 사용합니다.")]
-        [SerializeField, BossGraphSfxId] private string fiveAmmoFireSfxId = string.Empty;
-
         public float LaserSpeed => laserSpeed;
         public float LaserLifetimeSeconds => laserLifetimeSeconds;
         public float BeamVisualSeconds => beamVisualSeconds;
@@ -125,18 +118,13 @@ namespace Week14.Weapons
                         beamWidth,
                         beamColor,
                         VfxSettings,
-                        ResolveFireSfxId(bulletCount));
+                        bulletCount >= 5
+                            ? SoundEvent.Player_RailgunFullFire
+                            : SoundEvent.Player_RailgunLowFire);
                 }
             }
 
             shooter.EndCharge();
-        }
-
-        private string ResolveFireSfxId(int spentAmmo)
-        {
-            return spentAmmo >= 5 && !string.IsNullOrWhiteSpace(fiveAmmoFireSfxId)
-                ? fiveAmmoFireSfxId
-                : oneToFourAmmoFireSfxId;
         }
 
         protected override void OnValidate()

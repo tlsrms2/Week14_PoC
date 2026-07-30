@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -16,7 +17,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float chargeSeconds = 1.6f;
         [SerializeField, Min(0.01f)] private float projectileRadiusMultiplier = 1f;
         [SerializeField, Range(0f, 180f)] private float aimSpreadDegrees = 24f;
-        [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
         public override IEnumerator Execute(BossActionContext context)
@@ -55,7 +55,7 @@ namespace Week14.Enemy
             spawned.ConfigureChargeMotion(0f, true, false, aimSpreadDegrees);
             spawned.ConfigureInterceptable(false);
             context.SetProjectileHandle(handleKey, spawned);
-            context.PlaySfxOnLaunch(spawned, launchSfxId);
+            context.PlaySfxOnLaunch(spawned, SoundEvent.Boss_ChargedProjectileLaunch);
             context.PlayOriginBurst(effects, spawnOrigin);
         }
 
@@ -93,7 +93,6 @@ namespace Week14.Enemy
         [SerializeField, Range(0.05f, 1f)] private float splitRadiusMultiplier = 0.62f;
         [SerializeField, Range(0.05f, 1f)] private float splitLifetimeMultiplier = 0.85f;
         [SerializeField, Min(0f)] private float splitSfxLeadSeconds = 0.15f;
-        [SerializeField, BossGraphSfxId] private string splitImminentSfxId;
         [Tooltip("비워두면 분열 전 투사체와 같은 프리팹으로 분열합니다. 지정하면 여기 등록된 프리팹으로 분열합니다.")]
         [SerializeField, BossGraphProjectileName] private string splitProjectileName;
 
@@ -119,7 +118,7 @@ namespace Week14.Enemy
                 splitSettings?.Prefab,
                 splitSettings != null ? splitSettings.Radius : 0f);
             projectile.ConfigureRadialSplitSfxLead(splitSfxLeadSeconds);
-            context.PlaySfxOnRadialSplitImminent(projectile, splitImminentSfxId);
+            context.PlaySfxOnRadialSplitImminent(projectile, SoundEvent.Boss_SplitImminent);
         }
     }
 

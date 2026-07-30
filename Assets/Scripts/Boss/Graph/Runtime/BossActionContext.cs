@@ -30,6 +30,7 @@ namespace Week14.Enemy
         private readonly Dictionary<string, string> bossChildAimStartNodePaths = new();
         private readonly Dictionary<string, EnemyProjectile> projectileHandles = new();
         private readonly HashSet<string> projectileConfigurationWarnings = new();
+        private int lastUnparryableShotSfxFrame = -1;
         private readonly List<GameObject> transientVisuals = new();
         private readonly HashSet<object> facingLockOwners = new();
         private readonly HashSet<object> playerCollisionIgnoreOwners = new();
@@ -1018,6 +1019,13 @@ namespace Week14.Enemy
 
             if (firedProjectile != null)
             {
+                if (resolvedSettings.Prefab is UnparryableEnemyProjectile
+                    && lastUnparryableShotSfxFrame != Time.frameCount)
+                {
+                    lastUnparryableShotSfxFrame = Time.frameCount;
+                    PlaySfx(SoundEvent.Boss_CantParryingShot);
+                }
+
                 projectileFired?.Invoke(firedProjectile);
             }
 
@@ -1079,6 +1087,16 @@ namespace Week14.Enemy
             SoundManager.PlaySfx(sfxId);
         }
 
+        public void PlaySfx(SoundId soundId)
+        {
+            SoundManager.PlaySfx(soundId);
+        }
+
+        public void PlaySfx(SoundEvent soundEvent)
+        {
+            SoundManager.PlaySfx(soundEvent);
+        }
+
         public void PlaySfxOnLaunch(EnemyProjectile projectile, string sfxId)
         {
             if (projectile == null || string.IsNullOrWhiteSpace(sfxId))
@@ -1095,6 +1113,24 @@ namespace Week14.Enemy
             projectile.Launched += HandleLaunched;
         }
 
+        public void PlaySfxOnLaunch(
+            EnemyProjectile projectile,
+            SoundEvent soundEvent)
+        {
+            if (projectile == null)
+            {
+                return;
+            }
+
+            void HandleLaunched(EnemyProjectile launchedProjectile)
+            {
+                launchedProjectile.Launched -= HandleLaunched;
+                PlaySfx(soundEvent);
+            }
+
+            projectile.Launched += HandleLaunched;
+        }
+
         public void PlaySfxOnRadialSplitImminent(EnemyProjectile projectile, string sfxId)
         {
             if (projectile == null || string.IsNullOrWhiteSpace(sfxId))
@@ -1106,6 +1142,24 @@ namespace Week14.Enemy
             {
                 splitProjectile.RadialSplitImminent -= HandleRadialSplitImminent;
                 PlaySfx(sfxId);
+            }
+
+            projectile.RadialSplitImminent += HandleRadialSplitImminent;
+        }
+
+        public void PlaySfxOnRadialSplitImminent(
+            EnemyProjectile projectile,
+            SoundEvent soundEvent)
+        {
+            if (projectile == null)
+            {
+                return;
+            }
+
+            void HandleRadialSplitImminent(EnemyProjectile splitProjectile)
+            {
+                splitProjectile.RadialSplitImminent -= HandleRadialSplitImminent;
+                PlaySfx(soundEvent);
             }
 
             projectile.RadialSplitImminent += HandleRadialSplitImminent;

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -34,8 +35,6 @@ namespace Week14.Enemy
             [SerializeField] private ConductorFanProjectileDirection direction = ConductorFanProjectileDirection.RadialOut;
             [SerializeField] private float angleOffsetDegrees;
             [SerializeField] private List<int> minionNumbers = new();
-            [SerializeField, BossGraphSfxId] private string fireSfxId;
-            [SerializeField, BossGraphSfxId] private string launchSfxId;
 
             public string ProjectileName => projectileName?.Trim();
             public float StartSeconds => Mathf.Max(0f, startSeconds);
@@ -44,8 +43,6 @@ namespace Week14.Enemy
             public ConductorFanProjectileDirection Direction => direction;
             public float AngleOffsetDegrees => angleOffsetDegrees;
             public IReadOnlyList<int> MinionNumbers => minionNumbers;
-            public string FireSfxId => fireSfxId;
-            public string LaunchSfxId => launchSfxId;
         }
 
         [SerializeField] private ConductorFanCenterMode centerMode = ConductorFanCenterMode.PlayerStart;
@@ -289,11 +286,11 @@ namespace Week14.Enemy
             }
 
             // 이 볼리에 몇 마리가 걸려 동시에 쐈든, 사운드는 볼리당 한 번만 재생한다.
-            // launchSfxId는 대표 투사체 1개의 실제 Launched 이벤트에 걸어서, 그 사이 패링/파괴되면 소리가 안 나게 한다.
+            // 발사음은 대표 투사체 1개의 실제 Launched 이벤트에 걸어서, 그 사이 패링/파괴되면 소리가 안 나게 한다.
             if (firedAny)
             {
-                context.PlaySfx(volley.FireSfxId);
-                context.PlaySfxOnLaunch(launchSfxTarget, volley.LaunchSfxId);
+                context.PlaySfx(SoundEvent.Conductor_Fire);
+                context.PlaySfxOnLaunch(launchSfxTarget, SoundEvent.Conductor_Launch);
             }
         }
 

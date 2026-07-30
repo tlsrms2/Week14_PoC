@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Week14.Audio;
 
 namespace Week14.Enemy
 {
@@ -14,9 +15,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float duration = 0.1f;
         [FormerlySerializedAs("releaseBaseAfterMove")]
         [SerializeField] private bool stopWhenFinished = true;
-        [Tooltip("이동이 끝났을 때 재생할 사운드 ID입니다.")]
-        [SerializeField, BossGraphSfxId] private string completeSfxId;
-
         public override IEnumerator Execute(BossActionContext context)
         {
             if (context == null)
@@ -25,7 +23,7 @@ namespace Week14.Enemy
             }
 
             yield return context.MoveBodyRootToPosition(targetPosition, duration, stopWhenFinished);
-            context.PlaySfx(completeSfxId);
+            context.PlaySfx(SoundEvent.Boss_MoveComplete);
         }
 
         public bool TryGetDurationSeconds(out float seconds)

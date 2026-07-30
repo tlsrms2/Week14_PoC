@@ -18,7 +18,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0.05f)] private float activeSeconds = 3f;
         [SerializeField, Min(0.01f)] private float fireInterval = 0.3f;
         [SerializeField, Min(1)] private int maxShotCount = 8;
-        [SerializeField, BossGraphSfxId] private string fireSfxId = HackerSfxIds.BossNormalShot;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.2f;
 
         [Header("Fire Effect")]
@@ -60,8 +59,7 @@ namespace Week14.Enemy
                 maxShotCount,
                 fireEffectPrefab,
                 fireEffectRotationOffsetDegrees,
-                fireEffectScale,
-                fireSfxId);
+                fireEffectScale);
             yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);
         }
 

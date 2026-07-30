@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Week14.Audio;
 
 namespace Week14.Enemy
 {
@@ -14,8 +15,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0.05f)] private float maxFlightSeconds = 1f;
         [SerializeField, Min(0.05f)] private float wallAttachedSeconds = 4f;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.2f;
-        [SerializeField, BossGraphSfxId] private string fireSfxId = HackerSfxIds.FireWire;
-
         [Header("Fire Effect")]
         [Tooltip("각 와이어가 생성될 때 같은 위치에 한 번 생성할 이펙트 프리팹입니다. 프리팹의 오른쪽(+X)을 발사 방향으로 사용합니다.")]
         [SerializeField] private GameObject fireEffectPrefab;
@@ -43,7 +42,7 @@ namespace Week14.Enemy
             firedWire |= FireWire(hacker, launchOrigin, Rotate(targetDirection, -halfAngle));
             if (firedWire)
             {
-                context.PlaySfx(HackerSfxIds.Resolve(fireSfxId, HackerSfxIds.FireWire));
+                context.PlaySfx(SoundEvent.Hacker_FireWire);
             }
 
             yield return HackerMeleeAttackAction.Wait(context, recoverySeconds);

@@ -41,11 +41,9 @@ namespace Week14.Combat
         [SerializeField, Min(0.1f)] private float barrageSlowSafetySeconds = 10f;
         [SerializeField, Min(0f)] private float executionImageLeadSeconds = 0.35f;
         [SerializeField, Min(0.1f)] private float executionImageSeconds = 3.5f;
-        [SerializeField, BossGraphSfxId] private string executionImageSfxId;
 
         [Header("Aim Charge")]
         [SerializeField, Min(0f)] private float aimChargeSeconds = 1.5f;
-        [SerializeField, BossGraphSfxId] private string aimChargeSfxId;
 
         [Header("Camera")]
         [SerializeField, Range(0f, 1f)] private float wideCameraFocusWeight = 1f;
@@ -349,7 +347,7 @@ namespace Week14.Combat
                 }
 
                 FocusAndAimAtProjectile(projectile);
-                SoundManager.PlaySfx("PlayerShot");
+                SoundManager.PlaySfx(SoundEvent.Player_NormalShot);
                 player.TryParryProjectileForCinematic(projectile);
                 cameraFollow?.PlayImpact(
                     Vector2.up,
@@ -438,10 +436,7 @@ namespace Week14.Combat
             player?.PlayExecutionImageForCinematic(
                 executionImageSeconds);
 
-            if (!string.IsNullOrWhiteSpace(executionImageSfxId))
-            {
-                SoundManager.PlaySfx(executionImageSfxId);
-            }
+            SoundManager.PlaySfx(SoundEvent.Assassin_ExecutionImage);
         }
 
         private void BeginAimCharge()
@@ -463,10 +458,7 @@ namespace Week14.Combat
             }
 
             aimChargeGatherVfx?.Play(player.RightFireOrigin);
-            if (!string.IsNullOrWhiteSpace(aimChargeSfxId))
-            {
-                SoundManager.PlaySfx(aimChargeSfxId);
-            }
+            SoundManager.PlaySfx(SoundEvent.Execution_AssassinAimCharge);
         }
 
         private void ConfigureSpawnedPatternProjectile(
