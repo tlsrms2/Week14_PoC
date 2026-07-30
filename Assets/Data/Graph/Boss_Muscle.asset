@@ -6982,7 +6982,7 @@ MonoBehaviour:
         impactEventId: SlamImpact
         impactEventTimeoutSeconds: 2
         windupSfxId: 
-        explosionSfxId: 
+        explosionSfxId: Smash
         explosionEffectPrefab: {fileID: 5541814149196066934, guid: fee3148d28f951a449cb8d5a3e932f72, type: 3}
         explosionEffectScale: 1
     - rid: 4705778169994805675
@@ -7046,7 +7046,7 @@ MonoBehaviour:
         impactEventId: SlamImpact
         impactEventTimeoutSeconds: 2
         windupSfxId: 
-        explosionSfxId: 
+        explosionSfxId: Smash
         explosionEffectPrefab: {fileID: 5541814149196066934, guid: fee3148d28f951a449cb8d5a3e932f72, type: 3}
         explosionEffectScale: 1
     - rid: 4705778169994805677
@@ -7110,7 +7110,7 @@ MonoBehaviour:
         impactEventId: SlamImpact
         impactEventTimeoutSeconds: 2
         windupSfxId: 
-        explosionSfxId: 
+        explosionSfxId: Smash
         explosionEffectPrefab: {fileID: 5541814149196066934, guid: fee3148d28f951a449cb8d5a3e932f72, type: 3}
         explosionEffectScale: 1
     - rid: 4705778169994805679
