@@ -60,7 +60,12 @@ MonoBehaviour:
     pitch: 1
   - category: 
     id: EndingBGM
-    clip: {fileID: 8300000, guid: 839915b617d65eb46ae412291b5d108d, type: 3}
+    clip: {fileID: 8300000, guid: fa402dab15dc56c41869f7b17aacb1e8, type: 3}
+    volume: 1.75
+    pitch: 1
+  - category: 
+    id: Credit BGM
+    clip: {fileID: 8300000, guid: 11ccff135d92e9f41aa315a318d76d17, type: 3}
     volume: 0.7
     pitch: 1
   sfxEntries:
@@ -357,12 +362,12 @@ MonoBehaviour:
   - category: player
     id: railgun1~4
     clip: {fileID: 8300000, guid: 5294d3c1d12815446b01d3a7e28ff66a, type: 3}
-    volume: 1
+    volume: 1.1
     pitch: 1
   - category: player
     id: railgun5
     clip: {fileID: 8300000, guid: 8a99bd3f457a7a94badec5775221b4b8, type: 3}
-    volume: 1
+    volume: 2
     pitch: 1
   - category: ui
     id: ButtonClick
