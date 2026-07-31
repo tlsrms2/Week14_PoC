@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -44,6 +45,7 @@ namespace Week14.Enemy
 
             HackerParryBait parryBait = null;
             HackerAttackRangeIndicator rangeIndicator = null;
+            SoundManager.SfxPlaybackHandle beforeDashSfxHandle = null;
             context.SetAnimationBool(IsDashSweepingAnimationParameter, true);
             try
             {
@@ -52,6 +54,7 @@ namespace Week14.Enemy
                 Transform parryAnchor = context.GetBossChildTransform(parryAnchorPath) ?? context.Boss.transform;
                 if (parrySpawnEffect?.Play(parryAnchor.position) == true)
                 {
+                    context.PlaySfx(HackerSfxIds.BeforeAttack);
                     yield return HackerMeleeAttackAction.Wait(
                         context,
                         HackerParrySpawnEffectSettings.LeadSeconds);
@@ -83,6 +86,10 @@ namespace Week14.Enemy
                     {
                         rangeIndicator = HackerAttackRangeIndicator.CreateCircle(context, center, sweepRadius);
                         rangeIndicator?.SetHologramStyle(isHologram);
+                        if (rangeIndicator != null)
+                        {
+                            beforeDashSfxHandle = context.PlaySfx(GameplaySfxIds.BossBeforeDash);
+                        }
                     }
                     else
                     {
@@ -98,6 +105,8 @@ namespace Week14.Enemy
                 parryBait = null;
                 HackerAttackRangeIndicator.Destroy(rangeIndicator);
                 rangeIndicator = null;
+                context.StopSfx(beforeDashSfxHandle);
+                beforeDashSfxHandle = null;
                 if (wasParried)
                 {
                     context.SetAnimationBool(IsDashSweepingAnimationParameter, false);
@@ -109,7 +118,10 @@ namespace Week14.Enemy
                 }
 
                 context.RestartAnimationTrigger(sweepTriggerName);
-                context.PlaySfx(HackerSfxIds.Resolve(sweepSfxId, HackerSfxIds.OrbitSweep));
+                SoundManager.PlayBossSfx(
+                    HackerSfxIds.Resolve(
+                        sweepSfxId,
+                        HackerSfxIds.OrbitSweep));
                 attackEffect?.Play(context);
                 Vector2 dashDirection = context.GetDirectionToPlayer(context.Boss.transform.position);
                 using IDisposable facingLock = context.AcquireFacingLock();
@@ -151,6 +163,7 @@ namespace Week14.Enemy
             }
             finally
             {
+                context.StopSfx(beforeDashSfxHandle);
                 parryBait?.Dispose();
                 HackerAttackRangeIndicator.Destroy(rangeIndicator);
                 context.SetDashing(false);

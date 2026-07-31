@@ -23,6 +23,8 @@ namespace Week14.Combat
         private readonly PlayerExecutionPresentation presentation;
         private readonly CommonExecutionPresentationPlayer commonPresentation;
         private Coroutine executionRoutine;
+        private Coroutine finalChargeSfxRoutine;
+        private float finalChargeShotPaddingSeconds;
         private ExecutionTarget hoveredExecutionTarget;
         private BossExecutionSequence activeBossExecutionSequence;
         private bool isExecuting;
@@ -60,6 +62,7 @@ namespace Week14.Combat
                 context.CoroutineHost.StopCoroutine(executionRoutine);
             }
 
+            StopFinalChargeSfx();
             executionRoutine = context.CoroutineHost.StartCoroutine(ExecuteTarget(executionTarget));
             return true;
         }
@@ -80,6 +83,8 @@ namespace Week14.Combat
             bool keepPlayerHpHidden = false,
             bool preserveExecutionVisual = false)
         {
+            StopFinalChargeSfx();
+            finalChargeShotPaddingSeconds = 0f;
             activeBossExecutionSequence?.Cancel();
             activeBossExecutionSequence = null;
             commonPresentation.Stop();
@@ -249,6 +254,19 @@ namespace Week14.Combat
                     0f,
                     bossExecutionSequence.FinalBlackoutTimeMultiplier)
                 : 1f;
+            if (useBossExecutionSequence)
+            {
+                float postPreludeSeconds =
+                    Mathf.Max(0f, config.ExecutionShotDelaySeconds)
+                    + Mathf.Max(
+                        0f,
+                        config.FinalExecutionBlackoutFadeInSeconds
+                            * finalBlackoutTimeMultiplier);
+                bossExecutionSequence.SetFinalChargeStartedHandler(
+                    remainingPreludeSeconds => ScheduleFinalChargeSfx(
+                        bossExecutionSequence,
+                        remainingPreludeSeconds + postPreludeSeconds));
+            }
             float flourishSeconds = useBossExecutionSequence
                 ? bossExecutionSequence.ExpectedDurationSeconds
                 : Mathf.Max(0f, config.ExecutionFlourishDelaySeconds)
@@ -358,6 +376,19 @@ namespace Week14.Combat
                     yield break;
                 }
 
+                if (finalChargeShotPaddingSeconds > 0f)
+                {
+                    yield return new WaitForSecondsRealtime(
+                        finalChargeShotPaddingSeconds);
+                    finalChargeShotPaddingSeconds = 0f;
+                }
+
+                if (executionTarget == null)
+                {
+                    FinishExecution();
+                    yield break;
+                }
+
                 targetPosition = executionTarget.transform.position;
                 playerPosition = context.Body != null
                     ? context.Body.position
@@ -444,6 +475,7 @@ namespace Week14.Combat
                     executionBoss);
             }
 
+            StopFinalChargeSfx();
             SoundManager.PlaySfx("PlayerPowerShot");
             commonPresentation.PrepareFinalShot(
                 rightFireOrigin.position,
@@ -605,8 +637,8 @@ namespace Week14.Combat
                             }
                             else
                             {
-                                yield return presentation.WaitBeforeFinalDeathFocus();
                                 finalDeathCamera = presentation.BeginFinalDeathCameraFocus(boss);
+                                yield return presentation.WaitForFinalDeathCameraFocus();
                             }
 
                             bool playFinalDeathExplosions = config.ShouldPlayFinalDeathExplosionsInScene(
@@ -661,6 +693,81 @@ namespace Week14.Combat
                 yield return presentation.HideFinalExecutionLetterbox();
                 FinishExecution();
             }
+        }
+
+        private void ScheduleFinalChargeSfx(
+            BossExecutionSequence sequence,
+            float secondsUntilShot)
+        {
+            StopFinalChargeSfx();
+            if (sequence == null
+                || sequence != activeBossExecutionSequence
+                || string.IsNullOrWhiteSpace(sequence.FinalChargeSfxId))
+            {
+                return;
+            }
+
+            if (sequence.PlayFinalChargeSfxOnChargeStart)
+            {
+                float chargeStartDelaySeconds = Mathf.Max(
+                    0f,
+                    sequence.FinalChargeSfxDelayAfterChargeStartSeconds);
+                if (chargeStartDelaySeconds <= 0f)
+                {
+                    SoundManager.PlaySfx(sequence.FinalChargeSfxId);
+                    return;
+                }
+
+                finalChargeSfxRoutine = context.CoroutineHost.StartCoroutine(
+                    PlayFinalChargeSfxAfterDelay(
+                        sequence,
+                        sequence.FinalChargeSfxId,
+                        chargeStartDelaySeconds));
+                return;
+            }
+
+            float delaySeconds = Mathf.Max(
+                0f,
+                secondsUntilShot - sequence.FinalChargeSfxLeadSeconds);
+            finalChargeShotPaddingSeconds = Mathf.Max(
+                0f,
+                sequence.FinalChargeSfxLeadSeconds - secondsUntilShot);
+            if (delaySeconds <= 0f)
+            {
+                SoundManager.PlaySfx(sequence.FinalChargeSfxId);
+                return;
+            }
+
+            finalChargeSfxRoutine = context.CoroutineHost.StartCoroutine(
+                PlayFinalChargeSfxAfterDelay(
+                    sequence,
+                    sequence.FinalChargeSfxId,
+                    delaySeconds));
+        }
+
+        private IEnumerator PlayFinalChargeSfxAfterDelay(
+            BossExecutionSequence sequence,
+            string sfxId,
+            float delaySeconds)
+        {
+            yield return new WaitForSecondsRealtime(delaySeconds);
+            finalChargeSfxRoutine = null;
+            if (isExecuting && sequence == activeBossExecutionSequence)
+            {
+                SoundManager.PlaySfx(sfxId);
+            }
+        }
+
+        private void StopFinalChargeSfx()
+        {
+            finalChargeShotPaddingSeconds = 0f;
+            if (finalChargeSfxRoutine == null)
+            {
+                return;
+            }
+
+            context.CoroutineHost.StopCoroutine(finalChargeSfxRoutine);
+            finalChargeSfxRoutine = null;
         }
 
         private void SetWaitingForVictoryPanel(bool waiting)

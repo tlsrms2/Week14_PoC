@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -27,7 +28,6 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float flightSeconds = 0.4f;
         [Tooltip("(착지 후) 패링되지 않고 버틸 수 있는 시간(초)입니다. 이 시간이 지나면 폭탄이 알아서 터집니다(폭발 방식은 탄 프리팹이 결정합니다).")]
         [SerializeField, Min(0f)] private float chargeSeconds = 1.5f;
-        [SerializeField, BossGraphSfxId] private string spawnSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
         public override IEnumerator Execute(BossActionContext context)
@@ -68,7 +68,6 @@ namespace Week14.Enemy
 
                 if (spawned != null)
                 {
-                    context.PlaySfx(spawnSfxId);
                     context.PlayOriginBurst(effects, bossOrigin);
 
                     if (flightSeconds > 0f)
@@ -88,7 +87,14 @@ namespace Week14.Enemy
                         spawned.ConfigureChargeAnchor(anchor);
                         spawned.ConfigureChargeMotion(0f, false, false);
 
-                        spawned.StartCoroutine(ReenableInteractionAfterFlight(spawned, flightSeconds));
+                        spawned.StartCoroutine(ReenableInteractionAfterFlight(
+                            spawned,
+                            flightSeconds,
+                            GameplaySfxIds.AssassinMine));
+                    }
+                    else
+                    {
+                        context.PlaySfx(GameplaySfxIds.AssassinMine);
                     }
                 }
 
@@ -99,7 +105,10 @@ namespace Week14.Enemy
             }
         }
 
-        private static IEnumerator ReenableInteractionAfterFlight(EnemyProjectile bomb, float delaySeconds)
+        private static IEnumerator ReenableInteractionAfterFlight(
+            EnemyProjectile bomb,
+            float delaySeconds,
+            string installSfxId)
         {
             float remaining = delaySeconds;
             while (remaining > 0f)
@@ -112,6 +121,7 @@ namespace Week14.Enemy
             {
                 bomb.ConfigurePlayerCollisionIgnored(false);
                 bomb.ConfigureInterceptable(true);
+                SoundManager.PlayBossSfx(installSfxId);
             }
         }
     }

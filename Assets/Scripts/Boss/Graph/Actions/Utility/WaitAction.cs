@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Week14.Audio;
 
 namespace Week14.Enemy
 {
@@ -39,6 +40,13 @@ namespace Week14.Enemy
             if (context == null)
             {
                 yield break;
+            }
+
+            if (context.Boss is HogBossAI
+                && context.IsCurrentPattern("Pattern5")
+                && string.Equals(context.CurrentNodeId, "Windup1", StringComparison.OrdinalIgnoreCase))
+            {
+                context.PlaySfx(GameplaySfxIds.HogMachinegunCharge);
             }
 
             BossGraphProjectileOriginSpec originSpec = effectOrigin ?? new BossGraphProjectileOriginSpec();

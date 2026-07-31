@@ -463,6 +463,7 @@ namespace Week14.UI
             if (visible)
             {
                 resultOpenedFrame = Time.frameCount;
+                SoundManager.StopAllBossSfx();
                 FreezeGame();
             }
             else

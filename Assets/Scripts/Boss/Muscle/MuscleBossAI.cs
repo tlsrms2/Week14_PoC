@@ -40,6 +40,7 @@ namespace Week14.Enemy
             ? EffectData.MuscleMuzzleFlashVfxPrefab
             : null;
         protected override bool RotatesBodyToPlayer => false;
+        protected override string PostExplosionDeathSfxId => Week14.Audio.GameplaySfxIds.MuscleDeath;
 
         protected override void OnHpEmptyBegan()
         {

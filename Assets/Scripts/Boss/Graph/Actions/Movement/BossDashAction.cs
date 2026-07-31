@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -62,7 +63,13 @@ namespace Week14.Enemy
             }
 
             EnsureSpeedCurve();
-            context.PlaySfx(windupSfxId);
+            SoundManager.SfxPlaybackHandle windupSfxHandle = null;
+            if (windupSeconds > 0f)
+            {
+                windupSfxHandle = context.PlaySfx(string.IsNullOrWhiteSpace(windupSfxId)
+                    ? GameplaySfxIds.BossBeforeDash
+                    : windupSfxId);
+            }
             context.PlayAnimationTrigger(chargeTriggerName);
 
             float trackDuration = Mathf.Max(0f, windupSeconds - lockSeconds);
@@ -129,6 +136,7 @@ namespace Week14.Enemy
                 trajectoryVfx.gameObject.SetActive(false);
                 UnityEngine.Object.Destroy(trajectoryVfx.gameObject);
             }
+            context.StopSfx(windupSfxHandle);
 
             // 대쉬 페이즈
             context.SetAnimationBool(chargeBoolName, true);

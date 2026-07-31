@@ -3400,7 +3400,7 @@ MonoBehaviour:
         fireOrder: 2
         fireInterval: 0.05
         windupSeconds: 0
-        fireSfxId: 
+        fireSfxId: Muscle_LineFire
         launchSfxId: 
         effects:
           smoke:
@@ -3736,7 +3736,7 @@ MonoBehaviour:
         fireOrder: 0
         fireInterval: 0.05
         windupSeconds: 0
-        fireSfxId: 
+        fireSfxId: Muscle_LineFire
         launchSfxId: 
         effects:
           smoke:
@@ -3808,7 +3808,7 @@ MonoBehaviour:
         fireOrder: 0
         fireInterval: 0.05
         windupSeconds: 0
-        fireSfxId: 
+        fireSfxId: Muscle_LineFire
         launchSfxId: 
         effects:
           smoke:
@@ -4831,7 +4831,7 @@ MonoBehaviour:
         fireOrder: 0
         fireInterval: 0.05
         windupSeconds: 0
-        fireSfxId: 
+        fireSfxId: Muscle_LineFire
         launchSfxId: 
         effects:
           smoke:
@@ -4903,7 +4903,7 @@ MonoBehaviour:
         fireOrder: 2
         fireInterval: 0.05
         windupSeconds: 0
-        fireSfxId: BossNormalShot
+        fireSfxId: Muscle_LineFire
         launchSfxId: 
         effects:
           smoke:
@@ -6357,7 +6357,7 @@ MonoBehaviour:
         fireOrder: 0
         fireInterval: 0.05
         windupSeconds: 0
-        fireSfxId: 
+        fireSfxId: Muscle_LineFire
         launchSfxId: 
         effects:
           smoke:
@@ -6429,7 +6429,7 @@ MonoBehaviour:
         fireOrder: 2
         fireInterval: 0.05
         windupSeconds: 0
-        fireSfxId: BossNormalShot
+        fireSfxId: Muscle_LineFire
         launchSfxId: 
         effects:
           smoke:
@@ -6628,7 +6628,7 @@ MonoBehaviour:
         fireOrder: 2
         fireInterval: 0.05
         windupSeconds: 0
-        fireSfxId: BossNormalShot
+        fireSfxId: Muscle_LineFire
         launchSfxId: 
         effects:
           smoke:
@@ -7496,7 +7496,7 @@ MonoBehaviour:
         fireOrder: 0
         fireInterval: 0
         windupSeconds: 0
-        fireSfxId: 
+        fireSfxId: Muscle_LineFire
         launchSfxId: 
         effects:
           smoke:

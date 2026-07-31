@@ -222,6 +222,7 @@ namespace Week14.Enemy
             try
             {
                 yield return context.WaitSeconds(previewInitialLaneHoldSeconds);
+                (context.Boss as Conductor)?.PlayPlaceStaffOnLaneConvergence();
                 yield return ShrinkScoreLanePreview(context, visual, initialDistance, targetDistance);
                 yield return FadeScoreLanePreview(context, visual);
             }

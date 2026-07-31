@@ -3126,7 +3126,8 @@ MonoBehaviour:
         chargeSeconds: 2
         projectileRadiusMultiplier: 1
         aimSpreadDegrees: 24
-        launchSfxId: BossNormalShot
+        chargeSfxId: Hog_MachinegunCharge
+        launchSfxId: Boss_CantParryingShot
         effects:
           smoke:
             enabled: 0

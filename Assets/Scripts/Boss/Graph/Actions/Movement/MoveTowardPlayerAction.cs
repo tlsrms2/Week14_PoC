@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -181,6 +182,7 @@ namespace Week14.Enemy
 
             float elapsed = 0f;
             float nextAfterimageAt = AfterimageInterval;
+            bool approachSfxPlayed = false;
             while (Vector2.Distance(context.Boss.transform.position, context.Boss.Player.position) > targetDistance)
             {
                 if (timeoutSeconds > 0f && elapsed >= timeoutSeconds)
@@ -193,6 +195,12 @@ namespace Week14.Enemy
                     context.Stop();
                     yield return null;
                     continue;
+                }
+
+                if (!approachSfxPlayed && spawnAfterimages && context.Boss is MuscleBossAI)
+                {
+                    context.PlaySfx(GameplaySfxIds.BossStep);
+                    approachSfxPlayed = true;
                 }
 
                 context.MoveTowardPlayer(speedMultiplier, GetSpeedCurve(), elapsed, 0f);

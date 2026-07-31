@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -105,6 +106,7 @@ namespace Week14.Enemy
         private static void RegisterNode(HackerWireNodeProjectile node)
         {
             RemoveInvalidNodes();
+            bool createdLink = false;
             for (int i = 0; i < AttachedNodes.Count; i++)
             {
                 HackerWireNodeProjectile other = AttachedNodes[i];
@@ -113,10 +115,15 @@ namespace Week14.Enemy
                     && other.WireOwner == node.WireOwner)
                 {
                     HackerWireNodeLinkVisual.Create(other, node);
+                    createdLink = true;
                 }
             }
 
             AttachedNodes.Add(node);
+            if (createdLink)
+            {
+                SoundManager.PlayBossSfx(GameplaySfxIds.HackerWireNode);
+            }
         }
 
         internal static void ClearAttachedNodes(HackerBossAI owner)

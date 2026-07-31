@@ -141,6 +141,7 @@ namespace Week14.Enemy
                 InitialLaneDistance);
             yield return RevealLaneIndicators(context, activeLaneIndicators);
             yield return context.WaitSeconds(InitialLaneHoldSeconds);
+            (context.Boss as Conductor)?.PlayPlaceStaffOnLaneConvergence();
             yield return ShrinkLaneIndicators(context, activeLaneIndicators, patternStartPlayerPosition);
         }
 

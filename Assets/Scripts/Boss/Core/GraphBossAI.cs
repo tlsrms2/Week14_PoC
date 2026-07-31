@@ -48,6 +48,7 @@ namespace Week14.Enemy
             isCinematicPatternControlActive;
         public BossGraphAsset ConfiguredGraphAsset => GraphAsset;
         public bool IsGroggy => isGroggy;
+        internal string CurrentPatternId => graphRunner.CurrentPatternId;
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         internal bool IsQaBehaviorPaused => isQaBehaviorPaused;

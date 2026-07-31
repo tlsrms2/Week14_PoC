@@ -3,31 +3,75 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
 {
     internal static class HackerSfxIds
     {
-        internal const string BigSlash = "BigSlash";
-        internal const string Slash = "Slash";
-        internal const string MissSlash = "MissSlash";
+        internal const string BigSlash = GameplaySfxIds.HackerSlam;
+        internal const string Slash = GameplaySfxIds.HackerSlash;
+        internal const string MissSlash = GameplaySfxIds.HackerSlashMiss;
         internal const string BeforeAttack = "BeforeAttack";
         internal const string Dash = "Dash";
-        internal const string ChargeDash = "ChargeDash";
-        internal const string OrbitSweep = "OrbitSweep";
+        internal const string ChargeDash = GameplaySfxIds.HackerChargeDash;
+        internal const string OrbitSweep = GameplaySfxIds.HackerOrbitSweep;
         internal const string FireWire = "FireWire";
         internal const string WireFlight = "WireFlight";
         internal const string Wire = "Wire";
+        internal const string BackWire = GameplaySfxIds.HackerBackWire;
         internal const string Hologram = "Hologram";
-        internal const string GunCharge = "GunCharge";
+        internal const string GunCharge = GameplaySfxIds.HackerSnipierCharge;
         internal const string SnipierShot = "SnipierShot";
-        internal const string PutTurret = "PutTurret";
+        internal const string SpecialShot = GameplaySfxIds.BossSpecialShot;
+        internal const string PutTurret = GameplaySfxIds.HackerDropWeapon;
         internal const string BossNormalShot = "BossNormalShot";
 
         internal static string Resolve(string configuredId, string defaultId)
         {
-            return string.IsNullOrWhiteSpace(configuredId) ? defaultId : configuredId;
+            if (string.IsNullOrWhiteSpace(configuredId))
+            {
+                return defaultId;
+            }
+
+            return configuredId switch
+            {
+                "BigSlash" => GameplaySfxIds.HackerSlam,
+                "Slash" => GameplaySfxIds.HackerSlash,
+                "MissSlash" => GameplaySfxIds.HackerSlashMiss,
+                "ChargeDash" => GameplaySfxIds.HackerChargeDash,
+                "OrbitSweep" => GameplaySfxIds.HackerOrbitSweep,
+                "GunCharge" => GameplaySfxIds.HackerSnipierCharge,
+                "PutTurret" => GameplaySfxIds.HackerDropWeapon,
+                _ => configuredId
+            };
+        }
+
+        internal static string ResolveSniperCharge(string configuredId, float chargeSeconds)
+        {
+            string resolvedId = Resolve(configuredId, GunCharge);
+            if (!string.Equals(
+                    resolvedId,
+                    GameplaySfxIds.HackerSnipierCharge,
+                    StringComparison.Ordinal))
+            {
+                return resolvedId;
+            }
+
+            float duration = Mathf.Max(0f, chargeSeconds);
+            float distance1 = Mathf.Abs(duration - 1f);
+            float distance1_5 = Mathf.Abs(duration - 1.5f);
+            float distance3_35 = Mathf.Abs(duration - 3.35f);
+
+            if (distance1 <= distance1_5 && distance1 <= distance3_35)
+            {
+                return GameplaySfxIds.HackerSnipierCharge1;
+            }
+
+            return distance1_5 <= distance3_35
+                ? GameplaySfxIds.HackerSnipierCharge1_5
+                : GameplaySfxIds.HackerSnipierCharge3_35;
         }
     }
 
@@ -338,9 +382,13 @@ namespace Week14.Enemy
                 return HackerSfxIds.Resolve(missSlashSfxId, HackerSfxIds.MissSlash);
             }
 
-            return style == HackerMeleeAttackStyle.Slam
-                ? HackerSfxIds.Resolve(bigSlashSfxId, HackerSfxIds.BigSlash)
-                : HackerSfxIds.Resolve(slashSfxId, HackerSfxIds.Slash);
+            return style switch
+            {
+                HackerMeleeAttackStyle.Slam =>
+                    HackerSfxIds.Resolve(bigSlashSfxId, GameplaySfxIds.HackerSlam),
+                HackerMeleeAttackStyle.Lift => GameplaySfxIds.HackerLift,
+                _ => HackerSfxIds.Resolve(slashSfxId, GameplaySfxIds.HackerSlash)
+            };
         }
 
         public bool TryGetDurationSeconds(out float seconds)

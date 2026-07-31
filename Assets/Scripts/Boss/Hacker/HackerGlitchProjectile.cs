@@ -1,4 +1,5 @@
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -57,6 +58,7 @@ namespace Week14.Enemy
         private float driftPhase;
         private Vector2 initialDirection;
         private Sprite defaultSprite;
+        private SoundManager.SfxPlaybackHandle chargeSfxHandle;
 
         protected override Color? GetTrailColorOverride()
         {
@@ -74,6 +76,7 @@ namespace Week14.Enemy
 
         protected override void OnProjectileInitialized()
         {
+            StopChargeSfx();
             ConfigureInterceptable(false);
             CaptureVisualState();
             state = GlitchState.InitialFlight;
@@ -142,6 +145,8 @@ namespace Week14.Enemy
                     TickChargeBlink();
                     if (Time.time - stateStartedAt >= chargeSeconds)
                     {
+                        StopChargeSfx();
+                        SoundManager.PlayBossSfx(HackerSfxIds.SpecialShot);
                         SetChargeGaugeFill(0f);
                         SetChargeGaugeVisible(false);
                         state = GlitchState.Rush;
@@ -181,11 +186,34 @@ namespace Week14.Enemy
         {
             state = GlitchState.Charging;
             stateStartedAt = Time.time;
+            chargeSfxHandle = SoundManager.PlayBossSfx(
+                HackerSfxIds.ResolveSniperCharge(
+                    HackerSfxIds.GunCharge,
+                    chargeSeconds));
             ApplyStageSprite(chargingSprite);
             SetVisualAlpha(1f);
             SetChargeGaugeVisible(true);
             SetChargeGaugeFill(1f);
             ConfigureInterceptable(true);
+        }
+
+        protected override void OnProjectileDestroying(
+            EnemyProjectileDestroyReason reason,
+            Vector3 position)
+        {
+            StopChargeSfx();
+        }
+
+        protected override void OnProjectileReturnedToPool()
+        {
+            StopChargeSfx();
+            base.OnProjectileReturnedToPool();
+        }
+
+        private void StopChargeSfx()
+        {
+            SoundManager.StopSfx(chargeSfxHandle);
+            chargeSfxHandle = null;
         }
 
         private void TickWaitingChargeGauge()

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -125,6 +126,7 @@ namespace Week14.Enemy
                     baitSpawnTime - Mathf.Max(0f, baitSpawnEffectLeadSeconds));
                 bool baitSpawnEffectSpawned = false;
                 bool baitSpawned = false;
+                bool baitSpawnSfxPlayed = false;
                 while (elapsed < safeClosingSeconds)
                 {
                     if (context.IsExecutionPaused)
@@ -139,6 +141,11 @@ namespace Week14.Enemy
                         baitSpawnEffectSpawned = true;
                         baitDrone = GetRandomDrone(drones);
                         baitSpawnEffectInstance = SpawnBaitEffect(context, baitDrone);
+                        if (baitSpawnEffectInstance != null)
+                        {
+                            PlayBaitSpawnSfx(context);
+                            baitSpawnSfxPlayed = true;
+                        }
                     }
 
                     if (!baitSpawned && elapsed >= baitSpawnTime)
@@ -146,6 +153,10 @@ namespace Week14.Enemy
                         baitSpawned = true;
                         baitDrone ??= GetRandomDrone(drones);
                         ClearBaitSpawnEffect(context, ref baitSpawnEffectInstance);
+                        if (!baitSpawnSfxPlayed)
+                        {
+                            PlayBaitSpawnSfx(context);
+                        }
                         baitProjectileInstance = SpawnBait(context, baitDrone);
                         if (baitProjectileInstance != null)
                         {
@@ -271,9 +282,15 @@ namespace Week14.Enemy
             bait.ConfigureBaitDuration(baitDurationSeconds);
             bait.ConfigureRewardOverrides(rewardBulletCount, rewardCircleRadius, rewardLifetimeSeconds);
             bait.ConfigureExternalMotionDriven(true);
-            context.PlaySfx(baitSpawnSfxId);
             context.PlayOriginBurst(baitEffects, spawnOrigin);
             return bait;
+        }
+
+        private void PlayBaitSpawnSfx(BossActionContext context)
+        {
+            context?.PlaySfx(string.IsNullOrWhiteSpace(baitSpawnSfxId)
+                ? GameplaySfxIds.BossCreateParrySuppressionBait
+                : baitSpawnSfxId);
         }
 
         private void UpdateBaitPosition(EnemyProjectile bait, Minion drone)

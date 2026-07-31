@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Input;
 using Week14.Weapons;
 
@@ -441,6 +442,7 @@ namespace Week14.Combat
             float duration,
             Vector2 direction)
         {
+            SoundManager.PlaySfx(GameplaySfxIds.PlayerDash);
             PlayRollInternal(duration, direction, true);
         }
 

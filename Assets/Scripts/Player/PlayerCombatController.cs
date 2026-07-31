@@ -767,6 +767,7 @@ namespace Week14.Combat
             }
 
             deathPreventionChargesRemaining--;
+            SoundManager.PlaySfx(GameplaySfxIds.ModuleEmergency);
 
             if (deathPreventionClearRadius > 0f)
             {

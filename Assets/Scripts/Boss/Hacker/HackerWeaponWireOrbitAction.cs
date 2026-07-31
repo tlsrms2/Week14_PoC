@@ -258,7 +258,7 @@ namespace Week14.Enemy
                 weaponWireAnchor = weapon.GetChildTransform(weaponWireAnchorPath) ?? weapon.transform;
                 if (weapon.BeginRecall(returnAnchor, weaponWireAnchor, recallSeconds, recallRotationDegrees))
                 {
-                    context.PlaySfx(HackerSfxIds.Resolve(wireSfxId, HackerSfxIds.Wire));
+                    context.PlaySfx(HackerSfxIds.BackWire);
                     HackerRecallWireVisual.Create(returnAnchor, weaponWireAnchor, wireSettings.Color, wireSettings.Width);
                     yield return HackerMeleeAttackAction.Wait(context, recallSeconds);
                 }

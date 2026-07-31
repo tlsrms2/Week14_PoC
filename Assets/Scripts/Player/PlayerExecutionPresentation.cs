@@ -433,7 +433,7 @@ namespace Week14.Combat
             UpdateExecutionFocusPoint(worldPosition, worldPosition);
         }
 
-        internal IEnumerator WaitBeforeFinalDeathFocus()
+        internal IEnumerator WaitForFinalDeathCameraFocus()
         {
             if (context.FinalDeathCameraReturnSeconds > 0f)
             {

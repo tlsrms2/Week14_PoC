@@ -79,7 +79,6 @@ namespace Week14.Combat
         [SerializeField, Min(0f)] private float chargeCameraShakeAmplitude = 0.025f;
         [SerializeField, Min(0.05f)] private float chargeCameraShakeInterval = 0.16f;
         [SerializeField, Min(0.05f)] private float chargeCameraShakeSeconds = 0.12f;
-        [SerializeField, BossGraphSfxId] private string aimChargeSfxId;
 
         [Header("Wide Camera")]
         [SerializeField, Range(0f, 1f)] private float wideCameraFocusWeight = 1f;
@@ -154,6 +153,11 @@ namespace Week14.Combat
             + slamBarrageWaitTimeoutSeconds
             + slamPostFireDelaySeconds
             + aimChargeSeconds;
+        public override string FinalChargeSfxId =>
+            GameplaySfxIds.ExecuteChargeHacker;
+        public override bool PlayFinalChargeSfxOnChargeStart => true;
+        public override float FinalChargeSfxDelayAfterChargeStartSeconds =>
+            0.7f;
 
         private void Awake()
         {
@@ -679,6 +683,7 @@ namespace Week14.Combat
                 return;
             }
 
+            NotifyFinalChargeStarted(Mathf.Max(0.1f, aimChargeSeconds));
             AimPlayerAtHacker();
             if (aimChargeVfx != null)
             {
@@ -694,10 +699,6 @@ namespace Week14.Combat
                 player.RightFireOrigin,
                 aimChargeSeconds,
                 parryColor);
-            if (!string.IsNullOrWhiteSpace(aimChargeSfxId))
-            {
-                SoundManager.PlaySfx(aimChargeSfxId);
-            }
         }
 
         private IEnumerator PlayAimChargeCamera()

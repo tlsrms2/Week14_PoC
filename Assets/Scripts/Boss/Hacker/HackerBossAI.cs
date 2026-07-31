@@ -46,6 +46,9 @@ namespace Week14.Enemy
             ? EffectData.HackerMuzzleFlashVfxPrefab
             : null;
         protected override bool RotatesBodyToPlayer => false;
+        protected override string PostExplosionDeathSfxId =>
+            GameplaySfxIds.HackerDeath;
+        protected override bool PlaysCollapseBoomSfx => false;
 
         // "Die" 트리거의 실제 도착 스테이트 이름. Anim-Hacker-1w.controller에만 존재하고
         // 이름이 "Die"가 아니라 "1w-die"라서, 트리거 이름으로 스테이트를 찾는 기본 로직으로는
@@ -147,6 +150,7 @@ namespace Week14.Enemy
         private bool gunWalkCounterParryTriggered;
         private bool isHologramSummonUnlocked;
         private HackerFireWireResult lastFireWireResult;
+        private SoundManager.SfxPlaybackHandle walkSfxHandle;
         private HackerHologramBoss hologram;
         private Coroutine hologramSfxRoutine;
         private HackerPatternParryRewardTracker activePatternParryRewardTracker;
@@ -308,6 +312,7 @@ namespace Week14.Enemy
 
         protected override void OnBossDied()
         {
+            StopWalkSfx();
             ApplyWalkState(false, true);
             HackerWireNodeProjectile.ClearAttachedNodes(this);
             ClearGroundedWeapons();
@@ -402,6 +407,7 @@ namespace Week14.Enemy
             CancelPatternParryRewardTracking();
             CancelOneWeaponVisualSwitch();
 
+            StopWalkSfx();
             ApplyWalkState(false, true);
             EndGunWalkCounterParry();
             if (UsesHackerPresentationUpdates)
@@ -1318,8 +1324,30 @@ namespace Week14.Enemy
         {
             float threshold = Mathf.Max(0f, walkVelocityThreshold);
             bool isWalking = Body != null
+                && !IsDashing
                 && Body.linearVelocity.sqrMagnitude > threshold * threshold;
+            UpdateWalkSfx(isWalking);
             ApplyWalkState(isWalking, false);
+        }
+
+        private void UpdateWalkSfx(bool isWalking)
+        {
+            if (!isWalking)
+            {
+                StopWalkSfx();
+                return;
+            }
+
+            if (walkSfxHandle == null || !walkSfxHandle.IsPlaying)
+            {
+                walkSfxHandle = SoundManager.PlayBossSfx(GameplaySfxIds.HackerWalk);
+            }
+        }
+
+        private void StopWalkSfx()
+        {
+            SoundManager.StopSfx(walkSfxHandle);
+            walkSfxHandle = null;
         }
 
         private void ApplyWalkState(bool isWalking, bool force)
@@ -1554,7 +1582,7 @@ namespace Week14.Enemy
             float delaySeconds = Mathf.Max(0f, hologramSfxDelaySeconds);
             if (delaySeconds <= 0f)
             {
-                SoundManager.PlaySfx(sfxId);
+                SoundManager.PlayBossSfx(sfxId);
                 return;
             }
 
@@ -1574,7 +1602,7 @@ namespace Week14.Enemy
                 yield break;
             }
 
-            SoundManager.PlaySfx(sfxId);
+            SoundManager.PlayBossSfx(sfxId);
         }
 
         private void CancelHologramSfx()

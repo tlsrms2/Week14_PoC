@@ -142,6 +142,7 @@ namespace Week14.Enemy
         private int combatStartLockCount;
         private bool latestClearTimeWasNewRecord;
         private bool bossDeathSfxPlayed;
+        private bool postExplosionDeathSfxPlayed;
 
         public string DisplayName => string.IsNullOrWhiteSpace(displayName) ? name : displayName;
         public Health Health => health;
@@ -952,7 +953,14 @@ namespace Week14.Enemy
         // 소모되지 않은 다른 트리거(Release/Cancel 등)의 전이를 사망 스테이트로 잘못 붙잡을 수 있으므로,
         // 실제 스테이트 이름을 아는 보스는 반드시 이 값을 지정해야 한다.
         protected virtual string DeathStateNameOverride => null;
+        protected virtual string PostExplosionDeathSfxId => null;
+        protected virtual bool PlaysCollapseBoomSfx => true;
+        protected virtual float DeathSfxDelaySeconds => 0f;
         internal string DeathStateNameForSequence => DeathStateNameOverride;
+        internal bool HasPostExplosionDeathSfxForSequence =>
+            !string.IsNullOrWhiteSpace(PostExplosionDeathSfxId);
+        internal bool PlaysCollapseBoomSfxForSequence =>
+            PlaysCollapseBoomSfx;
         internal float FinalDeathExplosionSecondsForSequence => finalDeathExplosionSeconds;
         internal int FinalDeathExplosionCountForSequence => finalDeathExplosionCount;
         internal GameObject FinalDeathExplosionPrefabForSequence => finalDeathExplosionPrefab;
@@ -1004,15 +1012,43 @@ namespace Week14.Enemy
 
         private void PlayBossDeathSfx()
         {
-            if (bossDeathSfxPlayed
-                || bossData == null
-                || string.IsNullOrWhiteSpace(bossData.DeathSfxId))
+            if (HasPostExplosionDeathSfxForSequence)
+            {
+                return;
+            }
+
+            string deathSfxId = bossData != null ? bossData.DeathSfxId : null;
+            if (bossDeathSfxPlayed || string.IsNullOrWhiteSpace(deathSfxId))
             {
                 return;
             }
 
             bossDeathSfxPlayed = true;
-            SoundManager.PlaySfx(bossData.DeathSfxId);
+            float delaySeconds = Mathf.Max(0f, DeathSfxDelaySeconds);
+            if (delaySeconds > 0f)
+            {
+                StartCoroutine(PlayBossDeathSfxDelayed(deathSfxId, delaySeconds));
+                return;
+            }
+
+            SoundManager.PlayBossSfx(deathSfxId);
+        }
+
+        private static IEnumerator PlayBossDeathSfxDelayed(string deathSfxId, float delaySeconds)
+        {
+            yield return new WaitForSeconds(delaySeconds);
+            SoundManager.PlayBossSfx(deathSfxId);
+        }
+
+        internal void PlayPostExplosionDeathSfxForSequence()
+        {
+            if (postExplosionDeathSfxPlayed || string.IsNullOrWhiteSpace(PostExplosionDeathSfxId))
+            {
+                return;
+            }
+
+            postExplosionDeathSfxPlayed = true;
+            SoundManager.PlayBossSfx(PostExplosionDeathSfxId);
         }
 
         internal void OnBossPhaseChangedForController(int phaseIndex, int phaseNumber)
@@ -1140,7 +1176,11 @@ namespace Week14.Enemy
         protected virtual void OnPlayerHitAfterDamage(int bulletDamage, bool strongHit, Vector3 hitPosition, Vector2 hitDirection, Color hitColor) { }
         protected virtual bool RotatesBodyToPlayer => true;
         protected virtual bool CanSpawnEnemyProjectileDuringCinematic => false;
-        protected static bool IsExecutionPaused => PlayerCombatController.IsExecutionCinematicActive;
+        protected static bool IsExecutionPaused =>
+            PlayerCombatController.IsExecutionCinematicActive
+            || SceneTransition.IsTransitioning
+            || (GameModalState.BlocksGameplayInput
+                && Mathf.Approximately(Time.timeScale, 0f));
 
         protected EnemyProjectile SpawnBossProjectile(
             EnemyProjectile prefab,
