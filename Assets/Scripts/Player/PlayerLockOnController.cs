@@ -130,6 +130,15 @@ namespace Week14.Combat
 
         private bool IsValidLockOnTarget(Health targetHealth)
         {
+            HackerHologramBoss hackerHologram = targetHealth != null
+                ? targetHealth.GetComponent<HackerHologramBoss>()
+                    ?? targetHealth.GetComponentInParent<HackerHologramBoss>()
+                : null;
+            if (hackerHologram != null)
+            {
+                return false;
+            }
+
             ConductorTurretProjectile turret = targetHealth != null
                 ? targetHealth.GetComponent<ConductorTurretProjectile>() ?? targetHealth.GetComponentInParent<ConductorTurretProjectile>()
                 : null;

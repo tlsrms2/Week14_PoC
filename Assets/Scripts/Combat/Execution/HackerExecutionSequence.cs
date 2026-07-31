@@ -1002,7 +1002,9 @@ namespace Week14.Combat
             if (!patternStoppedForFinalShot)
             {
                 patternStoppedForFinalShot = true;
-                hacker?.EndExecutionCinematicPattern();
+                hacker?.EndExecutionCinematicPattern(
+                    playGroggyVisual: false);
+                hacker?.BeginExecutionStunHold();
             }
 
             DestroySpawnedProjectiles();

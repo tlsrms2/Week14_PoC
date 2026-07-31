@@ -956,7 +956,13 @@ namespace Week14.Enemy
         protected virtual string PostExplosionDeathSfxId => null;
         protected virtual bool PlaysCollapseBoomSfx => true;
         protected virtual float DeathSfxDelaySeconds => 0f;
+        protected virtual void OnFinalDeathAnimationStarting() { }
         internal string DeathStateNameForSequence => DeathStateNameOverride;
+        internal void PrepareFinalDeathAnimationForSequence()
+        {
+            OnFinalDeathAnimationStarting();
+        }
+
         internal bool HasPostExplosionDeathSfxForSequence =>
             !string.IsNullOrWhiteSpace(PostExplosionDeathSfxId);
         internal bool PlaysCollapseBoomSfxForSequence =>

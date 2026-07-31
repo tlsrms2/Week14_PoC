@@ -1083,6 +1083,16 @@ namespace Week14.Enemy
             return handle;
         }
 
+        public void PlayOneShotSfx(string sfxId)
+        {
+            if (string.IsNullOrWhiteSpace(sfxId))
+            {
+                return;
+            }
+
+            SoundManager.PlayBossSfx(sfxId);
+        }
+
         public SoundManager.SfxPlaybackHandle PlayLoopingSfx(string sfxId)
         {
             if (string.IsNullOrWhiteSpace(sfxId))
