@@ -26,7 +26,7 @@ namespace Week14.Save
             }
         }
 
-        public static bool HasSavedSettings() => File.Exists(SavePath);
+        public static bool LanguageSetupCompleted => Data.languageSetupCompleted;
 
         public static float BgmVolume => Data.bgmVolume;
         public static float SfxVolume => Data.sfxVolume;
@@ -77,6 +77,12 @@ namespace Week14.Save
         public static void SetFullScreenMode(FullScreenMode mode)
         {
             Data.fullScreenMode = (int)mode;
+            Save();
+        }
+
+        public static void MarkLanguageSetupCompleted()
+        {
+            Data.languageSetupCompleted = true;
             Save();
         }
 

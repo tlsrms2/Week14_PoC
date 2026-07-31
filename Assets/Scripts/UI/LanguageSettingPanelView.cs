@@ -8,9 +8,11 @@ using Week14.Save;
 
 namespace Week14.UI
 {
-    // 앱 실행 직후 뜨는 언어 설정 패널입니다. 저장된 설정(SettingsManager)이 없는 최초 실행에서만 표시되고,
-    // 드롭다운에서 언어를 고르면 즉시 적용/저장되며, 확인 버튼을 누르면 패널이 닫히고 nextPanel을 활성화합니다.
-    // 이미 설정이 저장되어 있는 재실행에서는 패널을 띄우지 않고 곧바로 nextPanel을 활성화합니다.
+    // 앱 실행 직후 뜨는 언어 설정 패널입니다. SettingsManager.LanguageSetupCompleted가 아직 false인
+    // 최초 실행에서만 표시되고, 드롭다운에서 언어를 고르면 즉시 적용/저장되며, 확인 버튼을 누르면
+    // 이 플래그를 true로 저장하고 패널이 닫히며 nextPanel을 활성화합니다.
+    // (해상도 등 다른 설정값이 부팅 중에 먼저 저장돼도 이 플래그와는 무관하므로 오탐하지 않습니다.)
+    // 이미 완료 처리된 재실행에서는 패널을 띄우지 않고 곧바로 nextPanel을 활성화합니다.
     // 하이어라키(Canvas/드롭다운/버튼 배치)는 에디터에서 직접 구성한 뒤 아래 필드들을 인스펙터에서 연결해서 씁니다.
     //
     // 주의: 이 컴포넌트가 붙은 GameObject는 씬에서 처음부터 활성 상태여야 Awake가 씬 로드 시 바로 실행됩니다.
@@ -53,7 +55,7 @@ namespace Week14.UI
             BindLabel(localizedTitleLabel, titleLabel, SetTitleText);
             BindLabel(localizedConfirmButtonLabel, confirmButtonLabel, SetConfirmButtonText);
 
-            if (SettingsManager.HasSavedSettings())
+            if (SettingsManager.LanguageSetupCompleted)
             {
                 root.SetActive(false);
                 ActivateNextPanel();
@@ -131,6 +133,7 @@ namespace Week14.UI
 
         private void HandleConfirmClicked()
         {
+            SettingsManager.MarkLanguageSetupCompleted();
             root.SetActive(false);
             ActivateNextPanel();
         }

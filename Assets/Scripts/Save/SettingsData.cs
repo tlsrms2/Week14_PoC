@@ -13,5 +13,6 @@ namespace Week14.Save
         public int resolutionWidth;
         public int resolutionHeight;
         public int fullScreenMode = -1;
+        public bool languageSetupCompleted;
     }
 }
