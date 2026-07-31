@@ -24,6 +24,9 @@ namespace Week14.UI
         [SerializeField] private Button disagreeButton;
         [SerializeField] private TMP_Text disagreeButtonText;
 
+        [Tooltip("이 패널(및 그 앞의 언어 설정 패널)이 응답 없이 넘어가거나 응답을 마치면 페이드아웃을 시작할 타이틀 화면 패널입니다.")]
+        [SerializeField] private TitleFadeInPanel titleFadeInPanel;
+
         [Header("기본 문구 (실제 동의 문구로 교체 예정인 placeholder, 로컬라이징 문구가 비어있을 때 씀)")]
         [SerializeField] private string titleLabel = "로그 수집 동의";
         [SerializeField, TextArea(5, 20)]
@@ -70,6 +73,11 @@ namespace Week14.UI
                     AnalyticsManager.StartDataCollectionAfterConsent();
                 }
 
+                if (titleFadeInPanel != null)
+                {
+                    titleFadeInPanel.BeginFadeOut();
+                }
+
                 return;
             }
 
@@ -99,12 +107,22 @@ namespace Week14.UI
             LogConsentManager.SaveDecision(true);
             root.SetActive(false);
             AnalyticsManager.StartDataCollectionAfterConsent();
+
+            if (titleFadeInPanel != null)
+            {
+                titleFadeInPanel.BeginFadeOut();
+            }
         }
 
         private void HandleDisagreeClicked()
         {
             LogConsentManager.SaveDecision(false);
             root.SetActive(false);
+
+            if (titleFadeInPanel != null)
+            {
+                titleFadeInPanel.BeginFadeOut();
+            }
         }
 
         private static void BindLabel(LocalizedString localizedString, string fallback, LocalizedString.ChangeHandler handler)
