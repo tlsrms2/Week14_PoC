@@ -201,6 +201,26 @@ MonoBehaviour:
     m_Key: ui.delete.text
     m_Metadata:
       m_Items: []
+  - m_Id: 10790502489489408
+    m_Key: ui.log.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10790558126931968
+    m_Key: ui.log.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10790624849920000
+    m_Key: ui.log.agree
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10790675445809152
+    m_Key: ui.log.disagree
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10819947564728320
+    m_Key: ui.language.done
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

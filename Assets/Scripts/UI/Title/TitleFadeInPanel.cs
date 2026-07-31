@@ -36,18 +36,16 @@ namespace Week14.UI
         {
             ResolveCanvasGroup();
 
-            if (canvasGroup == null)
+            // fadeRoutine이 이미 있다면(다른 스크립트의 Awake에서 이 OnEnable보다 먼저
+            // BeginFadeOut()이 중첩 호출된 경우) 그 진행 중인 페이드를 건드리지 않는다.
+            if (canvasGroup == null || fadeRoutine != null)
             {
                 return;
             }
 
-            if (fadeRoutine != null)
-            {
-                StopCoroutine(fadeRoutine);
-            }
-
+            // 검은 화면만 미리 켜두고, 실제로 옅어지기 시작하는 건 BeginFadeOut()이 호출된 뒤부터다
+            // (언어 설정/로그 수집 동의 패널이 있다면 그 패널들이 다 닫힌 뒤에 호출해준다).
             PrepareBlackout();
-            fadeRoutine = StartCoroutine(FadeInRoutine());
         }
 
         private void OnDisable()
@@ -57,6 +55,21 @@ namespace Week14.UI
                 StopCoroutine(fadeRoutine);
                 fadeRoutine = null;
             }
+        }
+
+        // 언어 설정/로그 수집 동의 패널이 없거나 이미 다 응답된 상태라면 곧바로 호출해서 즉시 페이드아웃을
+        // 시작시키고, 패널이 떴다면 그 패널들이 닫힌 시점에 호출해서 그제서야 타이틀 화면이 드러나게 한다.
+        // 호출하는 쪽의 Awake가 이 컴포넌트의 Awake보다 먼저 실행될 수도 있으므로 여기서도 직접 참조를 보장한다.
+        public void BeginFadeOut()
+        {
+            ResolveCanvasGroup();
+
+            if (canvasGroup == null || fadeRoutine != null)
+            {
+                return;
+            }
+
+            fadeRoutine = StartCoroutine(FadeInRoutine());
         }
 
         private void ResolveCanvasGroup()
