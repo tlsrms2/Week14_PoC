@@ -513,6 +513,10 @@ namespace Week14.Enemy
                 hologram.Stop,
                 () => BossAI.IsExecutionPausedForState,
                 graph);
+            // 처형 등으로 본체 패턴 코루틴이 StopCoroutine으로 강제 중단되면 hologramContext의
+            // finally는 안 타므로, 홀로그램이 파괴될 때 대시 인디케이터 같은 트랜지언트 비주얼을
+            // 직접 정리할 수 있도록 참조를 남겨둔다.
+            hologram.SetActiveReplayContext(hologramContext);
             Dictionary<string, BossAction> hologramActions = ClonePatternActions(
                 graph,
                 plan.PatternNodeKeys);
@@ -550,6 +554,7 @@ namespace Week14.Enemy
                 if (hologram != null)
                 {
                     hologram.CancelRecordedReplay();
+                    hologram.SetActiveReplayContext(null);
                 }
             }
         }

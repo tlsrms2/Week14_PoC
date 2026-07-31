@@ -35,6 +35,7 @@ namespace Week14.Enemy
         private float replayPositionArcOffsetDegrees;
         private float replayPositionArcDirectionSign = 1f;
         private Coroutine summonEntranceCoroutine;
+        private BossActionContext activeReplayContext;
         private Vector2 recordedPlayerPosition;
         private Vector2 replayPositionArcPivot;
         private Collider2D[] replayMovementColliders = new Collider2D[0];
@@ -167,6 +168,11 @@ namespace Week14.Enemy
             hasReplayPositionArcPivot = false;
             replayFrames.Clear();
             replayActionGroups.Clear();
+        }
+
+        internal void SetActiveReplayContext(BossActionContext context)
+        {
+            activeReplayContext = context;
         }
 
         internal bool IsRecordingReplayActions => isRecordingReplay;
@@ -440,6 +446,11 @@ namespace Week14.Enemy
         {
             StopSummonEntrance();
             CancelRecordedReplay();
+            // 처형 등으로 본체 패턴이 StopCoroutine으로 강제 중단되면 hologramContext의 finally가
+            // 안 돌아서 대시 인디케이터 같은 트랜지언트 비주얼이 안 지워진 채 남는다. 홀로그램이
+            // 파괴/비활성화되는 시점에 직접 정리한다.
+            activeReplayContext?.ClearPatternScopedBossChildAims();
+            activeReplayContext = null;
         }
 
         private IEnumerator PlaySummonEntranceRoutine()
