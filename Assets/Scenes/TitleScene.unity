@@ -10197,10 +10197,10 @@ MonoBehaviour:
   m_MultiSelect: 0
   m_Options:
     m_Options:
-    - m_Text: "\uD55C\uAD6D\uC5B4"
+    - m_Text: English
       m_Image: {fileID: 21300000, guid: 5302bad325bba40479441004dd3e5659, type: 3}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: English
+    - m_Text: "\uD55C\uAD6D\uC5B4"
       m_Image: {fileID: 21300000, guid: 5302bad325bba40479441004dd3e5659, type: 3}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
     - m_Text: "\u65E5\u672C\u8A9E"
@@ -21695,8 +21695,8 @@ MonoBehaviour:
   titleText: {fileID: 108757973}
   languageDropdown: {fileID: 554618773}
   languageLocaleCodes:
-  - ko-KR
   - en
+  - ko-KR
   - ja-JP
   - zh-Hans
   - zh-Hant
@@ -24273,7 +24273,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uD55C\uAD6D\uC5B4"
+  m_text: English
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 39fe875309345e4428668a1b8e322dfa, type: 2}
   m_sharedMaterial: {fileID: -9187303386302699777, guid: 39fe875309345e4428668a1b8e322dfa, type: 2}

@@ -18145,6 +18145,14 @@ PrefabInstance:
       propertyPath: weapon
       value: 
       objectReference: {fileID: 11400000, guid: 390dc9bd7ce1b204cacc8d2fbb4e4dc7, type: 2}
+    - target: {fileID: 4882864992042917478, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: 'languageLocaleCodes.Array.data[0]'
+      value: en
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882864992042917478, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: 'languageLocaleCodes.Array.data[1]'
+      value: ko-KR
+      objectReference: {fileID: 0}
     - target: {fileID: 5118969939631333529, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -18376,6 +18384,14 @@ PrefabInstance:
     - target: {fileID: 7673111123451356461, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7713189018650290884, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[0].m_Text
+      value: English
+      objectReference: {fileID: 0}
+    - target: {fileID: 7713189018650290884, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[1].m_Text
+      value: "\uD55C\uAD6D\uC5B4"
       objectReference: {fileID: 0}
     - target: {fileID: 7980733764980707105, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: completedSprite

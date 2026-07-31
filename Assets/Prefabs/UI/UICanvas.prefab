@@ -2113,9 +2113,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3539204742999253097}
     m_Modifications:
+    - target: {fileID: 107074862604446754, guid: 35547a9f6d31fcb489b52635089a4378, type: 3}
+      propertyPath: 'languageLocaleCodes.Array.data[0]'
+      value: en
+      objectReference: {fileID: 0}
+    - target: {fileID: 107074862604446754, guid: 35547a9f6d31fcb489b52635089a4378, type: 3}
+      propertyPath: 'languageLocaleCodes.Array.data[1]'
+      value: ko-KR
+      objectReference: {fileID: 0}
     - target: {fileID: 686783538241059258, guid: 35547a9f6d31fcb489b52635089a4378, type: 3}
       propertyPath: m_Size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1208998153848377799, guid: 35547a9f6d31fcb489b52635089a4378, type: 3}
+      propertyPath: m_text
+      value: English
       objectReference: {fileID: 0}
     - target: {fileID: 1496424699245285483, guid: 35547a9f6d31fcb489b52635089a4378, type: 3}
       propertyPath: m_Name
@@ -2137,6 +2149,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 3005523109116237952, guid: 35547a9f6d31fcb489b52635089a4378, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[0].m_Text
+      value: English
+      objectReference: {fileID: 0}
+    - target: {fileID: 3005523109116237952, guid: 35547a9f6d31fcb489b52635089a4378, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[1].m_Text
+      value: "\uD55C\uAD6D\uC5B4"
+      objectReference: {fileID: 0}
     - target: {fileID: 3876170640663037700, guid: 35547a9f6d31fcb489b52635089a4378, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
