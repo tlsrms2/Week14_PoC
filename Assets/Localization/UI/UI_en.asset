@@ -246,11 +246,11 @@ MonoBehaviour:
       more details in the documents below.
 
 
-      <link="https://unity.com/legal/privacy-policy"><color=#00B0F0><u>Unity
-      Privacy Policy</u></color></link>
-
       <link="https://store.steampowered.com/news/app/4911370/view/715660216997250625"><color=#00B0F0><u>Privacy
-      Policy</u></color></link>'
+      Policy</u></color></link>
+
+      <link="https://unity.com/legal/privacy-policy"><color=#00B0F0><u>Unity
+      Privacy Policy</u></color></link>'
     m_Metadata:
       m_Items: []
   - m_Id: 10819947564728320
