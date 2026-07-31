@@ -45,7 +45,6 @@ namespace Week14.Combat
 
         [Header("Aim Charge")]
         [SerializeField, Min(0f)] private float aimChargeSeconds = 1.5f;
-        [SerializeField, BossGraphSfxId] private string aimChargeSfxId;
 
         [Header("Camera")]
         [SerializeField, Range(0f, 1f)] private float wideCameraFocusWeight = 1f;
@@ -463,10 +462,7 @@ namespace Week14.Combat
             }
 
             aimChargeGatherVfx?.Play(player.RightFireOrigin);
-            if (!string.IsNullOrWhiteSpace(aimChargeSfxId))
-            {
-                SoundManager.PlaySfx(aimChargeSfxId);
-            }
+            NotifyFinalChargeStarted(aimChargeSeconds);
         }
 
         private void ConfigureSpawnedPatternProjectile(

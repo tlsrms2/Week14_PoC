@@ -13,6 +13,7 @@ namespace Week14.Enemy
             ? EffectData.HogMuzzleFlashVfxPrefab
             : null;
         protected override bool RotatesBodyToPlayer => false;
+        protected override string PostExplosionDeathSfxId => Week14.Audio.GameplaySfxIds.HogDeath;
 
         protected override void OnHpEmptyBegan()
         {

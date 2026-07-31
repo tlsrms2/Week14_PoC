@@ -31,6 +31,7 @@ namespace Week14.Enemy
         private readonly Dictionary<string, EnemyProjectile> projectileHandles = new();
         private readonly HashSet<string> projectileConfigurationWarnings = new();
         private readonly List<GameObject> transientVisuals = new();
+        private readonly List<SoundManager.SfxPlaybackHandle> activeSfxHandles = new();
         private readonly HashSet<object> facingLockOwners = new();
         private readonly HashSet<object> playerCollisionIgnoreOwners = new();
         private readonly HashSet<string> activeAnimationBools = new();
@@ -832,6 +833,7 @@ namespace Week14.Enemy
             ClearPlayerRelativeMove();
             projectileHandles.Clear();
             DestroyTransientVisuals();
+            StopActiveSfx();
             if (bossChildAimStates.Count == 0)
             {
                 bossChildAimStartNodePaths.Clear();
@@ -1069,14 +1071,48 @@ namespace Week14.Enemy
             return null;
         }
 
-        public void PlaySfx(string sfxId)
+        public SoundManager.SfxPlaybackHandle PlaySfx(string sfxId)
         {
             if (string.IsNullOrWhiteSpace(sfxId))
+            {
+                return null;
+            }
+
+            SoundManager.SfxPlaybackHandle handle = SoundManager.PlayBossSfx(sfxId);
+            TrackSfx(handle);
+            return handle;
+        }
+
+        public SoundManager.SfxPlaybackHandle PlayLoopingSfx(string sfxId)
+        {
+            if (string.IsNullOrWhiteSpace(sfxId))
+            {
+                return null;
+            }
+
+            SoundManager.SfxPlaybackHandle handle = SoundManager.PlayBossLoopingSfx(sfxId);
+            TrackSfx(handle);
+            return handle;
+        }
+
+        public void StopSfx(SoundManager.SfxPlaybackHandle handle)
+        {
+            if (handle == null)
             {
                 return;
             }
 
-            SoundManager.PlaySfx(sfxId);
+            activeSfxHandles.Remove(handle);
+            SoundManager.StopSfx(handle);
+        }
+
+        public bool IsCurrentPattern(string patternId)
+        {
+            return Boss is GraphBossAI graphBoss
+                && string.Equals(
+                    graphBoss.CurrentPatternId,
+                    patternId,
+                    StringComparison.OrdinalIgnoreCase);
         }
 
         public void PlaySfxOnLaunch(EnemyProjectile projectile, string sfxId)
@@ -1109,6 +1145,24 @@ namespace Week14.Enemy
             }
 
             projectile.RadialSplitImminent += HandleRadialSplitImminent;
+        }
+
+        private void TrackSfx(SoundManager.SfxPlaybackHandle handle)
+        {
+            if (handle != null)
+            {
+                activeSfxHandles.Add(handle);
+            }
+        }
+
+        private void StopActiveSfx()
+        {
+            for (int i = 0; i < activeSfxHandles.Count; i++)
+            {
+                SoundManager.StopSfx(activeSfxHandles[i]);
+            }
+
+            activeSfxHandles.Clear();
         }
 
         public void PlayOriginBurst(BossGraphEffectSettings effects, Vector3 position)

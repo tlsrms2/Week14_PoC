@@ -17,6 +17,9 @@ namespace Week14.UI
     public sealed class GameResultView : MonoBehaviour
     {
         private const string NewRecordPrefix = "<color=#FFD83D>NEW! </color>";
+        private const string DefaultVictorySfxId = "Victory";
+        private const string DefaultDefeatSfxId = "Defeat";
+        private const string DefaultResultPanelSfxId = "ResultPanelPopup";
 
         [Header("Game Over")]
         [SerializeField] private GameObject gameOverRoot;
@@ -271,7 +274,7 @@ namespace Week14.UI
 
             HideResultButtonsFor(gameOverRoot);
             ShowResult(gameOverRoot, restartButton, gameOverChallengePanel);
-            PlayResultSfx(defeatSfxId);
+            PlayResultSfx(defeatSfxId, DefaultDefeatSfxId);
             SyncChallengeReveal(gameOverChallengePanel, gameOverRoot);
             SetElapsedTimeText(gameOverElapsedTimeText, boss);
 
@@ -323,18 +326,28 @@ namespace Week14.UI
                     : gameOverLobbyButton;
             HideResultButtonsFor(targetRoot);
             ShowResult(targetRoot, focusTarget, victoryChallengePanel);
-            PlayResultSfx(victorySfxId);
+            PlayResultSfx(victorySfxId, DefaultVictorySfxId);
             SyncChallengeReveal(victoryChallengePanel, targetRoot);
             SetElapsedTimeText(victoryElapsedTimeText, boss, true);
 
             RefreshVictorySummary(boss);
         }
 
-        private static void PlayResultSfx(string sfxId)
+        private static void PlayResultSfx(
+            string configuredSfxId,
+            string defaultSfxId)
         {
-            if (!string.IsNullOrWhiteSpace(sfxId))
+            string resultSfxId = string.IsNullOrWhiteSpace(configuredSfxId)
+                ? defaultSfxId
+                : configuredSfxId;
+            SoundManager.PlaySfx(resultSfxId);
+
+            if (!string.Equals(
+                    resultSfxId,
+                    DefaultResultPanelSfxId,
+                    System.StringComparison.Ordinal))
             {
-                SoundManager.PlaySfx(sfxId);
+                SoundManager.PlaySfx(DefaultResultPanelSfxId);
             }
         }
 
@@ -450,6 +463,7 @@ namespace Week14.UI
             if (visible)
             {
                 resultOpenedFrame = Time.frameCount;
+                SoundManager.StopAllBossSfx();
                 FreezeGame();
             }
             else

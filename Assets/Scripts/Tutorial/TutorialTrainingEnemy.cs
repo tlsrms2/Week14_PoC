@@ -616,6 +616,7 @@ namespace Week14.Tutorial
         private IEnumerator PlaySuppressionBaitSpawnEffectAndFire()
         {
             ClearSuppressionBaitSpawnEffect();
+            SoundManager.PlayBossSfx(GameplaySfxIds.BossCreateParrySuppressionBait);
 
             if (suppressionBaitSpawnEffectPrefab != null)
             {

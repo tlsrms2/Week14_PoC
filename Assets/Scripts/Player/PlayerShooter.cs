@@ -136,7 +136,7 @@ namespace Week14.Combat
             }
 
             hasPlayedBaseballBatChargingSfx = true;
-            baseballBatChargingSfxHandle = SoundManager.PlayTrackedSfx(sfxId);
+            baseballBatChargingSfxHandle = SoundManager.PlayLoopingSfx(sfxId);
         }
 
         private void StopBaseballBatChargingSfx()

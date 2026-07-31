@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -16,6 +17,7 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float chargeSeconds = 1.6f;
         [SerializeField, Min(0.01f)] private float projectileRadiusMultiplier = 1f;
         [SerializeField, Range(0f, 180f)] private float aimSpreadDegrees = 24f;
+        [SerializeField, BossGraphSfxId] private string chargeSfxId;
         [SerializeField, BossGraphSfxId] private string launchSfxId;
         [SerializeField] private BossGraphEffectSettings effects = new();
 
@@ -55,6 +57,11 @@ namespace Week14.Enemy
             spawned.ConfigureChargeMotion(0f, true, false, aimSpreadDegrees);
             spawned.ConfigureInterceptable(false);
             context.SetProjectileHandle(handleKey, spawned);
+            string resolvedChargeSfxId = context.Boss is HogBossAI
+                && context.IsCurrentPattern("Pattern3")
+                ? GameplaySfxIds.HogMachinegunCharge
+                : chargeSfxId;
+            context.PlaySfx(resolvedChargeSfxId);
             context.PlaySfxOnLaunch(spawned, launchSfxId);
             context.PlayOriginBurst(effects, spawnOrigin);
         }

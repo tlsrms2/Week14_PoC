@@ -58,7 +58,7 @@ MonoBehaviour:
   sceneName: Boss_Assassin
   bgmId: Boss4BGM
   bgmFadeSeconds: 3
-  deathSfxId: BossCollapse
+  deathSfxId: Assassin_Death
   introWalkStartPosition: {x: 0, y: -1.4}
   introWalkEndPosition: {x: 0, y: 0.5}
   unlocksBossIds: []

@@ -7,7 +7,7 @@ namespace Week14.Save
     public static class SettingsManager
     {
         private const string SaveFileName = "settings.json";
-        private const string DefaultLanguageCode = "ko-KR";
+        private const string DefaultLanguageCode = "en";
 
         private static string SavePath => Path.Combine(Application.persistentDataPath, SaveFileName);
 
@@ -25,6 +25,8 @@ namespace Week14.Save
                 return data;
             }
         }
+
+        public static bool LanguageSetupCompleted => Data.languageSetupCompleted;
 
         public static float BgmVolume => Data.bgmVolume;
         public static float SfxVolume => Data.sfxVolume;
@@ -75,6 +77,12 @@ namespace Week14.Save
         public static void SetFullScreenMode(FullScreenMode mode)
         {
             Data.fullScreenMode = (int)mode;
+            Save();
+        }
+
+        public static void MarkLanguageSetupCompleted()
+        {
+            Data.languageSetupCompleted = true;
             Save();
         }
 

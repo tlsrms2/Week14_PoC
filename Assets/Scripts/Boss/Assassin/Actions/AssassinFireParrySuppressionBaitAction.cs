@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -59,7 +60,9 @@ namespace Week14.Enemy
             bait.ConfigureBaitDuration(baitDurationSeconds);
             bait.ConfigureRewardOverrides(rewardBulletCount, rewardCircleRadius, groggySeconds);
 
-            context.PlaySfx(spawnSfxId);
+            context.PlaySfx(string.IsNullOrWhiteSpace(spawnSfxId)
+                ? GameplaySfxIds.BossCreateParrySuppressionBait
+                : spawnSfxId);
             context.PlayOriginBurst(effects, spawnOrigin);
 
             bool parried = false;

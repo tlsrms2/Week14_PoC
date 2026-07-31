@@ -1878,7 +1878,7 @@ MonoBehaviour:
   startDelaySeconds: 0.15
   playerWalkSpeed: 0.5
   playerWalkSfxId: Walk
-  mugShotBackgroundSfxId: Whip
+  mugShotBackgroundSfxId: Intro_Set
   mugShotToBossBgmDelaySeconds: 3
   restartSequenceSeconds: 2.5
   restartCombatUiRevealSeconds: 0.35
@@ -1994,7 +1994,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   mugShotLight: {fileID: 8500352098886254120}
-  mugShotLightingSfxId: SpotLight
+  mugShotLightingSfxId: Intro_Shutter
   backgroundToInfoDelaySeconds: 0.15
   infoToLightDelaySeconds: 1
   infoHoldSeconds: 2

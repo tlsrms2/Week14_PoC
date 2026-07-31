@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -32,6 +33,7 @@ namespace Week14.Enemy
         [SerializeField, Min(0f)] private float dashSpeed = 15f;
         [SerializeField] private AnimationCurve dashSpeedCurve = AnimationCurve.EaseInOut(0f, 0.7f, 1f, 1f);
         [SerializeField, BossGraphSfxId] private string chargeDashSfxId = HackerSfxIds.ChargeDash;
+        [SerializeField, Min(0f)] private float chargeDashSfxLeadSeconds = 0.4f;
 
         [Header("Dash Effect")]
         [Tooltip("실제 차지 대시가 시작될 때 보스 뒤에 한 번 생성할 이펙트 프리팹입니다. 오른쪽 대시 방향을 기준으로 제작된 프리팹을 사용합니다.")]
@@ -78,16 +80,20 @@ namespace Week14.Enemy
             float dashDistance = GetDashDistance();
             float elapsed = 0f;
             float directionLockTime = Mathf.Max(0f, windupSeconds - directionLockLeadSeconds);
+            float chargeDashSfxTime = Mathf.Max(0f, windupSeconds - chargeDashSfxLeadSeconds);
+            bool hasPlayedChargeDashSfx = false;
             Vector2 dashDirection = context.GetDirectionToPlayer(context.Boss.transform.position);
             bool isDirectionLocked = directionLockTime <= 0f;
             BossDashTrajectoryVfx trajectoryVfx = SpawnTrajectoryVfx(dashDistance);
             BossDashAttackArea attackArea = trajectoryVfx != null
                 ? trajectoryVfx.AttackArea
                 : default;
+            SoundManager.SfxPlaybackHandle beforeDashSfxHandle = null;
             if (trajectoryVfx != null)
             {
                 context.RegisterTransientVisual(trajectoryVfx.gameObject);
                 trajectoryVfx.UpdateVfx(context.Boss.transform.position, dashDirection, 0f);
+                beforeDashSfxHandle = context.PlaySfx(GameplaySfxIds.BossBeforeDash);
             }
 
             try
@@ -99,6 +105,14 @@ namespace Week14.Enemy
                         context.Stop();
                         yield return null;
                         continue;
+                    }
+
+                    if (!hasPlayedChargeDashSfx && elapsed >= chargeDashSfxTime)
+                    {
+                        context.PlaySfx(HackerSfxIds.Resolve(
+                            chargeDashSfxId,
+                            HackerSfxIds.ChargeDash));
+                        hasPlayedChargeDashSfx = true;
                     }
 
                     if (!isDirectionLocked && elapsed >= directionLockTime)
@@ -120,6 +134,7 @@ namespace Week14.Enemy
             }
             finally
             {
+                context.StopSfx(beforeDashSfxHandle);
                 if (trajectoryVfx != null)
                 {
                     context.UnregisterTransientVisual(trajectoryVfx.gameObject);
@@ -133,9 +148,15 @@ namespace Week14.Enemy
                 dashDirection = context.GetDirectionToPlayer(context.Boss.transform.position);
             }
 
+            if (!hasPlayedChargeDashSfx)
+            {
+                context.PlaySfx(HackerSfxIds.Resolve(
+                    chargeDashSfxId,
+                    HackerSfxIds.ChargeDash));
+            }
+
             context.SetAnimationBool(IsChargeDashingAnimationParameter, true);
             context.RestartAnimationTrigger(ReleaseAnimationTrigger);
-            context.PlaySfx(HackerSfxIds.Resolve(chargeDashSfxId, HackerSfxIds.ChargeDash));
             object facingLockOwner = new();
             context.SetFacingLocked(facingLockOwner, true);
             context.SetDashing(true);

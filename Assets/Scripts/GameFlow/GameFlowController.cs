@@ -404,6 +404,7 @@ namespace Week14.GameFlow
 
         private static void PrepareSceneChange()
         {
+            SoundManager.StopAllBossSfx();
             Time.timeScale = 1f;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;

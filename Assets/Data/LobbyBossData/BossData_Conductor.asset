@@ -58,7 +58,7 @@ MonoBehaviour:
   sceneName: Boss_Conductor
   bgmId: Boss3BGM
   bgmFadeSeconds: 3
-  deathSfxId: BossCollapse
+  deathSfxId: Conductor_Death
   introWalkStartPosition: {x: 6.15, y: -10}
   introWalkEndPosition: {x: 6.15, y: -8.1}
   unlocksBossIds: []

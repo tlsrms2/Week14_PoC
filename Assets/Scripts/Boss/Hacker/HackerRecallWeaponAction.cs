@@ -23,7 +23,6 @@ namespace Week14.Enemy
         [SerializeField] private string weaponWireAnchorPath = "WireAnchor";
         [SerializeField] private float recallRotationDegrees = 360f;
         [SerializeField, Min(0f)] private float recoverySeconds = 0.2f;
-        [SerializeField, BossGraphSfxId] private string wireSfxId = HackerSfxIds.Wire;
 
         public override IEnumerator Execute(BossActionContext context)
         {
@@ -44,7 +43,7 @@ namespace Week14.Enemy
             }
 
             HackerWireSettings wireSettings = hacker.WireSettings;
-            context.PlaySfx(HackerSfxIds.Resolve(wireSfxId, HackerSfxIds.Wire));
+            context.PlaySfx(HackerSfxIds.BackWire);
             HackerRecallWireVisual.Create(
                 returnAnchor,
                 weaponWireAnchor,

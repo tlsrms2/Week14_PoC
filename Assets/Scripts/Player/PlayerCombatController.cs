@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Enemy;
 using Week14.Input;
@@ -16,6 +17,7 @@ namespace Week14.Combat
     [RequireComponent(typeof(Health), typeof(BulletGauge))]
     public sealed class PlayerCombatController : MonoBehaviour
     {
+        private const string ExecutionImageSfxId = "Execute";
         private static readonly Color InvulnerableAmmoRefillTint = new Color(1f, 0.72f, 0.04f, 1f);
         private const float InvulnerableAmmoRefillTintAmount = 0.45f;
 
@@ -164,7 +166,9 @@ namespace Week14.Combat
 
         internal void PlayExecutionImageForCinematic(float secondsUntilKillMoment)
         {
-            executionImage?.Play(Mathf.Max(0f, secondsUntilKillMoment));
+            executionImage?.Play(
+                Mathf.Max(0f, secondsUntilKillMoment),
+                () => SoundManager.PlaySfx(ExecutionImageSfxId));
         }
 
         public bool CanMove => CanAct && !IsExternallyMovementLocked && !IsBodyContactStaggered && !IsDashing;
@@ -763,6 +767,7 @@ namespace Week14.Combat
             }
 
             deathPreventionChargesRemaining--;
+            SoundManager.PlaySfx(GameplaySfxIds.ModuleEmergency);
 
             if (deathPreventionClearRadius > 0f)
             {

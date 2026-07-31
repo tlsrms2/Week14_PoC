@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,7 +35,9 @@ namespace Week14.Combat
             Stop();
         }
 
-        public void Play(float secondsUntilKillMoment)
+        public void Play(
+            float secondsUntilKillMoment,
+            Action onBecameVisible = null)
         {
             if (image == null)
             {
@@ -46,7 +49,8 @@ namespace Week14.Combat
                 StopCoroutine(routine);
             }
 
-            routine = StartCoroutine(PlayRoutine(secondsUntilKillMoment));
+            routine = StartCoroutine(
+                PlayRoutine(secondsUntilKillMoment, onBecameVisible));
         }
 
         public void Stop()
@@ -64,10 +68,13 @@ namespace Week14.Combat
             }
         }
 
-        private IEnumerator PlayRoutine(float secondsUntilKillMoment)
+        private IEnumerator PlayRoutine(
+            float secondsUntilKillMoment,
+            Action onBecameVisible)
         {
             CaptureBaseColor();
             float hideAt = Mathf.Max(0f, secondsUntilKillMoment - hideLeadSeconds);
+            bool visibilityNotified = false;
 
             image.color = Color.clear;
             image.gameObject.SetActive(true);
@@ -76,6 +83,7 @@ namespace Week14.Combat
             while (elapsed < hideAt)
             {
                 image.color = Color.Lerp(Color.clear, baseColor, Mathf.Clamp01(elapsed / growSeconds));
+                NotifyVisible(image.color, onBecameVisible, ref visibilityNotified);
                 elapsed += Time.deltaTime;
                 yield return null;
             }
@@ -84,6 +92,7 @@ namespace Week14.Combat
             while (elapsed < disappearSeconds)
             {
                 image.color = Color.Lerp(baseColor, Color.clear, elapsed / disappearSeconds);
+                NotifyVisible(image.color, onBecameVisible, ref visibilityNotified);
                 elapsed += Time.deltaTime;
                 yield return null;
             }
@@ -91,6 +100,20 @@ namespace Week14.Combat
             image.color = Color.clear;
             image.gameObject.SetActive(false);
             routine = null;
+        }
+
+        private static void NotifyVisible(
+            Color color,
+            Action onBecameVisible,
+            ref bool visibilityNotified)
+        {
+            if (visibilityNotified || color.a <= 0.001f)
+            {
+                return;
+            }
+
+            visibilityNotified = true;
+            onBecameVisible?.Invoke();
         }
 
         private void CaptureBaseColor()

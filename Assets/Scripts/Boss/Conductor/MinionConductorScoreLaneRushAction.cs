@@ -399,6 +399,7 @@ namespace Week14.Enemy
                 InitialLaneDistanceMultiplier);
             yield return RevealStandardLaneIndicators(context, activeStandardLaneIndicators);
             yield return context.WaitSeconds(InitialLaneHoldSeconds);
+            (context.Boss as Conductor)?.PlayPlaceStaffOnLaneConvergence();
             yield return ShrinkStandardLaneIndicators(
                 context,
                 activeStandardLaneIndicators,

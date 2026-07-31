@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -11,15 +12,29 @@ namespace Week14.Enemy
         {
             if (playFinalDeathExplosions)
             {
-                yield return PlayFinalDeathExplosions(boss);
+                SoundManager.SfxPlaybackHandle collapseBoom = null;
+                if (boss.PlaysCollapseBoomSfxForSequence)
+                {
+                    collapseBoom = SoundManager.PlayBossSfx(
+                        GameplaySfxIds.BossCollapseBoom);
+                }
 
-                float delaySeconds = boss.DeathExplosionToAnimationDelaySecondsForSequence;
+                yield return PlayFinalDeathExplosions(boss);
+                while (collapseBoom?.IsPlaying == true)
+                {
+                    yield return null;
+                }
+
+                float delaySeconds = boss.HasPostExplosionDeathSfxForSequence
+                    ? 0f
+                    : boss.DeathExplosionToAnimationDelaySecondsForSequence;
                 if (delaySeconds > 0f)
                 {
                     yield return new WaitForSeconds(delaySeconds);
                 }
             }
 
+            boss.PlayPostExplosionDeathSfxForSequence();
             yield return PlayDeathAnimation(boss);
         }
 

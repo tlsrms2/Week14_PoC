@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 using Week14.Save;
+using Week14.UI;
 
 namespace Week14.Audio
 {
@@ -16,10 +18,12 @@ namespace Week14.Audio
             {
                 Source = source;
                 PlaybackId = playbackId;
+                InitialVolume = source != null ? source.volume : 0f;
             }
 
             internal AudioSource Source { get; set; }
             internal int PlaybackId { get; }
+            internal float InitialVolume { get; }
             public bool IsPlaying => IsSfxPlaying(this);
         }
 
@@ -38,7 +42,13 @@ namespace Week14.Audio
         private AudioSource bgmSource;
         private readonly List<AudioSource> sfxSources = new();
         private readonly Dictionary<AudioSource, int> sfxPlaybackIds = new();
+        private readonly HashSet<AudioSource> bossSfxSources = new();
+        private readonly HashSet<AudioSource> pausedBossSfxSources = new();
+        private bool bossSfxPaused;
+        private bool bossSfxPlaybackBlocked;
         private int nextSfxPlaybackId;
+        private int lastSfxPlaybackFrame = -1;
+        private string lastSfxId;
         private Coroutine bgmRoutine;
         private string currentBgmId;
         private float currentBgmEntryVolume = 1f;
@@ -49,6 +59,12 @@ namespace Week14.Audio
         public static float SfxVolume => instance != null ? instance.sfxVolume : 0.7f;
         public static bool IsBgmMuted => instance != null && instance.bgmMuted;
         public static bool IsSfxMuted => instance != null && instance.sfxMuted;
+        public static bool WasSfxPlayedThisFrame(string id)
+        {
+            return instance != null
+                && instance.lastSfxPlaybackFrame == Time.frameCount
+                && string.Equals(instance.lastSfxId, id, System.StringComparison.Ordinal);
+        }
 
         private void Awake()
         {
@@ -61,6 +77,7 @@ namespace Week14.Audio
             instance = this;
             transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
+            SceneManager.activeSceneChanged += HandleActiveSceneChanged;
 
             bgmSource = gameObject.AddComponent<AudioSource>();
             bgmSource.loop = true;
@@ -91,8 +108,14 @@ namespace Week14.Audio
         {
             if (instance == this)
             {
+                SceneManager.activeSceneChanged -= HandleActiveSceneChanged;
                 instance = null;
             }
+        }
+
+        private void Update()
+        {
+            RefreshBossSfxPauseState();
         }
 
         private void OnValidate()
@@ -143,7 +166,10 @@ namespace Week14.Audio
                 return;
             }
 
-            instance.PlaySfxInternal(entry.Clip, entry.Volume, entry.Pitch);
+            if (instance.PlaySfxInternal(entry.Clip, entry.Volume, entry.Pitch) != null)
+            {
+                instance.RecordSfxPlayback(id);
+            }
         }
 
         public static void PlaySfx(string id, float pitch)
@@ -160,7 +186,10 @@ namespace Week14.Audio
                 return;
             }
 
-            instance.PlaySfxInternal(entry.Clip, entry.Volume, pitch);
+            if (instance.PlaySfxInternal(entry.Clip, entry.Volume, pitch) != null)
+            {
+                instance.RecordSfxPlayback(id);
+            }
         }
 
         public static void PlaySfx(AudioClip clip, float volume = 1f, float pitch = 1f)
@@ -183,7 +212,20 @@ namespace Week14.Audio
             return PlaySfxWithHandle(id, false);
         }
 
-        private static SfxPlaybackHandle PlaySfxWithHandle(string id, bool loop)
+        public static SfxPlaybackHandle PlayBossSfx(string id)
+        {
+            return PlaySfxWithHandle(id, false, true);
+        }
+
+        public static SfxPlaybackHandle PlayBossLoopingSfx(string id)
+        {
+            return PlaySfxWithHandle(id, true, true);
+        }
+
+        private static SfxPlaybackHandle PlaySfxWithHandle(
+            string id,
+            bool loop,
+            bool bossScoped = false)
         {
             if (instance == null || instance.library == null)
             {
@@ -197,13 +239,19 @@ namespace Week14.Audio
                 return null;
             }
 
-            AudioSource source = instance.PlaySfxInternal(entry.Clip, entry.Volume, entry.Pitch, loop);
+            AudioSource source = instance.PlaySfxInternal(
+                entry.Clip,
+                entry.Volume,
+                entry.Pitch,
+                loop,
+                bossScoped);
             if (source == null
                 || !instance.sfxPlaybackIds.TryGetValue(source, out int playbackId))
             {
                 return null;
             }
 
+            instance.RecordSfxPlayback(id);
             return new SfxPlaybackHandle(source, playbackId);
         }
 
@@ -230,6 +278,30 @@ namespace Week14.Audio
             source.volume = 0f;
             source.pitch = 1f;
             instance.sfxPlaybackIds.Remove(source);
+            instance.bossSfxSources.Remove(source);
+            instance.pausedBossSfxSources.Remove(source);
+        }
+
+        public static void SetSfxVolumeScale(SfxPlaybackHandle handle, float volumeScale)
+        {
+            if (handle?.Source == null || instance == null)
+            {
+                return;
+            }
+
+            AudioSource source = handle.Source;
+            if (!instance.sfxPlaybackIds.TryGetValue(source, out int playbackId)
+                || playbackId != handle.PlaybackId)
+            {
+                return;
+            }
+
+            source.volume = handle.InitialVolume * Mathf.Clamp01(volumeScale);
+        }
+
+        public static void StopAllBossSfx()
+        {
+            instance?.StopAllBossSfxInternal(true);
         }
 
         private static bool IsSfxPlaying(SfxPlaybackHandle handle)
@@ -240,7 +312,7 @@ namespace Week14.Audio
             }
 
             AudioSource source = handle.Source;
-            return source.isPlaying
+            return (source.isPlaying || instance.pausedBossSfxSources.Contains(source))
                 && instance.sfxPlaybackIds.TryGetValue(source, out int playbackId)
                 && playbackId == handle.PlaybackId;
         }
@@ -399,14 +471,26 @@ namespace Week14.Audio
             bgmRoutine = null;
         }
 
-        private AudioSource PlaySfxInternal(AudioClip clip, float entryVolume, float pitch, bool loop = false)
+        private AudioSource PlaySfxInternal(
+            AudioClip clip,
+            float entryVolume,
+            float pitch,
+            bool loop = false,
+            bool bossScoped = false)
         {
-            if (sfxMuted)
+            if (sfxMuted || (bossScoped && ShouldPauseBossSfx()))
             {
                 return null;
             }
 
             AudioSource source = GetAvailableSfxSource();
+            bossSfxSources.Remove(source);
+            pausedBossSfxSources.Remove(source);
+            if (bossScoped)
+            {
+                bossSfxSources.Add(source);
+            }
+
             source.clip = clip;
             source.volume = Mathf.Clamp(entryVolume, 0f, 2f) * sfxVolume;
             source.pitch = pitch;
@@ -419,19 +503,27 @@ namespace Week14.Audio
             return source;
         }
 
+        private void RecordSfxPlayback(string id)
+        {
+            lastSfxPlaybackFrame = Time.frameCount;
+            lastSfxId = id;
+        }
+
         private AudioSource GetAvailableSfxSource()
         {
             for (int i = 0; i < sfxSources.Count; i++)
             {
-                if (!sfxSources[i].isPlaying)
+                AudioSource source = sfxSources[i];
+                if (!source.isPlaying
+                    && !(bossSfxPaused && bossSfxSources.Contains(source)))
                 {
-                    return sfxSources[i];
+                    return source;
                 }
             }
 
-            AudioSource source = CreateSfxSource();
-            sfxSources.Add(source);
-            return source;
+            AudioSource newSource = CreateSfxSource();
+            sfxSources.Add(newSource);
+            return newSource;
         }
 
         private AudioSource CreateSfxSource()
@@ -440,6 +532,73 @@ namespace Week14.Audio
             source.playOnAwake = false;
             source.outputAudioMixerGroup = sfxOutput;
             return source;
+        }
+
+        private bool ShouldPauseBossSfx()
+        {
+            return bossSfxPlaybackBlocked
+                || (GameModalState.BlocksGameplayInput
+                    && Mathf.Approximately(Time.timeScale, 0f));
+        }
+
+        private void RefreshBossSfxPauseState()
+        {
+            bool shouldPause = ShouldPauseBossSfx();
+            if (bossSfxPaused == shouldPause)
+            {
+                return;
+            }
+
+            bossSfxPaused = shouldPause;
+            if (shouldPause)
+            {
+                pausedBossSfxSources.Clear();
+                foreach (AudioSource source in bossSfxSources)
+                {
+                    if (source != null && source.isPlaying)
+                    {
+                        source.Pause();
+                        pausedBossSfxSources.Add(source);
+                    }
+                }
+
+                return;
+            }
+
+            foreach (AudioSource source in pausedBossSfxSources)
+            {
+                source?.UnPause();
+            }
+
+            pausedBossSfxSources.Clear();
+        }
+
+        private void StopAllBossSfxInternal(bool blockNewPlayback)
+        {
+            foreach (AudioSource source in bossSfxSources)
+            {
+                if (source == null)
+                {
+                    continue;
+                }
+
+                source.Stop();
+                source.loop = false;
+                source.clip = null;
+                source.volume = 0f;
+                source.pitch = 1f;
+                sfxPlaybackIds.Remove(source);
+            }
+
+            bossSfxSources.Clear();
+            pausedBossSfxSources.Clear();
+            bossSfxPaused = false;
+            bossSfxPlaybackBlocked = blockNewPlayback;
+        }
+
+        private void HandleActiveSceneChanged(Scene _, Scene __)
+        {
+            StopAllBossSfxInternal(false);
         }
     }
 }

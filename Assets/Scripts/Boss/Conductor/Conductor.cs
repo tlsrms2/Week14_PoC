@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -38,6 +39,8 @@ namespace Week14.Enemy
         private bool hasAppliedWalkState;
         private bool lastIsWalking;
         private SpriteRenderer facingSpriteRenderer;
+        private SoundManager.SfxPlaybackHandle droneIdleSfxHandle;
+        private int maximumTrackedMinionCount;
         private static Material movementPathIndicatorMaterial;
 
         protected override GameObject BossMuzzleFlashVfxPrefab => EffectData != null
@@ -211,6 +214,7 @@ namespace Week14.Enemy
                         continue;
                     }
 
+                    SoundManager.PlayBossSfx(GameplaySfxIds.ConductorDraw);
                     yield return DrawConductingStroke(context, visual, i, stroke, settings, shouldCancel);
                     if (ShouldCancelConductingPattern(shouldCancel))
                     {
@@ -224,6 +228,7 @@ namespace Week14.Enemy
                 }
 
                 PlayConductingCueCompleteEffect(anchor, settings);
+                SoundManager.PlayBossSfx(GameplaySfxIds.ConductorDrawComplete);
 
                 if (settings.CompletedFlashSeconds > 0f)
                 {
@@ -561,6 +566,11 @@ namespace Week14.Enemy
 
             spawnedMinionsByHealth.Add(minionHealth, minion);
             minionHealth.Died += HandleSpawnedMinionDied;
+            maximumTrackedMinionCount = Mathf.Max(maximumTrackedMinionCount, spawnedMinionsByHealth.Count);
+            if (spawnedMinionsByHealth.Count == 1)
+            {
+                StartDroneIdleSfx();
+            }
         }
 
         private void HandleSpawnedMinionDied(Health minionHealth)
@@ -578,10 +588,21 @@ namespace Week14.Enemy
             spawnedMinionsByHealth.Remove(minionHealth);
             minionHealth.Died -= HandleSpawnedMinionDied;
             UntrackMinionOutline(minion);
+            if (spawnedMinionsByHealth.Count == 0)
+            {
+                StopDroneIdleSfx();
+            }
+            else if (maximumTrackedMinionCount > 0)
+            {
+                SoundManager.SetSfxVolumeScale(
+                    droneIdleSfxHandle,
+                    (float)spawnedMinionsByHealth.Count / maximumTrackedMinionCount);
+            }
         }
 
         private void UntrackAllSpawnedMinions()
         {
+            StopDroneIdleSfx();
             foreach (MovementPathIndicatorState indicator in movementPathIndicators.Values)
             {
                 SetMinionMovementPathIndicatorVisible(indicator, false);
@@ -606,7 +627,45 @@ namespace Week14.Enemy
             outlineFlashRoutines.Clear();
             movementPathIndicators.Clear();
             minionOutlineVisibleLocks = 0;
+            maximumTrackedMinionCount = 0;
         }
+
+        internal void PlayPlaceStaffOnLaneConvergence()
+        {
+            SoundManager.PlayBossSfx(GameplaySfxIds.ConductorPlaceStaff);
+        }
+
+        internal void SetExecutionDroneIdleSfxRemainingCount(int remainingCount, int totalCount)
+        {
+            if (remainingCount <= 0)
+            {
+                StopDroneIdleSfx();
+                return;
+            }
+
+            if (totalCount > 0)
+            {
+                SoundManager.SetSfxVolumeScale(
+                    droneIdleSfxHandle,
+                    (float)remainingCount / totalCount);
+            }
+        }
+
+        private void StartDroneIdleSfx()
+        {
+            if (droneIdleSfxHandle == null || !droneIdleSfxHandle.IsPlaying)
+            {
+                droneIdleSfxHandle = SoundManager.PlayBossLoopingSfx(GameplaySfxIds.ConductorDroneIdle);
+            }
+        }
+
+        private void StopDroneIdleSfx()
+        {
+            SoundManager.StopSfx(droneIdleSfxHandle);
+            droneIdleSfxHandle = null;
+        }
+
+        protected override float DeathSfxDelaySeconds => 0.5f;
 
         private void TrackMinionOutline(Minion minion)
         {

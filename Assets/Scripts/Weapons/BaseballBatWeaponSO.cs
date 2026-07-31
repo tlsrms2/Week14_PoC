@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Serialization;
+using Week14.Audio;
 using Week14.Combat;
 using Week14.Enemy;
 
@@ -187,13 +188,15 @@ namespace Week14.Weapons
         [Header("Sound")]
         [Tooltip("야구 배트 차지를 시작할 때 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
         [BossGraphSfxId]
-        [SerializeField] private string chargingSfxId = "BaseballBatCharging";
+        [SerializeField] private string chargingSfxId = GameplaySfxIds.BaseballBatCharge;
         [Tooltip("차징 SFX를 한 번 재생하기까지 필요한 홀드 시간(초)입니다.")]
         [SerializeField, Min(0f)] private float chargingSfxStartSeconds = 0.5f;
+        [BossGraphSfxId]
+        [SerializeField] private string attackSwingSfxId = GameplaySfxIds.BaseballBatSwing;
         [Tooltip("야구 배트로 투사체를 반사할 때 투사체마다 재생할 SFX의 SoundLibrary ID입니다. 비워두면 재생하지 않습니다.")]
         [BossGraphSfxId]
         [FormerlySerializedAs("swingSfxId")]
-        [SerializeField] private string reflectionSuccessSfxId = "BaseballBatSwing";
+        [SerializeField] private string reflectionSuccessSfxId = GameplaySfxIds.BaseballBatHit;
 
         [Tooltip("야구 배트를 장착했을 때 적용할 이동 속도 배율입니다. 1.5 = 50% 증가.")]
         [SerializeField, Min(0f)] private float moveSpeedMultiplier = 1.5f;
@@ -242,6 +245,9 @@ namespace Week14.Weapons
             {
                 float charge01 = GetCharge01(chargeTime);
                 float attackRange = GetAttackRange(charge01);
+                SoundManager.PlaySfx(string.IsNullOrWhiteSpace(attackSwingSfxId)
+                    ? GameplaySfxIds.BaseballBatSwing
+                    : attackSwingSfxId);
                 shooter.SwingBaseballBat(
                     reflectedDamage,
                     attackRange,

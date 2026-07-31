@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Week14.Audio;
 
 namespace Week14.Enemy
 {
@@ -9,6 +10,7 @@ namespace Week14.Enemy
         protected override GameObject BossMuzzleFlashVfxPrefab => EffectData != null
             ? EffectData.AssassinMuzzleFlashVfxPrefab
             : null;
+        protected override float DeathSfxDelaySeconds => 0.5f;
 
         [Header("Assassin Stealth")]
         [Tooltip("은신 상태에서 사용할 Boss Graph입니다. 통상 상태에서는 GraphBossAI의 기본 Boss Graph를 그대로 사용합니다.")]
@@ -214,6 +216,7 @@ namespace Week14.Enemy
             isStealthed = pendingStealthValue;
             if (isStealthed)
             {
+                SoundManager.PlayBossSfx(GameplaySfxIds.AssassinStealth);
                 stealthEntryDelayRemaining = stealthEntryPatternDelaySeconds;
                 // 새 은신 세션은 항상 반투명 상태로 시작한다 — 이전 세션에서 켜뒀던
                 // 알파 노출(Reveal)은 여기서 초기화된다.

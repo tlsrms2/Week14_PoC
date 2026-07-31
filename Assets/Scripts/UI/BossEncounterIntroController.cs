@@ -81,9 +81,12 @@ namespace Week14.UI
         [Tooltip("플레이어가 인트로 위치로 걸어가는 동안 반복 재생할 SoundLibrary SFX ID입니다.")]
         [BossGraphSfxId]
         [SerializeField] private string playerWalkSfxId = "Walk";
+        [Tooltip("보스 카메라 줌인이 시작될 때 재생할 SoundLibrary SFX ID입니다.")]
+        [BossGraphSfxId]
+        [SerializeField] private string bossFocusSfxId = "Intro_ZoomIn";
         [Tooltip("머그샷 배경이 등장할 때 재생할 SoundLibrary SFX ID입니다.")]
         [BossGraphSfxId]
-        [SerializeField] private string mugShotBackgroundSfxId = "Whip";
+        [SerializeField] private string mugShotBackgroundSfxId = "Intro_Set";
         [Tooltip("머그샷 조명과 셔터 SFX가 재생된 뒤 보스 BGM 페이드인을 시작하기까지의 시간입니다.")]
         [SerializeField, Min(0f)] private float mugShotToBossBgmDelaySeconds = 3f;
 
@@ -477,6 +480,11 @@ namespace Week14.UI
             Transform bossFocusTarget = GetBossFocusTarget();
             if (cameraFollow != null && bossFocusTarget != null)
             {
+                if (!string.IsNullOrWhiteSpace(bossFocusSfxId))
+                {
+                    SoundManager.PlaySfx(bossFocusSfxId);
+                }
+
                 cameraFollow.BeginCinematicFocus(
                     bossFocusTarget,
                     bossFocusWeight,

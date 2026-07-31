@@ -422,6 +422,7 @@ namespace Week14.Enemy
             BossActionContext context,
             ConductorScoreLaneRushIndicatorVisual visual)
         {
+            (context?.Boss as Conductor)?.PlayPlaceStaffOnLaneConvergence();
             float initialDistance = GetInitialNorthSouthStaffDistance();
             float targetDistance = Mathf.Max(0.1f, northSouthStaffDistance);
             float duration = Mathf.Max(0f, northSouthStaffShrinkSeconds);

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Week14.Audio;
 using Week14.Combat;
 
 namespace Week14.Enemy
@@ -109,7 +110,10 @@ namespace Week14.Enemy
         private IEnumerator ExecuteFacingLocked(BossActionContext context, Transform firePoint)
         {
             context.BeginSnipingTelegraph(ShootAnimationTrigger, HoldTelegraphAnimationParameter);
-            context.PlaySfx(HackerSfxIds.Resolve(chargeSfxId, HackerSfxIds.GunCharge));
+            SoundManager.SfxPlaybackHandle chargeSfxHandle = windupSeconds > 0f
+                ? SoundManager.PlayBossSfx(
+                    HackerSfxIds.ResolveSniperCharge(chargeSfxId, windupSeconds))
+                : null;
             if (windupSeconds > 0f)
             {
                 HackerSnipingChargeIndicator chargeIndicator = HackerSnipingChargeIndicator.Create(
@@ -177,6 +181,8 @@ namespace Week14.Enemy
                     {
                         UnityEngine.Object.Destroy(aimIndicator.gameObject);
                     }
+
+                    SoundManager.StopSfx(chargeSfxHandle);
                 }
             }
 

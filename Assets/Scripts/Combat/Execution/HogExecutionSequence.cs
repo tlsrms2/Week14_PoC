@@ -63,7 +63,6 @@ namespace Week14.Combat
         [SerializeField, Range(0f, 1f)] private float wideCameraFocusWeight = 1f;
         [SerializeField, Range(0.1f, 1.5f)] private float wideCameraZoomMultiplier = 0.72f;
         [SerializeField, Min(0.01f)] private float wideCameraBlendSmoothTime = 0.22f;
-        [SerializeField, BossGraphSfxId] private string aimChargeSfxId;
 
         private readonly List<EnemyProjectile> spawnedProjectiles = new();
         private readonly Queue<EnemyProjectile> corridorProjectiles = new();
@@ -302,11 +301,10 @@ namespace Week14.Combat
             }
 
             aimChargeGatherVfx?.Play(player.RightFireOrigin);
-
-            if (!string.IsNullOrWhiteSpace(aimChargeSfxId))
-            {
-                SoundManager.PlaySfx(aimChargeSfxId);
-            }
+            NotifyFinalChargeStarted(
+                Mathf.Max(
+                    0f,
+                    (float)(finalShotSignalTimeSeconds - sequenceClockSeconds)));
         }
 
         private void ConfigureSpawnedPatternProjectile(EnemyProjectile projectile)

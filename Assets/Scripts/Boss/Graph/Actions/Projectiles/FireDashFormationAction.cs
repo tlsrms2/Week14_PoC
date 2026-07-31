@@ -71,6 +71,7 @@ namespace Week14.Enemy
             }
 
             EnsureAlignEase();
+            context.PlaySfx(fireSfxId);
 
             if (pattern == BossGraphDashFormationPattern.ParallelLane)
             {
@@ -138,7 +139,6 @@ namespace Week14.Enemy
             spawned.ConfigureChargeAnchor(anchor);
             spawned.ConfigureChargeMotion(0f, false, false);
 
-            context.PlaySfx(fireSfxId);
             context.PlaySfxOnLaunch(spawned, launchSfxId);
             context.PlayOriginBurst(effects, originPosition);
             context.PlayMuzzleFlashIfEnabled(effects, spawned, dashDirection);
@@ -229,7 +229,6 @@ namespace Week14.Enemy
 
                 spawned.ConfigureChargeMotion(0f, false, false);
 
-                context.PlaySfx(fireSfxId);
                 context.PlaySfxOnLaunch(spawned, launchSfxId);
                 context.PlayMuzzleFlashIfEnabled(effects, spawned, launchDirection);
             }

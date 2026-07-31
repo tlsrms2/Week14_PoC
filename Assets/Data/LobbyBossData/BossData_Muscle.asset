@@ -58,7 +58,7 @@ MonoBehaviour:
   sceneName: Boss_Muscle
   bgmId: Boss2BGM
   bgmFadeSeconds: 3
-  deathSfxId: BossCollapseBoom
+  deathSfxId: Muscle_Death
   introWalkStartPosition: {x: 0, y: -1.1}
   introWalkEndPosition: {x: 0, y: 0.8}
   unlocksBossIds: []

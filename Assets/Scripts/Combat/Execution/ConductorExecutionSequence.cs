@@ -52,7 +52,6 @@ namespace Week14.Combat
 
         [Header("Phase 3 — Aim Charge & Final Line")]
         [SerializeField, Min(0f)] private float aimChargeSeconds = 1.5f;
-        [SerializeField, BossGraphSfxId] private string aimChargeSfxId;
         [SerializeField, Min(0.05f)] private float finalPositionMoveSeconds = 0.25f;
 
         [Header("Camera")]
@@ -684,11 +683,7 @@ namespace Week14.Combat
             }
 
             aimChargeGatherVfx?.Play(player.RightFireOrigin);
-
-            if (!string.IsNullOrWhiteSpace(aimChargeSfxId))
-            {
-                SoundManager.PlaySfx(aimChargeSfxId);
-            }
+            NotifyFinalChargeStarted(aimChargeSeconds);
         }
 
         // ─── Helper Calculations ─────────────────────────────────────────
@@ -978,6 +973,10 @@ namespace Week14.Combat
                         0f);
                 }
             }
+
+            conductor?.SetExecutionDroneIdleSfxRemainingCount(
+                DroneCount - index - 1,
+                DroneCount);
         }
 
         private void BeginDroneOutlinePresentation()
