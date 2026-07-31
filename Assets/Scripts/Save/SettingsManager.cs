@@ -26,6 +26,8 @@ namespace Week14.Save
             }
         }
 
+        public static bool HasSavedSettings() => File.Exists(SavePath);
+
         public static float BgmVolume => Data.bgmVolume;
         public static float SfxVolume => Data.sfxVolume;
         public static bool BgmMuted => Data.bgmMuted;

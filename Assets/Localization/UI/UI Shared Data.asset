@@ -213,12 +213,12 @@ MonoBehaviour:
     m_Key: ui.log.agree
     m_Metadata:
       m_Items: []
-  - m_Id: 10790656550469632
-    m_Key: New Entry
-    m_Metadata:
-      m_Items: []
   - m_Id: 10790675445809152
     m_Key: ui.log.disagree
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10819947564728320
+    m_Key: ui.language.done
     m_Metadata:
       m_Items: []
   m_Metadata:

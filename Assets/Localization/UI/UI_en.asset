@@ -204,6 +204,59 @@ MonoBehaviour:
     m_Localized: Are you sure you want to delete this save data?
     m_Metadata:
       m_Items: []
+  - m_Id: 10790624849920000
+    m_Localized: Accept
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10790675445809152
+    m_Localized: Decline
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10790502489489408
+    m_Localized: Data Collection Notice for a Better Gaming Experience
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10790558126931968
+    m_Localized: 'UNLOAD collects gameplay data using Unity Analytics to provide
+      a more stable and enjoyable gaming experience.
+
+
+
+      The collected information
+      may include the following:
+
+
+
+      - Collected Data: Device and execution
+      environment information, game progress, play records, and error and crash information.
+
+      -
+      Purpose of Collection: In-game error analysis, game balance adjustments, content
+      improvements, and service quality enhancement.
+
+
+
+      The collected information
+      is used solely for analysis purposes to improve the game, and we do not collect
+      personal information that can directly identify users.
+
+
+
+      You can find
+      more details in the documents below.
+
+
+      <link="https://unity.com/legal/privacy-policy"><color=#00B0F0><u>Unity
+      Privacy Policy</u></color></link>
+
+      <link="https://store.steampowered.com/news/app/4911370/view/715660216997250625"><color=#00B0F0><u>Privacy
+      Policy</u></color></link>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10819947564728320
+    m_Localized: Done
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

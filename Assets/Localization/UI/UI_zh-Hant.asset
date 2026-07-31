@@ -1,4 +1,4 @@
-﻿%YAML 1.1
+%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -19,187 +19,216 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 3325868144689152
-    m_Localized: "<sprite name=\"icon_leftclick\"> 購買"
+    m_Localized: "<sprite name=\"icon_leftclick\"> \u8CFC\u8CB7"
     m_Metadata:
       m_Items: []
   - m_Id: 3326766715600896
-    m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> 資料晶片: {0}"
+    m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> \u8CC7\u6599\u6676\u7247:
+      {0}"
     m_Metadata:
       m_Items: []
   - m_Id: 8736125926866944
-    m_Localized: "否"
+    m_Localized: "\u5426"
     m_Metadata:
       m_Items: []
   - m_Id: 4304213502164992
-    m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> 資料晶片 +{0}"
+    m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> \u8CC7\u6599\u6676\u7247
+      +{0}"
     m_Metadata:
       m_Items: []
   - m_Id: 3316549172953088
-    m_Localized: "被動"
+    m_Localized: "\u88AB\u52D5"
     m_Metadata:
       m_Items: []
   - m_Id: 3326043365933056
-    m_Localized: "<sprite name=\"icon_leftclick\"> 裝備 <sprite name=\"icon_rightclick\"> 退款"
+    m_Localized: "<sprite name=\"icon_leftclick\"> \u88DD\u5099 <sprite name=\"icon_rightclick\">
+      \u9000\u6B3E"
     m_Metadata:
       m_Items: []
   - m_Id: 7504308305920
-    m_Localized: "靜音"
+    m_Localized: "\u975C\u97F3"
     m_Metadata:
       m_Items: []
   - m_Id: 3324365581418496
-    m_Localized: "[武器]"
+    m_Localized: "[\u6B66\u5668]"
     m_Metadata:
       m_Items: []
   - m_Id: 7022185644032
-    m_Localized: "返回"
+    m_Localized: "\u8FD4\u56DE"
     m_Metadata:
       m_Items: []
   - m_Id: 3326345653616640
-    m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> 不可退款"
+    m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> \u4E0D\u53EF\u9000\u6B3E"
     m_Metadata:
       m_Items: []
   - m_Id: 57536428474368
-    m_Localized: "大廳"
+    m_Localized: "\u5927\u5EF3"
     m_Metadata:
       m_Items: []
   - m_Id: 3316497654317056
-    m_Localized: "主動"
+    m_Localized: "\u4E3B\u52D5"
     m_Metadata:
       m_Items: []
   - m_Id: 8736093915938816
-    m_Localized: "是"
+    m_Localized: "\u662F"
     m_Metadata:
       m_Items: []
   - m_Id: 35762831360
-    m_Localized: "開始遊戲"
+    m_Localized: "\u958B\u59CB\u904A\u6232"
     m_Metadata:
       m_Items: []
   - m_Id: 3663321485377536
-    m_Localized: "關閉"
+    m_Localized: "\u95DC\u9589"
     m_Metadata:
       m_Items: []
   - m_Id: 58052210425856
-    m_Localized: "重試"
+    m_Localized: "\u91CD\u8A66"
     m_Metadata:
       m_Items: []
   - m_Id: 4478459079655424
-    m_Localized: "目標"
+    m_Localized: "\u76EE\u6A19"
     m_Metadata:
       m_Items: []
   - m_Id: 44079612264448
-    m_Localized: "暫停"
+    m_Localized: "\u66AB\u505C"
     m_Metadata:
       m_Items: []
   - m_Id: 3326817575731200
-    m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> 所需晶片: {0}"
+    m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> \u6240\u9700\u6676\u7247:
+      {0}"
     m_Metadata:
       m_Items: []
   - m_Id: 98681342754816
-    m_Localized: "背景音樂"
+    m_Localized: "\u80CC\u666F\u97F3\u6A02"
     m_Metadata:
       m_Items: []
   - m_Id: 5398084768686080
-    m_Localized: "<sprite name=\"icon_leftclick\"> 裝備"
+    m_Localized: "<sprite name=\"icon_leftclick\"> \u88DD\u5099"
     m_Metadata:
       m_Items: []
   - m_Id: 6563875845234688
-    m_Localized: "按下 <sprite name=\"icon_escape\"> 跳過"
+    m_Localized: "\u6309\u4E0B <sprite name=\"icon_escape\"> \u8DF3\u904E"
     m_Metadata:
       m_Items: []
   - m_Id: 8732561896734720
-    m_Localized: "刪除"
+    m_Localized: "\u522A\u9664"
     m_Metadata:
       m_Items: []
   - m_Id: 7957354798309376
-    m_Localized: "<sprite name=\"icon_language\"> 語言"
+    m_Localized: "<sprite name=\"icon_language\"> \u8A9E\u8A00"
     m_Metadata:
       m_Items: []
   - m_Id: 98699957075968
-    m_Localized: "音效"
+    m_Localized: "\u97F3\u6548"
     m_Metadata:
       m_Items: []
   - m_Id: 8731268608262144
-    m_Localized: "繼續"
+    m_Localized: "\u7E7C\u7E8C"
     m_Metadata:
       m_Items: []
   - m_Id: 7305159874281472
-    m_Localized: "解析度"
+    m_Localized: "\u89E3\u6790\u5EA6"
     m_Metadata:
       m_Items: []
   - m_Id: 3326845836951552
-    m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> 退款返還晶片: {0}"
+    m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> \u9000\u6B3E\u8FD4\u9084\u6676\u7247:
+      {0}"
     m_Metadata:
       m_Items: []
   - m_Id: 4984524653649920
-    m_Localized: "強化"
+    m_Localized: "\u5F37\u5316"
     m_Metadata:
       m_Items: []
   - m_Id: 8731220751253504
-    m_Localized: "新遊戲"
+    m_Localized: "\u65B0\u904A\u6232"
     m_Metadata:
       m_Items: []
   - m_Id: 3737487026782208
-    m_Localized: "最佳時間: {0}"
+    m_Localized: "\u6700\u4F73\u6642\u9593: {0}"
     m_Metadata:
       m_Items: []
   - m_Id: 4984204011692032
-    m_Localized: "戰鬥"
+    m_Localized: "\u6230\u9B25"
     m_Metadata:
       m_Items: []
   - m_Id: 221037821952
-    m_Localized: "結束"
+    m_Localized: "\u7D50\u675F"
     m_Metadata:
       m_Items: []
   - m_Id: 3666672696524800
-    m_Localized: "挑戰"
+    m_Localized: "\u6311\u6230"
     m_Metadata:
       m_Items: []
   - m_Id: 8737385946120192
-    m_Localized: "確定要刪除此存檔資料嗎？"
+    m_Localized: "\u78BA\u5B9A\u8981\u522A\u9664\u6B64\u5B58\u6A94\u8CC7\u6599\u55CE\uFF1F"
     m_Metadata:
       m_Items: []
   - m_Id: 7302183986233344
-    m_Localized: "全螢幕"
+    m_Localized: "\u5168\u87A2\u5E55"
     m_Metadata:
       m_Items: []
   - m_Id: 3326669890093056
-    m_Localized: "冷卻時間: {0}"
+    m_Localized: "\u51B7\u537B\u6642\u9593: {0}"
     m_Metadata:
       m_Items: []
   - m_Id: 44034297004032
-    m_Localized: "主選單"
+    m_Localized: "\u4E3B\u9078\u55AE"
     m_Metadata:
       m_Items: []
   - m_Id: 103836385280
-    m_Localized: "<sprite name=\"icon_option\"> 設定"
+    m_Localized: "<sprite name=\"icon_option\"> \u8A2D\u5B9A"
     m_Metadata:
       m_Items: []
   - m_Id: 44213293121536
-    m_Localized: "繼續"
+    m_Localized: "\u7E7C\u7E8C"
     m_Metadata:
       m_Items: []
   - m_Id: 44328653258752
-    m_Localized: "訪問"
+    m_Localized: "\u8A2A\u554F"
     m_Metadata:
       m_Items: []
   - m_Id: 3316185476464640
-    m_Localized: "強化"
+    m_Localized: "\u5F37\u5316"
     m_Metadata:
       m_Items: []
   - m_Id: 3666520502009856
-    m_Localized: "戰鬥"
+    m_Localized: "\u6230\u9B25"
     m_Metadata:
       m_Items: []
   - m_Id: 3316405463515136
-    m_Localized: "武器"
+    m_Localized: "\u6B66\u5668"
     m_Metadata:
       m_Items: []
   - m_Id: 3324359885553664
-    m_Localized: "[被動]"
+    m_Localized: "[\u88AB\u52D5]"
     m_Metadata:
       m_Items: []
   - m_Id: 3324277605892096
-    m_Localized: "[主動]"
+    m_Localized: "[\u4E3B\u52D5]"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10790502489489408
+    m_Localized: "\u70BA\u4E86\u66F4\u4F73\u904A\u6232\u9AD4\u9A57\u7684\u8CC7\u6599\u6536\u96C6\u6307\u5357"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10790558126931968
+    m_Localized: "UNLOAD\u70BA\u4E86\u63D0\u4F9B\u66F4\u7A69\u5B9A\u3001\u66F4\u6709\u8DA3\u7684\u904A\u6232\u9AD4\u9A57\uFF0C\u5C07\u4F7F\u7528Unity
+      Analytics\u6536\u96C6\u904A\u6232\u904A\u73A9\u8CC7\u6599\u3002\r\n\r\n\u6536\u96C6\u7684\u8CC7\u8A0A\u53EF\u80FD\u5305\u62EC\u4EE5\u4E0B\u5167\u5BB9\uFF1A\r\n\r\n-
+      \u6536\u96C6\u9805\u76EE\uFF1A\u8A2D\u5099\u53CA\u904B\u884C\u74B0\u5883\u8CC7\u8A0A\u3001\u904A\u6232\u9032\u5EA6\u3001\u904A\u73A9\u8A18\u9304\u3001\u932F\u8AA4\u53CA\u5D29\u6F70\u8CC7\u8A0A\r\n-
+      \u6536\u96C6\u76EE\u7684\uFF1A\u904A\u6232\u5167\u932F\u8AA4\u5206\u6790\u3001\u904A\u6232\u5E73\u8861\u8ABF\u6574\u3001\u5167\u5BB9\u6539\u5584\u53CA\u670D\u52D9\u54C1\u8CEA\u63D0\u5347\r\n\r\n\u6536\u96C6\u7684\u8CC7\u8A0A\u50C5\u7528\u65BC\u904A\u6232\u6539\u5584\u7684\u5206\u6790\u76EE\u7684\uFF0C\u4E0D\u6536\u96C6\u53EF\u76F4\u63A5\u8B58\u5225\u7528\u6236\u8EAB\u4EFD\u7684\u500B\u4EBA\u8CC7\u8A0A\u3002\r\n\r\n\u8A73\u7D30\u5167\u5BB9\u53EF\u5728\u4EE5\u4E0B\u6587\u4EF6\u4E2D\u9032\u884C\u78BA\u8A8D\u3002\n\n<link=\"https://unity.com/legal/privacy-policy\"><color=#00B0F0><u>Unity
+      Privacy Policy</u></color></link>\r\n<link=\"https://store.steampowered.com/news/app/4911370/view/715660216997250625\"><color=#00B0F0><u>\u500B\u4EBA\u8CC7\u8A0A\u8655\u7406\u65B9\u91DD</u></color></link>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10790624849920000
+    m_Localized: "\u540C\u610F"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10790675445809152
+    m_Localized: "\u62D2\u7D55"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10819947564728320
+    m_Localized: "\u5B8C\u6210"
     m_Metadata:
       m_Items: []
   references:
