@@ -467,12 +467,12 @@ MonoBehaviour:
   - category: muscle
     id: Muscle_LineFire
     clip: {fileID: 8300000, guid: ef65307574961e14da88a914bd4418b3, type: 3}
-    volume: 1.25
+    volume: 2
     pitch: 1
   - category: muscle
     id: Muscle_Death
     clip: {fileID: 8300000, guid: 22b6d203697ef3740ab065add4acd5c8, type: 3}
-    volume: 1
+    volume: 2
     pitch: 1
   - category: conductor
     id: Conductor_Draw
@@ -487,17 +487,17 @@ MonoBehaviour:
   - category: conductor
     id: Conductor_DroneIdle
     clip: {fileID: 8300000, guid: 08ecc4824eae1c748bf7ed795abfd645, type: 3}
-    volume: 2
+    volume: 1.35
     pitch: 1
   - category: conductor
     id: Conductor_PlaceStaff
     clip: {fileID: 8300000, guid: 48fd8d7575ac495489296a8a964bd2f5, type: 3}
-    volume: 1
+    volume: 1.7
     pitch: 1
   - category: conductor
     id: Conductor_Death
     clip: {fileID: 8300000, guid: 76f805fe34a43ab418af4ce98be57cac, type: 3}
-    volume: 1
+    volume: 2
     pitch: 1
   - category: assassin
     id: Assassin_Stealth
