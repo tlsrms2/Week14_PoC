@@ -26,27 +26,27 @@ MonoBehaviour:
   - category: 
     id: Boss1BGM
     clip: {fileID: 8300000, guid: 86d5f63a7d5ab7d45853a6848f603914, type: 3}
-    volume: 0.4
+    volume: 0.3
     pitch: 1
   - category: 
     id: Boss2BGM
     clip: {fileID: 8300000, guid: c242407a91cb2b44f88e2a95e077a735, type: 3}
-    volume: 0.4
+    volume: 0.28
     pitch: 1
   - category: 
     id: Boss3BGM
     clip: {fileID: 8300000, guid: a0a7810644065e641841f85ab042debe, type: 3}
-    volume: 0.4
+    volume: 0.25
     pitch: 1
   - category: 
     id: Boss4BGM
     clip: {fileID: 8300000, guid: 3074cd5c88c7e1147b70f3975ecac2cd, type: 3}
-    volume: 0.4
+    volume: 0.32
     pitch: 1
   - category: 
     id: Boss5BGM
     clip: {fileID: 8300000, guid: 9f85842260f809147bf2610ea765a833, type: 3}
-    volume: 0.4
+    volume: 0.35
     pitch: 1
   - category: 
     id: CutSceneBGM
@@ -81,23 +81,23 @@ MonoBehaviour:
     pitch: 1
   - category: 
     id: Smash
-    clip: {fileID: 8300000, guid: c59050661a90f324f9192a216818aaee, type: 3}
-    volume: 1
+    clip: {fileID: 8300000, guid: 7b8bab61d2753cd45a5e96886c053330, type: 3}
+    volume: 0.4
     pitch: 1
   - category: player
     id: Parry
     clip: {fileID: 8300000, guid: a7b5484457b61014a969a441149ff983, type: 3}
-    volume: 0.4
+    volume: 0.3
     pitch: 1
   - category: player
     id: Parry2
     clip: {fileID: 8300000, guid: 4e2cf921ceeb65542967dbebbcb49ab6, type: 3}
-    volume: 0.4
+    volume: 0.3
     pitch: 1
   - category: 
     id: Execute
     clip: {fileID: 8300000, guid: d2ffabf555379fc4c86b944eaee93fd7, type: 3}
-    volume: 1
+    volume: 1.2
     pitch: 1
   - category: player
     id: BulletRestore
@@ -116,13 +116,13 @@ MonoBehaviour:
     pitch: 1
   - category: 
     id: BossNormalShot
-    clip: {fileID: 8300000, guid: 559498c9b51d99147807b9dbc578b667, type: 3}
-    volume: 1
+    clip: {fileID: 8300000, guid: bde793b1b553d854a82fe792c8e5b44c, type: 3}
+    volume: 0.6
     pitch: 1
   - category: 
     id: BossSpecialShot
-    clip: {fileID: 8300000, guid: 780479ec4253a044eb37e3f86492190f, type: 3}
-    volume: 1
+    clip: {fileID: 8300000, guid: d3ea3e80afcaa91499f522a6e6d5a537, type: 3}
+    volume: 0.7
     pitch: 1
   - category: 
     id: BossRoar
@@ -132,7 +132,7 @@ MonoBehaviour:
   - category: 
     id: BossBomb
     clip: {fileID: 8300000, guid: 9fd66177952355d478e20c35859671b7, type: 3}
-    volume: 1
+    volume: 2
     pitch: 1
   - category: player
     id: PlayerDash
@@ -172,7 +172,7 @@ MonoBehaviour:
   - category: player
     id: SniperFire
     clip: {fileID: 8300000, guid: 7afa8a11019361b44b74e62d742bce47, type: 3}
-    volume: 1
+    volume: 0.75
     pitch: 1
   - category: player
     id: SniperCharge
@@ -186,13 +186,13 @@ MonoBehaviour:
     pitch: 1
   - category: 
     id: DaggerThrow
-    clip: {fileID: 8300000, guid: 05704e0548fe901479246945a74739c8, type: 3}
-    volume: 1
+    clip: {fileID: 8300000, guid: bad9eaa0f1ceade488525e2d4420530f, type: 3}
+    volume: 1.2
     pitch: 1.2
   - category: 
     id: AssassinDash
-    clip: {fileID: 8300000, guid: de8d2031831e2fe4a83ba5afad6fa465, type: 3}
-    volume: 1
+    clip: {fileID: 8300000, guid: 04155b3b5a0993e43b662e32eef38b13, type: 3}
+    volume: 1.15
     pitch: 1
   - category: ui
     id: UI_Swoosh
@@ -262,7 +262,7 @@ MonoBehaviour:
   - category: hacker
     id: ChargeDash
     clip: {fileID: 8300000, guid: 58edf30634b007b44813530d758d09fe, type: 3}
-    volume: 1
+    volume: 2
     pitch: 1
   - category: hacker
     id: OrbitSweep
@@ -297,17 +297,17 @@ MonoBehaviour:
   - category: hacker
     id: BeforeAttack
     clip: {fileID: 8300000, guid: 03e842b0dd7f4ab4182f377a11c31048, type: 3}
-    volume: 0.4
+    volume: 0.65
     pitch: 1
   - category: hacker
     id: SnipierShot
     clip: {fileID: 8300000, guid: 4496c12e850e1ad45b18567e553243ee, type: 3}
-    volume: 1.5
+    volume: 1.35
     pitch: 1
   - category: 
     id: PutTurret
     clip: {fileID: 8300000, guid: 8c81638946286f1439105b70399cf953, type: 3}
-    volume: 1
+    volume: 1.2
     pitch: 1
   - category: ui
     id: Victory
@@ -421,8 +421,8 @@ MonoBehaviour:
     pitch: 1
   - category: boss
     id: Boss_CreateParrySuppressionBait
-    clip: {fileID: 8300000, guid: 472bd6e561d2c574cb2140c11a779382, type: 3}
-    volume: 2
+    clip: {fileID: 8300000, guid: 03e842b0dd7f4ab4182f377a11c31048, type: 3}
+    volume: 1.2
     pitch: 1
   - category: boss
     id: Boss_Step
@@ -462,7 +462,7 @@ MonoBehaviour:
   - category: hog
     id: Hog_Death
     clip: {fileID: 8300000, guid: d352e99062fa8854ca95716dcf6ec3ce, type: 3}
-    volume: 1
+    volume: 2
     pitch: 1
   - category: muscle
     id: Muscle_LineFire
@@ -477,22 +477,22 @@ MonoBehaviour:
   - category: conductor
     id: Conductor_Draw
     clip: {fileID: 8300000, guid: fd62a92e6384f9f48a162696207e977c, type: 3}
-    volume: 1
+    volume: 0.8
     pitch: 1
   - category: conductor
     id: Conductor_DrawComplete
     clip: {fileID: 8300000, guid: 0b298c99fa348564aba438f47d89bcdd, type: 3}
-    volume: 1
+    volume: 0.8
     pitch: 1
   - category: conductor
     id: Conductor_DroneIdle
     clip: {fileID: 8300000, guid: 08ecc4824eae1c748bf7ed795abfd645, type: 3}
-    volume: 1.35
+    volume: 1
     pitch: 1
   - category: conductor
     id: Conductor_PlaceStaff
     clip: {fileID: 8300000, guid: 48fd8d7575ac495489296a8a964bd2f5, type: 3}
-    volume: 1.7
+    volume: 1.5
     pitch: 1
   - category: conductor
     id: Conductor_Death
@@ -502,62 +502,62 @@ MonoBehaviour:
   - category: assassin
     id: Assassin_Stealth
     clip: {fileID: 8300000, guid: 3fe2942467c7317439bd968863ffaa70, type: 3}
-    volume: 1.5
+    volume: 0.75
     pitch: 1
   - category: assassin
     id: Assassin_Mine
     clip: {fileID: 8300000, guid: f48508d27d688424b8f7f8ec1730931c, type: 3}
-    volume: 1
+    volume: 0.7
     pitch: 1
   - category: hacker
     id: Hacker_Walk
     clip: {fileID: 8300000, guid: a5f9a21248b447845a20d6110bc01819, type: 3}
-    volume: 1
+    volume: 2
     pitch: 1
   - category: hacker
     id: Hacker_Slash
     clip: {fileID: 8300000, guid: 2a6fc9c4132dad444899620c64e79a0c, type: 3}
-    volume: 1
+    volume: 1.15
     pitch: 1
   - category: hacker
     id: Hacker_Lift
     clip: {fileID: 8300000, guid: ffc0b784f5c67a0458d4564027d5bbe4, type: 3}
-    volume: 1
+    volume: 1.15
     pitch: 1
   - category: hacker
     id: Hacker_Slam
     clip: {fileID: 8300000, guid: 4cff12d183d93b648b3463e6f59688d4, type: 3}
-    volume: 1
+    volume: 1.15
     pitch: 1
   - category: hacker
     id: Hacker_SlashMiss
     clip: {fileID: 8300000, guid: e588a3d942674ec4d95952d6529442a0, type: 3}
-    volume: 1
+    volume: 0.9
     pitch: 1
   - category: hacker
     id: Hacker_SnipierCharge
     clip: {fileID: 8300000, guid: da734c478590b524d9d92240a0a466b1, type: 3}
-    volume: 1
+    volume: 2
     pitch: 1
   - category: hacker
     id: Hacker_ChargeDash
     clip: {fileID: 8300000, guid: 58edf30634b007b44813530d758d09fe, type: 3}
-    volume: 1
+    volume: 2
     pitch: 1
   - category: hacker
     id: Hacker_DropWeapon
     clip: {fileID: 8300000, guid: 8c81638946286f1439105b70399cf953, type: 3}
-    volume: 1
+    volume: 1.5
     pitch: 1
   - category: hacker
     id: Hacker_OrbitSweep
     clip: {fileID: 8300000, guid: 64a1903b809a69844b3d7384395c1b89, type: 3}
-    volume: 1
+    volume: 1.7
     pitch: 1
   - category: hacker
     id: Hacker_WireNode
     clip: {fileID: 8300000, guid: e3614e6befde7e646b9077d3ffc53548, type: 3}
-    volume: 0.8
+    volume: 1.7
     pitch: 2
   - category: assassin
     id: Assassin_Death
@@ -567,17 +567,17 @@ MonoBehaviour:
   - category: hacker
     id: Hacker_SnipierCharge_1
     clip: {fileID: 8300000, guid: da734c478590b524d9d92240a0a466b1, type: 3}
-    volume: 1
+    volume: 2
     pitch: 1
   - category: hacker
     id: Hacker_SnipierCharge_1-5
     clip: {fileID: 8300000, guid: 271cf927acb5154479425f6a5832e633, type: 3}
-    volume: 1
+    volume: 2
     pitch: 1
   - category: hacker
     id: Hacker_SnipierCharge_3-35
     clip: {fileID: 8300000, guid: 7e273811d40d5bb48bfd9089306372b3, type: 3}
-    volume: 1
+    volume: 2
     pitch: 1
   - category: player
     id: execute_charge_hacker
@@ -597,5 +597,5 @@ MonoBehaviour:
   - category: hacker
     id: Hacker_Death
     clip: {fileID: 8300000, guid: 27f3f7674a9460c4eb20746333b91f2b, type: 3}
-    volume: 1.15
+    volume: 2
     pitch: 1
