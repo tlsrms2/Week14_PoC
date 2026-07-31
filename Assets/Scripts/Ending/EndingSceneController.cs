@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
+using Week14.Audio;
 using Week14.Cutscene;
+using Week14.Enemy;
 using Week14.GameFlow;
 using Week14.Save;
 
@@ -19,6 +21,12 @@ namespace Week14.Ending
 
         [Header("Outro")]
         [SerializeField] private EndingOutroSequence outroSequence;
+
+        [Header("Audio")]
+        [Tooltip("크레딧이 시작될 때 재생할 SoundLibrary BGM ID입니다. 비워두면 현재 BGM을 유지합니다.")]
+        [BossGraphBgmId]
+        [SerializeField] private string creditBgmId = "Credit BGM";
+        [SerializeField, Min(0f)] private float creditBgmFadeSeconds = 1f;
 
         [Header("Navigation")]
         [SerializeField] private bool returnToTitleAfterCredits = true;
@@ -47,6 +55,11 @@ namespace Week14.Ending
 
         private void ShowOutro()
         {
+            if (!string.IsNullOrWhiteSpace(creditBgmId))
+            {
+                SoundManager.PlayBgm(creditBgmId, creditBgmFadeSeconds);
+            }
+
             if (markEndingSeen)
             {
                 GameSaveManager.MarkEndingSeen();
