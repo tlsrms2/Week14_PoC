@@ -10,6 +10,7 @@ namespace Week14.Combat
     {
         private const string FinalExecutionHeadName = "Head";
         private const string WallLayerName = "Wall";
+        private const string ExecutionImageSfxId = "Execute";
         private const float TeleportColliderInset = 0.02f;
         private const float TeleportFallbackMinStep = 0.25f;
         private const float TeleportFallbackColliderHeightRatio = 0.5f;
@@ -332,7 +333,6 @@ namespace Week14.Combat
             }
 
             commonPresentation.Trigger(CommonExecutionCuePoint.AfterLetterbox);
-            SoundManager.PlaySfx("Execute");
             if (!useBossExecutionSequence)
             {
                 context.ExecutionImage?.Play(
@@ -341,7 +341,8 @@ namespace Week14.Combat
                     + config.ExecutionShotDelaySeconds
                     + holsteringSeconds * 2f
                     + finalPresentationSeconds
-                    + config.ExecutionKillDelaySeconds);
+                    + config.ExecutionKillDelaySeconds,
+                    () => SoundManager.PlaySfx(ExecutionImageSfxId));
             }
 
             activeCamera?.PlayImpact(standDirection, 0.08f, 0.14f, 0.12f);

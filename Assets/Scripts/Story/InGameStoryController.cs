@@ -385,7 +385,21 @@ namespace Week14.Story
         {
             bool revealRequested = false;
             bool canAcceptAdvance = false;
-            PlayDialogueSfx(line.SfxId);
+            string dialogueSfxId =
+                DialogueSfxResolver.Resolve(line.SfxId, line.Speaker);
+            bool useTypingSfx = DialogueSfxResolver.IsTalkSfx(dialogueSfxId);
+            if (!useTypingSfx)
+            {
+                PlayDialogueSfx(dialogueSfxId);
+            }
+            Action<char> onCharacterRevealed = null;
+            if (useTypingSfx)
+            {
+                onCharacterRevealed = character =>
+                    DialogueSfxResolver.PlayTypingSfx(
+                        dialogueSfxId,
+                        character);
+            }
 
             string speaker = line.HasLocalizedSpeaker ? line.LocalizedSpeaker.GetLocalizedString() : line.Speaker;
             string text = line.HasLocalizedText ? line.LocalizedText.GetLocalizedString() : line.Text;
@@ -400,7 +414,8 @@ namespace Week14.Story
             IEnumerator typing = dialoguePanel.PlayTypewriter(
                 text,
                 () => revealRequested || skipRequested,
-                () => skipRequested);
+                () => skipRequested,
+                onCharacterRevealed);
 
             while (typing.MoveNext())
             {

@@ -254,7 +254,11 @@ namespace Week14.Tutorial
             SetDialogueText(FormatDialogue(text), visibleCharacters);
         }
 
-        public IEnumerator PlayTypewriter(string text, Func<bool> revealRequested = null, Func<bool> cancelRequested = null)
+        public IEnumerator PlayTypewriter(
+            string text,
+            Func<bool> revealRequested = null,
+            Func<bool> cancelRequested = null,
+            Action<char> onCharacterRevealed = null)
         {
             if (dialogueText == null)
             {
@@ -271,6 +275,7 @@ namespace Week14.Tutorial
 
             int totalCharacters = dialogueText.textInfo.characterCount;
             float visibleCharacters = 0f;
+            int revealedCharacterCount = 0;
             float speed = Mathf.Max(1f, charactersPerSecond);
             bool canceled = false;
             while (visibleCharacters < totalCharacters)
@@ -287,10 +292,17 @@ namespace Week14.Tutorial
                 }
 
                 visibleCharacters += Time.unscaledDeltaTime * speed;
-                dialogueText.maxVisibleCharacters = Mathf.Clamp(
+                int nextVisibleCharacterCount = Mathf.Clamp(
                     Mathf.CeilToInt(visibleCharacters),
                     0,
                     totalCharacters);
+                dialogueText.maxVisibleCharacters = nextVisibleCharacterCount;
+                DialogueTypewriterUtility.NotifyRevealedCharacters(
+                    dialogueText,
+                    revealedCharacterCount,
+                    nextVisibleCharacterCount,
+                    onCharacterRevealed);
+                revealedCharacterCount = nextVisibleCharacterCount;
                 yield return null;
             }
 

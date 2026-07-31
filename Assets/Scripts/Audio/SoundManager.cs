@@ -39,6 +39,8 @@ namespace Week14.Audio
         private readonly List<AudioSource> sfxSources = new();
         private readonly Dictionary<AudioSource, int> sfxPlaybackIds = new();
         private int nextSfxPlaybackId;
+        private int lastSfxPlaybackFrame = -1;
+        private string lastSfxId;
         private Coroutine bgmRoutine;
         private string currentBgmId;
         private float currentBgmEntryVolume = 1f;
@@ -49,6 +51,12 @@ namespace Week14.Audio
         public static float SfxVolume => instance != null ? instance.sfxVolume : 0.7f;
         public static bool IsBgmMuted => instance != null && instance.bgmMuted;
         public static bool IsSfxMuted => instance != null && instance.sfxMuted;
+        public static bool WasSfxPlayedThisFrame(string id)
+        {
+            return instance != null
+                && instance.lastSfxPlaybackFrame == Time.frameCount
+                && string.Equals(instance.lastSfxId, id, System.StringComparison.Ordinal);
+        }
 
         private void Awake()
         {
@@ -143,7 +151,10 @@ namespace Week14.Audio
                 return;
             }
 
-            instance.PlaySfxInternal(entry.Clip, entry.Volume, entry.Pitch);
+            if (instance.PlaySfxInternal(entry.Clip, entry.Volume, entry.Pitch) != null)
+            {
+                instance.RecordSfxPlayback(id);
+            }
         }
 
         public static void PlaySfx(string id, float pitch)
@@ -160,7 +171,10 @@ namespace Week14.Audio
                 return;
             }
 
-            instance.PlaySfxInternal(entry.Clip, entry.Volume, pitch);
+            if (instance.PlaySfxInternal(entry.Clip, entry.Volume, pitch) != null)
+            {
+                instance.RecordSfxPlayback(id);
+            }
         }
 
         public static void PlaySfx(AudioClip clip, float volume = 1f, float pitch = 1f)
@@ -204,6 +218,7 @@ namespace Week14.Audio
                 return null;
             }
 
+            instance.RecordSfxPlayback(id);
             return new SfxPlaybackHandle(source, playbackId);
         }
 
@@ -417,6 +432,12 @@ namespace Week14.Audio
             sfxPlaybackIds[source] = nextSfxPlaybackId;
             source.Play();
             return source;
+        }
+
+        private void RecordSfxPlayback(string id)
+        {
+            lastSfxPlaybackFrame = Time.frameCount;
+            lastSfxId = id;
         }
 
         private AudioSource GetAvailableSfxSource()

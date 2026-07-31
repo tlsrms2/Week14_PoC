@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -714,7 +715,21 @@ namespace Week14.Tutorial
             string text = ResolveDialogueText(line);
             bool revealRequested = false;
             bool canAcceptAdvance = false;
-            PlaySfx(line.SfxId);
+            string dialogueSfxId =
+                DialogueSfxResolver.Resolve(line.SfxId, line.Speaker);
+            bool useTypingSfx = DialogueSfxResolver.IsTalkSfx(dialogueSfxId);
+            if (!useTypingSfx)
+            {
+                PlaySfx(dialogueSfxId);
+            }
+            Action<char> onCharacterRevealed = null;
+            if (useTypingSfx)
+            {
+                onCharacterRevealed = character =>
+                    DialogueSfxResolver.PlayTypingSfx(
+                        dialogueSfxId,
+                        character);
+            }
             textDialoguePanel.ShowLine(
                 speaker,
                 text,
@@ -724,7 +739,9 @@ namespace Week14.Tutorial
                 line.ClearPortraitsBeforeLine);
             IEnumerator typing = textDialoguePanel.PlayTypewriter(
                 text,
-                () => revealRequested || currentTextDialogueRevealRequestedByLocale);
+                () => revealRequested || currentTextDialogueRevealRequestedByLocale,
+                null,
+                onCharacterRevealed);
             while (typing.MoveNext())
             {
                 if (canAcceptAdvance && AdvancePressed())

@@ -422,12 +422,30 @@ namespace Week14.Cutscene
             advanceRequested = false;
             revealRequested = false;
             isTyping = true;
-            PlayDialogueSfx(dialogue.SfxId);
+            string dialogueSfxId =
+                DialogueSfxResolver.Resolve(dialogue.SfxId, dialogue.Name);
+            bool useTypingSfx = DialogueSfxResolver.IsTalkSfx(dialogueSfxId);
+            if (!useTypingSfx)
+            {
+                PlayDialogueSfx(dialogueSfxId);
+            }
+            Action<char> onCharacterRevealed = null;
+            if (useTypingSfx)
+            {
+                onCharacterRevealed = character =>
+                    DialogueSfxResolver.PlayTypingSfx(
+                        dialogueSfxId,
+                        character);
+            }
 
             string speakerName = dialogue.HasLocalizedName ? dialogue.LocalizedName.GetLocalizedString() : dialogue.Name;
             string dialogueText = dialogue.HasLocalizedText ? dialogue.LocalizedText.GetLocalizedString() : dialogue.Text;
             dialoguePanelView?.ShowLine(speakerName, dialogueText);
-            yield return dialoguePanelView?.PlayTypewriter(dialogueText, () => revealRequested || skipRequested || skipSectionRequested, () => skipRequested || skipSectionRequested);
+            yield return dialoguePanelView?.PlayTypewriter(
+                dialogueText,
+                () => revealRequested || skipRequested || skipSectionRequested,
+                () => skipRequested || skipSectionRequested,
+                onCharacterRevealed);
             isTyping = false;
             revealRequested = false;
             advanceRequested = false;
