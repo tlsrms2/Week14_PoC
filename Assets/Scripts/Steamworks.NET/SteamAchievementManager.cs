@@ -90,12 +90,15 @@ public class SteamAchievementManager : MonoBehaviour
             return;
         }
 
-        int achieved = GameSaveManager.GetCompletedChallengeCount(bossId);
-
-        if (achieved == 1)
+        // "첫 클리어" 업적은 챌린지 완료 개수(achieved==1)가 아니라, 실제로 보스를 처치하는
+        // BossClear 챌린지가 완료됐는지로 판단한다. ParryCount/DestroyObjectCount/PhaseReach처럼
+        // 승리 없이도 완료되는 챌린지가 먼저 끝나면 achieved==1이 보스를 이기기도 전에 찍힐 수 있어서다.
+        if (IsBossClearChallengeCompleted(bossId, group))
         {
             TryUnlock(group.FirstClearAchievementId);
         }
+
+        int achieved = GameSaveManager.GetCompletedChallengeCount(bossId);
 
         if (group.CheckpointChallengeCount > 0 && achieved == group.CheckpointChallengeCount)
         {
@@ -106,6 +109,24 @@ public class SteamAchievementManager : MonoBehaviour
         {
             TryUnlock(group.AllClearAchievementId);
         }
+    }
+
+    private static bool IsBossClearChallengeCompleted(string bossId, BossChallengeGroup group)
+    {
+        IReadOnlyList<ChallengeDefinitionSO> challenges = group.Challenges;
+        for (int i = 0; i < challenges.Count; i++)
+        {
+            ChallengeDefinitionSO definition = challenges[i];
+            if (definition == null || definition.Kind != ChallengeType.BossClear)
+            {
+                continue;
+            }
+
+            string saveKey = GameSaveManager.BuildChallengeSaveKey(bossId, definition.ChallengeId);
+            return GameSaveManager.IsChallengeCompleted(saveKey);
+        }
+
+        return false;
     }
 
     // 총기/액티브 스킬/패시브 스킬 구매는 전부 이 이벤트 하나로 통지됨(어떤 아이템인지는 구분하지 않음).
