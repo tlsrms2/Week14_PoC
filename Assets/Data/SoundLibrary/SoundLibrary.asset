@@ -187,12 +187,12 @@ MonoBehaviour:
   - category: 
     id: DaggerThrow
     clip: {fileID: 8300000, guid: 05704e0548fe901479246945a74739c8, type: 3}
-    volume: 1
+    volume: 2
     pitch: 1.2
   - category: 
     id: AssassinDash
     clip: {fileID: 8300000, guid: de8d2031831e2fe4a83ba5afad6fa465, type: 3}
-    volume: 1
+    volume: 2
     pitch: 1
   - category: ui
     id: UI_Swoosh

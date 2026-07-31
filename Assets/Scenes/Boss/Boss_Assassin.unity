@@ -3650,7 +3650,6 @@ MonoBehaviour:
   executionImageSeconds: 3.5
   executionImageSfxId: 
   aimChargeSeconds: 2
-  aimChargeSfxId: 
   wideCameraFocusWeight: 1
   wideCameraZoomMultiplier: 0.82
   wideCameraBlendSmoothTime: 0.2
