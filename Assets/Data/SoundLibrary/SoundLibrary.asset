@@ -367,8 +367,8 @@ MonoBehaviour:
   - category: ui
     id: ButtonClick
     clip: {fileID: 8300000, guid: 7025b9d8557b9ff419f51cb6fc23c641, type: 3}
-    volume: 2
-    pitch: 1
+    volume: 1.4
+    pitch: 0.85
   - category: dialogue
     id: TalkERIS
     clip: {fileID: 8300000, guid: 61361352f826a6846be968f7279a65b9, type: 3}
