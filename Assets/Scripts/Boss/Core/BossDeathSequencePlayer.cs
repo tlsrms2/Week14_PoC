@@ -34,6 +34,7 @@ namespace Week14.Enemy
                 }
             }
 
+            boss.PrepareFinalDeathAnimationForSequence();
             boss.PlayPostExplosionDeathSfxForSequence();
             yield return PlayDeathAnimation(boss);
         }

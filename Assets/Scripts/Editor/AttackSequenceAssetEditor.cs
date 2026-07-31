@@ -482,7 +482,7 @@ internal static class BossGraphActionEditorUtility
 
         if (actionType == typeof(PlaySfxAction))
         {
-            return "지정한 SFX를 즉시 재생합니다.";
+            return "지정한 일회성 SFX를 즉시 재생하며, 직후 패턴이 끝나도 재생을 유지합니다.";
         }
 
         if (actionType == typeof(ConductorConductingCueAction))

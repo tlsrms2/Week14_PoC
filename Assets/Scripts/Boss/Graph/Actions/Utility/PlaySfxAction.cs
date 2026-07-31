@@ -11,7 +11,7 @@ namespace Week14.Enemy
 
         public override IEnumerator Execute(BossActionContext context)
         {
-            context?.PlaySfx(sfxId);
+            context?.PlayOneShotSfx(sfxId);
             yield break;
         }
     }

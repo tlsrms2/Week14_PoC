@@ -172,6 +172,13 @@ namespace Week14.Enemy
         private bool executionMeleeReleaseRequested;
         private bool executionWeaponSweepActive;
         private bool executionBlackoutVisualActive;
+        private Animator executionStunHoldAnimator;
+        private float executionStunHoldAnimatorSpeed;
+        private int executionStunSourceStateHash;
+        private int executionStunStateHash;
+        private bool executionStunHoldActive;
+        private bool executionStunStateObserved;
+        private float executionStunLastNormalizedTime;
         private Vector3 hackerShadowBaseLocalPosition;
         private Vector3 hackerShadowBaseLocalScale;
         private Vector3 hackerShadowStretchBaseLocalPosition;
@@ -307,11 +314,13 @@ namespace Week14.Enemy
             }
 
             TickOneWeaponVisualSwitch();
+            TickExecutionStunHold();
             OnIdleHackerLateUpdate();
         }
 
         protected override void OnBossDied()
         {
+            EndExecutionStunHold();
             StopWalkSfx();
             ApplyWalkState(false, true);
             HackerWireNodeProjectile.ClearAttachedNodes(this);
@@ -323,6 +332,11 @@ namespace Week14.Enemy
         protected override void OnExecutionLockChanged(bool locked)
         {
             base.OnExecutionLockChanged(locked);
+            if (!locked)
+            {
+                EndExecutionStunHold();
+            }
+
             if (locked && CurrentLives <= 1)
             {
                 DestroyHologram();
@@ -404,6 +418,7 @@ namespace Week14.Enemy
 
         protected override void OnDisable()
         {
+            EndExecutionStunHold();
             CancelPatternParryRewardTracking();
             CancelOneWeaponVisualSwitch();
 
@@ -1385,6 +1400,31 @@ namespace Week14.Enemy
             executionBlackoutVisualActive = active;
         }
 
+        internal void BeginExecutionStunHold()
+        {
+            EndExecutionStunHold();
+
+            Animator animator = ResolveActiveHackerAnimator();
+            if (animator == null || !animator.isActiveAndEnabled)
+            {
+                PlayGroggyStunVisual();
+                return;
+            }
+
+            executionStunHoldAnimator = animator;
+            executionStunHoldAnimatorSpeed = animator.speed;
+            executionStunSourceStateHash =
+                animator.GetCurrentAnimatorStateInfo(0).fullPathHash;
+            executionStunStateHash = 0;
+            executionStunStateObserved = false;
+            executionStunLastNormalizedTime = 0f;
+            executionStunHoldActive = true;
+
+            PlayGroggyStunVisual();
+            animator.Update(0f);
+            TryCaptureExecutionStunState();
+        }
+
         internal void PrepareExecutionCinematicAnimation()
         {
             ClearGroggyVisualForCinematic();
@@ -1426,11 +1466,135 @@ namespace Week14.Enemy
             ClearRuntimeCombatEffects();
             ApplyWalkState(false, true);
             if (playGroggyVisual
+                && !executionStunHoldActive
                 && Health != null
                 && !Health.IsDead)
             {
                 PlayGroggyStunVisual();
             }
+        }
+
+        protected override void OnFinalDeathAnimationStarting()
+        {
+            EndExecutionStunHold();
+            base.OnFinalDeathAnimationStarting();
+        }
+
+        private void TickExecutionStunHold()
+        {
+            Animator animator = executionStunHoldAnimator;
+            if (!executionStunHoldActive
+                || animator == null
+                || !animator.isActiveAndEnabled)
+            {
+                return;
+            }
+
+            if (executionStunStateHash == 0)
+            {
+                TryCaptureExecutionStunState();
+                return;
+            }
+
+            AnimatorStateInfo current = animator.GetCurrentAnimatorStateInfo(0);
+            bool isCurrentStun =
+                current.fullPathHash == executionStunStateHash;
+            bool isTransitioning = animator.IsInTransition(0);
+            bool isNextStun = isTransitioning
+                && animator.GetNextAnimatorStateInfo(0).fullPathHash
+                    == executionStunStateHash;
+
+            if (isCurrentStun)
+            {
+                executionStunStateObserved = true;
+                executionStunLastNormalizedTime =
+                    Mathf.Clamp01(current.normalizedTime);
+                bool isLeavingStun = isTransitioning && !isNextStun;
+                if (isLeavingStun
+                    || (!current.loop && current.normalizedTime >= 0.95f))
+                {
+                    HoldExecutionStunFrame(
+                        Mathf.Max(
+                            0f,
+                            executionStunLastNormalizedTime - 0.02f));
+                }
+
+                return;
+            }
+
+            if (!isNextStun)
+            {
+                HoldExecutionStunFrame(
+                    executionStunStateObserved
+                        ? Mathf.Max(
+                            0f,
+                            executionStunLastNormalizedTime - 0.02f)
+                        : 0f);
+            }
+        }
+
+        private void TryCaptureExecutionStunState()
+        {
+            Animator animator = executionStunHoldAnimator;
+            if (animator == null || !animator.isActiveAndEnabled)
+            {
+                return;
+            }
+
+            if (animator.IsInTransition(0))
+            {
+                int nextStateHash =
+                    animator.GetNextAnimatorStateInfo(0).fullPathHash;
+                if (nextStateHash != 0
+                    && nextStateHash != executionStunSourceStateHash)
+                {
+                    executionStunStateHash = nextStateHash;
+                    return;
+                }
+            }
+
+            int currentStateHash =
+                animator.GetCurrentAnimatorStateInfo(0).fullPathHash;
+            if (currentStateHash != 0
+                && currentStateHash != executionStunSourceStateHash)
+            {
+                executionStunStateHash = currentStateHash;
+            }
+        }
+
+        private void HoldExecutionStunFrame(float normalizedTime)
+        {
+            Animator animator = executionStunHoldAnimator;
+            if (animator == null
+                || !animator.isActiveAndEnabled
+                || executionStunStateHash == 0)
+            {
+                return;
+            }
+
+            animator.Play(
+                executionStunStateHash,
+                0,
+                Mathf.Clamp01(normalizedTime));
+            animator.Update(0f);
+            animator.speed = 0f;
+        }
+
+        private void EndExecutionStunHold()
+        {
+            if (executionStunHoldAnimator != null)
+            {
+                executionStunHoldAnimator.speed =
+                    executionStunHoldAnimatorSpeed;
+            }
+
+            executionStunHoldAnimator = null;
+            executionStunHoldAnimatorSpeed = 0f;
+            executionStunSourceStateHash = 0;
+            executionStunStateHash = 0;
+            executionStunHoldActive = false;
+            executionStunStateObserved = false;
+            executionStunLastNormalizedTime = 0f;
         }
 
         private void ApplyHorizontalFacing(float horizontalDirection, bool ignoreFacingLock)
