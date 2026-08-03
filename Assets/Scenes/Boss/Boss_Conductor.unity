@@ -2677,7 +2677,6 @@ MonoBehaviour:
   staffLineViewportEnd: 1.1
   preParrySfxId: 
   aimChargeSeconds: 1.75
-  aimChargeSfxId: 
   finalPositionMoveSeconds: 0.25
   wideCameraFocusWeight: 1
   wideCameraZoomMultiplier: 0.72

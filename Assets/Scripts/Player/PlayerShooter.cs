@@ -421,9 +421,13 @@ namespace Week14.Combat
             float beamEffectSeconds;
             if (beamPrefab != null)
             {
+                // 부모를 총구(fireOrigin)가 아닌 플레이어 루트(PlayerTransform)로 붙입니다.
+                // 총구는 VisualRoot(몸통 스프라이트) 하위라서, 구르기 스핀 연출(PlayerVisualRig.RollSpinRoutine이
+                // VisualRoot.localRotation을 360도 돌리는 것) 같은 몸통 전용 애니메이션에도 같이 끌려가 버립니다.
+                // 루트는 그런 코스메틱 회전의 영향을 받지 않으면서, 대시로 실제 위치가 바뀌는 건 그대로 따라옵니다.
                 ProjectileVfx.PlayAnchoredBeamPrefab(
                     beamPrefab,
-                    fireOrigin,
+                    context.PlayerTransform,
                     origin,
                     direction,
                     beamLength,
@@ -440,8 +444,8 @@ namespace Week14.Combat
                 beamEffectSeconds = beamVisualSeconds;
             }
 
-            // 조준 고정을 레이저 이펙트가 화면에서 사라질 때까지 유지합니다. 빔이 총구(=몸통의 자식)에
-            // 붙어 있으므로, 몸통 반전/페이싱까지 같이 묶어야 빔이 뒤틀리지 않습니다.
+            // 조준 고정을 레이저 이펙트가 화면에서 사라질 때까지 유지해, 발사 자세(몸통/팔 방향)가
+            // 마우스를 따라가며 흐트러지지 않게 합니다.
             aimController.LockLeftGunAim(direction, beamEffectSeconds, lockBodyToo: true);
 
             GameObject muzzleFlashPrefab = vfxSettings?.ResolveMuzzleFlashPrefab(spentAmmo);

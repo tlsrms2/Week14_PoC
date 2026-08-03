@@ -4393,7 +4393,6 @@ MonoBehaviour:
   parryCameraZoomMultiplier: 0.42
   parryCameraBlendSmoothTime: 0.08
   aimChargeSeconds: 1.7
-  aimChargeSfxId: 
   finalDashAnimationBoolName: isCharge
   wideCameraFocusWeight: 1
   wideCameraZoomMultiplier: 0.72
