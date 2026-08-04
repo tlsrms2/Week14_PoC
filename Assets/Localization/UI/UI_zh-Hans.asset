@@ -235,6 +235,10 @@ MonoBehaviour:
     m_Localized: "\u5B8C\u6210"
     m_Metadata:
       m_Items: []
+  - m_Id: 12413370675593216
+    m_Localized: "BOSS\u8FDE\u6218"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

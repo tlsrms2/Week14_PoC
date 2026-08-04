@@ -261,6 +261,10 @@ MonoBehaviour:
     m_Localized: Done
     m_Metadata:
       m_Items: []
+  - m_Id: 12413370675593216
+    m_Localized: Boss Rush
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

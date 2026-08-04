@@ -123,7 +123,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 20260804000001
-    m_Localized: "マウス感度"
+    m_Localized: "\u30DE\u30A6\u30B9\u611F\u5EA6"
     m_Metadata:
       m_Items: []
   - m_Id: 8731268608262144
@@ -233,6 +233,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 10819947564728320
     m_Localized: "\u5B8C\u4E86"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12413370675593216
+    m_Localized: "\u30DC\u30B9\u30E9\u30C3\u30B7\u30E5"
     m_Metadata:
       m_Items: []
   references:

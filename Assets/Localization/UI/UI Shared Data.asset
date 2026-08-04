@@ -225,6 +225,10 @@ MonoBehaviour:
     m_Key: ui.language.done
     m_Metadata:
       m_Items: []
+  - m_Id: 12413370675593216
+    m_Key: ui.bossrush
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
