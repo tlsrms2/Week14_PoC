@@ -5800,6 +5800,7 @@ MonoBehaviour:
   cloneMinSeparationDistance: 5
   cloneMinDistanceFromPlayer: 5
   walkVelocityThreshold: 0.01
+  groggyFreezeNormalizedTime: 0.4
 --- !u!222 &9038100456042900135
 CanvasRenderer:
   m_ObjectHideFlags: 0
