@@ -68,6 +68,11 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 11ccff135d92e9f41aa315a318d76d17, type: 3}
     volume: 0.7
     pitch: 1
+  - category: 
+    id: BossRushBGM
+    clip: {fileID: 8300000, guid: 28688890ea4eb2042b5ef41a9ecf283f, type: 3}
+    volume: 0.55
+    pitch: 1
   sfxEntries:
   - category: player
     id: PlayerShot

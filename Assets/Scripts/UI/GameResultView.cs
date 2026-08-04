@@ -30,6 +30,22 @@ namespace Week14.UI
         [FormerlySerializedAs("titleButton")]
         [SerializeField] private Button gameOverLobbyButton;
 
+        [Header("Boss Rush Game Over")]
+        [Tooltip("보스러시에서 사망했을 때 챌린지 없이 표시할 전용 패널입니다.")]
+        [SerializeField] private GameObject bossRushGameOverRoot;
+        [SerializeField] private Button bossRushRestartButton;
+        [SerializeField] private Button bossRushLobbyButton;
+        [SerializeField] private TMP_Text bossRushGameOverRecordText;
+        [SerializeField] private TMP_Text bossRushGameOverNewRecordText;
+
+        [Header("Boss Rush Victory")]
+        [Tooltip("보스러시를 최종 클리어했을 때 표시할 전용 패널입니다.")]
+        [SerializeField] private GameObject bossRushVictoryRoot;
+        [SerializeField] private Button bossRushVictoryRestartButton;
+        [SerializeField] private Button bossRushVictoryLobbyButton;
+        [SerializeField] private TMP_Text bossRushVictoryRecordText;
+        [SerializeField] private TMP_Text bossRushVictoryNewRecordText;
+
         [Header("Victory")]
         [SerializeField] private GameObject victoryRoot;
         [SerializeField] private Button victoryRestartButton;
@@ -143,6 +159,16 @@ namespace Week14.UI
             restartButton ??= FindComponent<Button>("RestartButton");
             gameOverLobbyButton ??= FindComponentIn<Button>(gameOverRoot, "LobbyButton")
                 ?? FindComponent<Button>("GameOverLobbyButton");
+            bossRushGameOverRoot ??= FindGameObject("BossRushGameOverRoot");
+            bossRushRestartButton ??= FindComponentIn<Button>(bossRushGameOverRoot, "RestartButton");
+            bossRushLobbyButton ??= FindComponentIn<Button>(bossRushGameOverRoot, "LobbyButton");
+            bossRushGameOverRecordText ??= FindComponentIn<TMP_Text>(bossRushGameOverRoot, "RecordText");
+            bossRushGameOverNewRecordText ??= FindComponentIn<TMP_Text>(bossRushGameOverRoot, "NewRecordText");
+            bossRushVictoryRoot ??= FindGameObject("BossRushVictoryRoot");
+            bossRushVictoryRestartButton ??= FindComponentIn<Button>(bossRushVictoryRoot, "RestartButton");
+            bossRushVictoryLobbyButton ??= FindComponentIn<Button>(bossRushVictoryRoot, "LobbyButton");
+            bossRushVictoryRecordText ??= FindComponentIn<TMP_Text>(bossRushVictoryRoot, "RecordText");
+            bossRushVictoryNewRecordText ??= FindComponentIn<TMP_Text>(bossRushVictoryRoot, "NewRecordText");
             victoryRestartButton ??= FindComponentIn<Button>(victoryRoot, "RestartButton");
             victoryLobbyButton ??= FindComponentIn<Button>(victoryRoot, "LobbyButton")
                 ?? FindComponent<Button>("VictoryLobbyButton");
@@ -152,6 +178,10 @@ namespace Week14.UI
         {
             restartButton?.onClick.AddListener(RestartScene);
             gameOverLobbyButton?.onClick.AddListener(ReturnToLobby);
+            bossRushRestartButton?.onClick.AddListener(RestartScene);
+            bossRushLobbyButton?.onClick.AddListener(ReturnToLobby);
+            bossRushVictoryRestartButton?.onClick.AddListener(RestartScene);
+            bossRushVictoryLobbyButton?.onClick.AddListener(ReturnToLobby);
             victoryRestartButton?.onClick.AddListener(RestartScene);
             victoryLobbyButton?.onClick.AddListener(HandleVictoryLobbyButtonClicked);
         }
@@ -248,11 +278,29 @@ namespace Week14.UI
         private IEnumerator PlayPlayerDeathThenShowGameOver()
         {
             yield return PlayerDeathSequence.Play();
-            ShowGameOver();
+            if (BossRushController.IsRunning)
+            {
+                ShowBossRushGameOver();
+            }
+            else
+            {
+                ShowGameOver();
+            }
         }
 
         private void HandleBossDefeated(BossAI boss)
         {
+            if (BossRushController.ShouldSuppressVictoryResult)
+            {
+                return;
+            }
+
+            if (BossRushController.HasRunContext)
+            {
+                ShowBossRushVictory();
+                return;
+            }
+
             ShowVictory(boss);
         }
 
@@ -288,6 +336,64 @@ namespace Week14.UI
             }
         }
 
+        private void ShowBossRushGameOver()
+        {
+            GameObject targetRoot = bossRushGameOverRoot != null
+                ? bossRushGameOverRoot
+                : gameOverRoot;
+            Selectable focusTarget = bossRushRestartButton != null
+                ? bossRushRestartButton
+                : bossRushLobbyButton != null
+                    ? bossRushLobbyButton
+                    : restartButton;
+
+            SetBossRushRecord(
+                bossRushGameOverRecordText,
+                bossRushGameOverNewRecordText,
+                showNewRecord: false);
+            HideResultButtonsFor(targetRoot);
+            ShowResult(targetRoot, focusTarget, null);
+            PlayResultSfx(defeatSfxId, DefaultDefeatSfxId);
+            RevealResultButtons();
+        }
+
+        private void ShowBossRushVictory()
+        {
+            GameObject targetRoot = bossRushVictoryRoot != null
+                ? bossRushVictoryRoot
+                : victoryRoot;
+            Selectable focusTarget = bossRushVictoryRestartButton != null
+                ? bossRushVictoryRestartButton
+                : bossRushVictoryLobbyButton != null
+                    ? bossRushVictoryLobbyButton
+                    : victoryRestartButton;
+
+            SetBossRushRecord(
+                bossRushVictoryRecordText,
+                bossRushVictoryNewRecordText,
+                BossRushController.LatestClearTimeWasNewRecord);
+            HideResultButtonsFor(targetRoot);
+            ShowResult(targetRoot, focusTarget, null);
+            PlayResultSfx(victorySfxId, DefaultVictorySfxId);
+            RevealResultButtons();
+        }
+
+        private static void SetBossRushRecord(
+            TMP_Text recordText,
+            TMP_Text newRecordText,
+            bool showNewRecord)
+        {
+            if (recordText != null)
+            {
+                recordText.text = BossRushController.FormatTime(BossRushController.ElapsedSeconds);
+            }
+
+            if (newRecordText != null)
+            {
+                newRecordText.gameObject.SetActive(showNewRecord);
+            }
+        }
+
         private BossAI FindCurrentBoss()
         {
             return cachedBoss;
@@ -297,6 +403,15 @@ namespace Week14.UI
         {
             if (text == null)
             {
+                return;
+            }
+
+            if (BossRushController.HasRunContext)
+            {
+                string bossRushTime = BossRushController.FormatTime(BossRushController.ElapsedSeconds);
+                text.text = showNewRecordPrefix && BossRushController.LatestClearTimeWasNewRecord
+                    ? NewRecordPrefix + bossRushTime
+                    : bossRushTime;
                 return;
             }
 
@@ -404,6 +519,16 @@ namespace Week14.UI
             {
                 SetButtonsActive(false, victoryRestartButton, victoryLobbyButton);
             }
+
+            if (targetRoot == bossRushGameOverRoot)
+            {
+                SetButtonsActive(false, bossRushRestartButton, bossRushLobbyButton);
+            }
+
+            if (targetRoot == bossRushVictoryRoot)
+            {
+                SetButtonsActive(false, bossRushVictoryRestartButton, bossRushVictoryLobbyButton);
+            }
         }
 
         // 챌린지 공개 연출이 끝난 뒤(연출 패널이 없으면 결과 화면이 뜨자마자) 재시작/로비 버튼을 등장시킵니다.
@@ -417,6 +542,16 @@ namespace Week14.UI
             if (victoryRoot != null && victoryRoot.activeSelf)
             {
                 SetButtonsActive(true, victoryRestartButton, victoryLobbyButton);
+            }
+
+            if (bossRushGameOverRoot != null && bossRushGameOverRoot.activeSelf)
+            {
+                SetButtonsActive(true, bossRushRestartButton, bossRushLobbyButton);
+            }
+
+            if (bossRushVictoryRoot != null && bossRushVictoryRoot.activeSelf)
+            {
+                SetButtonsActive(true, bossRushVictoryRestartButton, bossRushVictoryLobbyButton);
             }
 
             FocusSelectable(pendingFocusTarget);
@@ -459,6 +594,8 @@ namespace Week14.UI
 
             SetRootVisible(gameOverRoot, visible && activeRoot == gameOverRoot);
             SetRootVisible(victoryRoot, visible && activeRoot == victoryRoot);
+            SetRootVisible(bossRushGameOverRoot, visible && activeRoot == bossRushGameOverRoot);
+            SetRootVisible(bossRushVictoryRoot, visible && activeRoot == bossRushVictoryRoot);
 
             if (visible)
             {
@@ -561,6 +698,21 @@ namespace Week14.UI
             if (activeResultRoot != null && activeResultRoot == gameOverRoot)
             {
                 SetButtonsInteractable(interactable, restartButton, gameOverLobbyButton);
+                return;
+            }
+
+            if (activeResultRoot != null && activeResultRoot == bossRushGameOverRoot)
+            {
+                SetButtonsInteractable(interactable, bossRushRestartButton, bossRushLobbyButton);
+                return;
+            }
+
+            if (activeResultRoot != null && activeResultRoot == bossRushVictoryRoot)
+            {
+                SetButtonsInteractable(
+                    interactable,
+                    bossRushVictoryRestartButton,
+                    bossRushVictoryLobbyButton);
             }
         }
 

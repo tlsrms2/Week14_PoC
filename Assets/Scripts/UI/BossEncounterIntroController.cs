@@ -318,7 +318,9 @@ namespace Week14.UI
 
             locationName = nextLocationName ?? string.Empty;
             ResolveReferences();
-            playFullBossIntro = boss == null || !GameFlowController.ConsumeBossRestartEntry();
+            bool useShortIntro = GameFlowController.ConsumeBossRestartEntry()
+                || BossRushController.ShouldUseShortBossIntro;
+            playFullBossIntro = boss == null || !useShortIntro;
             skipRequested = false;
             SetSkipHintVisible(false);
             AcquireIntroControl();

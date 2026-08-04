@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using Week14.Analytics;
 using Week14.Combat;
 using Week14.Enemy;
+using Week14.GameFlow;
 using Week14.Save;
 
 namespace Week14.Challenge
@@ -145,6 +146,13 @@ namespace Week14.Challenge
         {
             if (boss != currentBoss || database == null)
             {
+                return;
+            }
+
+            if (BossRushController.IsDebugRun)
+            {
+                combatActive = false;
+                activeRuns.Clear();
                 return;
             }
 

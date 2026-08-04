@@ -7,6 +7,7 @@ using UnityEngine.Serialization;
 using Week14.Audio;
 using Week14.Bootstrap;
 using Week14.Combat;
+using Week14.GameFlow;
 using Week14.Save;
 using Week14.Skills;
 using Week14.UI;
@@ -345,7 +346,15 @@ namespace Week14.Enemy
                 return;
             }
 
-            bossElapsedTimeText.text = combatStartedCounted ? FormatCombatTime(CombatElapsedSeconds) : "--:--:--";
+            if (BossRushController.IsRunning)
+            {
+                bossElapsedTimeText.text = BossRushController.FormatTime(BossRushController.ElapsedSeconds);
+                return;
+            }
+
+            bossElapsedTimeText.text = combatStartedCounted
+                ? FormatCombatTime(CombatElapsedSeconds)
+                : "--:--:--";
         }
 
         public void PlayExecutionBarDrain()
@@ -426,6 +435,12 @@ namespace Week14.Enemy
             if (!IsCombatStarted)
             {
                 return false;
+            }
+
+            if (BossRushController.DebugOneHitBosses)
+            {
+                health.Kill();
+                return true;
             }
 
             if (IsHpEmpty)
@@ -1010,6 +1025,12 @@ namespace Week14.Enemy
 
         private void PlayConfiguredBgm()
         {
+            if (BossRushController.IsRunning)
+            {
+                BossRushController.EnsureBgmPlaying();
+                return;
+            }
+
             if (bossData != null && !string.IsNullOrWhiteSpace(bossData.BgmId))
             {
                 SoundManager.PlayBgm(bossData.BgmId, bossData.BgmFadeSeconds);
@@ -1637,7 +1658,10 @@ namespace Week14.Enemy
             FreezeCombatTimer();
             projectileTracker.DestroyAll();
             SetBossCombatUiVisible(false);
-            SoundManager.StopBgm();
+            if (!BossRushController.IsRunning)
+            {
+                SoundManager.StopBgm();
+            }
             PlayBossDeathSfx();
             if (bossLivesView != null)
             {
@@ -1658,7 +1682,8 @@ namespace Week14.Enemy
             }
 
             GameSaveManager.ClearBoss(bossData.Id);
-            latestClearTimeWasNewRecord = GameSaveManager.TrySetBestClearTime(bossData.Id, CombatElapsedSeconds);
+            latestClearTimeWasNewRecord = !BossRushController.IsDebugRun
+                && GameSaveManager.TrySetBestClearTime(bossData.Id, CombatElapsedSeconds);
 
             IReadOnlyList<string> unlocksBossIds = bossData.UnlocksBossIds;
             for (int i = 0; i < unlocksBossIds.Count; i++)

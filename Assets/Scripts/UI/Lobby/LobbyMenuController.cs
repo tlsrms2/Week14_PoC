@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Localization.Settings;
 using Week14.Audio;
 using Week14.Enemy;
+using Week14.GameFlow;
 using Week14.Save;
 
 namespace Week14.UI
@@ -261,7 +262,7 @@ namespace Week14.UI
         {
             UIBackStack.Remove(this);
 
-            if (!string.IsNullOrEmpty(lobbyBgmId))
+            if (!string.IsNullOrEmpty(lobbyBgmId) && !BossRushController.IsRunning)
             {
                 SoundManager.StopBgm();
             }

@@ -68,6 +68,7 @@ namespace Week14.GameFlow
 
         public static void StartGame()
         {
+            BossRushController.CancelRun();
             if (TryGetExistingInstance() is GameFlowController controller)
             {
                 controller.StartGameInternal();
@@ -76,6 +77,7 @@ namespace Week14.GameFlow
 
         public static void EnterBoss(BossData bossData)
         {
+            BossRushController.CancelRun();
             bossRestartEntryPending = false;
             if (TryGetExistingInstance() is GameFlowController controller)
             {
@@ -86,6 +88,11 @@ namespace Week14.GameFlow
         public static void RestartCurrentScene()
         {
             SoundManager.StopBgm();
+            if (BossRushController.HasRunContext && BossRushController.RestartRun())
+            {
+                return;
+            }
+
             bossRestartEntryPending = true;
             if (TryGetExistingInstance() is GameFlowController controller)
             {
@@ -105,6 +112,7 @@ namespace Week14.GameFlow
 
         public static void ReturnToLobby(string fallbackLobbySceneName)
         {
+            BossRushController.CancelRun();
             if (TryGetExistingInstance() is GameFlowController controller)
             {
                 controller.LoadSceneInternal(ResolveSceneName(fallbackLobbySceneName, controller.lobbySceneName));
@@ -127,6 +135,7 @@ namespace Week14.GameFlow
 
         public static void ReturnToTitle(string fallbackTitleSceneName)
         {
+            BossRushController.CancelRun();
             if (TryGetExistingInstance() is GameFlowController controller)
             {
                 controller.LoadSceneInternal(ResolveSceneName(fallbackTitleSceneName, controller.titleSceneName));
@@ -160,6 +169,7 @@ namespace Week14.GameFlow
 
         public static void EnterEnding()
         {
+            BossRushController.CancelRun();
             if (TryGetExistingInstance() is GameFlowController controller)
             {
                 controller.LoadSceneInternal(controller.endingSceneName);

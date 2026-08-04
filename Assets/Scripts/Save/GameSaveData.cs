@@ -48,5 +48,8 @@ namespace Week14.Save
         public List<string> purchasedSkillIds = new();
         public List<string> purchasedPassiveSkillIds = new();
         public List<string> purchasedWeaponIds = new();
+        public bool hasBossRushBestTime;
+        public float bossRushBestTime;
+        public bool hasAcknowledgedBossRushUnlock;
     }
 }
