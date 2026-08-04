@@ -6575,10 +6575,16 @@ MonoBehaviour:
   lobbyBgmId: LobbyBgm
   bossPanelContent: {fileID: 802724046}
   loadoutPanelContent: {fileID: 1993966536}
+  bossRushPanelContent: {fileID: 0}
   bossHoverHighlight: {fileID: 2083016464}
   bossHoverExtraObjects: []
   loadoutHoverHighlight: {fileID: 918100254}
   loadoutHoverExtraObjects: []
+  bossRushHoverHighlight: {fileID: 1502166708}
+  bossRushHoverExtraObjects: []
+  bossRushUnlockedObjects:
+  - {fileID: 1976695298}
+  bossRushHitArea: {fileID: 1676009707}
 --- !u!4 &424779774
 Transform:
   m_ObjectHideFlags: 0
@@ -14839,7 +14845,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1260742058
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16966,7 +16972,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1676009702}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fd61c5cd1a94aa89b1cd348d226cb33, type: 3}
   m_Name: 
@@ -16984,7 +16990,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
-  m_Delegates: []
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 424779773}
+          m_TargetAssemblyTypeName: Week14.UI.LobbyMenuController, Assembly-CSharp
+          m_MethodName: OnBossRushRootPointerEnter
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 424779773}
+          m_TargetAssemblyTypeName: Week14.UI.LobbyMenuController, Assembly-CSharp
+          m_MethodName: OnBossRushRootPointerExit
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 424779773}
+          m_TargetAssemblyTypeName: Week14.UI.LobbyMenuController, Assembly-CSharp
+          m_MethodName: OpenBossRushPanel
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &1676009706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16992,7 +17046,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1676009702}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 987f751cedbf6484f8d5eb2e3d7a85e2, type: 3}
   m_Name: 

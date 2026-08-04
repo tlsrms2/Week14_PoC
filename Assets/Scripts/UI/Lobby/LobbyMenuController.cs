@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Localization.Settings;
 using Week14.Audio;
 using Week14.Enemy;
+using Week14.Save;
 
 namespace Week14.UI
 {
@@ -16,6 +17,8 @@ namespace Week14.UI
         [SerializeField] private Transform bossPanelContent;
         [Tooltip("로드아웃 패널 콘텐츠 루트입니다. 이 아래에 있는 모든 IPanelGatedInteractable이 항상 활성화됩니다.")]
         [SerializeField] private Transform loadoutPanelContent;
+        [Tooltip("보스러시 패널 콘텐츠 루트입니다. OpenBossRushPanel/CloseBossRushPanel로 켜고 끕니다. 보스러시가 해금되지 않았으면 열리지 않습니다.")]
+        [SerializeField] private Transform bossRushPanelContent;
 
         [Tooltip("bossRoot에 마우스를 올리면 켜지는 오브젝트입니다.")]
         [SerializeField] private GameObject bossHoverHighlight;
@@ -25,6 +28,17 @@ namespace Week14.UI
         [SerializeField] private GameObject loadoutHoverHighlight;
         [Tooltip("loadoutHoverHighlight와 함께 켜지고 꺼지는 추가 오브젝트들입니다.")]
         [SerializeField] private GameObject[] loadoutHoverExtraObjects;
+        [Tooltip("bossRushRoot에 마우스를 올리면 켜지는 오브젝트입니다.")]
+        [SerializeField] private GameObject bossRushHoverHighlight;
+        [Tooltip("bossRushHoverHighlight와 함께 켜지고 꺼지는 추가 오브젝트들입니다.")]
+        [SerializeField] private GameObject[] bossRushHoverExtraObjects;
+
+        [Header("보스러시 해금")]
+        [Tooltip("현재 세이브에서 엔딩을 봤다면(GameSaveManager.HasSeenEnding) 활성화할 오브젝트들입니다. 해금 전에는 비활성화됩니다.")]
+        [SerializeField] private GameObject[] bossRushUnlockedObjects;
+        [Tooltip("bossRushRoot의 히트 영역입니다. 해금 전에는 이 콜라이더를 꺼서 HoverDarkenImage/LobbyFloatingTextOnHover 등 " +
+            "EventTrigger를 거치지 않는 컴포넌트까지 포함해 포인터 이벤트 자체가 전혀 들어가지 않게 만듭니다.")]
+        [SerializeField] private Collider2D bossRushHitArea;
 
         private bool backCloseBlocked;
 
@@ -69,6 +83,29 @@ namespace Week14.UI
             SetActiveSafe(loadoutHoverExtraObjects, false);
         }
 
+        public void OnBossRushRootPointerEnter()
+        {
+            if (GameModalState.BlocksGameplayInput)
+            {
+                ClearHoverHighlights();
+                return;
+            }
+
+            if (!GameSaveManager.HasSeenEnding)
+            {
+                return;
+            }
+
+            SetActiveSafe(bossRushHoverHighlight, true);
+            SetActiveSafe(bossRushHoverExtraObjects, true);
+        }
+
+        public void OnBossRushRootPointerExit()
+        {
+            SetActiveSafe(bossRushHoverHighlight, false);
+            SetActiveSafe(bossRushHoverExtraObjects, false);
+        }
+
         public void OpenLoadoutPanel()
         {
             SetActiveSafe(loadoutPanelContent != null ? loadoutPanelContent.gameObject : null, true);
@@ -93,13 +130,31 @@ namespace Week14.UI
             UpdateBackStackRegistration();
         }
 
-        // ESC(뒤로가기)로 로드아웃/보스 패널이 열려 있는 동안은 그 패널만 닫고,
+        public void OpenBossRushPanel()
+        {
+            if (!GameSaveManager.HasSeenEnding)
+            {
+                return;
+            }
+
+            SetActiveSafe(bossRushPanelContent != null ? bossRushPanelContent.gameObject : null, true);
+            UIBackStack.Push(this);
+        }
+
+        public void CloseBossRushPanel()
+        {
+            SetActiveSafe(bossRushPanelContent != null ? bossRushPanelContent.gameObject : null, false);
+            UpdateBackStackRegistration();
+        }
+
+        // ESC(뒤로가기)로 로드아웃/보스/보스러시 패널이 열려 있는 동안은 그 패널만 닫고,
         // 일시정지 패널(PauseMenuView)이 대신 열리지 않도록 UIBackStack에 등록해둔다.
         public bool CloseByBack()
         {
             if (backCloseBlocked
                 && ((loadoutPanelContent != null && loadoutPanelContent.gameObject.activeSelf)
-                    || (bossPanelContent != null && bossPanelContent.gameObject.activeSelf)))
+                    || (bossPanelContent != null && bossPanelContent.gameObject.activeSelf)
+                    || (bossRushPanelContent != null && bossRushPanelContent.gameObject.activeSelf)))
             {
                 return true;
             }
@@ -116,6 +171,12 @@ namespace Week14.UI
                 return true;
             }
 
+            if (bossRushPanelContent != null && bossRushPanelContent.gameObject.activeSelf)
+            {
+                CloseBossRushPanel();
+                return true;
+            }
+
             return false;
         }
 
@@ -123,8 +184,9 @@ namespace Week14.UI
         {
             bool loadoutOpen = loadoutPanelContent != null && loadoutPanelContent.gameObject.activeSelf;
             bool bossOpen = bossPanelContent != null && bossPanelContent.gameObject.activeSelf;
+            bool bossRushOpen = bossRushPanelContent != null && bossRushPanelContent.gameObject.activeSelf;
 
-            if (loadoutOpen || bossOpen)
+            if (loadoutOpen || bossOpen || bossRushOpen)
             {
                 UIBackStack.Push(this);
             }
@@ -140,6 +202,27 @@ namespace Week14.UI
             SetActiveSafe(bossHoverExtraObjects, false);
             SetActiveSafe(loadoutHoverHighlight, false);
             SetActiveSafe(loadoutHoverExtraObjects, false);
+            SetActiveSafe(bossRushHoverHighlight, false);
+            SetActiveSafe(bossRushHoverExtraObjects, false);
+        }
+
+        // 씬 리로드 없이 보스러시 해금 상태 변화를 즉시 반영하고 싶을 때(예: 디버그 툴, 엔딩 직후 로비 복귀) 외부에서도 호출합니다.
+        public void RefreshBossRushUnlockState()
+        {
+            bool unlocked = GameSaveManager.HasSeenEnding;
+
+            SetActiveSafe(bossRushUnlockedObjects, unlocked);
+
+            if (bossRushHitArea != null)
+            {
+                bossRushHitArea.enabled = unlocked;
+            }
+
+            if (!unlocked)
+            {
+                SetActiveSafe(bossRushHoverHighlight, false);
+                SetActiveSafe(bossRushHoverExtraObjects, false);
+            }
         }
 
         private void Awake()
@@ -150,6 +233,7 @@ namespace Week14.UI
             }
 
             SetContentInteractable(loadoutPanelContent, true);
+            RefreshBossRushUnlockState();
 
             StartCoroutine(WarmUpLocalization());
         }
@@ -162,6 +246,7 @@ namespace Week14.UI
             // 닫아야 그 순서가 항상 지켜진다.
             CloseLoadoutPanel();
             CloseBossPanel();
+            CloseBossRushPanel();
         }
 
         // 로컬라이제이션 시스템(로케일 선택 + Preload로 지정된 테이블)을 미리 초기화해둔다.
