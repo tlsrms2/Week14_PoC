@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bba461e8ccc319045a8d12306d2efd45, type: 3}
   m_Name: InvulnerableAmmoRefillSkill
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.InvulnerableAmmoRefillSkillSO
-  skillId: ACT_002
+  skillId: ACT_005
   displayName: "\uD328\uB9C1 \uBAA8\uB4C8"
   localizedDisplayName:
     m_TableReference:

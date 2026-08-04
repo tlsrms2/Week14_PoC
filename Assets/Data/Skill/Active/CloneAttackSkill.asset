@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ece4643024f492ab869ebbe822b3f90, type: 3}
   m_Name: CloneAttackSkill
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.CloneAttackSkillSO
-  skillId: ACT_005
+  skillId: ACT_002
   displayName: Clone Echo
   localizedDisplayName:
     m_TableReference:

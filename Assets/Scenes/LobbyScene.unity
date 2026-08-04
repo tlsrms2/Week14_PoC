@@ -18357,7 +18357,7 @@ PrefabInstance:
     - target: {fileID: 6363621013669705922, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: skill
       value: 
-      objectReference: {fileID: 11400000, guid: 934397907f779ae49813912a94c9ad77, type: 2}
+      objectReference: {fileID: 11400000, guid: fe67bbbe237044fe84370df4cbc1a335, type: 2}
     - target: {fileID: 6500270917010895826, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -18469,7 +18469,7 @@ PrefabInstance:
     - target: {fileID: 7415087836464037355, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: skill
       value: 
-      objectReference: {fileID: 11400000, guid: fe67bbbe237044fe84370df4cbc1a335, type: 2}
+      objectReference: {fileID: 11400000, guid: 934397907f779ae49813912a94c9ad77, type: 2}
     - target: {fileID: 7527151867039725220, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: m_IsActive
       value: 1
