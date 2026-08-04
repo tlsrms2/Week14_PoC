@@ -13,6 +13,7 @@ namespace Week14.UI
     {
         [SerializeField] private Slider bgmVolumeSlider;
         [SerializeField] private Slider sfxVolumeSlider;
+        [SerializeField] private Slider mouseSensitivitySlider;
         [SerializeField] private Toggle bgmMuteToggle;
         [SerializeField] private Toggle sfxMuteToggle;
         [SerializeField] private TMP_Dropdown languageDropdown;
@@ -38,6 +39,11 @@ namespace Week14.UI
             if (sfxVolumeSlider != null)
             {
                 sfxVolumeSlider.SetValueWithoutNotify(SoundManager.SfxVolume);
+            }
+
+            if (mouseSensitivitySlider != null)
+            {
+                mouseSensitivitySlider.SetValueWithoutNotify(SettingsManager.MouseSensitivity);
             }
 
             if (bgmMuteToggle != null)
@@ -78,6 +84,11 @@ namespace Week14.UI
         public void SetSfxVolume(float volume)
         {
             SoundManager.SetSfxVolume(volume);
+        }
+
+        public void SetMouseSensitivity(float sensitivity)
+        {
+            SettingsManager.SetMouseSensitivity(sensitivity);
         }
 
         public void SetBgmMuted(bool muted)
