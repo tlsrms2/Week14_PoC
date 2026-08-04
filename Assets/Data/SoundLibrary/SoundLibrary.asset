@@ -71,7 +71,7 @@ MonoBehaviour:
   - category: 
     id: BossRushBGM
     clip: {fileID: 8300000, guid: 28688890ea4eb2042b5ef41a9ecf283f, type: 3}
-    volume: 0.35
+    volume: 0.18
     pitch: 1
   sfxEntries:
   - category: player
@@ -357,7 +357,7 @@ MonoBehaviour:
   - category: player
     id: PlayerDeath2
     clip: {fileID: 8300000, guid: f719694e169dff34fb212191046aa43b, type: 3}
-    volume: 1
+    volume: 2
     pitch: 1
   - category: player
     id: TimeSlowSkill
@@ -447,8 +447,8 @@ MonoBehaviour:
   - category: player
     id: Module_Emergency
     clip: {fileID: 8300000, guid: dbf4770f2a3328d49a4ee13e04eba0c1, type: 3}
-    volume: 1.5
-    pitch: 1
+    volume: 1.2
+    pitch: 0.5
   - category: player
     id: Module_Magnet
     clip: {fileID: 8300000, guid: b6fa65f7131bd23478e81dcb0bff8754, type: 3}

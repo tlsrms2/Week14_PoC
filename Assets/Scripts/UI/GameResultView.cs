@@ -79,6 +79,7 @@ namespace Week14.UI
         private GameObject activeResultRoot;
         private BossChallengePanel activeChallengePanel;
         private Coroutine buttonInputGateRoutine;
+        private PixelBlockRevealView buttonRevealView;
 
         private void Awake()
         {
@@ -129,6 +130,7 @@ namespace Week14.UI
             }
 
             StopButtonInputGate();
+            UnsubscribeButtonReveal();
             SetActiveResultButtonsInteractable(true);
             activeResultRoot = null;
             activeChallengePanel = null;
@@ -354,7 +356,7 @@ namespace Week14.UI
             HideResultButtonsFor(targetRoot);
             ShowResult(targetRoot, focusTarget, null);
             PlayResultSfx(defeatSfxId, DefaultDefeatSfxId);
-            RevealResultButtons();
+            RevealResultButtonsAfterPixelReveal(targetRoot);
         }
 
         private void ShowBossRushVictory()
@@ -375,7 +377,7 @@ namespace Week14.UI
             HideResultButtonsFor(targetRoot);
             ShowResult(targetRoot, focusTarget, null);
             PlayResultSfx(victorySfxId, DefaultVictorySfxId);
-            RevealResultButtons();
+            RevealResultButtonsAfterPixelReveal(targetRoot);
         }
 
         private static void SetBossRushRecord(
@@ -534,6 +536,8 @@ namespace Week14.UI
         // 챌린지 공개 연출이 끝난 뒤(연출 패널이 없으면 결과 화면이 뜨자마자) 재시작/로비 버튼을 등장시킵니다.
         private void RevealResultButtons()
         {
+            UnsubscribeButtonReveal();
+
             if (gameOverRoot != null && gameOverRoot.activeSelf)
             {
                 SetButtonsActive(true, restartButton, gameOverLobbyButton);
@@ -556,6 +560,44 @@ namespace Week14.UI
 
             FocusSelectable(pendingFocusTarget);
             pendingFocusTarget = null;
+        }
+
+        private void RevealResultButtonsAfterPixelReveal(GameObject root)
+        {
+            UnsubscribeButtonReveal();
+            buttonRevealView = root != null
+                ? root.GetComponentInChildren<PixelBlockRevealView>(true)
+                : null;
+
+            if (buttonRevealView == null || !buttonRevealView.IsRevealPlaying)
+            {
+                RevealResultButtons();
+                return;
+            }
+
+            buttonRevealView.RevealCompleted += HandleButtonRevealCompleted;
+        }
+
+        private void HandleButtonRevealCompleted()
+        {
+            if (resultOpen)
+            {
+                RevealResultButtons();
+                return;
+            }
+
+            UnsubscribeButtonReveal();
+        }
+
+        private void UnsubscribeButtonReveal()
+        {
+            if (buttonRevealView == null)
+            {
+                return;
+            }
+
+            buttonRevealView.RevealCompleted -= HandleButtonRevealCompleted;
+            buttonRevealView = null;
         }
 
         private static void SetButtonsActive(bool active, params Button[] buttons)
@@ -606,6 +648,7 @@ namespace Week14.UI
             else
             {
                 StopButtonInputGate();
+                UnsubscribeButtonReveal();
                 SetActiveResultButtonsInteractable(true);
                 activeResultRoot = null;
                 activeChallengePanel = null;

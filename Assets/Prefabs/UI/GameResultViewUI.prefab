@@ -1393,7 +1393,7 @@ MonoBehaviour:
   bossRushRestartButton: {fileID: 7019234503886485224}
   bossRushLobbyButton: {fileID: 3374629019110966108}
   bossRushGameOverRecordText: {fileID: 7872620829510863645}
-  bossRushGameOverNewRecordText: {fileID: 729104209731583328}
+  bossRushGameOverNewRecordText: {fileID: 0}
   bossRushVictoryRoot: {fileID: 1579358474445453354}
   bossRushVictoryRestartButton: {fileID: 0}
   bossRushVictoryLobbyButton: {fileID: 3628042988008283196}
@@ -2882,7 +2882,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4041370621065637846
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3324,7 +3324,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: VICTORY
+  m_text: SUCCESS
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 517b11084197d394aa929c9375a779b6, type: 2}
   m_sharedMaterial: {fileID: -2232794000298086879, guid: 517b11084197d394aa929c9375a779b6, type: 2}
@@ -5950,7 +5950,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: DEFEATED
+  m_text: FAILED
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 517b11084197d394aa929c9375a779b6, type: 2}
   m_sharedMaterial: {fileID: -2232794000298086879, guid: 517b11084197d394aa929c9375a779b6, type: 2}

@@ -121,7 +121,7 @@ namespace Week14.GameFlow
 
         public static void EnsureBgmPlaying()
         {
-            if (HasRunContext && !string.IsNullOrWhiteSpace(bossRushBgmId))
+            if (IsRunning && !string.IsNullOrWhiteSpace(bossRushBgmId))
             {
                 SoundManager.PlayBgm(bossRushBgmId, bossRushBgmFadeSeconds);
             }
@@ -252,6 +252,7 @@ namespace Week14.GameFlow
             }
 
             state = RunState.Completed;
+            SoundManager.StopBgm(0f);
             latestClearTimeWasNewRecord =
                 GameSaveManager.TrySetBestBossRushTime(completedBossSeconds);
             GameSaveManager.TrySetBestBossRushBossTimes(bossIds, currentRunBossSeconds);
