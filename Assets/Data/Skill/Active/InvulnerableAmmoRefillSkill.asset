@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bba461e8ccc319045a8d12306d2efd45, type: 3}
   m_Name: InvulnerableAmmoRefillSkill
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.InvulnerableAmmoRefillSkillSO
-  skillId: ACT_005
+  skillId: ACT_002
   displayName: "\uD328\uB9C1 \uBAA8\uB4C8"
   localizedDisplayName:
     m_TableReference:
@@ -37,7 +37,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   cooldownSeconds: 12
-  price: 4
+  price: 2
   durationSeconds: 0.5
   parryClearRadius: 3
   postParryInvulnerabilitySeconds: 0.3
