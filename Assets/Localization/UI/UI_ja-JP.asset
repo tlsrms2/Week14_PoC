@@ -122,6 +122,10 @@ MonoBehaviour:
     m_Localized: SE
     m_Metadata:
       m_Items: []
+  - m_Id: 20260804000001
+    m_Localized: "マウス感度"
+    m_Metadata:
+      m_Items: []
   - m_Id: 8731268608262144
     m_Localized: "\u7D9A\u304D\u304B\u3089"
     m_Metadata:
