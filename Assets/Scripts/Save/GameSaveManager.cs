@@ -357,6 +357,81 @@ namespace Week14.Save
             return true;
         }
 
+        public static bool HasBossRushBossBestTime(string bossId)
+        {
+            return FindBossRushBossClearTimeEntry(bossId) != null;
+        }
+
+        public static float GetBossRushBossBestTime(string bossId)
+        {
+            BossClearTimeEntry entry = FindBossRushBossClearTimeEntry(bossId);
+            return entry != null ? entry.seconds : -1f;
+        }
+
+        public static void TrySetBestBossRushBossTimes(
+            IReadOnlyList<string> bossIds,
+            IReadOnlyList<float> seconds)
+        {
+            if (bossIds == null || seconds == null || bossIds.Count != seconds.Count)
+            {
+                return;
+            }
+
+            bool changed = false;
+            for (int i = 0; i < bossIds.Count; i++)
+            {
+                string bossId = bossIds[i];
+                float clearSeconds = seconds[i];
+                if (string.IsNullOrWhiteSpace(bossId)
+                    || float.IsNaN(clearSeconds)
+                    || float.IsInfinity(clearSeconds)
+                    || clearSeconds < 0f)
+                {
+                    continue;
+                }
+
+                BossClearTimeEntry entry = FindBossRushBossClearTimeEntry(bossId);
+                if (entry == null)
+                {
+                    Data.bossRushBossClearTimes.Add(new BossClearTimeEntry
+                    {
+                        bossId = bossId,
+                        seconds = clearSeconds
+                    });
+                    changed = true;
+                }
+                else if (clearSeconds < entry.seconds)
+                {
+                    entry.seconds = clearSeconds;
+                    changed = true;
+                }
+            }
+
+            if (changed)
+            {
+                Save();
+            }
+        }
+
+        private static BossClearTimeEntry FindBossRushBossClearTimeEntry(string bossId)
+        {
+            if (string.IsNullOrWhiteSpace(bossId))
+            {
+                return null;
+            }
+
+            List<BossClearTimeEntry> entries = Data.bossRushBossClearTimes;
+            for (int i = 0; i < entries.Count; i++)
+            {
+                if (entries[i].bossId == bossId)
+                {
+                    return entries[i];
+                }
+            }
+
+            return null;
+        }
+
         // 테스트/디버그용: 특정 보스의 최고 클리어 기록만 지웁니다.
         public static void ResetBossClearTime(string bossId)
         {
@@ -1210,6 +1285,7 @@ namespace Week14.Save
             data.unlockedBossIds ??= new List<string>();
             data.clearedBossIds ??= new List<string>();
             data.bossClearTimes ??= new List<BossClearTimeEntry>();
+            data.bossRushBossClearTimes ??= new List<BossClearTimeEntry>();
             data.unlockedSkillIds ??= new List<string>();
             data.unlockedPassiveSkillIds ??= new List<string>();
             data.unlockedWeaponIds ??= new List<string>();

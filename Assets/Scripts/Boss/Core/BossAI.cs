@@ -1682,7 +1682,7 @@ namespace Week14.Enemy
             }
 
             GameSaveManager.ClearBoss(bossData.Id);
-            latestClearTimeWasNewRecord = !BossRushController.IsDebugRun
+            latestClearTimeWasNewRecord = !BossRushController.IsRunning
                 && GameSaveManager.TrySetBestClearTime(bossData.Id, CombatElapsedSeconds);
 
             IReadOnlyList<string> unlocksBossIds = bossData.UnlocksBossIds;

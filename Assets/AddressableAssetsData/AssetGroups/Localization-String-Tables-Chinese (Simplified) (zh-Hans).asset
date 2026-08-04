@@ -21,6 +21,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-zh-Hans
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1c879c501a13c3343bb66bc61aadc9ce
+    m_Address: BossRush_zh-Hans
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-zh-Hans
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 64d8c7ecf7669e149a60f78f30bfa451
     m_Address: Story_zh-Hans
     m_ReadOnly: 1

@@ -2050,7 +2050,6 @@ MonoBehaviour:
   wideCameraFocusWeight: 1
   wideCameraZoomMultiplier: 0.72
   wideCameraBlendSmoothTime: 0.22
-  aimChargeSfxId: 
 --- !u!114 &1436473303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3865,6 +3864,14 @@ PrefabInstance:
       propertyPath: victoryRestartButton
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1436752412426234458, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+      propertyPath: bossRushGameOverNewRecordText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1579358474445453354, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1610243985912707304, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
       propertyPath: m_Name
       value: GameResultViewUI
@@ -3939,6 +3946,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3178691653014284576, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3383347958407201298, guid: 218813ba59c83c74190ce20f103782d5, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3525840341730720826, guid: 218813ba59c83c74190ce20f103782d5, type: 3}

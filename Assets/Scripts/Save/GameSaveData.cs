@@ -50,6 +50,7 @@ namespace Week14.Save
         public List<string> purchasedWeaponIds = new();
         public bool hasBossRushBestTime;
         public float bossRushBestTime;
+        public List<BossClearTimeEntry> bossRushBossClearTimes = new();
         public bool hasAcknowledgedBossRushUnlock;
     }
 }

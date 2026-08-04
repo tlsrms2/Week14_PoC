@@ -21,6 +21,8 @@ namespace Week14.GameFlow
 
         private static RunState state;
         private static string[] bossSceneNames = Array.Empty<string>();
+        private static string[] bossIds = Array.Empty<string>();
+        private static float[] currentRunBossSeconds = Array.Empty<float>();
         private static int currentBossIndex;
         private static float completedBossSeconds;
         private static BossAI activeBoss;
@@ -49,11 +51,17 @@ namespace Week14.GameFlow
 
         public static bool StartRun(
             string[] sceneNames,
+            string[] runBossIds,
             string bgmId,
             float bgmFadeSeconds,
             bool enableDebugCheats)
         {
             if (!TryCopySceneNames(sceneNames, out string[] copiedSceneNames))
+            {
+                return false;
+            }
+
+            if (!TryCopyBossIds(runBossIds, out string[] copiedBossIds))
             {
                 return false;
             }
@@ -65,6 +73,8 @@ namespace Week14.GameFlow
             }
 
             bossSceneNames = copiedSceneNames;
+            bossIds = copiedBossIds;
+            currentRunBossSeconds = new float[RequiredBossCount];
             state = RunState.Running;
             currentBossIndex = 0;
             completedBossSeconds = 0f;
@@ -86,6 +96,7 @@ namespace Week14.GameFlow
             return bossSceneNames.Length == RequiredBossCount
                 && StartRun(
                     bossSceneNames,
+                    bossIds,
                     bossRushBgmId,
                     bossRushBgmFadeSeconds,
                     debugCheatsEnabled);
@@ -97,6 +108,8 @@ namespace Week14.GameFlow
             SetDebugInvulnerability(false);
             state = RunState.Inactive;
             bossSceneNames = Array.Empty<string>();
+            bossIds = Array.Empty<string>();
+            currentRunBossSeconds = Array.Empty<float>();
             currentBossIndex = 0;
             completedBossSeconds = 0f;
             activeBoss = null;
@@ -157,6 +170,31 @@ namespace Week14.GameFlow
             return true;
         }
 
+        private static bool TryCopyBossIds(string[] runBossIds, out string[] copiedBossIds)
+        {
+            copiedBossIds = Array.Empty<string>();
+            if (runBossIds == null || runBossIds.Length != RequiredBossCount)
+            {
+                Debug.LogError($"{nameof(BossRushController)}: 보스 ID를 정확히 {RequiredBossCount}개 지정해야 합니다.");
+                return false;
+            }
+
+            copiedBossIds = new string[RequiredBossCount];
+            for (int i = 0; i < runBossIds.Length; i++)
+            {
+                if (string.IsNullOrWhiteSpace(runBossIds[i]))
+                {
+                    Debug.LogError($"{nameof(BossRushController)}: {i + 1}번째 보스 ID가 비어 있습니다.");
+                    copiedBossIds = Array.Empty<string>();
+                    return false;
+                }
+
+                copiedBossIds[i] = runBossIds[i].Trim();
+            }
+
+            return true;
+        }
+
         private static void SubscribeEvents()
         {
             if (eventsSubscribed)
@@ -201,7 +239,9 @@ namespace Week14.GameFlow
                 return;
             }
 
-            completedBossSeconds += boss.CombatElapsedSeconds;
+            float bossClearSeconds = boss.CombatElapsedSeconds;
+            completedBossSeconds += bossClearSeconds;
+            currentRunBossSeconds[currentBossIndex] = bossClearSeconds;
             activeBoss = null;
 
             if (currentBossIndex < bossSceneNames.Length - 1)
@@ -212,8 +252,9 @@ namespace Week14.GameFlow
             }
 
             state = RunState.Completed;
-            latestClearTimeWasNewRecord = !debugCheatsEnabled
-                && GameSaveManager.TrySetBestBossRushTime(completedBossSeconds);
+            latestClearTimeWasNewRecord =
+                GameSaveManager.TrySetBestBossRushTime(completedBossSeconds);
+            GameSaveManager.TrySetBestBossRushBossTimes(bossIds, currentRunBossSeconds);
             SetDebugInvulnerability(false);
             UnsubscribeEvents();
         }

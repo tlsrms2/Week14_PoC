@@ -71,7 +71,7 @@ MonoBehaviour:
   - category: 
     id: BossRushBGM
     clip: {fileID: 8300000, guid: 28688890ea4eb2042b5ef41a9ecf283f, type: 3}
-    volume: 0.55
+    volume: 0.35
     pitch: 1
   sfxEntries:
   - category: player

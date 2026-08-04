@@ -21,6 +21,8 @@ namespace Week14.UI
 
             [NonSerialized] private LocalizedString.ChangeHandler localizedNameChanged;
 
+            public string BossId => bossData != null ? bossData.Id : null;
+
             public void BindAndRefresh()
             {
                 Unbind();
@@ -42,8 +44,9 @@ namespace Week14.UI
                     SetBossName(bossData.BossName);
                 }
 
-                string time = GameSaveManager.HasBestClearTime(bossData.Id)
-                    ? BossAI.FormatCombatTime(GameSaveManager.GetBestClearTime(bossData.Id))
+                string time = GameSaveManager.HasBossRushBossBestTime(bossData.Id)
+                    ? BossRushController.FormatTime(
+                        GameSaveManager.GetBossRushBossBestTime(bossData.Id))
                     : "--:--:--";
                 SetBestTime(time);
             }
@@ -139,6 +142,7 @@ namespace Week14.UI
                 || !GameSaveManager.HasSeenEnding
                 || !BossRushController.StartRun(
                     bossSceneNames,
+                    GetBossIds(),
                     bossRushBgmId,
                     bossRushBgmFadeSeconds,
                     enableDebugCheats))
@@ -152,6 +156,22 @@ namespace Week14.UI
             }
         }
 
+        private string[] GetBossIds()
+        {
+            if (bossRecordFields == null)
+            {
+                return Array.Empty<string>();
+            }
+
+            string[] ids = new string[bossRecordFields.Length];
+            for (int i = 0; i < bossRecordFields.Length; i++)
+            {
+                ids[i] = bossRecordFields[i]?.BossId;
+            }
+
+            return ids;
+        }
+
         public void RefreshRecord()
         {
             if (bestRecordText != null)
@@ -159,7 +179,7 @@ namespace Week14.UI
                 string time = GameSaveManager.HasBossRushBestTime
                     ? BossRushController.FormatTime(GameSaveManager.BossRushBestTime)
                     : "--:--:--";
-                bestRecordText.text = $"기록 - {time}";
+                bestRecordText.text = time;
             }
 
             if (bossRecordFields == null)
