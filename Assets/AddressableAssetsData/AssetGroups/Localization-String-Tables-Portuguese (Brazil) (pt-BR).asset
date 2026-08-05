@@ -10,62 +10,57 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Localization-Locales
+  m_Name: Localization-String-Tables-Portuguese (Brazil) (pt-BR)
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
-  m_GroupName: Localization-Locales
-  m_GUID: ab2fe8d9bf81d6d4dbb69f5b285c08d3
+  m_GroupName: Localization-String-Tables-Portuguese (Brazil) (pt-BR)
+  m_GUID: 8d44edbaab79b1e43b9ee2d06ed3ebab
   m_SerializeEntries:
-  - m_GUID: 3b87cf9d20b073b4989f14d180c62cff
-    m_Address: Portuguese (Brazil) (pt-BR)
+  - m_GUID: 2517b19f32be4ed8870f48239df29851
+    m_Address: UI_pt-BR
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-pt-BR
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 63d227198bf7d8041ae4d94818fcfbd6
-    m_Address: Japanese (Japan) (ja-JP)
+  - m_GUID: 45f8382eabe749ad87910732b5ae75a7
+    m_Address: BossRush_pt-BR
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-pt-BR
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 89bf9db057d8273439751446160c1dd3
-    m_Address: Chinese (Simplified) (zh-Hans)
+  - m_GUID: a03a2784696a4634a46fe3c46f9acd0c
+    m_Address: Skill_pt-BR
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-pt-BR
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a6f1099832d3be84a8831c6deb0e0003
-    m_Address: Chinese (Traditional) (zh-Hant)
+  - m_GUID: aaae7d72a7a94a8c8119e411c39b89b4
+    m_Address: Boss_pt-BR
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-pt-BR
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ad62b4168c92e224bb4333141425d9ed
-    m_Address: Russian (ru)
+  - m_GUID: b98b22031acb4a0d9870661d0108246a
+    m_Address: Story_pt-BR
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-pt-BR
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: da7b63ffaaf7a4642ba891dff5cb2721
-    m_Address: English (en)
+  - m_GUID: d1cad106c0d9437d9bcc6cddc4881cbd
+    m_Address: Weapon_pt-BR
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-pt-BR
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: db6b05d712e54dd48908957601336659
-    m_Address: Korean (South Korea) (ko-KR)
+  - m_GUID: d917822342aa49168d5b21155219875e
+    m_Address: Challenge_pt-BR
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-pt-BR
+    - Preload
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e4eb32d5961f7b541ab84f3964901a38
-    m_Address: Spanish (es-419)
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale
-    FlaggedDuringContentUpdateRestriction: 0
-  m_ReadOnly: 1
+  m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b3c2510e269c6aa408e4e846c03ac43a, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 546d19fc2f48d3e408565b52d438fa82, type: 2}
-    - {fileID: 11400000, guid: a315ef8c3c19b9448a6921d276d17ed7, type: 2}
+    - {fileID: 11400000, guid: 636226df6ecc14a4f989a7391d40471a, type: 2}
+    - {fileID: 11400000, guid: ec9171334c101eb4ba04e930fbcb4b03, type: 2}

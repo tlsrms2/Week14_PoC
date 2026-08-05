@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Skill_pt-BR
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: pt-BR
+  m_SharedData: {fileID: 11400000, guid: c2940797846812f4881a7a287f9eb620, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 63427674112
+    m_Localized: "Módulo de Esquiva Tática"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 238342733824
+    m_Localized: "Avança uma curta distância e elimina os projéteis ao redor."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 300527484928
+    m_Localized: "Módulo de Duplicação Holográfica"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 303861956608
+    m_Localized: "Deixa um holograma na posição atual por 10 segundos.\nO holograma ataca junto com o jogador, causando 50% do dano normal aos inimigos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 347285585920
+    m_Localized: "Módulo de Manipulação Temporal"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 349898637312
+    m_Localized: "Desacelera o tempo ao redor por 3 segundos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 352498637312
+    m_Localized: "Módulo Magnético"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 355098637312
+    m_Localized: "Absorve projéteis ao redor por 2 segundos para recuperar munição."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 357698637312
+    m_Localized: "Módulo de Aparada"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 360298637312
+    m_Localized: "Concede invencibilidade por um período muito curto.\nSofrer dano nesse estado recupera toda a munição."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362898637312
+    m_Localized: "Módulo de Rastreamento Automático"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365498637312
+    m_Localized: "As balas são sempre disparadas na direção dos inimigos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 368098637312
+    m_Localized: "Módulo de Interceptação Avançada"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370698637312
+    m_Localized: "Aumenta levemente o alcance de interceptação."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 373298637312
+    m_Localized: "Módulo de Aceleração"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 375898637312
+    m_Localized: "Aumenta levemente a velocidade de movimento quando você está sem munição."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 378498637312
+    m_Localized: "Módulo de Conversão de Energia"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 381098637312
+    m_Localized: "Ao interceptar com sucesso, a recarga da habilidade ativa é reduzida em 0,5 segundo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 383698637312
+    m_Localized: "Módulo de Protocolo de Emergência"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 386298637312
+    m_Localized: "Permite sobreviver a dano fatal uma vez."
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

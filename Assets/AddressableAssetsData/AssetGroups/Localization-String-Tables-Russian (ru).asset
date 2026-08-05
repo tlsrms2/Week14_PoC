@@ -10,62 +10,57 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Localization-Locales
+  m_Name: Localization-String-Tables-Russian (ru)
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
-  m_GroupName: Localization-Locales
-  m_GUID: ab2fe8d9bf81d6d4dbb69f5b285c08d3
+  m_GroupName: Localization-String-Tables-Russian (ru)
+  m_GUID: 6ea1e2a9562fca1458864d97088c2a58
   m_SerializeEntries:
-  - m_GUID: 3b87cf9d20b073b4989f14d180c62cff
-    m_Address: Portuguese (Brazil) (pt-BR)
+  - m_GUID: 308fd3be7ecf40b293541fc3f7b740eb
+    m_Address: Story_ru
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-ru
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 63d227198bf7d8041ae4d94818fcfbd6
-    m_Address: Japanese (Japan) (ja-JP)
+  - m_GUID: 3f166d9f1fd34a74908e259f4b1204c6
+    m_Address: Skill_ru
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-ru
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 89bf9db057d8273439751446160c1dd3
-    m_Address: Chinese (Simplified) (zh-Hans)
+  - m_GUID: 48fd05073db54af5baf1817284bf7020
+    m_Address: Boss_ru
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-ru
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a6f1099832d3be84a8831c6deb0e0003
-    m_Address: Chinese (Traditional) (zh-Hant)
+  - m_GUID: 64034bd890e24918b399320f1372aed3
+    m_Address: Challenge_ru
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-ru
+    - Preload
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ad62b4168c92e224bb4333141425d9ed
-    m_Address: Russian (ru)
+  - m_GUID: 795c2c9a58cf49679a5095f64813ceb0
+    m_Address: Weapon_ru
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-ru
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: da7b63ffaaf7a4642ba891dff5cb2721
-    m_Address: English (en)
+  - m_GUID: b13a7bdf08d34131ab4f1e527c5fb208
+    m_Address: BossRush_ru
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-ru
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: db6b05d712e54dd48908957601336659
-    m_Address: Korean (South Korea) (ko-KR)
+  - m_GUID: b59bcb0ac86a487691cdace887dc9b8b
+    m_Address: UI_ru
     m_ReadOnly: 1
     m_SerializedLabels:
-    - Locale
+    - Locale-ru
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e4eb32d5961f7b541ab84f3964901a38
-    m_Address: Spanish (es-419)
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale
-    FlaggedDuringContentUpdateRestriction: 0
-  m_ReadOnly: 1
+  m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b3c2510e269c6aa408e4e846c03ac43a, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 546d19fc2f48d3e408565b52d438fa82, type: 2}
-    - {fileID: 11400000, guid: a315ef8c3c19b9448a6921d276d17ed7, type: 2}
+    - {fileID: 11400000, guid: 844a1759c49f9904ebef32ddb6411208, type: 2}
+    - {fileID: 11400000, guid: ae376f7a4b529e444bf986469f934658, type: 2}
