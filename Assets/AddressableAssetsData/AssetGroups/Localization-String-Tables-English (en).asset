@@ -34,6 +34,12 @@ MonoBehaviour:
     - Locale-en
     - Preload
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a15698ad3fd683144bd96b83751416a6
+    m_Address: BossRush_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b2beb748e37c1244d8c49d0c1aa31695
     m_Address: Story_en
     m_ReadOnly: 1

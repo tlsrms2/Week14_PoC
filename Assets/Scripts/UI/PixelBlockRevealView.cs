@@ -10,6 +10,10 @@ namespace Week14.UI
 {
     public sealed class PixelBlockRevealView : MonoBehaviour
     {
+        public event Action RevealCompleted;
+
+        public bool IsRevealPlaying => revealRoutine != null;
+
         [Header("Target")]
         [SerializeField] private Graphic panelGraphic;
         [SerializeField] private RectTransform contentRoot;
@@ -108,7 +112,7 @@ namespace Week14.UI
             CacheTarget();
             BuildCells();
             CacheContent();
-            PlayFromTo(0f, 1f, openDuration, null);
+            PlayFromTo(0f, 1f, openDuration, NotifyRevealCompleted);
         }
 
         public void PlayHide(Action onComplete = null)
@@ -127,6 +131,7 @@ namespace Week14.UI
             BuildCells();
             CacheContent();
             SetProgress(1f);
+            NotifyRevealCompleted();
         }
 
         [ContextMenu("Hide Immediate")]
@@ -172,6 +177,11 @@ namespace Week14.UI
             SetProgress(to);
             revealRoutine = null;
             onComplete?.Invoke();
+        }
+
+        private void NotifyRevealCompleted()
+        {
+            RevealCompleted?.Invoke();
         }
 
         private void CacheTarget()

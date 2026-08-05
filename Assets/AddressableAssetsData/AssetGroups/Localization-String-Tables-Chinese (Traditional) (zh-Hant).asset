@@ -34,6 +34,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-zh-Hant
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 51109b3c03ceb954b821bf8166051966
+    m_Address: BossRush_zh-Hant
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-zh-Hant
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a18fa2fafb10a6440915dcdd43d6499f
     m_Address: Weapon_zh-Hant
     m_ReadOnly: 1
