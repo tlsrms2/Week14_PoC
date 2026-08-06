@@ -1611,7 +1611,7 @@ GameObject:
   - component: {fileID: 7050290443505919580}
   - component: {fileID: 2864000089017897260}
   m_Layer: 0
-  m_Name: Text (TMP)
+  m_Name: SkipText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1634,7 +1634,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -50, y: -25}
-  m_SizeDelta: {x: 364.27393, y: 50}
+  m_SizeDelta: {x: 1000, y: 50}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &7050290443505919580
 CanvasRenderer:
@@ -1861,6 +1861,7 @@ MonoBehaviour:
   topLetterboxPanel: {fileID: 2060281895181357481}
   bottomLetterboxPanel: {fileID: 264869080803327802}
   bossCombatUiRect: {fileID: 0}
+  bossTimeRect: {fileID: 0}
   skipHintText: {fileID: 2864000089017897260}
   localizedSkipHintText:
     m_TableReference:
@@ -1878,6 +1879,7 @@ MonoBehaviour:
   startDelaySeconds: 0.15
   playerWalkSpeed: 0.5
   playerWalkSfxId: Walk
+  bossFocusSfxId: Intro_ZoomIn
   mugShotBackgroundSfxId: Intro_Set
   mugShotToBossBgmDelaySeconds: 3
   restartSequenceSeconds: 2.5
