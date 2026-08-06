@@ -1912,8 +1912,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1300, y: 250}
+  m_AnchoredPosition: {x: 0, y: 23.5}
+  m_SizeDelta: {x: 1300, y: 203}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &808369009
 MonoBehaviour:
@@ -3843,7 +3843,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -52}
+  m_AnchoredPosition: {x: 0, y: -86}
   m_SizeDelta: {x: 32, y: 32}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1501706629
@@ -4343,6 +4343,8 @@ MonoBehaviour:
   endingCutscene: {fileID: 11400000, guid: 2b0c1a38a6dcb4b498b6cc72d13c8029, type: 2}
   markEndingSeen: 1
   outroSequence: {fileID: 1881865970}
+  creditBgmId: Credit BGM
+  creditBgmFadeSeconds: 1
   returnToTitleAfterCredits: 1
   fallbackTitleSceneName: TitleScene
 --- !u!1 &1660010578

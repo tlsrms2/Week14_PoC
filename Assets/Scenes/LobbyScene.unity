@@ -19523,6 +19523,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LobbyUICanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 216658301412595773, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 268237986637072068, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -19554,6 +19558,18 @@ PrefabInstance:
     - target: {fileID: 792266190384005317, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 810614365636423683, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 203
+      objectReference: {fileID: 0}
+    - target: {fileID: 810614365636423683, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 23.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 822916188877228448, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -98
       objectReference: {fileID: 0}
     - target: {fileID: 925045682685889349, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: m_ScreenMatchMode
@@ -20271,6 +20287,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8685226474644801748, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_fontSize
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 8685226474644801748, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_fontSizeMax
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 8685226474644801748, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8942248851828651709, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0.5
@@ -20330,6 +20358,22 @@ PrefabInstance:
     - target: {fileID: 9030146528245470432, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9172642873276040188, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_fontSize
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 9172642873276040188, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_fontSizeMax
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 9172642873276040188, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_fontSizeMin
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 9172642873276040188, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9177001077801574522, guid: c0395892650b9694eb25bb7b9ea4f31c, type: 3}
       propertyPath: m_AnchorMax.y

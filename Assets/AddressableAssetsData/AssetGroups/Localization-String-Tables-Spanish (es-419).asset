@@ -33,6 +33,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-es-419
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9b169ec9dba94088834589db6035521b
+    m_Address: BossRush_es-419
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es-419
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c0d92c7005b5436c9e94dde319e0a0c8
     m_Address: Boss_es-419
     m_ReadOnly: 1

@@ -1876,7 +1876,7 @@ MonoBehaviour:
     initialPatternDelaySeconds: 1
     bossCanFlyOverGround: 0
     minionsCanFlyOverGround: 0
-    openingPatternId: P1
+    openingPatternId: 
     signaturePatternId: 
     signaturePatternHpPercent: 50
     forcedPatternId: 
@@ -1907,10 +1907,10 @@ MonoBehaviour:
       cooldownPatternCount: 3
       minPatternsPlayed: 0
     - patternId: P6
-      weight: 5
+      weight: 99
       legacyCooldownSeconds: -1
       cooldownPatternCount: 0
-      minPatternsPlayed: 3
+      minPatternsPlayed: 2
   - phaseIndex: 1
     selectionMode: 3
     phaseMaxHp: 0
@@ -1950,10 +1950,10 @@ MonoBehaviour:
       cooldownPatternCount: 3
       minPatternsPlayed: 0
     - patternId: P11
-      weight: 5
+      weight: 99
       legacyCooldownSeconds: -1
       cooldownPatternCount: 0
-      minPatternsPlayed: 3
+      minPatternsPlayed: 2
   transitions:
   - fromNodeGuid: dfa298a4204c49e089cad7110b65e1fe
     toNodeGuid: 3e9c9bad0ed3460e92357fbd306d028d
@@ -3384,7 +3384,6 @@ MonoBehaviour:
         spawnInterval: 0.05
         flightSeconds: 0.1
         chargeSeconds: 9
-        spawnSfxId: BossNormalShot
         effects:
           smoke:
             enabled: 0
