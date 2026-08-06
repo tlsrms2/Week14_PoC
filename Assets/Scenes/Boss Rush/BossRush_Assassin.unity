@@ -5755,7 +5755,7 @@ MonoBehaviour:
       chargeDriftSpeed: 0
       aimAtPlayerWhileCharging: 1
       aimAtPlayerOnLaunch: 0
-      speed: 7
+      speed: 8
       lifetime: 3
       radius: 0.12
       trailSeconds: 0.1

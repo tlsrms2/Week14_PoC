@@ -3845,12 +3845,12 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        bombCount: 5
+        bombCount: 6
         minSeparationDistance: 3
         minDistanceFromPlayer: 3
         spawnInterval: 0.05
         flightSeconds: 0.1
-        chargeSeconds: 6
+        chargeSeconds: 5
         effects:
           smoke:
             enabled: 0
