@@ -18,6 +18,7 @@ namespace Week14.Combat
     public sealed class PlayerCombatController : MonoBehaviour
     {
         private const string ExecutionImageSfxId = "Execute";
+        private const float DeathPreventionSfxMaxSeconds = 1f;
         private static readonly Color InvulnerableAmmoRefillTint = new Color(1f, 0.72f, 0.04f, 1f);
         private const float InvulnerableAmmoRefillTintAmount = 0.45f;
 
@@ -91,6 +92,8 @@ namespace Week14.Combat
         private float deathPreventionClearRadius;
         private float deathPreventionInvulnerabilitySeconds;
         private GameObject deathPreventionBlankVfxPrefab;
+        private SoundManager.SfxPlaybackHandle deathPreventionSfxHandle;
+        private float deathPreventionSfxEndsAt;
         private bool nextAttackDamageMultiplierArmed;
         private float nextAttackDamageMultiplier = 1f;
         private bool invulnerableAmmoRefillActive;
@@ -439,6 +442,7 @@ namespace Week14.Combat
             GameInput.Unbind(playerInput);
 #endif
             CancelActiveCharge();
+            StopDeathPreventionSfx();
             externalMovementLockCount = 0;
 
             if (Active == this)
@@ -491,6 +495,7 @@ namespace Week14.Combat
 
         private void Update()
         {
+            UpdateDeathPreventionSfx();
             UpdateCursorPresentation();
 
             if (health.IsDead)
@@ -767,7 +772,7 @@ namespace Week14.Combat
             }
 
             deathPreventionChargesRemaining--;
-            SoundManager.PlaySfx(GameplaySfxIds.ModuleEmergency);
+            PlayDeathPreventionSfx();
 
             if (deathPreventionClearRadius > 0f)
             {
@@ -781,6 +786,34 @@ namespace Week14.Combat
             }
 
             return true;
+        }
+
+        private void PlayDeathPreventionSfx()
+        {
+            StopDeathPreventionSfx();
+            deathPreventionSfxHandle = SoundManager.PlayTrackedSfx(GameplaySfxIds.ModuleEmergency);
+            deathPreventionSfxEndsAt = Time.unscaledTime + DeathPreventionSfxMaxSeconds;
+        }
+
+        private void UpdateDeathPreventionSfx()
+        {
+            if (deathPreventionSfxHandle == null)
+            {
+                return;
+            }
+
+            bool pauseMenuOpened = GameModalState.BlocksGameplayInput
+                && Mathf.Approximately(Time.timeScale, 0f);
+            if (pauseMenuOpened || Time.unscaledTime >= deathPreventionSfxEndsAt)
+            {
+                StopDeathPreventionSfx();
+            }
+        }
+
+        private void StopDeathPreventionSfx()
+        {
+            SoundManager.StopSfx(deathPreventionSfxHandle);
+            deathPreventionSfxHandle = null;
         }
 
         private static IEnumerator TemporaryInvulnerabilityRoutine(float seconds)
