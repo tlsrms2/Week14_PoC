@@ -180,7 +180,8 @@ namespace Week14.UI
         // RefreshString()만 부르고 아무도 구독하지 않으면 로드된 결과를 아무도 붙잡고 있지 않아서
         // 그대로 해제돼버리는 것으로 보인다(실제 호버 시점에 다시 처음부터 로드됨). 그래서 결과를
         // 안 쓰더라도 반드시 핸들러를 구독했다가 완료되면 해제하는 방식으로 "붙잡아둔다".
-        private static void RefreshIfLocalized(LocalizedString localizedString, bool enabled)
+        // public static: 다른 패널(예: BossRushPanel)의 예열 로직에서도 이 트릭을 재사용한다.
+        public static void RefreshIfLocalized(LocalizedString localizedString, bool enabled)
         {
             if (!enabled)
             {

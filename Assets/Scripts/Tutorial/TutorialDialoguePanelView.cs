@@ -200,6 +200,11 @@ namespace Week14.Tutorial
 
         public bool IsTyping { get; private set; }
 
+        private static bool IsGamePaused()
+        {
+            return Mathf.Approximately(Time.timeScale, 0f);
+        }
+
         private void Awake()
         {
             ClipDialogueToReferenceFrame();
@@ -291,6 +296,12 @@ namespace Week14.Tutorial
                     break;
                 }
 
+                if (IsGamePaused())
+                {
+                    yield return null;
+                    continue;
+                }
+
                 visibleCharacters += Time.unscaledDeltaTime * speed;
                 int nextVisibleCharacterCount = Mathf.Clamp(
                     Mathf.CeilToInt(visibleCharacters),
@@ -341,7 +352,8 @@ namespace Week14.Tutorial
             if (fadeOut && dialogueText != null && objectiveCompleteFadeSeconds > 0f)
             {
                 Color from = dialogueText.color;
-                for (float elapsed = 0f; elapsed < objectiveCompleteFadeSeconds; elapsed += Time.unscaledDeltaTime)
+                float elapsed = 0f;
+                while (elapsed < objectiveCompleteFadeSeconds)
                 {
                     float t = Mathf.Clamp01(elapsed / objectiveCompleteFadeSeconds);
                     Color color = from;
@@ -350,6 +362,10 @@ namespace Week14.Tutorial
                     SetObjectiveKeyAlpha(color.a);
                     SetObjectiveStrikeLineAlpha(color.a);
                     yield return null;
+                    if (!IsGamePaused())
+                    {
+                        elapsed += Time.unscaledDeltaTime;
+                    }
                 }
             }
 
@@ -431,7 +447,8 @@ namespace Week14.Tutorial
 
             Vector2 from = slideRoot != null ? slideRoot.anchoredPosition : Vector2.zero;
             Vector2 to = slideRoot != null ? shownAnchoredPosition + hiddenOffset : Vector2.zero;
-            for (float elapsed = 0f; elapsed < exitSeconds; elapsed += Time.unscaledDeltaTime)
+            float elapsed = 0f;
+            while (elapsed < exitSeconds)
             {
                 if (slideSeconds > 0f)
                 {
@@ -441,6 +458,10 @@ namespace Week14.Tutorial
                 }
 
                 yield return null;
+                if (!IsGamePaused())
+                {
+                    elapsed += Time.unscaledDeltaTime;
+                }
             }
 
             Hide();
@@ -482,12 +503,17 @@ namespace Week14.Tutorial
             Vector2 to = shownAnchoredPosition;
             slideRoot.anchoredPosition = from;
 
-            for (float elapsed = 0f; elapsed < showSeconds; elapsed += Time.unscaledDeltaTime)
+            float elapsed = 0f;
+            while (elapsed < showSeconds)
             {
                 float t = Mathf.Clamp01(elapsed / showSeconds);
                 float eased = showCurve != null ? showCurve.Evaluate(t) : t;
                 slideRoot.anchoredPosition = Vector2.LerpUnclamped(from, to, eased);
                 yield return null;
+                if (!IsGamePaused())
+                {
+                    elapsed += Time.unscaledDeltaTime;
+                }
             }
 
             SetSlideShown();
@@ -784,12 +810,17 @@ namespace Week14.Tutorial
         private IEnumerator PortraitTransitionRoutine(PortraitSlot slot, PortraitVisualState from, PortraitVisualState to)
         {
             float duration = Mathf.Max(0.001f, portraitTransitionSeconds);
-            for (float elapsed = 0f; elapsed < duration; elapsed += Time.unscaledDeltaTime)
+            float elapsed = 0f;
+            while (elapsed < duration)
             {
                 float t = Mathf.Clamp01(elapsed / duration);
                 float eased = portraitTransitionCurve != null ? portraitTransitionCurve.Evaluate(t) : t;
                 ApplyPortraitState(slot, PortraitVisualState.Lerp(from, to, eased));
                 yield return null;
+                if (!IsGamePaused())
+                {
+                    elapsed += Time.unscaledDeltaTime;
+                }
             }
 
             ApplyPortraitState(slot, to);
@@ -988,9 +1019,13 @@ namespace Week14.Tutorial
 
             while (advancePromptImage != null)
             {
-                elapsed += Time.unscaledDeltaTime;
-                float wave = (Mathf.Sin(elapsed / duration * Mathf.PI * 2f) + 1f) * 0.5f;
-                SetAdvancePromptAlpha(Mathf.Lerp(minAlpha, maxAlpha, wave));
+                if (!IsGamePaused())
+                {
+                    elapsed += Time.unscaledDeltaTime;
+                    float wave = (Mathf.Sin(elapsed / duration * Mathf.PI * 2f) + 1f) * 0.5f;
+                    SetAdvancePromptAlpha(Mathf.Lerp(minAlpha, maxAlpha, wave));
+                }
+
                 yield return null;
             }
 
@@ -1268,9 +1303,14 @@ namespace Week14.Tutorial
 
         private static IEnumerator WaitUnscaled(float seconds)
         {
-            for (float elapsed = 0f; elapsed < seconds; elapsed += Time.unscaledDeltaTime)
+            float elapsed = 0f;
+            while (elapsed < seconds)
             {
                 yield return null;
+                if (!IsGamePaused())
+                {
+                    elapsed += Time.unscaledDeltaTime;
+                }
             }
         }
 

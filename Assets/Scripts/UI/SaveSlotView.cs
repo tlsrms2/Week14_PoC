@@ -48,6 +48,10 @@ namespace Week14.UI
         [Tooltip("100% 달성 시 적용할 색입니다.")]
         [SerializeField] private Color completedSelectButtonColor = new(1f, 0.85f, 0.3f);
 
+        [Header("보스러시 해금 알림")]
+        [Tooltip("엔딩을 본 뒤 아직 해당 슬롯에 다시 들어가지 않았을 때만 표시할 이미지입니다.")]
+        [SerializeField] private GameObject bossRushUnlockNoticeImage;
+
         public event Action<int> SelectRequested;
         public event Action<int> DeleteRequested;
 
@@ -124,10 +128,20 @@ namespace Week14.UI
             ApplyProgressText(exists, percent);
             ApplyProgressBar(exists, percent);
             ApplySelectButtonColor(exists, percent);
+            ApplyBossRushUnlockNotice();
 
             if (deleteButton != null)
             {
                 deleteButton.gameObject.SetActive(exists);
+            }
+        }
+
+        private void ApplyBossRushUnlockNotice()
+        {
+            if (bossRushUnlockNoticeImage != null)
+            {
+                bossRushUnlockNoticeImage.SetActive(
+                    GameSaveManager.ShouldShowBossRushUnlockNotice(slotIndex));
             }
         }
 

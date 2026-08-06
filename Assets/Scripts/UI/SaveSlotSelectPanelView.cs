@@ -116,6 +116,7 @@ namespace Week14.UI
         private void HandleSlotSelected(int slotIndex)
         {
             GameSaveManager.SelectSlot(slotIndex);
+            GameSaveManager.AcknowledgeBossRushUnlock();
             gameObject.SetActive(false);
             GameFlowController.StartGame();
         }

@@ -7,6 +7,7 @@ namespace Week14.Save
     {
         public float bgmVolume = 0.7f;
         public float sfxVolume = 0.7f;
+        public float mouseSensitivity = 1f;
         public bool bgmMuted;
         public bool sfxMuted;
         public string languageCode = "en";

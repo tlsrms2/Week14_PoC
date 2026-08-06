@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be51871efa6c3e4eae1703925c8f5ac, type: 3}
+  m_Name: BossRush
+  m_EditorClassIdentifier: Unity.Localization.Editor::UnityEditor.Localization.StringTableCollection
+  m_SharedTableData: {fileID: 11400000, guid: 63e5338d63b2e9f4b9e344ee1deff5ed, type: 2}
+  m_Tables:
+  - {fileID: 11400000, guid: 1c879c501a13c3343bb66bc61aadc9ce, type: 2}
+  - {fileID: 11400000, guid: 51109b3c03ceb954b821bf8166051966, type: 2}
+  - {fileID: 11400000, guid: a15698ad3fd683144bd96b83751416a6, type: 2}
+  - {fileID: 11400000, guid: 65da288e00bb4d34fbde9ff65bf50b44, type: 2}
+  - {fileID: 11400000, guid: 702497b6731424d4ea269ba74578cfd2, type: 2}
+  - {fileID: 11400000, guid: b13a7bdf08d34131ab4f1e527c5fb208, type: 2}
+  - {fileID: 11400000, guid: 45f8382eabe749ad87910732b5ae75a7, type: 2}
+  - {fileID: 11400000, guid: 9b169ec9dba94088834589db6035521b, type: 2}
+  m_Extensions: []
+  m_Group: String Table
+  references:
+    version: 2
+    RefIds: []

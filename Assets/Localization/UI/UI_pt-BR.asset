@@ -1,0 +1,248 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: UI_pt-BR
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: pt-BR
+  m_SharedData: {fileID: 11400000, guid: 54d974a73685256428bdf277f9c3cd3b, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 3324365581418496
+    m_Localized: '[Arma]'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 221037821952
+    m_Localized: SAIR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98681342754816
+    m_Localized: "M\xFAsica"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4304213502164992
+    m_Localized: <sprite="Icon-point-64x" name="icon_point"> Chips de dados +{0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10819947564728320
+    m_Localized: "Conclu\xEDdo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8736125926866944
+    m_Localized: "N\xE3o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5398084768686080
+    m_Localized: <sprite name="icon_leftclick"> Equipar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3324359885553664
+    m_Localized: '[Passiva]'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8731220751253504
+    m_Localized: Novo jogo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3324277605892096
+    m_Localized: '[Ativa]'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3663321485377536
+    m_Localized: Fechar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7302183986233344
+    m_Localized: Tela cheia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7504308305920
+    m_Localized: MUDO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3316405463515136
+    m_Localized: Arma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3316497654317056
+    m_Localized: Ativa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10790558126931968
+    m_Localized: "UNLOAD usa Unity Analytics para coletar dados de gameplay e oferecer
+      uma experi\xEAncia de jogo mais est\xE1vel e divertida.\n\nAs informa\xE7\xF5es
+      coletadas podem incluir:\n\n- Dados coletados: informa\xE7\xF5es do dispositivo
+      e do ambiente de execu\xE7\xE3o, progresso no jogo, registros de jogo e informa\xE7\xF5es
+      de erros e falhas\n- Finalidade da coleta: an\xE1lise de erros no jogo, ajustes
+      de balanceamento, melhoria de conte\xFAdo e aprimoramento da qualidade do servi\xE7o\n\nAs
+      informa\xE7\xF5es coletadas s\xE3o usadas apenas para fins de an\xE1lise voltados
+      \xE0 melhoria do jogo. N\xE3o coletamos dados pessoais que possam identificar
+      diretamente os usu\xE1rios.\n\nMais detalhes est\xE3o dispon\xEDveis nos documentos
+      abaixo.\n\n<link=\"https://store.steampowered.com/news/app/4911370/view/715660216997250625\"><color=#00B0F0><u>Pol\xEDtica
+      de Privacidade</u></color></link>\n<link=\"https://unity.com/legal/privacy-policy\"><color=#00B0F0><u>Pol\xEDtica
+      de Privacidade da Unity</u></color></link>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20260804000001
+    m_Localized: Sensibilidade do mouse
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8737385946120192
+    m_Localized: Tem certeza de que deseja excluir estes dados salvos?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3666520502009856
+    m_Localized: Combate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4478459079655424
+    m_Localized: Objetivo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4984524653649920
+    m_Localized: Aprimoramento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44079612264448
+    m_Localized: PAUSA
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58052210425856
+    m_Localized: TENTAR DE NOVO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44328653258752
+    m_Localized: VISITA
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8732561896734720
+    m_Localized: Excluir
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737487026782208
+    m_Localized: 'Melhor tempo: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8731268608262144
+    m_Localized: Continuar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98699957075968
+    m_Localized: Efeitos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326669890093056
+    m_Localized: 'Recarga: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10790624849920000
+    m_Localized: Aceitar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103836385280
+    m_Localized: "<sprite name=\"icon_option\"> CONFIGURA\xC7\xD5ES"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44034297004032
+    m_Localized: MENU PRINCIPAL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4984204011692032
+    m_Localized: Combate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10790502489489408
+    m_Localized: "Aviso de coleta de dados para uma experi\xEAncia de jogo melhor"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326845836951552
+    m_Localized: '<sprite="Icon-point-64x" name="icon_point"> Chips devolvidos: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35762831360
+    m_Localized: INICIAR JOGO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3316549172953088
+    m_Localized: Passiva
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12413370675593216
+    m_Localized: Desafio de Chefes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6563875845234688
+    m_Localized: Pressione <sprite name="icon_escape"> para pular
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7022185644032
+    m_Localized: VOLTAR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3325868144689152
+    m_Localized: <sprite name="icon_leftclick"> Comprar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326043365933056
+    m_Localized: <sprite name="icon_leftclick"> Equipar     <sprite name="icon_rightclick">
+      Reembolsar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57536428474368
+    m_Localized: LOBBY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3666672696524800
+    m_Localized: Desafio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8736093915938816
+    m_Localized: Sim
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326817575731200
+    m_Localized: "<sprite=\"Icon-point-64x\" name=\"icon_point\"> Chips necess\xE1rios:
+      {0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44213293121536
+    m_Localized: CONTINUAR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326345653616640
+    m_Localized: <sprite="Icon-point-64x" name="icon_point"> Sem reembolso
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3316185476464640
+    m_Localized: Aprimoramento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3326766715600896
+    m_Localized: '<sprite="Icon-point-64x" name="icon_point"> Chips de dados: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7957354798309376
+    m_Localized: <sprite name="icon_language"> Idioma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7305159874281472
+    m_Localized: "Resolu\xE7\xE3o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10790675445809152
+    m_Localized: Recusar
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

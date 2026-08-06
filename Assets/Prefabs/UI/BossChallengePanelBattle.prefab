@@ -522,6 +522,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BossChallenge (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3975899899644278957, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 525
+      objectReference: {fileID: 0}
     - target: {fileID: 5772055032424139190, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -601,6 +605,10 @@ PrefabInstance:
     - target: {fileID: 5772055032424139190, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230438514237343044, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
+      propertyPath: m_fontSize
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -635,6 +643,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BossChallenge (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 3975899899644278957, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 525
+      objectReference: {fileID: 0}
     - target: {fileID: 5772055032424139190, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -714,6 +726,10 @@ PrefabInstance:
     - target: {fileID: 5772055032424139190, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230438514237343044, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
+      propertyPath: m_fontSize
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -748,6 +764,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BossChallenge (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 3975899899644278957, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 525
+      objectReference: {fileID: 0}
     - target: {fileID: 5772055032424139190, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -827,6 +847,10 @@ PrefabInstance:
     - target: {fileID: 5772055032424139190, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230438514237343044, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
+      propertyPath: m_fontSize
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -861,6 +885,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BossChallenge (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 3975899899644278957, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 525
+      objectReference: {fileID: 0}
     - target: {fileID: 5772055032424139190, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -940,6 +968,10 @@ PrefabInstance:
     - target: {fileID: 5772055032424139190, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230438514237343044, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
+      propertyPath: m_fontSize
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -974,6 +1006,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BossChallenge (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 3975899899644278957, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 525
+      objectReference: {fileID: 0}
     - target: {fileID: 5772055032424139190, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1053,6 +1089,10 @@ PrefabInstance:
     - target: {fileID: 5772055032424139190, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230438514237343044, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
+      propertyPath: m_fontSize
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1087,6 +1127,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BossChallenge
       objectReference: {fileID: 0}
+    - target: {fileID: 3975899899644278957, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 525
+      objectReference: {fileID: 0}
     - target: {fileID: 5772055032424139190, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1166,6 +1210,10 @@ PrefabInstance:
     - target: {fileID: 5772055032424139190, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230438514237343044, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
+      propertyPath: m_fontSize
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1200,6 +1248,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BossChallenge (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 3975899899644278957, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 525
+      objectReference: {fileID: 0}
     - target: {fileID: 5772055032424139190, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1279,6 +1331,10 @@ PrefabInstance:
     - target: {fileID: 5772055032424139190, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230438514237343044, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
+      propertyPath: m_fontSize
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1313,6 +1369,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BossChallenge (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 3975899899644278957, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 525
+      objectReference: {fileID: 0}
     - target: {fileID: 5772055032424139190, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1392,6 +1452,10 @@ PrefabInstance:
     - target: {fileID: 5772055032424139190, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230438514237343044, guid: 4371a0cbcc2120b49b2da891998b69c2, type: 3}
+      propertyPath: m_fontSize
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

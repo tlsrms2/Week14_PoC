@@ -40,6 +40,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-ko-KR
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 702497b6731424d4ea269ba74578cfd2
+    m_Address: BossRush_ko-KR
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-ko-KR
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cfc3af12e13227b4199497e88aa48568
     m_Address: Boss_ko-KR
     m_ReadOnly: 1

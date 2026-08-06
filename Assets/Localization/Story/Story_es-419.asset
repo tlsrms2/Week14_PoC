@@ -1,0 +1,949 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Story_es-419
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: es-419
+  m_SharedData: {fileID: 11400000, guid: 8a8e32e629c410a4c97867fa550435ab, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 5333532901383
+    m_Localized: "Usa <sprite name=\"icon_leftclick\"> para <color=#73f3ff>disparar
+      un n\xFAcleo de energ\xEDa bal\xEDstico hacia la direcci\xF3n del cursor</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901389
+    m_Localized: "A continuaci\xF3n verificar\xE9 <color=#73f3ff>el funcionamiento
+      de la interfaz AEGIS</color> usando el fuego de supresi\xF3n del mu\xF1eco."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789249
+    m_Localized: "Cuando el enemigo prepara <color=#ff4c5c>algunos ataques poderosos</color>,
+      <color=#73f3ff>el ojo prot\xE9sico t\xE1ctico ARGUS puede capturar un n\xFAcleo
+      de energ\xEDa vulnerable</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901404
+    m_Localized: "El n\xFAcleo de energ\xEDa bal\xEDstico <color=#73f3ff>se sobrecarga
+      y se expulsa autom\xE1ticamente si se conserva demasiado tiempo</color>. El
+      \xEDcono de bala del cargador indica el tiempo restante hasta la sobrecarga."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512789
+    m_Localized: "Dices cualquier cosa frente a un m\xE9dico, <color=#73f3ff>mi hija.</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512788
+    m_Localized: "...Ejem. Pero si <color=#ff4c5c>muere alguien que hace cosas terribles</color>,
+      \xBFno estar\xEDa bien? Como una cirug\xEDa para extirpar un tumor maligno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512781
+    m_Localized: "<color=#A8B2BC>[ Reproduciendo el medio de grabaci\xF3n reconstruido.
+      ]</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512884
+    m_Localized: Aunque el objetivo ya haya recibido una <color=#FF4C5C>visita</color>,
+      es posible <color=#73f3ff>registrar sus datos y repetir el combate</color>.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512885
+    m_Localized: "Si <color=#73f3ff>cumples condiciones adicionales</color>, adem\xE1s
+      de los datos del incidente para analizar, podr\xE1s obtener m\xE1s <color=#73f3ff>datos
+      de combate</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512886
+    m_Localized: "Los <color=#73f3ff>chips de datos reunidos</color> se usar\xE1n
+      despu\xE9s en la <color=#73f3ff>expansi\xF3n de m\xF3dulos que mejora el rendimiento
+      del equipo</color>. Por lo tanto, si <color=#73f3ff>el combate se complica,
+      se recomienda priorizar la obtenci\xF3n de chips de datos</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512887
+    m_Localized: "Como ya has obtenido cierta cantidad de <color=#73f3ff>chips de
+      datos</color>, explicar\xE9 la funci\xF3n de <color=#73f3ff>expansi\xF3n de
+      m\xF3dulos</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512880
+    m_Localized: "Las ubicaciones de las personas identificadas se <color=#73f3ff>registraron
+      en el panel t\xE1ctico</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512881
+    m_Localized: "Desde el <color=#73f3ff>panel t\xE1ctico</color>, puedes <color=#73f3ff>consultar
+      la informaci\xF3n del objetivo</color> y <color=#73f3ff>moverte a la ubicaci\xF3n
+      correspondiente</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512882
+    m_Localized: "Al <color=#73f3ff>acceder al panel</color>, se mostrar\xE1 la siguiente
+      interfaz."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512883
+    m_Localized: "Realiza una <color=#FF4C5C>visita</color> al objetivo elegido y
+      consigue los datos. En cuanto se obtengan datos v\xE1lidos, iniciar\xE9 el
+      an\xE1lisis de inmediato."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512786
+    m_Localized: "Si rechaz\xE1ramos hasta la gratitud, el trabajo de un m\xE9dico
+      ser\xEDa demasiado sombr\xEDo, \xBFno crees?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512785
+    m_Localized: "\xBFEst\xE1 bien aceptar cosas as\xED de un paciente?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512769
+    m_Localized: "Acceso autorizado. Se recomienda atenci\xF3n de emergencia inmediata."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512768
+    m_Localized: "Se detect\xF3 <color=#FF4C5C>amputaci\xF3n del miembro superior
+      derecho, quemaduras extensas del rostro al hombro y da\xF1o al sistema nervioso</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512888
+    m_Localized: "Al <color=#73f3ff>acceder al panel de m\xF3dulos correspondiente</color>,
+      podr\xE1s <color=#73f3ff>mejorar el rendimiento del equipo implantado</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512889
+    m_Localized: "Al <color=#73f3ff>acceder al panel</color>, se mostrar\xE1 la siguiente
+      interfaz."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512831
+    m_Localized: "As\xED me resulta m\xE1s c\xF3modo. Deja menos cabos sueltos. Adem\xE1s,
+      ese tipo cruz\xF3 la l\xEDnea hace rato."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512866
+    m_Localized: "Entonces, primero: al analizar los dispositivos de los contratados,
+      pudimos determinar la ubicaci\xF3n de la <color=#ddbd78>sede del Sindicato</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512867
+    m_Localized: "\xBFY la mala noticia?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512860
+    m_Localized: "Si me importara el beneficio, me apartar\xEDa de esto, pero..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1424586970947584
+    m_Localized: "Sin embargo, no se confirm\xF3 la raz\xF3n por la que fue designado
+      como objetivo de eliminaci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512814
+    m_Localized: No...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512815
+    m_Localized: Borra la lista.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512816
+    m_Localized: ...Entendido.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512817
+    m_Localized: "Pap\xE1. Ahora por fin entiendo lo que quisiste decir aquella vez."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512810
+    m_Localized: No entiendo muy bien...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512811
+    m_Localized: "<color=#73f3ff>Mi hija</color> es inteligente. Creo que alg\xFAn
+      d\xEDa lo entender\xE1s."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512812
+    m_Localized: ...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512813
+    m_Localized: "<color=#ff4c5c>\xBFTransmito la lista de los pr\xF3ximos objetivos?</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901386
+    m_Localized: "A continuaci\xF3n, un <color=#73f3ff>entrenamiento de adaptaci\xF3n
+      con mu\xF1ecos de prueba</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901408
+    m_Localized: "<color=#73f3ff>Intenta esquivar el ataque enemigo usando la habilidad
+      de evasi\xF3n t\xE1ctica.</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333528707072
+    m_Localized: "Tambi\xE9n puedes <color=#73f3ff>convertir el m\xF3dulo seleccionado
+      nuevamente en chips de datos</color>. Si <color=#73f3ff>el combate se complica,
+      se recomienda probar distintas combinaciones de m\xF3dulos</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901406
+    m_Localized: Habilidad activa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512818
+    m_Localized: "No todo termina con <color=#ff4c5c>extirpar lo malo</color>. Tambi\xE9n
+      hay que <color=#ddbd78>cuidar la herida que queda.</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512819
+    m_Localized: "Ahora intentar\xE9 encontrar esa forma."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512856
+    m_Localized: "En p\xFAblico act\xFAa como artista que combina m\xFAsica y performances
+      con drones, pero en realidad parece pertenecer al <color=#ddbd78>Sindicato</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901387
+    m_Localized: "Primero probar\xE9 un <color=#73f3ff>m\xF3dulo que corrige autom\xE1ticamente
+      la mira hacia entidades hostiles</color>. <color=#73f3ff>Dispara a cualquier
+      lugar.</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901401
+    m_Localized: "A continuaci\xF3n explicar\xE9 la <color=#73f3ff>sobrecarga</color>.
+      Los n\xFAcleos de energ\xEDa liberan energ\xEDa continuamente para mantener
+      el sistema AEGIS."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901400
+    m_Localized: "La intercepci\xF3n es <color=#73f3ff>el \xFAnico medio para reponer
+      n\xFAcleos de energ\xEDa bal\xEDsticos durante el combate</color>. Ten en cuenta
+      que algunos proyectiles no pueden interceptarse seg\xFAn su forma."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901403
+    m_Localized: Sobrecarga
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901388
+    m_Localized: "M\xF3dulo de correcci\xF3n de mira sin anomal\xEDas. <color=#73f3ff>Este
+      m\xF3dulo podr\xE1 retirarse m\xE1s tarde si no es necesario</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828163
+    m_Localized: Impactos de proyectiles enemigos {0}/{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901409
+    m_Localized: "El entrenamiento b\xE1sico del equipo implantado ha concluido.
+      Por \xFAltimo, realizaremos un <color=#73f3ff>combate simulado contra un mu\xF1eco
+      enemigo</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512825
+    m_Localized: "\xBFEse exc\xE9ntrico del que dicen que <color=#ddbd78>anda montado
+      en sus armas</color>? \xBFY el comprador?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512845
+    m_Localized: "Se presume que esa persona era contador del <color=#ddbd78>Sindicato</color>,
+      una organizaci\xF3n que gestiona la circulaci\xF3n de armas, informaci\xF3n
+      y fondos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512865
+    m_Localized: "...D\xEDmelas una por una. Escuchar\xE9 y decidir\xE9."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512792
+    m_Localized: "<color=#A8B2BC>[ La grabaci\xF3n entre las 17:32:26 y las 17:32:41
+      est\xE1 da\xF1ada. ]</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828161
+    m_Localized: "Disparo b\xE1sico {0}/{1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512820
+    m_Localized: ...Me voy.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512874
+    m_Localized: Como sabes, ajustamos el equilibrio de la sociedad mediante <color=#ff4c5c>visitas</color>.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 739306561925120
+    m_Localized: "Adem\xE1s, al disparar, <color=#73f3ff>se consume el n\xFAcleo
+      de energ\xEDa bal\xEDstico mostrado en el cargador</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901413
+    m_Localized: "<color=#ff4c5c>Evasi\xF3n t\xE1ctica fallida.</color> Int\xE9ntalo
+      de nuevo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512877
+    m_Localized: Por lo tanto, <color=#73f3ff>Ion</color>, ayudarte a continuar con
+      tus <color=#ff4c5c>visitas</color> se considera beneficioso para la sociedad
+      en conjunto.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512863
+    m_Localized: Verificando identidad. Nombre en clave <color=#73f3ff>Ion</color>.
+      Bienvenida de vuelta.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512794
+    m_Localized: No entiendo muy bien...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901378
+    m_Localized: Movimiento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901379
+    m_Localized: Presiona las teclas <sprite name="icon_w"><sprite name="icon_a"><sprite
+      name="icon_s"><sprite name="icon_d"> para <color=#73f3ff>moverte</color>.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901381
+    m_Localized: "A continuaci\xF3n medir\xE9 el efecto de un impacto moment\xE1neo.
+      <color=#73f3ff>Dispara con el arma de tu mano izquierda</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789250
+    m_Localized: "<color=#73f3ff>Interceptar ese n\xFAcleo</color> no solo <color=#73f3ff>aturde
+      al enemigo, sino que tambi\xE9n genera energ\xEDa extra</color>. \xDAsalo para
+      llevar ventaja en el combate."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512872
+    m_Localized: "En t\xE9rminos simples, es una especie de inversi\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512834
+    m_Localized: "\xBFQui\xE9n es?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512840
+    m_Localized: "El an\xE1lisis de los datos que obtuviste ya est\xE1 casi completo.
+      \xBFHay algo que quieras preguntar?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512878
+    m_Localized: "...Entiendo. Entonces, \xBFhasta d\xF3nde puedes apoyarme?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901376
+    m_Localized: "Iniciando el <color=#73f3ff>entrenamiento de adaptaci\xF3n al equipo</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4972079872663552
+    m_Localized: Padre
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901384
+    m_Localized: "Control de retroceso y correcci\xF3n de postura normales. No hay
+      anomal\xEDas en el sistema de equilibrio corporal."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512799
+    m_Localized: ...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512798
+    m_Localized: "...Ya llegu\xE9. Pap\xE1."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1108486769008640
+    m_Localized: '[ Objetivo ]'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512837
+    m_Localized: "Tambi\xE9n tendr\xE9 que hacerle una <color=#FF4C5C>visita</color>
+      en persona. \xBFSabes d\xF3nde est\xE1 ahora?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512793
+    m_Localized: "<color=#ddbd78>...jar... hay que.</color> \xBFEntiendes?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512890
+    m_Localized: "Puedes <color=#73f3ff>consumir los chips de datos que tengas</color>
+      para <color=#73f3ff>expandir y equipar los m\xF3dulos que quieras</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512891
+    m_Localized: "<color=#73f3ff>Los m\xF3dulos expandidos se pueden cambiar libremente</color>,
+      pero ten presente que <color=#ff4c5c>no puedes equipar m\xE1s de un m\xF3dulo
+      del mismo tipo</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512780
+    m_Localized: "<color=#A8B2BC>[ Bloque R-2, Caf\xE9 Vesper. 21 de julio, 17:29:20
+      ]</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512797
+    m_Localized: "<color=#A8B2BC>[ A partir de las 17:33:44, los medios de grabaci\xF3n
+      fueron destruidos por la explosi\xF3n. No hay datos. ]</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512796
+    m_Localized: "Ah, cierto, deber\xEDa probar el <color=#ddbd78>t\xE9 que me regalaron</color>.
+      Estoy seguro de que a <color=#73f3ff>ti</color> te gustaba el t\xE9 verde-"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512795
+    m_Localized: "<color=#73f3ff>Mi hija</color> es inteligente. Creo que alg\xFAn
+      d\xEDa lo entender\xE1s."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512779
+    m_Localized: Empieza.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512778
+    m_Localized: "Como esto tomar\xE1 algo de tiempo, se recomienda <color=#73f3ff>realizar
+      el entrenamiento de adaptaci\xF3n</color> mientras esperas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512842
+    m_Localized: "La raz\xF3n es simple. <color=#FF4C5C>La explosi\xF3n en Vesper
+      fue un accidente</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512843
+    m_Localized: "...\xBFQu\xE9?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512875
+    m_Localized: "Sin embargo, <color=#ddbd78>quienes se mueven por beneficio</color>
+      terminan con el juicio nublado y acaban corrompi\xE9ndose."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512876
+    m_Localized: "En cambio, quienes se mueven no por beneficio, sino por una <color=#FF4C5C>motivaci\xF3n
+      constante</color>, se convierten en una fuerza pura y predecible."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512773
+    m_Localized: "Tasa de recuperaci\xF3n de funciones f\xEDsicas: 79 %. Conexi\xF3n
+      neural del <color=#73f3ff>brazo prot\xE9sico</color> derecho completada."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512772
+    m_Localized: "...Bloque R-2, <color=#ddbd78>Caf\xE9 Vesper.</color> Todos los
+      registros de video de hoy alrededor de las 17:33."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512848
+    m_Localized: "Al d\xEDa siguiente del incidente en Vesper, lo <color=#FF4C5C>encontraron
+      muerto en su casa, aparentemente por suicidio</color>. La figura distorsionada
+      en las grabaciones cercanas sugiere que <color=#ddbd78>Mirage</color> le hizo
+      una <color=#FF4C5C>visita</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512770
+    m_Localized: "\xBFTienes alguna solicitud adicional?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512777
+    m_Localized: "La mayor\xEDa de los registros originales se perdi\xF3 por la explosi\xF3n.
+      Los datos se est\xE1n reconstruyendo a partir de fragmentos conservados en
+      dispositivos de grabaci\xF3n cercanos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512776
+    m_Localized: "\xBFY los datos de <color=#ddbd78>Vesper</color>?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512775
+    m_Localized: "Adem\xE1s, la <color=#73f3ff>interfaz de n\xFAcleo AEGIS</color>
+      fue implantada en el sistema nervioso. Tras completar el <color=#73f3ff>entrenamiento
+      de adaptaci\xF3n</color>, se espera que la velocidad de reacci\xF3n y la precisi\xF3n
+      de control superen los niveles previos a la p\xE9rdida."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512774
+    m_Localized: "Seg\xFAn tu solicitud, la funci\xF3n de calibraci\xF3n visual del
+      <color=#73f3ff>ojo prot\xE9sico t\xE1ctico ARGUS</color> fue vinculada al sistema
+      de control motor del brazo prot\xE9sico."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512821
+    m_Localized: "La grabaci\xF3n de video termin\xF3. Hice todo lo posible por reconstruirla,
+      pero ten en cuenta que algunas partes se perdieron."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512822
+    m_Localized: "...Con esto basta. \xBFCu\xE1l es el origen del explosivo?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512823
+    m_Localized: "Al rastrear la ruta de distribuci\xF3n de las piezas halladas en
+      los fragmentos, se confirm\xF3 un registro de venta de art\xEDculos de la misma
+      serie dos d\xEDas antes del incidente."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901377
+    m_Localized: "Primero verificar\xE9 si la implantaci\xF3n del equipo afect\xF3
+      negativamente el sistema nervioso. <color=#73f3ff>Por favor, avanza.</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512828
+    m_Localized: "Es imposible. Ser\xEDa posible si la registraras personalmente
+      como misi\xF3n oficial, pero no lo recomiendo, ya que habr\xEDa una alta probabilidad
+      de exposici\xF3n ante el objetivo. Otra forma ser\xEDa..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512829
+    m_Localized: "Voy a ir con <color=#ddbd78>Salvo</color> en persona para hacerle
+      una <color=#FF4C5C>visita</color> y conseguir la informaci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512849
+    m_Localized: "<color=#ddbd78>Mirage</color>... \xBFEs ese que <color=#ddbd78>desaparece
+      frente a tus ojos, aparece de repente y te apu\xF1ala por la espalda</color>?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901412
+    m_Localized: "El an\xE1lisis de datos relacionados con <color=#ddbd78>Caf\xE9
+      Vesper</color> est\xE1 completo en un 98 %. Por favor, vuelve al lobby."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901411
+    m_Localized: "Entrenamiento de adaptaci\xF3n concluido. Informaci\xF3n actualizada.
+      Elevando la evaluaci\xF3n de las capacidades f\xEDsicas del nombre en clave
+      <color=#73f3ff>Ion</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901410
+    m_Localized: "Usa <color=#73f3ff>ataques, intercepci\xF3n y habilidad activa</color>
+      de forma adecuada para <color=#73f3ff>destruir el mu\xF1eco.</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901402
+    m_Localized: "Si el mismo n\xFAcleo <color=#ff4c5c>no se consume durante demasiado
+      tiempo, se sobrecargar\xE1</color> y podr\xEDa causar da\xF1o t\xE9rmico al
+      usuario, por lo que ser\xE1 <color=#ff4c5c>expulsado autom\xE1ticamente</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901414
+    m_Localized: "Realiza la evasi\xF3n t\xE1ctica justo antes de tocar el proyectil."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512826
+    m_Localized: "Us\xF3 un seud\xF3nimo, lo que dificulta el rastreo. Como sabes,
+      por la naturaleza de las <color=#ddbd78>misiones no oficiales</color>, existen
+      fuertes restricciones para rastrear objetivos cuya identidad no est\xE1 claramente
+      revelada."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789251
+    m_Localized: Contraataque
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512852
+    m_Localized: "Confirmado. Adem\xE1s, mediante el historial de transacciones de
+      <color=#ddbd78>Salvo</color>, identificamos a algunas <color=#ddbd78>personas
+      vinculadas al incidente</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512791
+    m_Localized: Pero escucha. Cuando se trata de <color=#ddbd78>salvar a una persona-</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512861
+    m_Localized: <color=#FF4C5C>Esto es una venganza estrictamente personal.</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828166
+    m_Localized: "Destrucci\xF3n del mu\xF1eco {0}/{1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828162
+    m_Localized: "Impactos con ataque b\xE1sico {0}/{1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901393
+    m_Localized: "Al recibir un ataque enemigo, <color=#73f3ff>primero se consume
+      un n\xFAcleo de energ\xEDa bal\xEDstico para absorber el da\xF1o</color>. <color=#ff4c5c>Si
+      recibes un golpe sin tener ning\xFAn n\xFAcleo, morir\xE1s</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901398
+    m_Localized: "Intercepci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901399
+    m_Localized: "Usa <sprite name=\"icon_rightclick\"> para <color=#73f3ff>capturar
+      proyectiles enemigos con el ojo ARGUS, haciendo que el brazo prot\xE9sico los
+      intercepte autom\xE1ticamente</color>. Al capturar e interceptar con \xE9xito,
+      <color=#73f3ff>el ataque enemigo se neutraliza y su energ\xEDa se absorbe autom\xE1ticamente
+      en el n\xFAcleo</color>. Si <color=#ff4c5c>fallas varias intercepciones seguidas
+      en poco tiempo</color>, el ojo ARGUS se sobrecargar\xE1 y <color=#ff4c5c>el
+      alcance de captura disminuir\xE1 gradualmente</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512870
+    m_Localized: "<color=#ddbd78>Esos desgraciados</color> debieron sospechar algo.
+      <color=#ddbd78>Echo</color>... Justo trajeron al rival m\xE1s molesto."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512858
+    m_Localized: "Sin embargo, como <color=#ff4c5c>nosotros</color> tambi\xE9n mantenemos
+      una relaci\xF3n de cooperaci\xF3n con el <color=#ddbd78>Sindicato</color>,
+      ser\xE1 dif\xEDcil brindar apoyo si realizas una <color=#FF4C5C>visita</color>
+      a una persona vinculada sin seguir el procedimiento."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512869
+    m_Localized: "<color=#ff4c5c>Objetivo de la visita</color>. Nombre en clave <color=#73f3ff>Ion</color>:
+      t\xFA."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512846
+    m_Localized: Por las circunstancias, que el explosivo llegara a tu padre fue
+      una variable no planificada. <color=#FF4C5C>Originalmente, planeaban detonarlo
+      en la casa del objetivo y disfrazarlo como un accidente de gas</color>.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901390
+    m_Localized: "Espera, \xBFno acabo de salir de cirug\xEDa?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2147990514270208
+    m_Localized: "\xC1rea de entrenamiento"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901392
+    m_Localized: "Da\xF1o recibido"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901382
+    m_Localized: "Ataque b\xE1sico"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901394
+    m_Localized: "Sistema AEGIS sin anomal\xEDas. El da\xF1o f\xEDsico puede neutralizarse,
+      pero el impacto y el dolor no pueden mitigarse. Tenlo en cuenta."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901395
+    m_Localized: "Ya lo s\xE9..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901396
+    m_Localized: "Adem\xE1s, si <color=#ff4c5c>no hay un n\xFAcleo de energ\xEDa
+      bal\xEDstico capaz de bloquear el ataque</color>, el sistema AEGIS no funcionar\xE1,
+      y podr\xEDas sufrir una <color=#ff4c5c>herida fatal</color>. Ten mucho cuidado."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901397
+    m_Localized: "A continuaci\xF3n, un <color=#73f3ff>entrenamiento usando el ojo
+      prot\xE9sico t\xE1ctico ARGUS y el sistema de control motor del brazo prot\xE9sico</color>.
+      Intenta <color=#73f3ff>interceptar los proyectiles disparados por el mu\xF1eco</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512873
+    m_Localized: "\xBFInversi\xF3n?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512832
+    m_Localized: "...Y tambi\xE9n necesito a alguien con quien <color=#ff4c5c>desquitar
+      mi rabia</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512841
+    m_Localized: "El prop\xF3sito de la entrega de la bomba. Quiero saber <color=#ddbd78>por
+      qu\xE9 mi pap\xE1 tuvo que morir</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512782
+    m_Localized: "Pap\xE1, \xBFqu\xE9 es esta caja?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512879
+    m_Localized: "La ubicaci\xF3n de la <color=#ddbd78>sede del Sindicato</color>
+      fue <color=#73f3ff>registrada en el panel</color>. Recomiendo actuar antes
+      de que llegue el nombre en clave <color=#ddbd78>Echo</color> y realizar la
+      <color=#ff4c5c>visita</color> primero."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901385
+    m_Localized: Abriendo el mamparo frontal. Avanza.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828164
+    m_Localized: "Intercepci\xF3n de proyectiles {0}/{1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789248
+    m_Localized: "Por \xFAltimo, entrenamiento de <color=#73f3ff>contraataque</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901405
+    m_Localized: "A continuaci\xF3n, la <color=#73f3ff>habilidad activa</color>.
+      Parte de la energ\xEDa liberada por el n\xFAcleo puede reutilizarse como <color=#73f3ff>una
+      mejora f\xEDsica moment\xE1nea</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828160
+    m_Localized: Entrenamiento de movimiento {0}/{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1345961062363136
+    m_Localized: "Es una suposici\xF3n razonable. Entonces recomiendo <color=#73f3ff>revisar
+      los m\xF3dulos</color> una \xFAltima vez antes del combate."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4972079872663553
+    m_Localized: Ion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512854
+    m_Localized: "Correcto. Quien dirigi\xF3 la operaci\xF3n fue <color=#ddbd78>Canon</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512855
+    m_Localized: "\xBF<color=#ddbd78>Canon</color>? \xBFEsa persona pertenece a este
+      mundo?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512787
+    m_Localized: "Tu pap\xE1 pasa horas cubierto de sangre salvando gente... Es dif\xEDcil
+      entender qu\xE9 lleva a alguien a querer matar a otra persona."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512857
+    m_Localized: "Normalmente no es f\xE1cil determinar la ubicaci\xF3n de ejecutivos
+      de alto rango, pero <color=#ddbd78>Canon</color> tiene mucha informaci\xF3n
+      p\xFAblica, as\xED que fue posible localizarlo con facilidad."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512850
+    m_Localized: "En la base de datos existe una ubicaci\xF3n estimada de <color=#ddbd78>Mirage</color>,
+      pero debes entender que no puedo proporcionarla si no se registra como misi\xF3n
+      oficial."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512851
+    m_Localized: "No hace falta. Si merodeo cerca de la casa de <color=#ddbd78>ese
+      contador</color>, \xE9l vendr\xE1 por su cuenta a hacerme una <color=#FF4C5C>visita</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512804
+    m_Localized: "Nombre en clave <color=#73f3ff>Ion</color>. Tras investigar los
+      datos del Sindicato, termin\xE9 el an\xE1lisis de las personas que parecen
+      estar vinculadas al incidente."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512805
+    m_Localized: "<color=#ff4c5c>\xBFTransmito la lista de los pr\xF3ximos objetivos?</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512806
+    m_Localized: ...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512807
+    m_Localized: "Pero... s\xED. <color=#ff4c5c>A veces una cirug\xEDa es necesaria</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512800
+    m_Localized: "Yo tambi\xE9n quer\xEDa... ser una buena persona, como t\xFA, pap\xE1..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512801
+    m_Localized: "Aunque fuera de una forma distinta... quer\xEDa ser alguien que
+      salvara a las personas..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512802
+    m_Localized: Ni siquiera pude proteger a la familia que amaba... Yo...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512803
+    m_Localized: <color=#FF4C5C>Quiero crear un mundo donde las buenas personas ya
+      no salgan heridas.</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512835
+    m_Localized: "El individuo es un <color=#ddbd78>mercenario corpulento</color>
+      llamado <color=#ddbd78>Ram</color>. Como lleva <color=#ddbd78>equipo de mejora
+      f\xEDsica de alta potencia</color>, fue f\xE1cil identificarlo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512836
+    m_Localized: "Sin embargo, al igual que antes, no se pudo rastrear qui\xE9n lo
+      contrat\xF3 para transportar el explosivo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512784
+    m_Localized: "Un paciente al que oper\xE9 hace poco me regal\xF3 este juego de
+      t\xE9 fino <color=#ddbd78>como agradecimiento</color>. Lo traje porque hac\xEDa
+      mucho que no ve\xEDa a <color=#73f3ff>mi hija</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512830
+    m_Localized: "Si conseguimos los datos, ser\xE1 posible analizar la informaci\xF3n.
+      \xBFDe verdad vas a realizar la <color=#FF4C5C>visita</color>?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512808
+    m_Localized: Pero escucha. Cuando se trata de <color=#ddbd78>salvar a una persona,</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512809
+    m_Localized: "<color=#ddbd78>No basta con extirpar el tumor maligno. Tambi\xE9n
+      hay que bajar el bistur\xED y suturar la herida.</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512833
+    m_Localized: "Confirmado. Adem\xE1s, pude identificar al <color=#ddbd78>mensajero
+      que entreg\xF3 el explosivo</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636948828165
+    m_Localized: "Evasi\xF3n con habilidad {0}/{1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406452789252
+    m_Localized: "Cuando el enemigo prepara <color=#ff4c5c>algunos ataques poderosos</color>,
+      <color=#73f3ff>el ojo prot\xE9sico t\xE1ctico ARGUS captura un n\xFAcleo de
+      energ\xEDa azul vulnerable</color>. Al <color=#73f3ff>interceptar ese n\xFAcleo</color>,
+      <color=#73f3ff>el enemigo queda aturdido y se genera energ\xEDa extra alrededor</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512838
+    m_Localized: Espera. Voy a <color=#73f3ff>registrar los datos relacionados en
+      el panel</color>.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512839
+    m_Localized: Verificando identidad. Nombre en clave <color=#73f3ff>Ion</color>.
+      Bienvenida de vuelta.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512824
+    m_Localized: "El lugar es un <color=#ddbd78>mercado negro</color> en una estaci\xF3n
+      de metro cerrada cerca del <color=#ddbd78>Bloque M-8</color>. El vendedor es
+      <color=#ddbd78>el traficante de armas Salvo</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512864
+    m_Localized: "Actualmente hay dos datos analizados. Usando una expresi\xF3n com\xFAn,
+      hay una buena noticia y una mala. \xBFCu\xE1l quieres o\xEDr primero?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901407
+    m_Localized: "Usa <sprite name=\"icon_space\"> para <color=#73f3ff>usar la habilidad
+      activa</color>. La habilidad activa tiene <color=#73f3ff>recarga</color> y
+      podr\xE1 usarse de nuevo tras cierto tiempo. El <color=#73f3ff>indicador de
+      habilidad en el borde del cargador</color> muestra si la habilidad est\xE1
+      disponible."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1826406394068992
+    m_Localized: Contraataque {0}/{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901415
+    m_Localized: "<color=#ff4c5c>Se consumieron todos los n\xFAcleos de energ\xEDa
+      bal\xEDsticos</color>. Reabasteciendo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333461598208
+    m_Localized: E.R.I.S.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512827
+    m_Localized: "\xBFNi pagando un extra?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512853
+    m_Localized: Deben ser gente del <color=#ddbd78>Sindicato</color>.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512790
+    m_Localized: "Pero... s\xED. <color=#ff4c5c>A veces una cirug\xEDa es necesaria</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333520318464
+    m_Localized: Verificando identidad.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333520318465
+    m_Localized: Nombre en clave <color=#73f3ff>Ion</color>, clase K26. No hay misiones
+      en curso.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333520318466
+    m_Localized: Observaciones especiales.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901391
+    m_Localized: "<color=#73f3ff>El sistema AEGIS es una funci\xF3n importante que
+      consume un n\xFAcleo al recibir da\xF1o para bloquear instant\xE1neamente lesiones
+      fatales</color>. Por seguridad, lo verificaremos de antemano."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512862
+    m_Localized: "Confirmado. Antes de partir, revisa lo siguiente: <color=#73f3ff>los
+      m\xF3dulos disponibles fueron expandidos</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512868
+    m_Localized: "Recientemente se registr\xF3 una nueva misi\xF3n a nombre del cliente,
+      el <color=#ddbd78>Sindicato</color>. <color=#ff4c5c>Visitante</color>, nombre
+      en clave <color=#ddbd78>Echo</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512844
+    m_Localized: "Al analizar el terminal de <color=#ddbd78>Ram</color>, se descubri\xF3
+      que el objetivo de eliminaci\xF3n era el destinatario original del regalo,
+      es decir, <color=#ddbd78>el paciente que atend\xEDa tu padre</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333532901380
+    m_Localized: Movimiento normal. Sin observaciones especiales.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512871
+    m_Localized: "Por cierto, <color=#73f3ff>E.R.I.S.</color>. Si esto fue designado
+      como misi\xF3n oficial, ya no tienes motivos para estar de mi lado. \xBFPor
+      qu\xE9 me lo informas?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512859
+    m_Localized: "<color=#ff4c5c>\xBFAun as\xED quieres proceder?</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5333524512847
+    m_Localized: "Entonces... \xBFd\xF3nde est\xE1 ahora <color=#ddbd78>esa persona</color>?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43636894302208
+    m_Localized: "Probablemente ya saben que ir\xE9 y me est\xE1n esperando junto
+      con <color=#ddbd78>Echo</color>."
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

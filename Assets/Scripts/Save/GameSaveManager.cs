@@ -166,6 +166,26 @@ namespace Week14.Save
             }
         }
 
+        public static bool ShouldShowBossRushUnlockNotice(int slot)
+        {
+            if (slot < 0 || slot >= SlotCount || !File.Exists(GetSlotPath(slot)))
+            {
+                return false;
+            }
+
+            try
+            {
+                GameSaveData preview = JsonUtility.FromJson<GameSaveData>(File.ReadAllText(GetSlotPath(slot)));
+                return preview != null
+                    && preview.hasSeenEnding
+                    && !preview.hasAcknowledgedBossRushUnlock;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         private static GameSaveConfigSO cachedConfig;
         private static bool configLoadAttempted;
 
@@ -372,6 +392,105 @@ namespace Week14.Save
             return false;
         }
 
+        public static bool HasBossRushBestTime => Data.hasBossRushBestTime;
+
+        public static float BossRushBestTime => Data.hasBossRushBestTime
+            ? Data.bossRushBestTime
+            : -1f;
+
+        public static bool TrySetBestBossRushTime(float seconds)
+        {
+            if (float.IsNaN(seconds) || float.IsInfinity(seconds) || seconds < 0f)
+            {
+                return false;
+            }
+
+            if (Data.hasBossRushBestTime && seconds >= Data.bossRushBestTime)
+            {
+                return false;
+            }
+
+            Data.hasBossRushBestTime = true;
+            Data.bossRushBestTime = seconds;
+            Save();
+            return true;
+        }
+
+        public static bool HasBossRushBossBestTime(string bossId)
+        {
+            return FindBossRushBossClearTimeEntry(bossId) != null;
+        }
+
+        public static float GetBossRushBossBestTime(string bossId)
+        {
+            BossClearTimeEntry entry = FindBossRushBossClearTimeEntry(bossId);
+            return entry != null ? entry.seconds : -1f;
+        }
+
+        public static void TrySetBestBossRushBossTimes(
+            IReadOnlyList<string> bossIds,
+            IReadOnlyList<float> seconds)
+        {
+            if (bossIds == null || seconds == null || bossIds.Count != seconds.Count)
+            {
+                return;
+            }
+
+            bool changed = false;
+            for (int i = 0; i < bossIds.Count; i++)
+            {
+                string bossId = bossIds[i];
+                float clearSeconds = seconds[i];
+                if (string.IsNullOrWhiteSpace(bossId)
+                    || float.IsNaN(clearSeconds)
+                    || float.IsInfinity(clearSeconds)
+                    || clearSeconds < 0f)
+                {
+                    continue;
+                }
+
+                BossClearTimeEntry entry = FindBossRushBossClearTimeEntry(bossId);
+                if (entry == null)
+                {
+                    Data.bossRushBossClearTimes.Add(new BossClearTimeEntry
+                    {
+                        bossId = bossId,
+                        seconds = clearSeconds
+                    });
+                    changed = true;
+                }
+                else if (clearSeconds < entry.seconds)
+                {
+                    entry.seconds = clearSeconds;
+                    changed = true;
+                }
+            }
+
+            if (changed)
+            {
+                Save();
+            }
+        }
+
+        private static BossClearTimeEntry FindBossRushBossClearTimeEntry(string bossId)
+        {
+            if (string.IsNullOrWhiteSpace(bossId))
+            {
+                return null;
+            }
+
+            List<BossClearTimeEntry> entries = Data.bossRushBossClearTimes;
+            for (int i = 0; i < entries.Count; i++)
+            {
+                if (entries[i].bossId == bossId)
+                {
+                    return entries[i];
+                }
+            }
+
+            return null;
+        }
+
         // 테스트/디버그용: 특정 보스의 최고 클리어 기록만 지웁니다.
         public static void ResetBossClearTime(string bossId)
         {
@@ -422,6 +541,17 @@ namespace Week14.Save
         public static bool HasSeenEnding => Data.hasSeenEnding;
         public static bool HasSeenEpilogue => HasSeenEnding;
         public static bool HasSeenSynopsis => HasSeenPrologue;
+
+        public static void AcknowledgeBossRushUnlock()
+        {
+            if (!Data.hasSeenEnding || Data.hasAcknowledgedBossRushUnlock)
+            {
+                return;
+            }
+
+            Data.hasAcknowledgedBossRushUnlock = true;
+            Save();
+        }
 
         public static bool HasSeenStoryEpisode(string episodeId)
         {
@@ -570,6 +700,10 @@ namespace Week14.Save
             }
 
             Data.hasSeenEnding = seen;
+            if (!seen)
+            {
+                Data.hasAcknowledgedBossRushUnlock = false;
+            }
             Save();
         }
 
@@ -585,6 +719,7 @@ namespace Week14.Save
                 || Data.hasSeenSynopsis
                 || Data.hasCompletedTutorial
                 || Data.hasSeenEnding
+                || Data.hasAcknowledgedBossRushUnlock
                 || Data.seenStoryEpisodeIds.Count > 0;
 
             if (!changed)
@@ -597,6 +732,7 @@ namespace Week14.Save
             Data.hasSeenSynopsis = false;
             Data.hasCompletedTutorial = false;
             Data.hasSeenEnding = false;
+            Data.hasAcknowledgedBossRushUnlock = false;
             Data.seenStoryEpisodeIds.Clear();
             Save();
         }
@@ -1249,6 +1385,7 @@ namespace Week14.Save
             data.unlockedBossIds ??= new List<string>();
             data.clearedBossIds ??= new List<string>();
             data.bossClearTimes ??= new List<BossClearTimeEntry>();
+            data.bossRushBossClearTimes ??= new List<BossClearTimeEntry>();
             data.unlockedSkillIds ??= new List<string>();
             data.unlockedPassiveSkillIds ??= new List<string>();
             data.unlockedWeaponIds ??= new List<string>();

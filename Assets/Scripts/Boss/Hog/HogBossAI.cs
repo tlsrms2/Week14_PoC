@@ -14,6 +14,7 @@ namespace Week14.Enemy
             : null;
         protected override bool RotatesBodyToPlayer => false;
         protected override string PostExplosionDeathSfxId => Week14.Audio.GameplaySfxIds.HogDeath;
+        protected override bool WaitForCollapseBoomSfx => false;
 
         protected override void OnHpEmptyBegan()
         {

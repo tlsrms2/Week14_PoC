@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Skill_ru
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: ru
+  m_SharedData: {fileID: 11400000, guid: c2940797846812f4881a7a287f9eb620, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 63427674112
+    m_Localized: "Модуль тактического уклонения"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 238342733824
+    m_Localized: "Рывок на короткую дистанцию с удалением ближайших снарядов."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 300527484928
+    m_Localized: "Модуль голографического двойника"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 303861956608
+    m_Localized: "Оставляет голограмму в текущей позиции на 10 секунд.\nГолограмма атакует вместе с игроком, нанося врагам 50% обычного урона."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 347285585920
+    m_Localized: "Модуль управления временем"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 349898637312
+    m_Localized: "Замедляет время вокруг вас на 3 секунды."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 352498637312
+    m_Localized: "Магнитный модуль"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 355098637312
+    m_Localized: "В течение 2 секунд поглощает ближайшие снаряды, восстанавливая боезапас."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 357698637312
+    m_Localized: "Модуль парирования"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 360298637312
+    m_Localized: "Дает неуязвимость на очень короткое время.\nПолучение урона в этом состоянии полностью восстанавливает боезапас."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362898637312
+    m_Localized: "Модуль автонаведения"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365498637312
+    m_Localized: "Пули всегда выпускаются в направлении врагов."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 368098637312
+    m_Localized: "Модуль усиленного перехвата"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370698637312
+    m_Localized: "Немного увеличивает радиус перехвата."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 373298637312
+    m_Localized: "Модуль ускорения"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 375898637312
+    m_Localized: "Немного повышает скорость передвижения, когда боезапас пуст."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 378498637312
+    m_Localized: "Модуль преобразования энергии"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 381098637312
+    m_Localized: "При успешном перехвате перезарядка активного навыка сокращается на 0,5 сек."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 383698637312
+    m_Localized: "Модуль аварийного протокола"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 386298637312
+    m_Localized: "Один раз позволяет пережить смертельный урон."
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

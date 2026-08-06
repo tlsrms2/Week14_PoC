@@ -30,6 +30,7 @@ namespace Week14.Save
 
         public static float BgmVolume => Data.bgmVolume;
         public static float SfxVolume => Data.sfxVolume;
+        public static float MouseSensitivity => Data.mouseSensitivity;
         public static bool BgmMuted => Data.bgmMuted;
         public static bool SfxMuted => Data.sfxMuted;
         public static string LanguageCode => string.IsNullOrWhiteSpace(Data.languageCode) ? DefaultLanguageCode : Data.languageCode;
@@ -46,6 +47,12 @@ namespace Week14.Save
         public static void SetSfxVolume(float volume)
         {
             Data.sfxVolume = volume;
+            Save();
+        }
+
+        public static void SetMouseSensitivity(float sensitivity)
+        {
+            Data.mouseSensitivity = Mathf.Clamp(sensitivity, 0.5f, 3f);
             Save();
         }
 

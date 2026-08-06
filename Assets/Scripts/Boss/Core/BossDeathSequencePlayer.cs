@@ -20,7 +20,7 @@ namespace Week14.Enemy
                 }
 
                 yield return PlayFinalDeathExplosions(boss);
-                while (collapseBoom?.IsPlaying == true)
+                while (boss.WaitForCollapseBoomSfxForSequence && collapseBoom?.IsPlaying == true)
                 {
                     yield return null;
                 }

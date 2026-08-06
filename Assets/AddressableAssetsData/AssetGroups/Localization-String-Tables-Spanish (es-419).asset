@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Localization-String-Tables-Spanish (es-419)
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Localization-String-Tables-Spanish (es-419)
+  m_GUID: 53bd17f807dad724a80913513bab7c69
+  m_SerializeEntries:
+  - m_GUID: 0791c3be94a444c18d32fdb977b5beb8
+    m_Address: UI_es-419
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es-419
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0fc23e20e8a84994925bc654314697c5
+    m_Address: Weapon_es-419
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es-419
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4e16a83f6b414e598fdb2cbf911c4c53
+    m_Address: Story_es-419
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es-419
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9b169ec9dba94088834589db6035521b
+    m_Address: BossRush_es-419
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es-419
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c0d92c7005b5436c9e94dde319e0a0c8
+    m_Address: Boss_es-419
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es-419
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ccf6c1369f4e487eac7b9ad4a5ace2d4
+    m_Address: Challenge_es-419
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es-419
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fdf51e3382994d599afb535c3efb9c1d
+    m_Address: Skill_es-419
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es-419
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b3c2510e269c6aa408e4e846c03ac43a, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 3a5af4457ce5d604cb881de2388abfe8, type: 2}
+    - {fileID: 11400000, guid: d91ef7dfa99fc574dba2ac9e7a98f963, type: 2}

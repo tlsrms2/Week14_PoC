@@ -70,6 +70,10 @@ MonoBehaviour:
     m_Localized: SFX
     m_Metadata:
       m_Items: []
+  - m_Id: 20260804000001
+    m_Localized: Mouse Sensitivity
+    m_Metadata:
+      m_Items: []
   - m_Id: 3316185476464640
     m_Localized: Enhancement
     m_Metadata:
@@ -255,6 +259,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 10819947564728320
     m_Localized: Done
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12413370675593216
+    m_Localized: Boss Rush
     m_Metadata:
       m_Items: []
   references:

@@ -50,6 +50,10 @@ namespace Week14.Enemy
         [Header("Assassin Walk")]
         [SerializeField, Min(0f)] private float walkVelocityThreshold = 0.01f;
 
+        [Header("Assassin Execution")]
+        [Tooltip("처형 최종 샷 블랙아웃 동안 그로기 모션을 고정할 때, Stun-Start 클립의 어느 지점(0~1 normalizedTime)에서 멈출지입니다. 0은 클립 맨 첫 프레임이라 아직 포즈가 그로기로 안 보일 수 있어, 실제로 그로기 티가 나는 프레임을 찾아 조절하세요.")]
+        [SerializeField, Range(0f, 1f)] private float groggyFreezeNormalizedTime = 0.1f;
+
         private const int CloneSpawnPositionAttempts = 8;
         private static readonly int IsWalkParameter = Animator.StringToHash("isWalk");
 
@@ -73,6 +77,9 @@ namespace Week14.Enemy
         private Animator[] walkAnimators;
         private bool hasAppliedWalkState;
         private bool lastIsWalking;
+        private int[] groggyStunStartStateHashes;
+        private Coroutine captureGroggyStunStartRoutine;
+        private bool groggyFrozenAtStart;
 
         protected override bool RotatesBodyToPlayer => false;
         protected override BossGraphAsset GraphAsset => isStealthed ? stealthGraph : base.GraphAsset;
@@ -121,7 +128,23 @@ namespace Week14.Enemy
         protected override void OnHpEmptyBegan()
         {
             ForceExitStealthImmediate();
+
+            // Anim-Assassin-char/glow 컨트롤러는 AnyState 전이가 DoAtk1 > DoAtk2 > DoStep > Stun
+            // 순으로 등록돼 있어, 공격 트리거가 그 직전 패턴에서 소모되지 못하고 남아있으면 Stun보다
+            // 먼저 평가되어 그로기 진입 자체를 가로챌 수 있다. Stun 트리거를 세팅하기 전에 미리
+            // 비워서 이번에는 확실히 Stun-Start로 들어가게 한다.
+            ResetCompetingGroggyTriggers();
             PlayGroggyStunVisual();
+
+            // 처형 컷신 막바지(블랙아웃 구간)에 그로기 모션을 "시작 포즈"로 되돌리려면 그 스테이트의
+            // 해시가 필요한데, Stun-Start는 Exit Time으로 금방 Stun-Loop로 넘어가버려서 컷신이
+            // 시작되는 시점(수 초 뒤)엔 이미 지나가 있다. 그래서 지금 막 진입하는 순간을 붙잡아둔다.
+            if (captureGroggyStunStartRoutine != null)
+            {
+                StopCoroutine(captureGroggyStunStartRoutine);
+            }
+
+            captureGroggyStunStartRoutine = StartCoroutine(CaptureGroggyStunStartStatesRoutine());
             base.OnHpEmptyBegan();
         }
 
@@ -853,6 +876,139 @@ namespace Week14.Enemy
                 ? BodyRoot.GetComponentsInChildren<Animator>(true)
                 : GetComponentsInChildren<Animator>(true);
             return walkAnimators;
+        }
+
+        // OnHpEmptyBegan에서 그로기 트리거를 세팅한 직후 호출되어, 각 애니메이터가 실제로
+        // Stun-Start 스테이트에 진입하는 순간의 fullPathHash를 기록해둔다. 이름으로는 다시 찾을 수
+        // 없으므로(애니메이터마다 스테이트 이름이 달라 GetCurrentAnimatorStateInfo로 실측), 상태가
+        // 바뀌는 첫 프레임을 폴링해서 잡는다.
+        private IEnumerator CaptureGroggyStunStartStatesRoutine()
+        {
+            Animator[] animators = GetWalkAnimators();
+            int[] initialHashes = new int[animators.Length];
+            bool[] captured = new bool[animators.Length];
+            for (int i = 0; i < animators.Length; i++)
+            {
+                initialHashes[i] = animators[i] != null
+                    ? animators[i].GetCurrentAnimatorStateInfo(0).fullPathHash
+                    : 0;
+            }
+
+            groggyStunStartStateHashes = new int[animators.Length];
+
+            float startedAt = Time.unscaledTime;
+            int remaining = animators.Length;
+            while (remaining > 0 && Time.unscaledTime - startedAt < 0.5f)
+            {
+                for (int i = 0; i < animators.Length; i++)
+                {
+                    if (captured[i] || animators[i] == null || !animators[i].isActiveAndEnabled)
+                    {
+                        continue;
+                    }
+
+                    int currentHash = animators[i].GetCurrentAnimatorStateInfo(0).fullPathHash;
+                    if (currentHash != initialHashes[i])
+                    {
+                        groggyStunStartStateHashes[i] = currentHash;
+                        captured[i] = true;
+                        remaining--;
+                    }
+                }
+
+                yield return null;
+            }
+
+            captureGroggyStunStartRoutine = null;
+        }
+
+        // 처형 최종 샷의 블랙아웃이 시작되는 시점(AssassinExecutionSequence.OnFinalBlackoutStarted)에
+        // 호출된다. 그로기 애니메이션을 CaptureGroggyStunStartStatesRoutine이 기록해둔 Stun-Start
+        // 스테이트로 강제로 되돌린 뒤 그 자리에서 멈춘다 — 발사선/임팩트가 화면에 남아있는 동안
+        // 보스가 그로기 시작 포즈로 고정돼 보이게 하기 위함. 해당 애니메이터의 해시를 못 구했으면
+        // (캡처 타이밍을 놓친 경우) 상태 전환 없이 그 자리에서만 멈춘다.
+        internal void FreezeGroggyAtStartPose()
+        {
+            groggyFrozenAtStart = true;
+            Animator[] animators = GetWalkAnimators();
+            for (int i = 0; i < animators.Length; i++)
+            {
+                Animator animator = animators[i];
+                if (animator == null || !animator.isActiveAndEnabled)
+                {
+                    continue;
+                }
+
+                // 프렐류드(휩 패링/분신 탄막 등)에서 소모되지 못한 공격/스텝 트리거가 남아있으면,
+                // 강제로 되돌린 Stun-Start 상태를 바로 다음 애니메이터 평가에서 다시 빼앗아간다
+                // (이 컨트롤러는 DoAtk1/DoAtk2/DoStep의 AnyState 전이가 Stun보다 우선순위가 높다).
+                // 그래서 상태를 강제 진입시키기 전에 모든 트리거를 먼저 비운다.
+                ResetAllAnimatorTriggers(animator);
+
+                int stateHash = groggyStunStartStateHashes != null && i < groggyStunStartStateHashes.Length
+                    ? groggyStunStartStateHashes[i]
+                    : 0;
+                if (stateHash != 0)
+                {
+                    animator.Play(stateHash, 0, groggyFreezeNormalizedTime);
+                    animator.Update(0f);
+                }
+
+                animator.speed = 0f;
+            }
+        }
+
+        // OnHpEmptyBegan에서 Stun 트리거를 세팅하기 전, 그리고 FreezeGroggyAtStartPose에서 상태를
+        // 강제 진입시키기 전에 공통으로 쓰는 트리거 정리 진입점.
+        private void ResetCompetingGroggyTriggers()
+        {
+            Animator[] animators = GetWalkAnimators();
+            for (int i = 0; i < animators.Length; i++)
+            {
+                if (animators[i] != null && animators[i].isActiveAndEnabled)
+                {
+                    ResetAllAnimatorTriggers(animators[i]);
+                }
+            }
+        }
+
+        // Stun/Die처럼 상태를 직접 Play()로 강제 진입시키는 경로는 트리거 조건 평가를 우회하지만,
+        // 남아있는 다른 트리거는 바로 다음 프레임의 AnyState 재평가에서 여전히 유효하다. 그래서
+        // 강제 진입 전에는 항상 모든 트리거를 비워 경쟁을 원천 차단한다.
+        private static void ResetAllAnimatorTriggers(Animator animator)
+        {
+            AnimatorControllerParameter[] parameters = animator.parameters;
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                if (parameters[i].type == AnimatorControllerParameterType.Trigger)
+                {
+                    animator.ResetTrigger(parameters[i].nameHash);
+                }
+            }
+        }
+
+        // 블랙아웃이 완전히 걷힌 시점(AssassinExecutionSequence.OnFinalBlackoutEnded)에 호출되어
+        // FreezeGroggyAtStartPose로 멈춰둔 애니메이터를 다시 재생시킨다. Stun-Start의
+        // normalizedTime 0부터 다시 흘러가므로 시작 포즈 -> Stun-Loop -> (Die 트리거가 오면 AnyState
+        // 전이로 즉시 Die) 순으로 자연스럽게 이어진다. 이미 풀려있으면 아무 것도 하지 않는다 —
+        // 사망 애니메이션 마지막 프레임 고정(HoldDeathAnimationFinalFrame)이 speed=0을 쓰는데,
+        // 이 메서드가 그 이후에도 실수로 다시 불려서 speed를 1로 되돌리면 안 되기 때문이다.
+        internal void ReleaseGroggyFreeze()
+        {
+            if (!groggyFrozenAtStart)
+            {
+                return;
+            }
+
+            groggyFrozenAtStart = false;
+            Animator[] animators = GetWalkAnimators();
+            for (int i = 0; i < animators.Length; i++)
+            {
+                if (animators[i] != null)
+                {
+                    animators[i].speed = 1f;
+                }
+            }
         }
 
         private void ClearAssassinDaggers()

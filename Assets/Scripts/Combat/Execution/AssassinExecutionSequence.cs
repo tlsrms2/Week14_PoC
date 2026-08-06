@@ -252,6 +252,9 @@ namespace Week14.Combat
         internal override void OnFinalBlackoutStarted(BossAI boss)
         {
             RevealAssassinAndClearThreats();
+            // 화면이 아직 검은 상태에서 보스가 은신 해제로 리빌된다. 발사선/임팩트가 화면에 남아있는
+            // 동안 그로기 모션이 시작 포즈에 고정돼 보이도록, 블랙아웃이 걷히기 전에 미리 얼려둔다.
+            assassin?.FreezeGroggyAtStartPose();
         }
 
         internal override void OnFinalShotImpact(BossAI boss)
@@ -263,6 +266,9 @@ namespace Week14.Combat
         internal override void OnFinalBlackoutEnded(BossAI boss)
         {
             RevealAssassinAndClearThreats();
+            // 블랙아웃이 완전히 걷혔다(발사선도 그 안에서 이미 파괴됨) — 이제 그로기 모션을 풀어줘서
+            // 시작 포즈 -> 루프로 이어지다가 이후 사망 트리거가 오면 자연스럽게 Die로 넘어가게 한다.
+            assassin?.ReleaseGroggyFreeze();
         }
 
         internal override void OnFinalDeathSequenceComplete(BossAI boss)
@@ -636,6 +642,9 @@ namespace Week14.Combat
             {
                 assassin.EndExecutionStealthPatternAndReveal();
                 assassin.ClearActiveClones();
+                // 블랙아웃 도중 처형이 취소/중단되면 OnFinalBlackoutEnded가 못 불릴 수 있다 — 그로기
+                // 애니메이터가 speed=0으로 영원히 멈춰있지 않도록 여기서도 방어적으로 풀어준다.
+                assassin.ReleaseGroggyFreeze();
             }
 
             DestroySpawnedProjectiles();

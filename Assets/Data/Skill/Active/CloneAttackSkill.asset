@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ece4643024f492ab869ebbe822b3f90, type: 3}
   m_Name: CloneAttackSkill
   m_EditorClassIdentifier: Assembly-CSharp::Week14.Skills.CloneAttackSkillSO
-  skillId: ACT_002
+  skillId: ACT_005
   displayName: Clone Echo
   localizedDisplayName:
     m_TableReference:
@@ -35,7 +35,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   cooldownSeconds: 20
-  price: 2
+  price: 4
   durationSeconds: 10
   damageMultiplier: 0.5
   cloneTint: {r: 0.45, g: 0.9, b: 1, a: 0.55}
