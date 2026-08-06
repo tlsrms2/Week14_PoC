@@ -970,6 +970,10 @@ namespace Week14.Enemy
         protected virtual string DeathStateNameOverride => null;
         protected virtual string PostExplosionDeathSfxId => null;
         protected virtual bool PlaysCollapseBoomSfx => true;
+        // BossCollapseBoom.wav가 finalDeathExplosionSeconds보다 훨씬 길어서(약 3.6초 vs 1.4초),
+        // 이 값을 true로 두면 폭발 연출이 끝나고도 사운드 꼬리가 끝날 때까지 사망 모션이 지연된다.
+        // 사운드는 계속 재생하되 그 텀을 없애고 싶은 보스는 이 값을 false로 오버라이드한다.
+        protected virtual bool WaitForCollapseBoomSfx => true;
         protected virtual float DeathSfxDelaySeconds => 0f;
         protected virtual void OnFinalDeathAnimationStarting() { }
         internal string DeathStateNameForSequence => DeathStateNameOverride;
@@ -982,6 +986,8 @@ namespace Week14.Enemy
             !string.IsNullOrWhiteSpace(PostExplosionDeathSfxId);
         internal bool PlaysCollapseBoomSfxForSequence =>
             PlaysCollapseBoomSfx;
+        internal bool WaitForCollapseBoomSfxForSequence =>
+            WaitForCollapseBoomSfx;
         internal float FinalDeathExplosionSecondsForSequence => finalDeathExplosionSeconds;
         internal int FinalDeathExplosionCountForSequence => finalDeathExplosionCount;
         internal GameObject FinalDeathExplosionPrefabForSequence => finalDeathExplosionPrefab;
