@@ -464,6 +464,7 @@ namespace Week14.Combat
             executionImage?.Stop();
             visual?.EndExecutionVisual();
             DamageReceiver.StopHitStop();
+            DamageReceiver.StopHitInvulnerability();
         }
 
         private void Start()

@@ -1348,7 +1348,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559086
     sequences: []
-    editorPosition: {x: 203, y: 838}
+    editorPosition: {x: 205, y: 838}
   - nodeId: Weapon Wire Orbit3
     nodeGuid: 7653e4b789ed4ad2821c4d8c720f03ad
     nodeKind: 0
@@ -9258,7 +9258,7 @@ MonoBehaviour:
         equippedThrowingWeaponPath: Hand/RightHand
         throwOriginPath: Hand/RightHand
         animationTriggerName: Throw
-        windupSeconds: 0.5
+        windupSeconds: 0
         flightSpeed: 6
         recoverySeconds: 0
         landingDistance: 5
@@ -11635,7 +11635,7 @@ MonoBehaviour:
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         seconds: 1
-        speedMultiplier: 0
+        speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
           m_Curve:
@@ -13949,7 +13949,7 @@ MonoBehaviour:
         equippedThrowingWeaponPath: Hand/RightHand
         throwOriginPath: Hand/RightHand
         animationTriggerName: Throw
-        windupSeconds: 0.5
+        windupSeconds: 0
         flightSpeed: 6
         recoverySeconds: 0
         landingDistance: 5
@@ -14310,7 +14310,7 @@ MonoBehaviour:
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         seconds: 1
-        speedMultiplier: 0
+        speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
           m_Curve:
@@ -16083,7 +16083,7 @@ MonoBehaviour:
         equippedThrowingWeaponPath: Hand/RightHand
         throwOriginPath: Hand/RightHand
         animationTriggerName: Throw
-        windupSeconds: 0.5
+        windupSeconds: 0
         flightSpeed: 6
         recoverySeconds: 0
         landingDistance: 5
@@ -16358,7 +16358,7 @@ MonoBehaviour:
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         seconds: 1
-        speedMultiplier: 0
+        speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
           m_Curve:
@@ -19536,7 +19536,7 @@ MonoBehaviour:
     - rid: 6489939269342724395
       type: {class: StartMoveAwayFromPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        durationSeconds: 1.8
+        durationSeconds: 0.8
         speedMultiplier: 0.5
         speedCurve:
           serializedVersion: 2
@@ -19566,7 +19566,7 @@ MonoBehaviour:
     - rid: 6489939269342724396
       type: {class: StartMoveAwayFromPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        durationSeconds: 1.8
+        durationSeconds: 0.8
         speedMultiplier: 0.5
         speedCurve:
           serializedVersion: 2
@@ -19596,7 +19596,7 @@ MonoBehaviour:
     - rid: 6489939314815009125
       type: {class: StartMoveAwayFromPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        durationSeconds: 1.8
+        durationSeconds: 0.8
         speedMultiplier: 0.5
         speedCurve:
           serializedVersion: 2

@@ -31,6 +31,8 @@ namespace Week14.Enemy
         [Tooltip("발사 차례의 공격 방식입니다. Arc Volley는 기존 부채꼴 발사, Burst는 FireProjectileBurstAction처럼 볼리를 여러 번 나눠 발사합니다.")]
         [SerializeField] private FireMode fireMode = FireMode.ArcVolley;
         [SerializeField, BossGraphProjectileName] private string projectileName = "Default";
+        [Tooltip("탄종을 섞어서 순서대로 발사하고 싶을 때 씁니다. 비워두면 위 Projectile Name 하나만 씁니다. 채우면 총알마다 이 목록을 순서대로 쓰고, 끝까지 가면 처음부터 반복합니다. 목록 중 특정 칸을 비워두면(<기본>) 그 칸만 위 Projectile Name을 씁니다.")]
+        [SerializeField, BossGraphProjectileName] private List<string> projectileSequence = new();
         [SerializeField, HideInInspector] private BossProjectileSettings projectile = new();
         [Tooltip("발사한 것이 분신이었다면, 그 분신이 사라지는 데 걸리는 페이드 시간입니다. 보스 자신이 쐈다면 무시됩니다.")]
         [SerializeField, Min(0f)] private float despawnFadeSeconds = 0.15f;
@@ -141,7 +143,7 @@ namespace Week14.Enemy
                 }
 
                 Vector2 shotDirection = BossActionContext.AngleToDirection(leftmostAngle - angleStep * i);
-                FireShot(context, origin, shotDirection);
+                FireShot(context, origin, shotDirection, i);
 
                 if (i < count - 1 && arcFireInterval > 0f)
                 {
@@ -157,6 +159,7 @@ namespace Week14.Enemy
                 yield break;
             }
 
+            int shotIndex = 0;
             for (int volleyIndex = 0; volleyIndex < volleys.Count; volleyIndex++)
             {
                 Volley volley = volleys[volleyIndex];
@@ -175,7 +178,8 @@ namespace Week14.Enemy
                         continue;
                     }
 
-                    FireShot(context, origin, context.GetDirectionToPlayer(origin));
+                    FireShot(context, origin, context.GetDirectionToPlayer(origin), shotIndex);
+                    shotIndex++;
 
                     if (bulletIndex < volley.BulletCount - 1 && volley.FireInterval > 0f)
                     {
@@ -190,14 +194,14 @@ namespace Week14.Enemy
             }
         }
 
-        private void FireShot(BossActionContext context, Vector3 origin, Vector2 direction)
+        private void FireShot(BossActionContext context, Vector3 origin, Vector2 direction, int shotIndex)
         {
             EnemyProjectile firedProjectile = context.FireProjectile(
                 projectile,
                 origin,
                 direction,
                 0f,
-                projectileName: projectileName);
+                projectileName: ResolveProjectileNameForShot(shotIndex));
 
             if (firedProjectile == null)
             {
@@ -209,6 +213,17 @@ namespace Week14.Enemy
             context.PlayOriginBurst(effects, origin);
             context.PlayMuzzleFlashIfEnabled(effects, firedProjectile, direction);
             context.PlayCameraShakeIfEnabled(effects, direction);
+        }
+
+        private string ResolveProjectileNameForShot(int shotIndex)
+        {
+            if (projectileSequence == null || projectileSequence.Count == 0)
+            {
+                return projectileName;
+            }
+
+            string sequencedName = projectileSequence[shotIndex % projectileSequence.Count];
+            return string.IsNullOrWhiteSpace(sequencedName) ? projectileName : sequencedName;
         }
     }
 }

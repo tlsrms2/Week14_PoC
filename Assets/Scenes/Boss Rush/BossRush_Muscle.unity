@@ -5958,7 +5958,7 @@ MonoBehaviour:
     maxAutoSummonInterval: 7
   releaseMinionsOnDisable: 1
   killSpawnedMinionsOnOwnerDeath: 1
-  bossGraph: {fileID: 11400000, guid: f481f5907c9c3c54382347e69342fed0, type: 2}
+  bossGraph: {fileID: 11400000, guid: 0bbfa811adefaa1499b6a3bc731f6ce4, type: 2}
   graphProjectiles:
   - projectileName: "\uC77C\uBC18\uD0C4"
     projectile:

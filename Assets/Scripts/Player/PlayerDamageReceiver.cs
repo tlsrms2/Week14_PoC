@@ -15,6 +15,8 @@ namespace Week14.Combat
 
         private readonly PlayerCombatController.PlayerCombatContext context;
         private Coroutine hitStopRoutine;
+        private Coroutine hitInvulnerabilityRoutine;
+        private bool hitInvulnerabilityActive;
         private float hitStopPreviousTimeScale = 1f;
         private float nextEnemyBodyContactDamageAt;
         private float enemyBodyContactStaggerEndsAt;
@@ -107,6 +109,8 @@ namespace Week14.Combat
                 SoundManager.PlaySfx("BulletLoss");
                 PlayHitStop();
             }
+
+            BeginHitInvulnerability(config.HitInvulnerabilitySeconds);
 
             FlashBodyHitColor();
             ProjectileVfx.PlayPrefab(
@@ -212,6 +216,57 @@ namespace Week14.Combat
             }
 
             hitStopRoutine = null;
+        }
+
+        internal void StopHitInvulnerability()
+        {
+            if (hitInvulnerabilityRoutine != null)
+            {
+                context.CoroutineHost.StopCoroutine(hitInvulnerabilityRoutine);
+                hitInvulnerabilityRoutine = null;
+            }
+
+            ReleaseHitInvulnerability();
+        }
+
+        private void BeginHitInvulnerability(float seconds)
+        {
+            if (seconds <= 0f)
+            {
+                return;
+            }
+
+            if (hitInvulnerabilityRoutine != null)
+            {
+                context.CoroutineHost.StopCoroutine(hitInvulnerabilityRoutine);
+            }
+            else
+            {
+                PlayerCombatController.PushExternalInvulnerability();
+                hitInvulnerabilityActive = true;
+            }
+
+            hitInvulnerabilityRoutine = context.CoroutineHost.StartCoroutine(
+                HitInvulnerabilityRoutine(seconds));
+        }
+
+        private IEnumerator HitInvulnerabilityRoutine(float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+
+            hitInvulnerabilityRoutine = null;
+            ReleaseHitInvulnerability();
+        }
+
+        private void ReleaseHitInvulnerability()
+        {
+            if (!hitInvulnerabilityActive)
+            {
+                return;
+            }
+
+            hitInvulnerabilityActive = false;
+            PlayerCombatController.PopExternalInvulnerability();
         }
 
         internal void ApplyExternalKnockback(Vector2 direction, float speed, float staggerSeconds)

@@ -44,6 +44,21 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/StoryScene-Epilogue.unity
     guid: 6e234b1c7f6e0ea479fbf5d958fe5910
+  - enabled: 1
+    path: Assets/Scenes/Boss Rush/BossRush_Assassin.unity
+    guid: 2a3211a0a0fd9ee45b92ade47fadd2d2
+  - enabled: 1
+    path: Assets/Scenes/Boss Rush/BossRush_Conductor.unity
+    guid: e5499b324719fa046b28144e873971a2
+  - enabled: 1
+    path: Assets/Scenes/Boss Rush/BossRush_Hacker.unity
+    guid: d930d066c18061d40bdce0adc64f9208
+  - enabled: 1
+    path: Assets/Scenes/Boss Rush/BossRush_Hog.unity
+    guid: 9e5a453f70b46a94b9f25b7fc2630cf2
+  - enabled: 1
+    path: Assets/Scenes/Boss Rush/BossRush_Muscle.unity
+    guid: 9b054f9c61da03a4bb42fc36c5e15860
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 9e14f820d840b104d9ba781945888600, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

@@ -358,7 +358,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803231
     sequences: []
-    editorPosition: {x: -96, y: 606}
+    editorPosition: {x: -88, y: 606}
   - nodeId: Boss Dash5
     nodeGuid: a86867c6962e45bba2903c8ff35e7e07
     nodeKind: 1
@@ -394,7 +394,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803241
     sequences: []
-    editorPosition: {x: -259, y: 1151}
+    editorPosition: {x: -265, y: 1151}
   - nodeId: Random Direction Move6
     nodeGuid: 91d293a100144f99a5f89ef11ee030dc
     nodeKind: 1
@@ -466,7 +466,7 @@ MonoBehaviour:
     action:
       rid: 4705778205525803288
     sequences: []
-    editorPosition: {x: 1879, y: 659}
+    editorPosition: {x: 1879, y: 661}
   - nodeId: Boss Dash6
     nodeGuid: bb2aae2074ff4096ba1fd6715dfa18ce
     nodeKind: 1
@@ -3782,6 +3782,10 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence:
+        - "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+        - 
+        - 
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -3841,12 +3845,12 @@ MonoBehaviour:
           radius: 0.12
           trailSeconds: 0.1
           trailWidthMultiplier: 3
-        bombCount: 8
+        bombCount: 6
         minSeparationDistance: 3
         minDistanceFromPlayer: 3
         spawnInterval: 0.05
         flightSeconds: 0.1
-        chargeSeconds: 9
+        chargeSeconds: 5
         effects:
           smoke:
             enabled: 0
@@ -4668,6 +4672,10 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence:
+        - 
+        - 
+        - "\uD328\uB9C1\uBD88\uAC00\uD0C4"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -4720,6 +4728,10 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence:
+        - "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+        - 
+        - 
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -4776,6 +4788,10 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence:
+        - 
+        - 
+        - "\uD328\uB9C1\uBD88\uAC00\uD0C4"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -4897,6 +4913,10 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence:
+        - 
+        - "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+        - 
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -4949,6 +4969,10 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence:
+        - "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+        - 
+        - 
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -5070,6 +5094,10 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence:
+        - 
+        - "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+        - 
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -5218,6 +5246,10 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence:
+        - 
+        - "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+        - 
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -5262,6 +5294,10 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence:
+        - "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+        - 
+        - 
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -5317,6 +5353,10 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence:
+        - 
+        - 
+        - "\uD328\uB9C1\uBD88\uAC00\uD0C4"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -5593,6 +5633,10 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence:
+        - 
+        - "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+        - 
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -5706,6 +5750,10 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence:
+        - "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+        - 
+        - 
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -6391,6 +6439,7 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence: []
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -6435,6 +6484,7 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence: []
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -6479,6 +6529,7 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence: []
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -6523,6 +6574,7 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence: []
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -6567,6 +6619,7 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence: []
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -6744,6 +6797,7 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence: []
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -6788,6 +6842,7 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence: []
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -6832,6 +6887,7 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence: []
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -6876,6 +6932,7 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence: []
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -6920,6 +6977,7 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence: []
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -7032,6 +7090,10 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence:
+        - "\uD328\uB9C1\uBD88\uAC00\uD0C4"
+        - 
+        - 
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -7076,6 +7138,10 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence:
+        - 
+        - 
+        - "\uD328\uB9C1\uBD88\uAC00\uD0C4"
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -7166,6 +7232,7 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence: []
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -7210,6 +7277,7 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence: []
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -7254,6 +7322,7 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence: []
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -7298,6 +7367,7 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence: []
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1
@@ -7342,6 +7412,7 @@ MonoBehaviour:
       data:
         fireMode: 0
         projectileName: "\uC77C\uBC18\uD0C4"
+        projectileSequence: []
         projectile:
           prefab: {fileID: 0}
           bulletDamage: 1

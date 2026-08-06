@@ -1348,7 +1348,7 @@ MonoBehaviour:
     action:
       rid: 6489939200651559086
     sequences: []
-    editorPosition: {x: 203, y: 838}
+    editorPosition: {x: 205, y: 838}
   - nodeId: Weapon Wire Orbit3
     nodeGuid: 7653e4b789ed4ad2821c4d8c720f03ad
     nodeKind: 0
@@ -5877,6 +5877,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         chargeDashSfxId: ChargeDash
+        chargeDashSfxLeadSeconds: 0.4
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -5965,6 +5966,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         chargeDashSfxId: ChargeDash
+        chargeDashSfxLeadSeconds: 0.4
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -6155,6 +6157,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         chargeDashSfxId: ChargeDash
+        chargeDashSfxLeadSeconds: 0.4
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -9140,6 +9143,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         chargeDashSfxId: ChargeDash
+        chargeDashSfxLeadSeconds: 0.4
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -9228,6 +9232,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         chargeDashSfxId: ChargeDash
+        chargeDashSfxLeadSeconds: 0.4
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -9253,7 +9258,7 @@ MonoBehaviour:
         equippedThrowingWeaponPath: Hand/RightHand
         throwOriginPath: Hand/RightHand
         animationTriggerName: Throw
-        windupSeconds: 0.5
+        windupSeconds: 0
         flightSpeed: 6
         recoverySeconds: 0
         landingDistance: 5
@@ -9282,7 +9287,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-        landingSfxId: PutTurret
+        throwSfxId: PutTurret
         flyingSprite: {fileID: 0}
         groundedSprite: {fileID: 0}
     - rid: 6489939186800656664
@@ -9355,6 +9360,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         chargeDashSfxId: ChargeDash
+        chargeDashSfxLeadSeconds: 0.4
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -9443,6 +9449,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         chargeDashSfxId: ChargeDash
+        chargeDashSfxLeadSeconds: 0.4
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -9633,6 +9640,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         chargeDashSfxId: ChargeDash
+        chargeDashSfxLeadSeconds: 0.4
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -10570,8 +10578,6 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         recoverySeconds: 0.2
-        waitForChargeBeforeNextAction: 1
-        executionChargeWaitTimeoutSeconds: 4
     - rid: 6489939186800656690
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -10836,8 +10842,6 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         recoverySeconds: 0.2
-        waitForChargeBeforeNextAction: 1
-        executionChargeWaitTimeoutSeconds: 4
     - rid: 6489939186800656695
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -11123,6 +11127,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         chargeDashSfxId: ChargeDash
+        chargeDashSfxLeadSeconds: 0.4
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -11630,7 +11635,7 @@ MonoBehaviour:
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         seconds: 1
-        speedMultiplier: 0
+        speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
           m_Curve:
@@ -13829,6 +13834,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         chargeDashSfxId: ChargeDash
+        chargeDashSfxLeadSeconds: 0.4
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -13917,6 +13923,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         chargeDashSfxId: ChargeDash
+        chargeDashSfxLeadSeconds: 0.4
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -13942,7 +13949,7 @@ MonoBehaviour:
         equippedThrowingWeaponPath: Hand/RightHand
         throwOriginPath: Hand/RightHand
         animationTriggerName: Throw
-        windupSeconds: 0.5
+        windupSeconds: 0
         flightSpeed: 6
         recoverySeconds: 0
         landingDistance: 5
@@ -13971,7 +13978,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-        landingSfxId: PutTurret
+        throwSfxId: PutTurret
         flyingSprite: {fileID: 0}
         groundedSprite: {fileID: 0}
     - rid: 6489939200651559022
@@ -14303,7 +14310,7 @@ MonoBehaviour:
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         seconds: 1
-        speedMultiplier: 0
+        speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
           m_Curve:
@@ -14400,6 +14407,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         chargeDashSfxId: ChargeDash
+        chargeDashSfxLeadSeconds: 0.4
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -14488,6 +14496,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         chargeDashSfxId: ChargeDash
+        chargeDashSfxLeadSeconds: 0.4
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -14678,6 +14687,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         chargeDashSfxId: ChargeDash
+        chargeDashSfxLeadSeconds: 0.4
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -15198,8 +15208,6 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         recoverySeconds: 0.2
-        waitForChargeBeforeNextAction: 1
-        executionChargeWaitTimeoutSeconds: 4
     - rid: 6489939200651559040
       type: {class: HackerFireGlitchProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -15249,8 +15257,6 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         recoverySeconds: 0.2
-        waitForChargeBeforeNextAction: 1
-        executionChargeWaitTimeoutSeconds: 4
     - rid: 6489939200651559042
       type: {class: HackerFireWireAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -15962,6 +15968,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         chargeDashSfxId: ChargeDash
+        chargeDashSfxLeadSeconds: 0.4
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -16050,6 +16057,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         chargeDashSfxId: ChargeDash
+        chargeDashSfxLeadSeconds: 0.4
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -16075,7 +16083,7 @@ MonoBehaviour:
         equippedThrowingWeaponPath: Hand/RightHand
         throwOriginPath: Hand/RightHand
         animationTriggerName: Throw
-        windupSeconds: 0.5
+        windupSeconds: 0
         flightSpeed: 6
         recoverySeconds: 0
         landingDistance: 5
@@ -16104,7 +16112,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-        landingSfxId: PutTurret
+        throwSfxId: PutTurret
         flyingSprite: {fileID: 0}
         groundedSprite: {fileID: 0}
     - rid: 6489939200651559087
@@ -16350,7 +16358,7 @@ MonoBehaviour:
       type: {class: MoveTowardPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         seconds: 1
-        speedMultiplier: 0
+        speedMultiplier: 1
         speedCurve:
           serializedVersion: 2
           m_Curve:
@@ -16863,8 +16871,6 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         recoverySeconds: 0.2
-        waitForChargeBeforeNextAction: 1
-        executionChargeWaitTimeoutSeconds: 4
     - rid: 6489939200651559098
       type: {class: HackerFireGlitchProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -16914,8 +16920,6 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         recoverySeconds: 0.2
-        waitForChargeBeforeNextAction: 1
-        executionChargeWaitTimeoutSeconds: 4
     - rid: 6489939200651559099
       type: {class: HackerFireGlitchProjectileAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -16965,8 +16969,6 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         recoverySeconds: 0.2
-        waitForChargeBeforeNextAction: 1
-        executionChargeWaitTimeoutSeconds: 4
     - rid: 6489939200651559100
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -17231,8 +17233,6 @@ MonoBehaviour:
             distance: 0.22
             frequency: 0.12
         recoverySeconds: 0.2
-        waitForChargeBeforeNextAction: 1
-        executionChargeWaitTimeoutSeconds: 4
     - rid: 6489939200651559103
       type: {class: HackerDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
@@ -17518,6 +17518,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         chargeDashSfxId: ChargeDash
+        chargeDashSfxLeadSeconds: 0.4
         dashEffectPrefab: {fileID: 7162164240285310734, guid: 620c22eb577fcb24889a938b776f4247, type: 3}
         dashEffectSpawnPointPath: EffectPrefabPoint/DashDust
         dashEffectScale: 1
@@ -18365,7 +18366,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-        landingSfxId: PutTurret
+        throwSfxId: PutTurret
         flyingSprite: {fileID: -7263751535809043743, guid: 20152adbaac57f440a99906ebede87d0, type: 3}
         groundedSprite: {fileID: 299151475, guid: 5c417a1355187d84cbad5851c5137f02, type: 3}
     - rid: 6489939249705517355
@@ -18750,7 +18751,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-        landingSfxId: PutTurret
+        throwSfxId: PutTurret
         flyingSprite: {fileID: -7263751535809043743, guid: 20152adbaac57f440a99906ebede87d0, type: 3}
         groundedSprite: {fileID: 299151475, guid: 5c417a1355187d84cbad5851c5137f02, type: 3}
     - rid: 6489939269342724372
@@ -19178,7 +19179,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-        landingSfxId: PutTurret
+        throwSfxId: PutTurret
         flyingSprite: {fileID: -7263751535809043743, guid: 20152adbaac57f440a99906ebede87d0, type: 3}
         groundedSprite: {fileID: 299151475, guid: 5c417a1355187d84cbad5851c5137f02, type: 3}
     - rid: 6489939269342724383
@@ -19535,7 +19536,7 @@ MonoBehaviour:
     - rid: 6489939269342724395
       type: {class: StartMoveAwayFromPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        durationSeconds: 1.8
+        durationSeconds: 0.8
         speedMultiplier: 0.5
         speedCurve:
           serializedVersion: 2
@@ -19565,7 +19566,7 @@ MonoBehaviour:
     - rid: 6489939269342724396
       type: {class: StartMoveAwayFromPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        durationSeconds: 1.8
+        durationSeconds: 0.8
         speedMultiplier: 0.5
         speedCurve:
           serializedVersion: 2
@@ -19595,7 +19596,7 @@ MonoBehaviour:
     - rid: 6489939314815009125
       type: {class: StartMoveAwayFromPlayerAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        durationSeconds: 1.8
+        durationSeconds: 0.8
         speedMultiplier: 0.5
         speedCurve:
           serializedVersion: 2
@@ -19687,7 +19688,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-        landingSfxId: PutTurret
+        throwSfxId: PutTurret
         flyingSprite: {fileID: 0}
         groundedSprite: {fileID: 0}
     - rid: 6489939497712877885

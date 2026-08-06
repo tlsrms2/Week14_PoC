@@ -29,6 +29,10 @@ namespace Week14.Enemy
 
         [SerializeField] private bool drawLaneIndicators = true;
         [SerializeField, InspectorName("Volleys")] private List<Volley> specialVolleys = new() { new Volley() };
+        [Header("Volley Selection")]
+        [SerializeField] private bool selectVolleysByProjectileCount;
+        [SerializeField, Min(1)] private int topBottomProjectileCount = 4;
+        [SerializeField, Min(1)] private int leftRightProjectileCount = 8;
         [Header("Lane Indicators")]
         [SerializeField] private Color laneIndicatorColor = new(0.62f, 0.92f, 1f, 0.66f);
         [SerializeField, Min(0.001f)] private float laneIndicatorWidth = 0.035f;
@@ -260,7 +264,110 @@ namespace Week14.Enemy
 
         protected override List<ExecutionVolley> BuildExecutionVolleys()
         {
+            if (selectVolleysByProjectileCount)
+            {
+                return BuildProjectileCountMatchedExecutionVolleys();
+            }
+
             return BuildExecutionVolleysFromPool(specialVolleys, ExecutionOrder);
+        }
+
+        private List<ExecutionVolley> BuildProjectileCountMatchedExecutionVolleys()
+        {
+            List<ExecutionVolley> executionVolleys = new();
+            List<Volley> availableVolleys = new();
+            if (specialVolleys == null)
+            {
+                return executionVolleys;
+            }
+
+            for (int i = 0; i < specialVolleys.Count; i++)
+            {
+                if (specialVolleys[i] != null)
+                {
+                    availableVolleys.Add(specialVolleys[i]);
+                }
+            }
+
+            for (int i = 0; i < ExecutionOrder.Length; i++)
+            {
+                LaneStep step = ExecutionOrder[i];
+                int requiredProjectileCount = IsHorizontalRush(step.Side)
+                    ? Mathf.Max(1, topBottomProjectileCount)
+                    : Mathf.Max(1, leftRightProjectileCount);
+                Volley selected = TakeRandomVolleyWithProjectileCount(
+                    availableVolleys,
+                    requiredProjectileCount);
+                if (selected == null)
+                {
+                    continue;
+                }
+
+                executionVolleys.Add(new ExecutionVolley(
+                    step.Side,
+                    step.RushPositiveDirection,
+                    LineDistanceFromPlayer,
+                    LineSpacing,
+                    MoveToStartSeconds,
+                    RushDistance,
+                    RushSpeed,
+                    RestSeconds,
+                    StartTimings,
+                    selected.FireTimings));
+            }
+
+            return executionVolleys;
+        }
+
+        private static Volley TakeRandomVolleyWithProjectileCount(
+            List<Volley> availableVolleys,
+            int requiredProjectileCount)
+        {
+            List<int> matchingIndices = new();
+            for (int i = 0; i < availableVolleys.Count; i++)
+            {
+                if (GetVolleyProjectileCount(availableVolleys[i]) == requiredProjectileCount)
+                {
+                    matchingIndices.Add(i);
+                }
+            }
+
+            if (matchingIndices.Count == 0)
+            {
+                return null;
+            }
+
+            int selectedIndex = matchingIndices[UnityEngine.Random.Range(0, matchingIndices.Count)];
+            Volley selected = availableVolleys[selectedIndex];
+            availableVolleys.RemoveAt(selectedIndex);
+            return selected;
+        }
+
+        private static int GetVolleyProjectileCount(Volley volley)
+        {
+            if (volley?.FireTimings == null)
+            {
+                return 0;
+            }
+
+            int projectileCount = 0;
+            for (int i = 0; i < volley.FireTimings.Count; i++)
+            {
+                FireTiming timing = volley.FireTimings[i];
+                if (timing == null)
+                {
+                    continue;
+                }
+
+                projectileCount += timing.ProjectileName switch
+                {
+                    "순서탄" => 1,
+                    "순서탄_더블" => 2,
+                    _ => 0
+                };
+            }
+
+            return projectileCount;
         }
 
         private float GetLaneIndicatorRevealDuration()

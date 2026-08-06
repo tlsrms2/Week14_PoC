@@ -1141,7 +1141,7 @@ MonoBehaviour:
     action:
       rid: 6489939164457861220
     sequences: []
-    editorPosition: {x: 1503, y: 1737}
+    editorPosition: {x: 1507, y: 1726}
   - nodeId: Stop Movement12
     nodeGuid: 796e98086f03499b971c34b0454aae48
     nodeKind: 1
@@ -5157,7 +5157,7 @@ MonoBehaviour:
     - rid: 6489939025664671845
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3.5
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -5165,7 +5165,7 @@ MonoBehaviour:
     - rid: 6489939025664671919
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3.5
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -5288,7 +5288,7 @@ MonoBehaviour:
     - rid: 6489939025664671934
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3.5
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -5296,7 +5296,7 @@ MonoBehaviour:
     - rid: 6489939025664671936
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3.5
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -7304,7 +7304,7 @@ MonoBehaviour:
     - rid: 6489939025664671948
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 2.5
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -7395,7 +7395,7 @@ MonoBehaviour:
     - rid: 6489939025664671980
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 2.5
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -7746,7 +7746,7 @@ MonoBehaviour:
     - rid: 6489939039041355958
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3.5
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -7809,7 +7809,7 @@ MonoBehaviour:
     - rid: 6489939039041355961
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3.5
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -8825,7 +8825,7 @@ MonoBehaviour:
     - rid: 6489939039041355967
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3.5
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -9472,7 +9472,7 @@ MonoBehaviour:
         scale: 0.225
         color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
-        strokeDrawSeconds: 0.3
+        strokeDrawSeconds: 0.18
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
@@ -9754,7 +9754,7 @@ MonoBehaviour:
             fireSfxId: 
             launchSfxId: 
         initialLaneDistanceMultiplier: 2.5
-        initialLaneHoldSeconds: 0.2
+        initialLaneHoldSeconds: 0.1
         laneShrinkSeconds: 0.6
         laneCreationWanderSpeed: 3.2
         laneCreationWanderRadius: 2.8
@@ -10743,10 +10743,13 @@ MonoBehaviour:
             projectileName: "\uC21C\uC11C\uD0C4_\uB354\uBE14"
             fireSfxId: 
             launchSfxId: 
+        selectVolleysByProjectileCount: 1
+        topBottomProjectileCount: 4
+        leftRightProjectileCount: 8
         laneIndicatorColor: {r: 0, g: 0, b: 0, a: 1}
         laneIndicatorWidth: 0.035
-        laneIndicatorRevealSeconds: 0.18
-        laneIndicatorRevealInterval: 0.05
+        laneIndicatorRevealSeconds: 0.03
+        laneIndicatorRevealInterval: 0.02
         laneIndicatorHideSeconds: 0.14
         postProjectileClearDelaySeconds: 0.5
         laneIndicatorSortingOrder: 66
@@ -10792,14 +10795,14 @@ MonoBehaviour:
         northSouthStaffDistance: 2.55
         initialNorthSouthStaffDistanceMultiplier: 4
         northSouthStaffHoldSeconds: 0.2
-        northSouthStaffShrinkSeconds: 3
+        northSouthStaffShrinkSeconds: 0.6
         staffLineSpacing: 0.7
         staffCreationWanderSpeed: 3.2
         staffCreationWanderRadius: 2.8
         staffCreationWanderRetargetSeconds: 1.5
         sideDroneDistance: 6.5
         sideDronePairSpacing: 0.65
-        sideDroneSetupSeconds: 1.2
+        sideDroneSetupSeconds: 0.6
         sideDronePassMoveSeconds: 0.7
         sideDroneProjectileSpeedMultiplier: 0.85
         northSouthVolleys:
@@ -11034,7 +11037,7 @@ MonoBehaviour:
     - rid: 6489939164457861208
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3.5
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -11240,7 +11243,7 @@ MonoBehaviour:
     - rid: 6489939164457861220
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3.5
+        wanderSeconds: 3
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -11340,7 +11343,7 @@ MonoBehaviour:
     - rid: 6489939164457861225
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 2.5
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -12529,7 +12532,7 @@ MonoBehaviour:
     - rid: 6489939164457861237
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 2.5
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -12620,7 +12623,7 @@ MonoBehaviour:
     - rid: 6489939164457861245
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 2.5
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -12720,7 +12723,7 @@ MonoBehaviour:
         scale: 0.225
         color: {r: 0, g: 0, b: 0, a: 1}
         lineWidth: 0.125
-        strokeDrawSeconds: 0.3
+        strokeDrawSeconds: 0.18
         strokeIntervalSeconds: 0.05
         holdSeconds: 0.7
         fadeSeconds: 0.1
@@ -12746,7 +12749,7 @@ MonoBehaviour:
     - rid: 6489939164457861252
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 2.5
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -12757,7 +12760,7 @@ MonoBehaviour:
     - rid: 6489939164457861254
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 2.5
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -12768,7 +12771,7 @@ MonoBehaviour:
     - rid: 6489939164457861256
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 2.5
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
@@ -13069,7 +13072,7 @@ MonoBehaviour:
     - rid: 6489939164457861275
       type: {class: MinionWanderAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
-        wanderSeconds: 3
+        wanderSeconds: 2.5
         speed: 3.2
         radius: 2.8
         retargetSeconds: 1.5
