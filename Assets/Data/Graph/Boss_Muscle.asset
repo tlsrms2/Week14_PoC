@@ -1276,7 +1276,7 @@ MonoBehaviour:
     action:
       rid: 4705778169994805671
     sequences: []
-    editorPosition: {x: 1482, y: 235}
+    editorPosition: {x: 1478, y: 235}
   - nodeId: Boss Area Damage2
     nodeGuid: e651496032cb454c95ebc494807cebe9
     nodeKind: 0
@@ -3863,7 +3863,7 @@ MonoBehaviour:
       type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         windupSeconds: 0.8
-        lockSeconds: 0.7
+        lockSeconds: 0.6
         trackPlayerDuringWindup: 1
         maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
@@ -3925,7 +3925,7 @@ MonoBehaviour:
       type: {class: BossDashAction, ns: Week14.Enemy, asm: Assembly-CSharp}
       data:
         windupSeconds: 0.8
-        lockSeconds: 0.7
+        lockSeconds: 0.6
         trackPlayerDuringWindup: 1
         maxTrackTurnDegreesPerSecond: 70
         windupSfxId: 
@@ -6815,11 +6815,11 @@ MonoBehaviour:
           bossChildPaths: []
           firstBossChildPath: 
           secondBossChildPath: 
-          fallbackSpacing: 0.18
+          fallbackSpacing: 0
         aim:
           mode: 1
           angleDegrees: 90
-        baitDurationSeconds: 0.8
+        baitDurationSeconds: 1.2
         rewardBulletCount: 3
         rewardCircleRadius: 1
         groggySeconds: 2
@@ -6845,7 +6845,7 @@ MonoBehaviour:
       data:
         explosionRadius: 8
         explosionDamage: 1
-        windupSeconds: 0.8
+        windupSeconds: 1.2
         rangeSprite: {fileID: -2413806693520163455, guid: 106cd4fe22dc0cc41b827ec1c67bb71b, type: 3}
         rangeBackgroundColor: {r: 1, g: 0.2, b: 0.1, a: 0.25}
         rangeFillColor: {r: 1, g: 0.4, b: 0.15, a: 0.55}
@@ -6879,11 +6879,11 @@ MonoBehaviour:
           bossChildPaths: []
           firstBossChildPath: 
           secondBossChildPath: 
-          fallbackSpacing: 0.18
+          fallbackSpacing: 0
         aim:
           mode: 1
           angleDegrees: 90
-        baitDurationSeconds: 0.8
+        baitDurationSeconds: 1.2
         rewardBulletCount: 3
         rewardCircleRadius: 1
         groggySeconds: 2
@@ -6909,7 +6909,7 @@ MonoBehaviour:
       data:
         explosionRadius: 8
         explosionDamage: 1
-        windupSeconds: 0.8
+        windupSeconds: 1.2
         rangeSprite: {fileID: -2413806693520163455, guid: 106cd4fe22dc0cc41b827ec1c67bb71b, type: 3}
         rangeBackgroundColor: {r: 1, g: 0.2, b: 0.1, a: 0.25}
         rangeFillColor: {r: 1, g: 0.4, b: 0.15, a: 0.55}
@@ -6943,11 +6943,11 @@ MonoBehaviour:
           bossChildPaths: []
           firstBossChildPath: 
           secondBossChildPath: 
-          fallbackSpacing: 0.18
+          fallbackSpacing: 0
         aim:
           mode: 1
           angleDegrees: 90
-        baitDurationSeconds: 0.9
+        baitDurationSeconds: 1.2
         rewardBulletCount: 3
         rewardCircleRadius: 1
         groggySeconds: 2
@@ -6973,7 +6973,7 @@ MonoBehaviour:
       data:
         explosionRadius: 8
         explosionDamage: 1
-        windupSeconds: 0.9
+        windupSeconds: 1.2
         rangeSprite: {fileID: -2413806693520163455, guid: 106cd4fe22dc0cc41b827ec1c67bb71b, type: 3}
         rangeBackgroundColor: {r: 1, g: 0.2, b: 0.1, a: 0.25}
         rangeFillColor: {r: 1, g: 0.4, b: 0.15, a: 0.55}
@@ -7007,11 +7007,11 @@ MonoBehaviour:
           bossChildPaths: []
           firstBossChildPath: 
           secondBossChildPath: 
-          fallbackSpacing: 0.18
+          fallbackSpacing: 0
         aim:
           mode: 1
           angleDegrees: 90
-        baitDurationSeconds: 0.8
+        baitDurationSeconds: 1.2
         rewardBulletCount: 3
         rewardCircleRadius: 1
         groggySeconds: 2
@@ -7037,7 +7037,7 @@ MonoBehaviour:
       data:
         explosionRadius: 8
         explosionDamage: 1
-        windupSeconds: 0.8
+        windupSeconds: 1.2
         rangeSprite: {fileID: -2413806693520163455, guid: 106cd4fe22dc0cc41b827ec1c67bb71b, type: 3}
         rangeBackgroundColor: {r: 1, g: 0.2, b: 0.1, a: 0.25}
         rangeFillColor: {r: 1, g: 0.4, b: 0.15, a: 0.55}
@@ -7075,7 +7075,7 @@ MonoBehaviour:
         aim:
           mode: 1
           angleDegrees: 90
-        baitDurationSeconds: 1.5
+        baitDurationSeconds: 1.2
         rewardBulletCount: 3
         rewardCircleRadius: 1
         groggySeconds: 2
@@ -7101,7 +7101,7 @@ MonoBehaviour:
       data:
         explosionRadius: 8
         explosionDamage: 1
-        windupSeconds: 1.5
+        windupSeconds: 1.2
         rangeSprite: {fileID: -2413806693520163455, guid: 106cd4fe22dc0cc41b827ec1c67bb71b, type: 3}
         rangeBackgroundColor: {r: 1, g: 0.2, b: 0.1, a: 0.25}
         rangeFillColor: {r: 1, g: 0.4, b: 0.15, a: 0.55}

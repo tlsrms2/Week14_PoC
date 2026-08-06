@@ -28,6 +28,10 @@ namespace Week14.Combat
         [Tooltip("플레이어의 기본 이동 속도입니다.")]
         [SerializeField, Min(0f)] private float moveSpeed = 5f;
 
+        [Header("Hit Invulnerability")]
+        [Tooltip("피격 직후 추가 피격을 무시하는 시간입니다.")]
+        [SerializeField, Min(0f)] private float hitInvulnerabilitySeconds = 0.1f;
+
         [Header("Hit Stop")]
         [Tooltip("피격 시 타임스케일을 낮춰서 유지하는 실시간(초) 길이입니다.")]
         [SerializeField, Min(0f)] private float hitStopSeconds = 0.06f;
@@ -135,6 +139,7 @@ namespace Week14.Combat
 
         public int MaxBullets => maxBullets;
         public float MoveSpeed => moveSpeed;
+        public float HitInvulnerabilitySeconds => hitInvulnerabilitySeconds;
         public float HitStopSeconds => hitStopSeconds;
         public float HitStopTimeScale => hitStopTimeScale;
         public PlayerProjectile ProjectilePrefab => normalAttackProjectilePrefab;

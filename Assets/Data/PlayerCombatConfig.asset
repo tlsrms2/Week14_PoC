@@ -21,6 +21,7 @@ MonoBehaviour:
   enemyBodyContactKnockbackSpeed: 8
   enemyBodyContactStaggerSeconds: 0.22
   moveSpeed: 3.5
+  hitInvulnerabilitySeconds: 0.5
   hitStopSeconds: 0.12
   hitStopTimeScale: 0.05
   normalAttackProjectilePrefab: {fileID: 5101367211546862847, guid: dc6224cf407699348ad85adead3121f8, type: 3}

@@ -21473,11 +21473,11 @@ MonoBehaviour:
   - {fileID: 1606857887}
   - {fileID: 687889021}
   bossSceneNames:
-  - MainScene
-  - Boss_Muscle
-  - Boss_Conductor
-  - Boss_Assassin
-  - Boss_Hacker
+  - BossRush_Hog
+  - BossRush_Muscle
+  - BossRush_Conductor
+  - BossRush_Assassin
+  - BossRush_Hacker
   bossRushBgmId: BossRushBGM
   bossRushBgmFadeSeconds: 0.5
   enableDebugCheats: 1
