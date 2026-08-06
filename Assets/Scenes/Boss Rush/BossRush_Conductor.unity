@@ -3166,7 +3166,7 @@ PrefabInstance:
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: bossGraph
       value: 
-      objectReference: {fileID: 11400000, guid: 49bb4d16c15e4f44583f18a664d92bc8, type: 2}
+      objectReference: {fileID: 11400000, guid: 6ddf8704d090b6144802688abab51743, type: 2}
     - target: {fileID: -3957373781628334430, guid: 5683c565365137746b420562d5df4a97, type: 3}
       propertyPath: bossNameText
       value: 
