@@ -7,6 +7,9 @@ using Week14.Save;
 
 namespace Week14.UI
 {
+    // 로그 수집 동의 기능 자체를 뺴면서 더 이상 사용하지 않음. 참고용으로 보관.
+    // 씬에서 이 컴포넌트가 붙은 오브젝트(LogConsentRoot)는 삭제됨 — LanguageSettingPanelView가
+    // 대신 TitleFadeInPanel.BeginFadeOut()을 직접 호출하도록 바뀌었습니다.
     // 앱 실행 직후 뜨는 로그 수집 동의 패널입니다. 응답 파일(LogConsentManager)이 없을 때만 표시됩니다.
     // 동의를 누르면 동의를 저장하고 로그 수집을 시작하며, 거부를 누르면 거부를 저장하고 로그 수집 없이 패널만 닫힙니다.
     // 이미 응답한 적이 있는 재실행에서는 패널을 띄우지 않고, 과거에 동의했었다면 그대로 로그 수집을 시작합니다.
