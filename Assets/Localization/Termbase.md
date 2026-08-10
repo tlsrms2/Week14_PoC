@@ -164,6 +164,7 @@ Localization Table의 최신 StringTable asset을 기준으로 다시 작성한 
 | 처형      | Execute        | 処刑       | 处决     | 處決     | казнить            | executar           | ejecutar        | 보스 UI     | Boss table의 실행/처형 텍스트.                |
 | 챌린지    | Challenge      | チャレンジ | 挑战     | 挑戰     | испытание          | desafio            | desafío         | UI/모드     | 보스 선택 탭.                                 |
 | 전투      | Battle         | 戦闘       | 战斗     | 戰鬥     | бой                | combate            | combate         | UI/모드     | 로비/보스 선택.                               |
+| 보스 러시 | Boss Rush      | ボスラッシュ | BOSS连战 | BOSS連戰 | Босс-раш           | Desafio de Chefes  | Desafío de jefes | UI/모드     | BossRush table의 `bossrush.Main` 키.          |
 | 강화      | Enhancement    | 強化       | 强化     | 強化     | усиление           | aprimoramento      | mejora          | UI/성장     | 로드아웃/로비.                                |
 | 로비      | Lobby          | ロビー     | 大厅     | 大廳     | лобби              | lobby              | lobby           | UI/장소     | 게임 허브.                                    |
 | 목표      | Objective      | 目標       | 目标     | 目標     | цель               | objetivo           | objetivo        | UI          | 튜토리얼 목표 라벨.                           |
