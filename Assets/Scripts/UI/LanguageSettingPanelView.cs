@@ -10,14 +10,10 @@ namespace Week14.UI
 {
     // 앱 실행 직후 뜨는 언어 설정 패널입니다. SettingsManager.LanguageSetupCompleted가 아직 false인
     // 최초 실행에서만 표시되고, 드롭다운에서 언어를 고르면 즉시 적용/저장되며, 확인 버튼을 누르면
-    // 이 플래그를 true로 저장하고 패널이 닫히며 nextPanel을 활성화합니다.
+    // 이 플래그를 true로 저장하고 패널이 닫히며 titleFadeInPanel의 페이드아웃을 시작시킵니다.
     // (해상도 등 다른 설정값이 부팅 중에 먼저 저장돼도 이 플래그와는 무관하므로 오탐하지 않습니다.)
-    // 이미 완료 처리된 재실행에서는 패널을 띄우지 않고 곧바로 nextPanel을 활성화합니다.
+    // 이미 완료 처리된 재실행에서는 패널을 띄우지 않고 곧바로 페이드아웃을 시작시킵니다.
     // 하이어라키(Canvas/드롭다운/버튼 배치)는 에디터에서 직접 구성한 뒤 아래 필드들을 인스펙터에서 연결해서 씁니다.
-    //
-    // 주의: 이 컴포넌트가 붙은 GameObject는 씬에서 처음부터 활성 상태여야 Awake가 씬 로드 시 바로 실행됩니다.
-    // 반대로 nextPanel(예: LogConsentPanelView)은 처음엔 비활성 상태여야, 이 패널이 SetActive(true)로
-    // 켜주기 전까지 자기 Awake(및 그 안의 표시 로직)가 실행되지 않습니다.
     public sealed class LanguageSettingPanelView : MonoBehaviour
     {
         [Tooltip("표시/숨김 대상이 되는 루트입니다. 비워두면 이 오브젝트를 사용합니다.")]
@@ -29,8 +25,8 @@ namespace Week14.UI
         [SerializeField] private Button confirmButton;
         [SerializeField] private TMP_Text confirmButtonText;
 
-        [Tooltip("확인(또는 스킵) 시 활성화할 다음 패널입니다. 처음엔 비활성 상태로 씬에 배치해두세요.")]
-        [SerializeField] private GameObject nextPanel;
+        [Tooltip("확인(또는 스킵) 시 페이드아웃을 시작시킬 타이틀 화면 패널입니다.")]
+        [SerializeField] private TitleFadeInPanel titleFadeInPanel;
 
         [Header("기본 문구 (로컬라이징 문구가 비어있을 때 씀)")]
         [SerializeField] private string titleLabel = "언어설정";
@@ -58,7 +54,7 @@ namespace Week14.UI
             if (SettingsManager.LanguageSetupCompleted)
             {
                 root.SetActive(false);
-                ActivateNextPanel();
+                BeginTitleFadeOut();
                 return;
             }
 
@@ -135,14 +131,14 @@ namespace Week14.UI
         {
             SettingsManager.MarkLanguageSetupCompleted();
             root.SetActive(false);
-            ActivateNextPanel();
+            BeginTitleFadeOut();
         }
 
-        private void ActivateNextPanel()
+        private void BeginTitleFadeOut()
         {
-            if (nextPanel != null)
+            if (titleFadeInPanel != null)
             {
-                nextPanel.SetActive(true);
+                titleFadeInPanel.BeginFadeOut();
             }
         }
 

@@ -42,9 +42,17 @@ namespace Week14.Save
         private static string SavePath => GetSlotPath(currentSlot);
 
         // 슬롯을 전환하고 캐시를 무효화합니다. 다음 Data 접근 시 해당 슬롯 파일을 새로 Load()합니다.
+        // 슬롯 번호가 같아도 data가 이미 null(=DeleteSlot 등으로 무효화된 상태)이면 스킵하지 않습니다.
+        // 그래야 "같은 슬롯을 지운 뒤 그 슬롯으로 곧장 새 게임 시작" 케이스에서도 SlotChanged가 발생해
+        // WeaponLoadoutManager 등의 캐시가 옛 장착 상태를 그대로 들고 가지 않습니다.
         public static void SelectSlot(int slot)
         {
-            if (slot < 0 || slot >= SlotCount || slot == currentSlot)
+            if (slot < 0 || slot >= SlotCount)
+            {
+                return;
+            }
+
+            if (slot == currentSlot && data != null)
             {
                 return;
             }
@@ -63,6 +71,10 @@ namespace Week14.Save
         }
 
         // 해당 슬롯의 세이브 파일을 삭제합니다. 삭제 대상이 현재 활성 슬롯이면 메모리 캐시도 무효화합니다.
+        // 여기서는 SlotChanged를 쏘지 않습니다 — 쏘면 구독자들이 Data(=GetEquippedWeaponId 등)에
+        // 접근하면서 Load()의 기본 해금 로직이 파일을 즉시 재생성해버려, 삭제 확인 직후 슬롯 목록이
+        // "새 게임"이 아니라 "이어하기"로 보이는 부작용이 생깁니다. 리로드는 이 슬롯이 실제로 다시
+        // 선택될 때(SelectSlot)까지 미룹니다.
         public static void DeleteSlot(int slot)
         {
             if (slot < 0 || slot >= SlotCount)

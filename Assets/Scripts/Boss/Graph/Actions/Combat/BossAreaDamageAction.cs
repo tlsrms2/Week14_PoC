@@ -22,6 +22,8 @@ namespace Week14.Enemy
         [Tooltip("범위 안 플레이어에게 줄 피해량(감소시킬 탄환 수)입니다.")]
         [SerializeField, Min(0)] private int explosionDamage = 1;
         [Header("범위 인디케이터")]
+        [Tooltip("액션 시작 후 인디케이터가 나타나기까지 대기하는 시간(초)입니다. 이 동안은 아무 표시도 없습니다.")]
+        [SerializeField, Min(0f)] private float startDelaySeconds = 0f;
         [Tooltip("인디케이터가 차오르는 시간(초)입니다. 이 시간이 지나면 데미지가 발동합니다.")]
         [SerializeField, Min(0.1f)] private float windupSeconds = 1.5f;
         [Tooltip("범위를 표시할 원형 스프라이트입니다. 비워두면 인디케이터를 표시하지 않습니다.")]
@@ -54,6 +56,20 @@ namespace Week14.Enemy
             if (context?.Boss == null)
             {
                 yield break;
+            }
+
+            float startDelayElapsed = 0f;
+            while (startDelayElapsed < startDelaySeconds)
+            {
+                if (context.IsExecutionPaused)
+                {
+                    context.Stop();
+                    yield return null;
+                    continue;
+                }
+
+                startDelayElapsed += EnemyTimeScale.DeltaTime;
+                yield return null;
             }
 
             BossAreaIndicatorVfx indicator = rangeSprite != null
